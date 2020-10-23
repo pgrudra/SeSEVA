@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "994695151141",
+    "firebase_url": "https://unslave-0.firebaseio.com",
+    "project_id": "unslave-0",
+    "storage_bucket": "unslave-0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:994695151141:android:76cd6b8b1ce7157867c9cc",
+        "android_client_info": {
+          "package_name": "com.example.us0"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "994695151141-2vc339f5cra8hclbagk4qf3id2ktd2ij.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.us0",
+            "certificate_hash": "c01fccd4e387a1aaf6f55ff7a4372c0b0b8a1373"
+          }
+        },
+        {
+          "client_id": "994695151141-eu2mp7idvlcmgnmoro1eto25l5j062qg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyRcbk-CB9LBVSHsnqB59pTSAm9dzcPIA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "994695151141-eu2mp7idvlcmgnmoro1eto25l5j062qg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
