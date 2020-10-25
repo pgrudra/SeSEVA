@@ -18,6 +18,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.us0.R
 import com.example.us0.databinding.FragmentLoginBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -31,9 +32,6 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-//import com.firebase.ui.auth.AuthUI
-//import com.firebase.ui.auth.IdpResponse
-//import com.google.firebase.auth.FirebaseAuth
 
 
 class LoginFragment : Fragment(),View.OnClickListener {
@@ -150,6 +148,8 @@ class LoginFragment : Fragment(),View.OnClickListener {
     }
 
 
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
@@ -195,13 +195,14 @@ class LoginFragment : Fragment(),View.OnClickListener {
             // binding.status.text = getString(R.string.google_status_fmt, user.email)
             // binding.detail.text = getString(R.string.firebase_status_fmt, user.uid)
 
-            binding.signInButton.visibility = View.GONE
-
+            //binding.signInButton.visibility = View.GONE
+            //val action=LoginFragmentDirections.action
+            findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToInstalledAppsAndSignOut())
         } else {
             // binding.status.setText(R.string.signed_out)
             //binding.detail.text = null
 
-            binding.signInButton.visibility = View.VISIBLE
+            //binding.signInButton.visibility = View.VISIBLE
 
         }
     }
