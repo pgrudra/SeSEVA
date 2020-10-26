@@ -1,4 +1,4 @@
-package com.example.us0.InstalledApps
+package com.example.us0.installedapps
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
@@ -11,10 +11,14 @@ import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import com.example.us0.R
 import com.example.us0.databinding.FragmentSignOutBinding
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 class SignOut : Fragment() {
@@ -38,26 +42,14 @@ class SignOut : Fragment() {
         viewModelFactory = SignOutViewModelFactory()
         viewModel = ViewModelProvider(this, viewModelFactory).get(SignOutViewModel::class.java)
         appContext = context?.applicationContext ?: return binding.root
-        getGso()
-       /* val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
 
-
-        googleSignInClient = GoogleSignIn.getClient(appContext, gso)
-
-        auth = Firebase.auth
-
-        installedApps()*/
+       /*installedApps()*/
+        googleSignInClient = GoogleSignIn.getClient(appContext, viewModel.gso)
 
         return binding.root
     }
 
-    fun getGso(){
 
-        viewModel.getGso(appContext)
-    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.signOut.setOnClickListener { signOut() }
@@ -65,22 +57,24 @@ class SignOut : Fragment() {
 
     private fun signOut() {
         // Firebase sign out
-        viewModel.signOut(this)
-       /* auth.signOut()
+        viewModel.auth.signOut()
+        //viewModel.signOut(this)
+
 
         // Google sign out
         googleSignInClient.signOut().addOnCompleteListener {
             NavHostFragment.findNavController(this)
                 .navigate(SignOutDirections.actionSignOutToMainActivity())
-        }*/
+        }
     }
+
 
     private fun installedApps() {
         val list = activity?.packageManager?.getInstalledPackages(0)
         var appMutableList:MutableList<String?>?=null
         if (list != null) {
             for (i in list.indices) {
-                val packageInfo = list?.get(i)
+                val packageInfo = list.get(i)
                 if (packageInfo!!.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM == 0) {
 
                     val appName =

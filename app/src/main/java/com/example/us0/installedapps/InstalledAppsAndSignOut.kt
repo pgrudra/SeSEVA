@@ -1,4 +1,4 @@
-package com.example.us0.InstalledApps
+package com.example.us0.installedapps
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

@@ -1,4 +1,4 @@
-package com.example.us0.InstalledApps
+package com.example.us0.installedapps
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
