@@ -1,4 +1,4 @@
-package com.example.us0.installedapps
+package com.example.us0.signoutpackage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

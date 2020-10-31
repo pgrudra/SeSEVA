@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/signOut"
-        android:name="com.example.us0.installedapps.SignOut"
+        android:name="com.example.us0.signoutpackage.SignOut"
         android:label="SignOut" >
         <action
             android:id="@+id/action_signOut_to_mainActivity"

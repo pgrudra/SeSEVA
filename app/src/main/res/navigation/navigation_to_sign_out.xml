@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_to_sign_out"
+    app:startDestination="@id/installedApps">
+    <fragment
+        android:id="@+id/installedApps"
+        android:name="com.example.us0.installedapps.InstalledApps"
+        android:label="fragment_installed_apps"
+        tools:layout="@layout/fragment_installed_apps" >
+        <action
+            android:id="@+id/action_installedApps_to_signOutActivity"
+            app:destination="@id/signOutActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/signOutActivity"
+        android:name="com.example.us0.signoutpackage.SignOutActivity"
+        android:label="SignOutActivity" />
+</navigation>

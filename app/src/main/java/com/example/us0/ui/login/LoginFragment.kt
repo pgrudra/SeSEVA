@@ -197,7 +197,7 @@ class LoginFragment : Fragment(),View.OnClickListener {
 
             //binding.signInButton.visibility = View.GONE
             //val action=LoginFragmentDirections.action
-            findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToInstalledAppsAndSignOut())
+            findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToInstalledAppsActivity())
         } else {
             // binding.status.setText(R.string.signed_out)
             //binding.detail.text = null

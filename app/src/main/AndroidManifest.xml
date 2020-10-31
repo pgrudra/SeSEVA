@@ -11,7 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".installedapps.InstalledAppsAndSignOut" />
+        <activity android:name=".signoutpackage.SignOutActivity" />
+        <activity android:name=".installedapps.InstalledAppsActivity" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

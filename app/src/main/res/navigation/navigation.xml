@@ -11,12 +11,11 @@
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_loginFragment_to_installedAppsAndSignOut"
-            app:destination="@id/installedAppsAndSignOut" />
+            android:id="@+id/action_loginFragment_to_installedAppsActivity"
+            app:destination="@id/installedAppsActivity" />
     </fragment>
     <activity
-        android:id="@+id/installedAppsAndSignOut"
-        android:name="com.example.us0.installedapps.InstalledAppsAndSignOut"
-        android:label="activity_installed_apps_and_sign_out"
-        tools:layout="@layout/activity_installed_apps_and_sign_out" />
+        android:id="@+id/installedAppsActivity"
+        android:name="com.example.us0.installedapps.InstalledAppsActivity"
+        android:label="InstalledAppsActivity" />
 </navigation>

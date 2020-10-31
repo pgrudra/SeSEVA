@@ -20,5 +20,6 @@
     <string name="sign_out">Sign Out</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="go_to_sign_out">Go To Sign Out</string>
 
 </resources>

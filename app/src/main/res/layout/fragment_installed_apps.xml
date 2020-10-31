@@ -1,39 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
         <variable
-            name="SignOutViewModel"
-            type="com.example.us0.signoutpackage.SignOutViewModel" />
+            name="InstalledAppsViewModel"
+            type="com.example.us0.installedapps.InstalledAppsViewModel" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/logout_layout"
+        android:id="@+id/login_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="@dimen/fragment_horizontal_margin"
         android:paddingTop="@dimen/fragment_vertical_margin"
         android:paddingRight="@dimen/fragment_horizontal_margin"
         android:paddingBottom="@dimen/fragment_vertical_margin"
-        tools:context=".signoutpackage.SignOutActivity">
+        tools:context=".ui.login.LoginFragment">
+
 
         <Button
-            android:id="@+id/sign_out"
+            android:id="@+id/go_to_sign_out"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="48dp"
             android:enabled="true"
-            android:text="@string/sign_out"
+            android:text="@string/go_to_sign_out"
+            android:onClick="@{() -> InstalledAppsViewModel.onGoTOSignOut()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/go_to_sign_out"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
