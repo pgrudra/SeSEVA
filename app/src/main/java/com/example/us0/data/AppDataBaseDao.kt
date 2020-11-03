@@ -10,14 +10,14 @@ import androidx.room.Update
 interface AppDataBaseDao{
 
     @Insert
-    fun insert(app:AppAndCategory)
+    suspend fun insert(app:AppAndCategory)
 
     @Update
-    fun update(app:AppAndCategory)
+    suspend fun update(app:AppAndCategory)
 
     @Query("SELECT * FROM list_of_installed_apps_and_their_category")
     fun getAll(): LiveData<List<AppAndCategory>>
 
     @Query("DELETE FROM list_of_installed_apps_and_their_category")
-    fun clear()
+    suspend fun clear()
 }

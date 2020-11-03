@@ -61,6 +61,5 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
 
-
-    //compileOnly 'com.google.android.wearable:wearable:2.6.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
 }

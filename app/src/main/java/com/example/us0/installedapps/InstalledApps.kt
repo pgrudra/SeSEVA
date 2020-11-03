@@ -15,7 +15,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.us0.InstalledAppAdapter
 import com.example.us0.R
+import com.example.us0.data.AppDatabase
 import com.example.us0.databinding.FragmentInstalledAppsBinding
 import java.util.*
 
@@ -25,7 +27,6 @@ class InstalledApps : Fragment() {
     private lateinit var binding: FragmentInstalledAppsBinding
     private lateinit var viewModel: InstalledAppsViewModel
     private lateinit var viewModelFactory: InstalledAppsViewModelFactory
-    var arrayAdapter: ArrayAdapter<*>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,87 +39,29 @@ class InstalledApps : Fragment() {
             container,
             false
         )
-        viewModelFactory= InstalledAppsViewModelFactory()
+        val application = requireNotNull(this.activity).application
+        val pm = requireNotNull(activity?.packageManager)
+        val datasource=AppDatabase.getInstance(application).AppDatabaseDao
+        viewModelFactory= InstalledAppsViewModelFactory(datasource,application,pm)
         viewModel=ViewModelProvider(this, viewModelFactory).get(InstalledAppsViewModel::class.java)
 
-        viewModel.goToSignOut.observe(viewLifecycleOwner, Observer { goToSignOut ->
+        binding.lifecycleOwner = this
+        binding.installedAppsViewModel=viewModel
+
+        viewModel.goToSignOut.observe(viewLifecycleOwner, Observer<Boolean>{ goToSignOut ->
             if (goToSignOut) {
                 findNavController().navigate(InstalledAppsDirections.actionInstalledAppsToSignOutActivity())
-                viewModel.onGoTOSignOutComplete()
+                viewModel.onGoToSignOutComplete()
             }
         })
+        val adapter=InstalledAppAdapter()
+        viewModel.apps.observe(viewLifecycleOwner, Observer { it?.let{adapter.data=it} })
+        binding.installedAppsList.adapter=adapter
 
-        binding.installedAppsViewModel=viewModel
-        /*installedApps()
-        r()*/
-        n()
         return binding.root
     }
 
-    private fun installedApps() {
-        val list = activity?.packageManager?.getInstalledPackages(0)
-        var appMutableList: MutableList<String?>? = null
-        if (list != null) {
-            Log.i("II", list.size.toString())
-            for (i in list.indices) {
-                val packageInfo = list.get(i)
-                if (packageInfo!!.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM == 0) {
-
-                    val appName =
-                        activity?.packageManager?.let {
-                            packageInfo.applicationInfo.loadLabel(it).toString()
-                        }
-
-
-                    if (appName != null) {
-                        //Log.i("II", appName)
-                        appMutableList?.add(appName)
-                    }
-
-                    val appContext = context?.applicationContext ?: return
-                    arrayAdapter = ArrayAdapter(
-                        appContext,
-                        R.layout.support_simple_spinner_dropdown_item, list as List<*>
-                    )
-                    binding.listView.adapter = arrayAdapter
-                }
-            }
-
-        }
-    }
-    fun r(){
-        val pm: PackageManager = activity?.packageManager ?: return
-//get a list of installed apps.
-//get a list of installed apps.
-        val packages = pm.getInstalledApplications(PackageManager.GET_META_DATA)
-        var totApps=packages.size
-        var packagesWithCat=0
-        var apwtname=0
-        for (packageInfo in packages) {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                /*Log.i("II","Installed package :" + packageInfo.packageName)
-                Log.i("II", "Installed package :" + packageInfo.category)*/
-                if(packageInfo.category!=-1){packagesWithCat+=1}
-                totApps+=1
-            }
-            else{
-                /*Log.i("pp", "Installed package :" + packageInfo.packageName)*/
-            }
-            var apNam=packageInfo.loadLabel(pm).toString()
-
-            if(apNam!=null){
-                /*Log.i("II", apNam)*/
-                apwtname+=1
-            }
-            /*Log.i("II", "Source dir : " + packageInfo.sourceDir)
-            Log.i("II", "Launch Activity :" + pm.getLaunchIntentForPackage(packageInfo.packageName))*/
-        }
-        Log.i("II", apwtname.toString())
-        Log.i("II", totApps.toString())
-        Log.i("II", packagesWithCat.toString())
-    }
-
-    fun n(){
+    /*fun n(){
         val pm: PackageManager = activity?.packageManager ?: return
         val main=Intent(Intent.ACTION_MAIN, null)
         main.addCategory(Intent.CATEGORY_LAUNCHER)
@@ -149,21 +92,7 @@ class InstalledApps : Fragment() {
             } catch (e: Exception) {
             }
         }
-        Log.i("II", launchables.size.toString())
-        /*val pm: PackageManager = getPackageManager()
-        val main = Intent(Intent.ACTION_MAIN, null)
 
-        main.addCategory(Intent.CATEGORY_LAUNCHER)
-
-        val launchables = pm.queryIntentActivities(main, 0)
-
-        Collections.sort(
-            launchables,
-            ResolveInfo.DisplayNameComparator(pm)
-        )
-
-        adapter = AppAdapter(pm, launchables)
-        setListAdapter(adapter)*/
-    }
+    }*/
 
 }

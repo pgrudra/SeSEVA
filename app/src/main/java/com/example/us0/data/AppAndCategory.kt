@@ -6,6 +6,8 @@ import androidx.room.PrimaryKey
 data class AppAndCategory(
     @PrimaryKey(autoGenerate = true)
     var appId:Long=0L,
+    @ColumnInfo(name="package_name")
+    var packageName:String="",
     @ColumnInfo(name="app_name")
     var appName:String="",
     @ColumnInfo(name="app_category")

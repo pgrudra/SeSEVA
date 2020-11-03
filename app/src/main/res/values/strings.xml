@@ -22,4 +22,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="go_to_sign_out">Go To Sign Out</string>
 
+    <string name="installed_apps_list"><![CDATA[<h3>APPS INSTALLED ON YOUR DEVICE</h3>]]></string>
+    <string name="installed_app_name"><![CDATA[<b>App Name:</b>]]></string>
+    <string name="installed_app_package_name"><![CDATA[<b>Package Name:</b>]]></string>
 </resources>
