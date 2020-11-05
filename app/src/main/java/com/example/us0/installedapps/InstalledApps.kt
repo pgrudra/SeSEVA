@@ -55,7 +55,7 @@ class InstalledApps : Fragment() {
             }
         })
         val adapter=InstalledAppAdapter()
-        viewModel.apps.observe(viewLifecycleOwner, Observer { it?.let{adapter.data=it} })
+        viewModel.apps.observe(viewLifecycleOwner, Observer { it?.let{adapter.submitList(it)} })
         binding.installedAppsList.adapter=adapter
 
         return binding.root

@@ -9,8 +9,9 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.us0.data.AppAndCategory
 import com.example.us0.data.AppDataBaseDao
-import com.example.us0.formatApps
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+
+import org.jsoup.Jsoup
 import java.util.*
 
 
@@ -19,16 +20,16 @@ class InstalledAppsViewModel(
     application: Application,
     private val pm: PackageManager
 ) : AndroidViewModel(application) {
-
     init {
         getApps()
+
     }
 
     private val _goToSignOut = MutableLiveData<Boolean>()
     val goToSignOut: LiveData<Boolean>
         get() = _goToSignOut
 
-    val apps=database.getAll()
+    val apps = database.getAll()
 
     //val appsString=Transformations.map(apps){apps-> formatApps(apps,application.resources) }
     private fun getApps() {
@@ -38,6 +39,7 @@ class InstalledAppsViewModel(
     }
 
     private suspend fun insertIntoDatabase() {
+
         val main = Intent(Intent.ACTION_MAIN, null)
         main.addCategory(Intent.CATEGORY_LAUNCHER)
         val launchables = pm.queryIntentActivities(main, 0)
@@ -75,22 +77,95 @@ class InstalledAppsViewModel(
             } catch (e: Exception) {
             }
         }
-        for (i in app_name_list.indices){
-            val app=AppAndCategory()
-            app.appName=app_name_list[i]
-            app.packageName=app_package_list[i]
-            database.insert(app)
+        for (i in app_name_list.indices) {
+            val app = AppAndCategory()
+            app.appName = app_name_list[i]
+            app.packageName = app_package_list[i]
+            val checkApp = database.isAppExist(app_package_list[i])
+            if (checkApp == null) {
+                val queryUrl = GOOGLE_URL + app.packageName + "&hl=en"
+                app.appCategory = try {
+
+                    val document = withContext(Dispatchers.IO) {
+                        Jsoup.connect(queryUrl).get()
+                    }
+                    val text = document?.select("a[itemprop=genre]")
+                    if (text == null) {
+                        Log.i("N", "text is null")
+                        "Others"
+                    }
+                    val href = text?.attr("abs:href")
+                    if (href != null) {
+
+                        if (href.length > 4 && href.contains(CATEGORY_STRING)) {
+                            Log.i("H", "$href")
+                            href.substring(
+                                href.indexOf(CATEGORY_STRING) + CAT_SIZE,
+                                href.length
+                            )
+                        } else {
+                            "Others"
+                        }
+                    } else {
+                        "Others"
+                    }
+                } catch (e: kotlin.Exception) {
+                    "Others"
+                }
+
+                database.insert(app)
+            } else if (checkApp.appCategory == "") {
+                val queryUrl = GOOGLE_URL + app.packageName + "&hl=en"
+                checkApp.appCategory = try {
+
+                    val document = withContext(Dispatchers.IO) {
+                        Jsoup.connect(queryUrl).get()
+                    }
+                    val text = document?.select("a[itemprop=genre]")
+                    if (text == null) {
+                        Log.i("N", "text is null")
+                        "Others"
+                    }
+                    val href = text?.attr("abs:href")
+                    if (href != null) {
+
+                        if (href.length > 4 && href.contains(CATEGORY_STRING)) {
+                            Log.i("H", "$href")
+                            href.substring(
+                                href.indexOf(CATEGORY_STRING) + CAT_SIZE,
+                                href.length
+                            )
+                        } else {
+                            "Others"
+                        }
+                    } else {
+                        "Others"
+                    }
+                } catch (e: kotlin.Exception) {
+                    "Others"
+                }
+                database.update(checkApp)
+            }
+
         }
     }
 
 
-
     fun onGoToSignOut() {
         _goToSignOut.value = true
+        Log.i("P", "${apps.value}")
     }
 
     fun onGoToSignOutComplete() {
         _goToSignOut.value = false
     }
+
+    companion object {
+        private const val GOOGLE_URL = "https://play.google.com/store/apps/details?id="
+        private const val CAT_SIZE = 9
+        private const val CATEGORY_STRING = "category/"
+        private const val TEST = "https://play.google.com/store/apps/details?id=com.tinder"
+    }
+
 
 }
