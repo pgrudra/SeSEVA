@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.us0">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <application
         android:name=".ClickerApplication"
         android:allowBackup="true"
@@ -13,7 +14,7 @@
 
         <activity android:name=".signoutpackage.SignOutActivity" />
         <activity android:name=".installedapps.InstalledAppsActivity" />
-
+        <service android:name=".foregroundnnotifications.TestService"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

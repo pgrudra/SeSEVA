@@ -12,9 +12,17 @@
         <action
             android:id="@+id/action_installedApps_to_signOutActivity"
             app:destination="@id/signOutActivity" />
+        <action
+            android:id="@+id/action_installedApps_to_foregroundService"
+            app:destination="@id/foregroundService" />
     </fragment>
+
     <activity
         android:id="@+id/signOutActivity"
         android:name="com.example.us0.signoutpackage.SignOutActivity"
         android:label="SignOutActivity" />
+    <fragment
+        android:id="@+id/foregroundService"
+        android:name="com.example.us0.foregroundnnotifications.ForegroundService"
+        android:label="ForegroundService" />
 </navigation>

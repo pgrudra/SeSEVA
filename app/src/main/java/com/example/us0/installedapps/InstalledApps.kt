@@ -54,6 +54,12 @@ class InstalledApps : Fragment() {
                 viewModel.onGoToSignOutComplete()
             }
         })
+        viewModel.goToForegroundService.observe(viewLifecycleOwner,Observer<Boolean>{goToForegroundService->
+            if(goToForegroundService) {
+                findNavController().navigate(InstalledAppsDirections.actionInstalledAppsToForegroundService())
+                viewModel.onGoToForegroundServiceComplete()
+            }
+            })
         val adapter=InstalledAppAdapter()
         viewModel.apps.observe(viewLifecycleOwner, Observer { it?.let{adapter.submitList(it)} })
         binding.installedAppsList.adapter=adapter

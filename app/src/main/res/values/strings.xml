@@ -12,6 +12,9 @@
     <string name="title_activity_list_installed_apps_and_sign_out">ListInstalledAppsAndSignOut
     </string>
 
+    <string name="foreground_service_notification_channel_id" translatable="false">foreground_channel</string>
+    <string name="foreground_service_notification_channel_name" translatable="true">Foreground</string>
+    <string name="notification_title">UnSlave</string>
     <!--
     This string is used for square devices and overridden by hello_world in
     values-round/strings.xml for round devices.
@@ -25,4 +28,7 @@
     <string name="installed_apps_list"><![CDATA[<h3>APPS INSTALLED ON YOUR DEVICE</h3>]]></string>
     <string name="installed_app_name"><![CDATA[<b>App Name:</b>]]></string>
     <string name="installed_app_package_name"><![CDATA[<b>Package Name:</b>]]></string>
+    <string name="go_to_foreground_service_fragment">Go To Foreground Service Fragment</string>
+    <string name="start_service">Start Service</string>
+    <string name="stop_service">stop_service</string>
 </resources>

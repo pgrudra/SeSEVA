@@ -29,6 +29,10 @@ class InstalledAppsViewModel(
     val goToSignOut: LiveData<Boolean>
         get() = _goToSignOut
 
+    private val _goToForegroundService=MutableLiveData<Boolean>()
+    val goToForegroundService:LiveData<Boolean>
+    get()=_goToForegroundService
+
     val apps = database.getAll()
 
     //val appsString=Transformations.map(apps){apps-> formatApps(apps,application.resources) }
@@ -158,6 +162,12 @@ class InstalledAppsViewModel(
 
     fun onGoToSignOutComplete() {
         _goToSignOut.value = false
+    }
+    fun onGoToForegroundService(){
+        _goToForegroundService.value=true
+    }
+    fun onGoToForegroundServiceComplete(){
+        _goToForegroundService.value=false
     }
 
     companion object {
