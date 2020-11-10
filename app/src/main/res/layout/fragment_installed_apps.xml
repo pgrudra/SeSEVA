@@ -34,13 +34,13 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/to_foreground_service_fragment"
+            android:id="@+id/proceed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:enabled="true"
-            android:onClick="@{() ->InstalledAppsViewModel.onGoToForegroundService()}"
-            android:text="@string/go_to_foreground_service_fragment"
+            android:onClick="@{() ->InstalledAppsViewModel.onProceed()}"
+            android:text="@string/proceed"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

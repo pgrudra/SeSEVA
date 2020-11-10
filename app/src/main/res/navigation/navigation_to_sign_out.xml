@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_installedApps_to_foregroundService"
             app:destination="@id/foregroundService" />
+        <action
+            android:id="@+id/action_installedApps_to_permissionFragment"
+            app:destination="@id/permissionFragment" />
     </fragment>
 
     <activity
@@ -25,4 +28,14 @@
         android:id="@+id/foregroundService"
         android:name="com.example.us0.foregroundnnotifications.ForegroundService"
         android:label="ForegroundService" />
+    <fragment
+        android:id="@+id/permissionFragment"
+        android:name="com.example.us0.foregroundnnotifications.PermissionFragment"
+        android:label="PermissionFragment" >
+        <action
+            android:id="@+id/action_permissionFragment_to_foregroundService"
+            app:destination="@id/foregroundService"
+            app:popUpTo="@id/installedApps"
+            app:popUpToInclusive="false" />
+    </fragment>
 </navigation>

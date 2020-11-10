@@ -1,15 +1,9 @@
 package com.example.us0.installedapps
 
-import android.content.Intent
-import android.content.pm.ApplicationInfo
-import android.content.pm.PackageManager
-import android.content.pm.ResolveInfo
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -19,7 +13,6 @@ import com.example.us0.InstalledAppAdapter
 import com.example.us0.R
 import com.example.us0.data.AppDatabase
 import com.example.us0.databinding.FragmentInstalledAppsBinding
-import java.util.*
 
 
 class InstalledApps : Fragment() {
@@ -54,12 +47,24 @@ class InstalledApps : Fragment() {
                 viewModel.onGoToSignOutComplete()
             }
         })
+        viewModel.proceed.observe(viewLifecycleOwner,Observer<Boolean>{ proceed->
+            if(proceed) {
+                viewModel.checkPermission()
+            }
+            })
         viewModel.goToForegroundService.observe(viewLifecycleOwner,Observer<Boolean>{goToForegroundService->
-            if(goToForegroundService) {
+            if(goToForegroundService){
                 findNavController().navigate(InstalledAppsDirections.actionInstalledAppsToForegroundService())
                 viewModel.onGoToForegroundServiceComplete()
             }
-            })
+        })
+
+        viewModel.goToPermissionScreen.observe(viewLifecycleOwner,Observer<Boolean>{goToPermissionScreen->
+            if(goToPermissionScreen){
+                findNavController().navigate(InstalledAppsDirections.actionInstalledAppsToPermissionFragment())
+                viewModel.onGoToPermissionScreenComplete()
+            }
+        })
         val adapter=InstalledAppAdapter()
         viewModel.apps.observe(viewLifecycleOwner, Observer { it?.let{adapter.submitList(it)} })
         binding.installedAppsList.adapter=adapter

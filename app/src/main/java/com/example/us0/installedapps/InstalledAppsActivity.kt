@@ -1,6 +1,7 @@
 package com.example.us0.installedapps
 
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.us0.R
@@ -13,4 +14,6 @@ class InstalledAppsActivity :AppCompatActivity(){
         binding = DataBindingUtil.setContentView(this, R.layout.activity_installed_apps)
 
     }
+
+
 }

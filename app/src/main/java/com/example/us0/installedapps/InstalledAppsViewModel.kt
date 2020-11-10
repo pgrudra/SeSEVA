@@ -1,16 +1,23 @@
 package com.example.us0.installedapps
 
 
+import android.app.AppOpsManager
 import android.app.Application
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.os.Process
 import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.us0.data.AppAndCategory
 import com.example.us0.data.AppDataBaseDao
-import kotlinx.coroutines.*
-
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import java.util.*
 
@@ -20,6 +27,7 @@ class InstalledAppsViewModel(
     application: Application,
     private val pm: PackageManager
 ) : AndroidViewModel(application) {
+    private val context = getApplication<Application>().applicationContext
     init {
         getApps()
 
@@ -29,9 +37,18 @@ class InstalledAppsViewModel(
     val goToSignOut: LiveData<Boolean>
         get() = _goToSignOut
 
+    private  val _goToPermissionScreen=MutableLiveData<Boolean>()
+    val goToPermissionScreen: LiveData<Boolean>
+        get()=_goToPermissionScreen
+
+    private val _proceed=MutableLiveData<Boolean>()
+    val proceed:LiveData<Boolean>
+    get()=_proceed
+
     private val _goToForegroundService=MutableLiveData<Boolean>()
     val goToForegroundService:LiveData<Boolean>
-    get()=_goToForegroundService
+        get()=_goToForegroundService
+
 
     val apps = database.getAll()
 
@@ -154,6 +171,36 @@ class InstalledAppsViewModel(
         }
     }
 
+    fun checkPermission(){
+
+        val appOps = context
+            .getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+        val mode = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            appOps.unsafeCheckOpNoThrow(
+                "android:get_usage_stats",
+                Process.myUid(), context.packageName
+            )
+        } else {
+            appOps.checkOpNoThrow(
+                "android:get_usage_stats",
+                Process.myUid(), context.packageName
+            )
+        }
+        if(mode == AppOpsManager.MODE_ALLOWED) {
+            _goToForegroundService.value = true
+            onProceedComplete()
+
+        }
+else {
+            _goToPermissionScreen.value = true
+            onProceedComplete()
+        }
+
+    }
+    fun onGoToPermissionScreenComplete(){
+        _goToPermissionScreen.value=false
+    }
+
 
     fun onGoToSignOut() {
         _goToSignOut.value = true
@@ -163,8 +210,11 @@ class InstalledAppsViewModel(
     fun onGoToSignOutComplete() {
         _goToSignOut.value = false
     }
-    fun onGoToForegroundService(){
-        _goToForegroundService.value=true
+    fun onProceed(){
+        _proceed.value=true
+    }
+    fun onProceedComplete(){
+        _proceed.value=false
     }
     fun onGoToForegroundServiceComplete(){
         _goToForegroundService.value=false

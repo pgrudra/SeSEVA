@@ -31,4 +31,6 @@
     <string name="go_to_foreground_service_fragment">Go To Foreground Service Fragment</string>
     <string name="start_service">Start Service</string>
     <string name="stop_service">stop_service</string>
+    <string name="proceed">Proceed</string>
+    <string name="grant_permission">Grant Permission</string>
 </resources>
