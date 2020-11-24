@@ -16,16 +16,11 @@ class PermissionViewModel(): ViewModel() {
     val grantPermission:LiveData<Boolean>
         get()=_grantPermission
 
-
-
-
     fun onGrantPermission(){
         _grantPermission.value=true
-
     }
     fun onGrantPermissionComplete(){
         _grantPermission.value=false
-        Log.i("O","KJO")
     }
 
 

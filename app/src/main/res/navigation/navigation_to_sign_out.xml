@@ -27,7 +27,11 @@
     <fragment
         android:id="@+id/foregroundService"
         android:name="com.example.us0.foregroundnnotifications.ForegroundService"
-        android:label="ForegroundService" />
+        android:label="ForegroundService" >
+        <action
+            android:id="@+id/action_foregroundService_to_usageStatsFragment"
+            app:destination="@id/usageStatsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/permissionFragment"
         android:name="com.example.us0.foregroundnnotifications.PermissionFragment"
@@ -38,4 +42,8 @@
             app:popUpTo="@id/installedApps"
             app:popUpToInclusive="false" />
     </fragment>
+    <fragment
+        android:id="@+id/usageStatsFragment"
+        android:name="com.example.us0.usagestats.UsageStatsFragment"
+        android:label="UsageStatsFragment" />
 </navigation>

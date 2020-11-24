@@ -6,11 +6,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Process
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -45,7 +43,6 @@ class PermissionFragment : Fragment() {
         viewModel.grantPermission.observe(viewLifecycleOwner, Observer<Boolean> { grantPermission ->
             if (grantPermission) {
                 startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
-                Log.i("PK", "HJ")
                 viewModel.onGrantPermissionComplete()
             }
 

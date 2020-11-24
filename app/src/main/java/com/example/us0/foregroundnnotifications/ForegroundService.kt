@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.us0.R
 import com.example.us0.databinding.FragmentForegroundBinding
 
@@ -40,6 +41,13 @@ class ForegroundService : Fragment() {
         viewModel=ViewModelProvider(this, viewModelFactory).get(ForegroundServiceViewModel::class.java)
         binding.lifecycleOwner = this
         binding.foregroundServiceViewModel=viewModel
+
+        viewModel.getUsageStats.observe(viewLifecycleOwner,Observer<Boolean>{getUsageStats->
+            if(getUsageStats){
+                findNavController().navigate(ForegroundServiceDirections.actionForegroundServiceToUsageStatsFragment())
+                viewModel.onGetUsageStatsComplete()
+            }
+        })
         viewModel.startServiceBoolean.observe(viewLifecycleOwner, Observer<Boolean>{ startService->
             if(startService){
                 viewModel.startService()

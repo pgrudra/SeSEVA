@@ -24,21 +24,17 @@ class SignOut : Fragment() {
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var viewModel: SignOutViewModel
     private lateinit var viewModelFactory: SignOutViewModelFactory
-    lateinit var appContext: Context
+    private lateinit var appContext: Context
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_out, container, false)
-
         viewModelFactory = SignOutViewModelFactory()
         viewModel = ViewModelProvider(this, viewModelFactory).get(SignOutViewModel::class.java)
         appContext = context?.applicationContext ?: return binding.root
-
-       /*installedApps()*/
         googleSignInClient = GoogleSignIn.getClient(appContext, viewModel.gso)
 
         return binding.root

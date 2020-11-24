@@ -20,4 +20,7 @@ interface AppDataBaseDao{
 
     @Query("DELETE FROM list_of_installed_apps_and_their_category")
     suspend fun clear()
+
+    @Query("SELECT package_name FROM list_of_installed_apps_and_their_category")
+    fun getLaunchablesList():List<String>
 }

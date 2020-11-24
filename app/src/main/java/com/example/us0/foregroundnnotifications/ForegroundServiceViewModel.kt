@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
@@ -25,6 +26,18 @@ class ForegroundServiceViewModel(application: Application) : AndroidViewModel(ap
     private val _stopServiceBoolean = MutableLiveData<Boolean>()
     val stopServiceBoolean: LiveData<Boolean>
         get() = _stopServiceBoolean
+
+    private val _getUsageStats = MutableLiveData<Boolean>()
+    val getUsageStats: LiveData<Boolean>
+        get() = _getUsageStats
+
+    fun onGetUsageStats(){
+        _getUsageStats.value=true
+        Log.i("OPOP", "dest")
+    }
+    fun onGetUsageStatsComplete(){
+        _getUsageStats.value=false
+    }
 
     fun onStartService() {
         _startServiceBoolean.value = true

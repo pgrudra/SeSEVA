@@ -1,23 +1,16 @@
 package com.example.us0.ui.login
 
+import android.content.Context
 import android.content.Intent
+import android.content.Intent.getIntent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.us0.R
 import com.example.us0.databinding.FragmentLoginBinding
@@ -26,20 +19,23 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.actionCodeSettings
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 
-
 class LoginFragment : Fragment(),View.OnClickListener {
 
-    private lateinit var loginViewModel: LoginViewModel
+    private lateinit var viewModel: LoginViewModel
+    private lateinit var viewModelFactory: LoginViewModelFactory
     private lateinit var auth: FirebaseAuth
     private lateinit var mgoogleSignInClient: GoogleSignInClient
     private lateinit var binding: FragmentLoginBinding
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,99 +48,106 @@ class LoginFragment : Fragment(),View.OnClickListener {
             .requestEmail()
             .build()
 
+        viewModelFactory= LoginViewModelFactory()
+        viewModel = ViewModelProvider(this, viewModelFactory).get(LoginViewModel::class.java)
         val appContext = context?.applicationContext ?: return binding.root
         mgoogleSignInClient = GoogleSignIn.getClient(appContext, gso)
-
         auth = Firebase.auth
+        verifySignInLink()
         return binding.root
     }
+
+    private fun otherEmailSignIn(){
+        val emailId = binding.editTextTextEmailAddress.text.toString()
+        val sharedPref = activity?.getSharedPreferences((R.string.shared_pref).toString(),Context.MODE_PRIVATE)
+        with (sharedPref?.edit()) {
+            this?.putString((R.string.email_address).toString(), emailId)
+            this?.apply()
+        }
+        sendSignInLink(emailId, buildActionCodeSettings())
+    }
+    private fun buildActionCodeSettings():ActionCodeSettings {
+        return actionCodeSettings {
+            // URL you want to redirect back to. The domain (www.example.com) for this
+            // URL must be whitelisted in the Firebase Console.
+            url = "https://www.unslave0.com"
+            // This must be true
+            handleCodeInApp = true
+            setAndroidPackageName(
+                "com.example.us0",
+                false, /* installIfNotAvailable */
+                "21" /* minimumVersion */
+            )
+        }
+    }
+
+    private fun sendSignInLink(email: String, actionCodeSettings: ActionCodeSettings) {
+        // [START auth_send_sign_in_link]
+        Firebase.auth.sendSignInLinkToEmail(email, actionCodeSettings)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.i("OPOP", "Email sent.")
+                }
+                else{
+
+                }
+            }
+        // [END auth_send_sign_in_link]
+    }
+
+    private fun verifySignInLink() {
+        val sharedPref = activity?.getSharedPreferences((R.string.shared_pref).toString(),Context.MODE_PRIVATE)
+        val defaultValue="ddd"
+        val emailLink = sharedPref?.getString((R.string.email_link).toString(), defaultValue)?:"fff"
+        // Confirm the link is a sign-in with email link.
+        if (auth.isSignInWithEmailLink(emailLink)) {
+            
+            val email = sharedPref?.getString((R.string.email_address).toString(), defaultValue)?:""
+            // The client SDK will parse the code from the link for you.
+            auth.signInWithEmailLink(email, emailLink)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d(TAG, "Successfully signed in with email link!")
+                        val result = task.result
+                        val user = auth.currentUser
+                        updateUI(user)
+                        // You can access the new user via result.getUser()
+                        // Additional user info profile *not* available via:
+                        // result.getAdditionalUserInfo().getProfile() == null
+                        // You can check if the user is new or existing:
+                        // result.getAdditionalUserInfo().isNewUser()
+                    } else {
+                        Log.e(TAG, "Error signing in with email link", task.exception)
+                        view?.let { Snackbar.make(it, "Authentication Failed.", Snackbar.LENGTH_SHORT).show() }
+                        updateUI(null)
+                    }
+                }
+        }
+        // [END auth_verify_sign_in_link]
+    }
+
+
 
     override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
+        checkCurrentUser()
+    }
+    private fun checkCurrentUser(){
         val currentUser = auth.currentUser
         updateUI(currentUser)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
-            .get(LoginViewModel::class.java)
-
-        val usernameEditText = view.findViewById<EditText>(R.id.username)
-        val passwordEditText = view.findViewById<EditText>(R.id.password)
-        val loginButton = view.findViewById<Button>(R.id.login)
-        val loadingProgressBar = view.findViewById<ProgressBar>(R.id.loading)
-
-        loginViewModel.loginFormState.observe(viewLifecycleOwner,
-            Observer { loginFormState ->
-                if (loginFormState == null) {
-                    return@Observer
-                }
-                loginButton.isEnabled = loginFormState.isDataValid
-                loginFormState.usernameError?.let {
-                    usernameEditText.error = getString(it)
-                }
-                loginFormState.passwordError?.let {
-                    passwordEditText.error = getString(it)
-                }
-            })
-
-        loginViewModel.loginResult.observe(viewLifecycleOwner,
-            Observer { loginResult ->
-                loginResult ?: return@Observer
-                loadingProgressBar.visibility = View.GONE
-                loginResult.error?.let {
-                    showLoginFailed(it)
-                }
-                loginResult.success?.let {
-                    updateUiWithUser(it)
-                }
-            })
-
-        val afterTextChangedListener = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                // ignore
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                // ignore
-            }
-
-            override fun afterTextChanged(s: Editable) {
-                loginViewModel.loginDataChanged(
-                    usernameEditText.text.toString(),
-                    passwordEditText.text.toString()
-                )
-            }
-        }
-        usernameEditText.addTextChangedListener(afterTextChangedListener)
-        passwordEditText.addTextChangedListener(afterTextChangedListener)
-        passwordEditText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                loginViewModel.login(
-                    usernameEditText.text.toString(),
-                    passwordEditText.text.toString()
-                )
-            }
-            false
-        }
-
-        loginButton.setOnClickListener {
-            loadingProgressBar.visibility = View.VISIBLE
-            loginViewModel.login(
-                usernameEditText.text.toString(),
-                passwordEditText.text.toString()
-            )
-        }
-
-        binding.signInButton.setOnClickListener(this)
+        binding.googleSignInButton.setOnClickListener(this)
+        binding.otherEmailButton.setOnClickListener(this)
 
     }
 
-    private fun signIn() {
-        val signInIntent: Intent = mgoogleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
+    private fun googleSignIn() {
+        val googleSignInIntent: Intent = mgoogleSignInClient.signInIntent
+        startActivityForResult(googleSignInIntent, RC_SIGN_IN)
     }
 
 
@@ -184,40 +187,18 @@ class LoginFragment : Fragment(),View.OnClickListener {
                     updateUI(null)
                 }
 
-                // ...
             }
     }
 
 
     private fun updateUI(user: FirebaseUser?) {
-        //hideProgressBar()
         if (user != null) {
-            // binding.status.text = getString(R.string.google_status_fmt, user.email)
-            // binding.detail.text = getString(R.string.firebase_status_fmt, user.uid)
-
-            //binding.signInButton.visibility = View.GONE
-            //val action=LoginFragmentDirections.action
             findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToInstalledAppsActivity())
-        } else {
-            // binding.status.setText(R.string.signed_out)
-            //binding.detail.text = null
-
-            //binding.signInButton.visibility = View.VISIBLE
-
         }
+        else{}
     }
 
-    private fun updateUiWithUser(model: LoggedInUserView) {
-        val welcome = getString(R.string.welcome) + model.displayName
-        // TODO : initiate successful logged in experience
-        val appContext = context?.applicationContext ?: return
-        Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
-    }
 
-    private fun showLoginFailed(@StringRes errorString: Int) {
-        val appContext = context?.applicationContext ?: return
-        Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
-    }
 
     companion object {
         private const val TAG = "GoogleActivity"
@@ -226,7 +207,9 @@ class LoginFragment : Fragment(),View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.sign_in_button -> signIn()
+            R.id.google_sign_in_button -> googleSignIn()
+
+            R.id.other_email_button -> otherEmailSignIn()
         }
     }
 }

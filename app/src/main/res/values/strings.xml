@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">US0</string>
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
+
+    <string name="shared_pref">com.example.us0.SHARED_PREF</string>
+    <string name="email_link">com.example.us0.EMAIL_LINK</string>
+    <string name="email_address">com.example.us0.EMAIL_ADDRESS</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome!"</string>
@@ -30,7 +32,9 @@
     <string name="installed_app_package_name"><![CDATA[<b>Package Name:</b>]]></string>
     <string name="go_to_foreground_service_fragment">Go To Foreground Service Fragment</string>
     <string name="start_service">Start Service</string>
-    <string name="stop_service">stop_service</string>
+    <string name="stop_service">stop Service</string>
     <string name="proceed">Proceed</string>
     <string name="grant_permission">Grant Permission</string>
+    <string name="xyz_example_com">xyz@example.com</string>
+    <string name="done">Done</string>
 </resources>

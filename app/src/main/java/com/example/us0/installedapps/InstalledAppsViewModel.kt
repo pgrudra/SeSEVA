@@ -23,7 +23,7 @@ import java.util.*
 
 
 class InstalledAppsViewModel(
-    val database: AppDataBaseDao,
+    private val database: AppDataBaseDao,
     application: Application,
     private val pm: PackageManager
 ) : AndroidViewModel(application) {
