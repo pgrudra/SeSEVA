@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<data>
+    <variable
+        name="ChooseMissionViewModel"
+        type="com.example.us0.choosemission.ChooseMissionViewModel" />
+</data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/choose_mission_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".choosemission.ChooseMission">
+
+
+        <TextView
+            android:id="@+id/choose_your_mission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="Choose Your Mission"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/active_missions_list"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scrollbars="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/choose_your_mission" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -1,19 +1,20 @@
-package com.example.us0.data
+package com.example.us0.data.apps
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.us0.data.apps.AppAndCategory
 
 @Dao
 interface AppDataBaseDao{
 
     @Insert
-    suspend fun insert(app:AppAndCategory)
+    suspend fun insert(app: AppAndCategory)
 
     @Update
-    suspend fun update(app:AppAndCategory)
+    suspend fun update(app: AppAndCategory)
 
     @Query("SELECT * FROM list_of_installed_apps_and_their_category WHERE package_name=:pk")
-    suspend fun isAppExist(pk:String):AppAndCategory?
+    suspend fun isAppExist(pk:String): AppAndCategory?
 
     @Query("SELECT * FROM list_of_installed_apps_and_their_category")
     fun getAll(): LiveData<List<AppAndCategory>>

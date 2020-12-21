@@ -11,11 +11,19 @@
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_loginFragment_to_installedAppsActivity"
-            app:destination="@id/installedAppsActivity" />
+            android:id="@+id/action_loginFragment_to_ask_name"
+            app:destination="@id/ask_name" />
     </fragment>
     <activity
         android:id="@+id/installedAppsActivity"
         android:name="com.example.us0.installedapps.InstalledAppsActivity"
         android:label="InstalledAppsActivity" />
+    <fragment
+        android:id="@+id/ask_name"
+        android:name="com.example.us0.ui.login.AskName"
+        android:label="ask_name" >
+        <action
+            android:id="@+id/action_ask_name_to_installedAppsActivity"
+            app:destination="@id/installedAppsActivity" />
+    </fragment>
 </navigation>

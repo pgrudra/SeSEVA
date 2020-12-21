@@ -1,4 +1,4 @@
-package com.example.us0.data
+package com.example.us0.ui.login
 
 import com.example.us0.data.model.LoggedInUser
 
@@ -9,7 +9,7 @@ import com.example.us0.data.model.LoggedInUser
 
 class LoginRepository(val dataSource: LoginDataSource) {
 
-    // in-memory cache of the loggedInUser object
+   /* // in-memory cache of the loggedInUser object
     var user: LoggedInUser? = null
         private set
 
@@ -42,5 +42,5 @@ class LoginRepository(val dataSource: LoginDataSource) {
         this.user = loggedInUser
         // If user credentials will be cached in local storage, it is recommended it be encrypted
         // @see https://developer.android.com/training/articles/keystore
-    }
+    }*/
 }

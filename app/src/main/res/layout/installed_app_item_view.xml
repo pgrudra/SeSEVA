@@ -6,7 +6,7 @@
     <data>
 <variable
     name="installedapp"
-    type="com.example.us0.data.AppAndCategory"/>
+    type="com.example.us0.data.apps.AppAndCategory"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -44,6 +44,7 @@ class SignOut : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.signOut.setOnClickListener { signOut() }
+        binding.deleteAccount.setOnClickListener { deleteAccount() }
     }
 
     private fun signOut() {
@@ -58,7 +59,22 @@ class SignOut : Fragment() {
         }
     }
 
+    private fun deleteAccount() {
+        var user = viewModel.auth.currentUser
+try{googleSignInClient.signOut()}
+catch(e:kotlin.Exception){}
+        try {
 
+            user?.delete()?.addOnCompleteListener {
+                NavHostFragment.findNavController(this)
+                    .navigate(SignOutDirections.actionSignOutToMainActivity())
+            }
+
+        } catch (e: kotlin.Exception) {
+            Log.i("Delete", "ERROR")
+        }
+
+    }
 
 
 }

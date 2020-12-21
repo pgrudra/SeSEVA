@@ -10,12 +10,9 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import android.util.Log
-import android.widget.Button
 import androidx.core.app.NotificationCompat
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
 import com.example.us0.R
-import com.example.us0.data.AppDatabase
+import com.example.us0.data.AllDatabase
 import com.example.us0.installedapps.InstalledAppsActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -55,7 +52,7 @@ class TestService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val input = intent!!.getStringExtra("inputExtra")
-        val database = AppDatabase.getInstance(application).AppDatabaseDao
+        val database = AllDatabase.getInstance(application).AppDatabaseDao
         var launchables = listOf<String>()
         val sortedEvents = mutableMapOf<String, MutableList<UsageEvents.Event>>()
         val pendingIntent: PendingIntent =

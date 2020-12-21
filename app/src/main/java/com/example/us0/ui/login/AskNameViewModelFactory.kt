@@ -1,15 +1,13 @@
 package com.example.us0.ui.login
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-
-class LoginViewModelFactory() : ViewModelProvider.Factory {
-
-    @Suppress("UNCHECKED_CAST")
+class AskNameViewModelFactory(private val application: Application): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-            return LoginViewModel() as T
+        if (modelClass.isAssignableFrom(AskNameViewModel::class.java)) {
+            return AskNameViewModel(application) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

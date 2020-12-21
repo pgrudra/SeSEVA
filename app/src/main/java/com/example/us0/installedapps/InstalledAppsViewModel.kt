@@ -13,8 +13,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.us0.data.AppAndCategory
-import com.example.us0.data.AppDataBaseDao
+import com.example.us0.data.apps.AppAndCategory
+import com.example.us0.data.apps.AppDataBaseDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

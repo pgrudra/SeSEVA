@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.us0.InstalledAppAdapter
 import com.example.us0.R
-import com.example.us0.data.AppDatabase
+import com.example.us0.data.AllDatabase
 import com.example.us0.databinding.FragmentInstalledAppsBinding
 
 
@@ -34,7 +34,7 @@ class InstalledApps : Fragment() {
         )
         val application = requireNotNull(this.activity).application
         val pm = requireNotNull(activity?.packageManager)
-        val datasource=AppDatabase.getInstance(application).AppDatabaseDao
+        val datasource= AllDatabase.getInstance(application).AppDatabaseDao
         viewModelFactory= InstalledAppsViewModelFactory(datasource,application,pm)
         viewModel=ViewModelProvider(this, viewModelFactory).get(InstalledAppsViewModel::class.java)
 
@@ -68,7 +68,6 @@ class InstalledApps : Fragment() {
         val adapter=InstalledAppAdapter()
         viewModel.apps.observe(viewLifecycleOwner, Observer { it?.let{adapter.submitList(it)} })
         binding.installedAppsList.adapter=adapter
-
         return binding.root
     }
 

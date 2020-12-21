@@ -1,49 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <data>
-        <variable
-            name="SignOutViewModel"
-            type="com.example.us0.signoutpackage.SignOutViewModel" />
-    </data>
+<data>
+    <variable
+        name="AskNameViewModel"
+        type="com.example.us0.ui.login.AskNameViewModel" />
+</data>
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/logout_layout"
+        android:id="@+id/ask_name_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?attr/fullscreenBackgroundColor"
+        android:theme="@style/ThemeOverlay.US0.FullscreenContainer"
         android:paddingLeft="@dimen/fragment_horizontal_margin"
         android:paddingTop="@dimen/fragment_vertical_margin"
         android:paddingRight="@dimen/fragment_horizontal_margin"
         android:paddingBottom="@dimen/fragment_vertical_margin"
-        tools:context=".signoutpackage.SignOutActivity">
+        tools:context=".ui.login.AskName">
 
-        <Button
-            android:id="@+id/sign_out"
+
+        <EditText
+            android:id="@+id/editTextTextPersonName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="48dp"
-            android:enabled="true"
-            android:text="@string/sign_out"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="@{AskNameViewModel.userName}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/delete_account"
+            android:id="@+id/username_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:enabled="true"
-            android:text="Delete Account"
+            android:text="@string/done"
+            android:onClick="@{() ->AskNameViewModel.nameInserted()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sign_out" />
-
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
 
 
 

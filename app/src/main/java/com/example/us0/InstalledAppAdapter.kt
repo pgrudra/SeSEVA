@@ -2,12 +2,10 @@ package com.example.us0
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.annotation.NonNull
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.us0.data.AppAndCategory
+import com.example.us0.data.apps.AppAndCategory
 import com.example.us0.databinding.InstalledAppItemViewBinding
 
 class InstalledAppAdapter: ListAdapter<AppAndCategory, InstalledAppAdapter.ViewHolder>(AppAndCategoryDiffCallback()){
@@ -15,7 +13,7 @@ class InstalledAppAdapter: ListAdapter<AppAndCategory, InstalledAppAdapter.ViewH
 
     class ViewHolder private constructor(val binding: InstalledAppItemViewBinding) : RecyclerView.ViewHolder(binding.root){
 
-fun bind(item:AppAndCategory){
+fun bind(item: AppAndCategory){
     binding.appName.text=item.appName
     binding.packageName.text=item.packageName
     binding.appCategory.text=item.appCategory

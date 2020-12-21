@@ -75,7 +75,7 @@ class LoginFragment : Fragment(),View.OnClickListener {
             handleCodeInApp = true
             setAndroidPackageName(
                 "com.example.us0",
-                false, /* installIfNotAvailable */
+                true, /* installIfNotAvailable */
                 "21" /* minimumVersion */
             )
         }
@@ -110,6 +110,12 @@ class LoginFragment : Fragment(),View.OnClickListener {
                         Log.d(TAG, "Successfully signed in with email link!")
                         val result = task.result
                         val user = auth.currentUser
+                        if(result?.additionalUserInfo?.isNewUser!!){
+                            Log.i("MN","kj")
+                        }
+                        else{
+                            Log.i("MN","UI")
+                        }
                         updateUI(user)
                         // You can access the new user via result.getUser()
                         // Additional user info profile *not* available via:
@@ -177,6 +183,13 @@ class LoginFragment : Fragment(),View.OnClickListener {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
+                    val result=task.result
+                    if(result?.additionalUserInfo?.isNewUser!!){
+                        Log.i("MN","kj")
+                    }
+                    else{
+                        Log.i("MN","UI")
+                    }
                     val user = auth.currentUser
                     updateUI(user)
                 } else {
@@ -193,7 +206,7 @@ class LoginFragment : Fragment(),View.OnClickListener {
 
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
-            findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToInstalledAppsActivity())
+            findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToAskName())
         }
         else{}
     }

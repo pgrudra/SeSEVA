@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/login_layout"
         android:layout_width="match_parent"
@@ -13,7 +12,6 @@
         android:paddingRight="@dimen/fragment_horizontal_margin"
         android:paddingBottom="@dimen/fragment_vertical_margin"
         tools:context=".ui.login.LoginFragment">
-
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/google_sign_in_button"
@@ -28,6 +26,7 @@
             android:id="@+id/editTextTextEmailAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="190dp"
             android:autofillHints=""
             android:ems="10"
             android:hint="@string/xyz_example_com"
@@ -46,5 +45,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
