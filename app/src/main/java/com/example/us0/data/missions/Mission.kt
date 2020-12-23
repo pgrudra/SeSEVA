@@ -28,5 +28,11 @@ data class Mission(
     var intro:String="",
 
     @ColumnInfo(name="description")
-    var description:String=""
+    var description:String="",
+
+    @ColumnInfo(name="mission_active")
+    var missionActive:Boolean=true,
+
+    @ColumnInfo(name="total_money_raised")
+    var totalMoneyRaised:Int=0
 )

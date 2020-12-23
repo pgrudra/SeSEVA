@@ -15,11 +15,12 @@
         tools:context=".choosemission.ChooseMission">
 
 
-        <TextView
+        <Button
             android:id="@+id/choose_your_mission"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
+            android:onClick="@{() ->ChooseMissionViewModel.toNextFragment()}"
             android:text="Choose Your Mission"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

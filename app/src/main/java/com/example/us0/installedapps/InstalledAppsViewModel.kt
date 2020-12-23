@@ -135,7 +135,7 @@ class InstalledAppsViewModel(
                 }
 
                 database.insert(app)
-            } else if (checkApp.appCategory == "") {
+            } else if (checkApp.appCategory == "" || checkApp.appCategory=="Others") {
                 val queryUrl = GOOGLE_URL + app.packageName + "&hl=en"
                 checkApp.appCategory = try {
 

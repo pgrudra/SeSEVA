@@ -52,7 +52,7 @@
         android:label="fragment_choose_mission"
         tools:layout="@layout/fragment_choose_mission" >
         <action
-            android:id="@+id/action_blankFragment_to_installedApps"
+            android:id="@+id/action_choose_mission_fragment_to_installedApps"
             app:destination="@id/installedApps" />
     </fragment>
 </navigation>

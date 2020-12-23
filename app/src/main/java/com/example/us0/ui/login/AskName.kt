@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.us0.R
+import com.example.us0.data.AllDatabase
 import com.example.us0.databinding.FragmentAskNameBinding
 import com.example.us0.foregroundnnotifications.PermissionViewModel
 import com.example.us0.foregroundnnotifications.PermissionViewModelFactory
@@ -28,7 +29,8 @@ class AskName : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ask_name, container, false)
         val application = requireNotNull(this.activity).application
-        viewModelFactory = AskNameViewModelFactory(application)
+        val datasource= AllDatabase.getInstance(application).MissionsDatabaseDao
+        viewModelFactory = AskNameViewModelFactory(datasource,application)
         viewModel = ViewModelProvider(this, viewModelFactory).get(AskNameViewModel::class.java)
         binding.askNameViewModel=viewModel
         binding.lifecycleOwner = viewLifecycleOwner
