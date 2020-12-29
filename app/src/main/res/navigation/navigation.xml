@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_loginFragment_to_ask_name"
             app:destination="@id/ask_name" />
+        <action
+            android:id="@+id/action_loginFragment_to_linkVerificationFragment"
+            app:destination="@id/linkVerificationFragment" />
     </fragment>
     <activity
         android:id="@+id/installedAppsActivity"
@@ -23,7 +26,35 @@
         android:name="com.example.us0.ui.login.AskName"
         android:label="ask_name" >
         <action
-            android:id="@+id/action_ask_name_to_installedAppsActivity"
+            android:id="@+id/action_ask_name_to_introToApp"
+            app:destination="@id/introToApp" />
+    </fragment>
+    <fragment
+        android:id="@+id/linkVerificationFragment"
+        android:name="com.example.us0.ui.login.LinkVerificationFragment"
+        android:label="LinkVerificationFragment" >
+        <action
+            android:id="@+id/action_linkVerificationFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_linkVerificationFragment_to_ask_name"
+            app:destination="@id/ask_name" />
+    </fragment>
+    <fragment
+        android:id="@+id/introToApp"
+        android:name="com.example.us0.ui.login.IntroToApp"
+        android:label="IntroToApp" >
+        <action
+            android:id="@+id/action_introToApp_to_introToApp2"
+            app:destination="@id/introToApp2" />
+    </fragment>
+    <fragment
+        android:id="@+id/introToApp2"
+        android:name="com.example.us0.ui.login.IntroToApp2"
+        android:label="fragment_intro_to_app2"
+        tools:layout="@layout/fragment_intro_to_app2" >
+        <action
+            android:id="@+id/action_introToApp2_to_installedAppsActivity"
             app:destination="@id/installedAppsActivity" />
     </fragment>
 </navigation>

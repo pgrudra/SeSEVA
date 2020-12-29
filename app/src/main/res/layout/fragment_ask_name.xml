@@ -7,12 +7,12 @@
         name="AskNameViewModel"
         type="com.example.us0.ui.login.AskNameViewModel" />
 </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ask_name_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/fullscreenBackgroundColor"
-        android:theme="@style/ThemeOverlay.US0.FullscreenContainer"
+        android:background="@color/common_background"
         android:paddingLeft="@dimen/fragment_horizontal_margin"
         android:paddingTop="@dimen/fragment_vertical_margin"
         android:paddingRight="@dimen/fragment_horizontal_margin"
@@ -22,27 +22,64 @@
 
         <EditText
             android:id="@+id/editTextTextPersonName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
+            style="@style/email_input_text"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="20dp"
+            android:autofillHints="Enter your name"
+            android:background="@drawable/login_email_edit_box_inactive"
+            android:hint="Enter your name"
             android:inputType="textPersonName"
+            android:paddingStart="8dp"
             android:text="@{AskNameViewModel.userName}"
+            android:textColorHint="#61FFFFFF"
+            android:textCursorDrawable="@drawable/text_cursor"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/username_button"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_weight="286"/>
 
-        <Button
+        <ImageButton
             android:id="@+id/username_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/arrow_right_circle"
+            android:background="@drawable/login_other_sign_in_button"
+            android:gravity="center_horizontal|center_vertical"
+            android:onClick="@{() ->AskNameViewModel.nameInserted()}"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextTextPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName"
+            app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintHorizontal_weight="42"/>
+
+        <View
+            android:id="@+id/underline"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="@drawable/underline"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextTextPersonName"
+            app:layout_constraintEnd_toEndOf="@+id/username_button"
+            app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName" />
+
+        <TextView
+            android:id="@+id/errorMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/done"
-            android:onClick="@{() ->AskNameViewModel.nameInserted()}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:text="Please enter a user name"
+            android:visibility="invisible"
+            android:textColor="#CF6679"
+            android:lineSpacingExtra="1sp"
+            android:textSize="12sp"
+            android:letterSpacing="0.03"
+            android:fontFamily="@font/montserrat_used"
+            app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

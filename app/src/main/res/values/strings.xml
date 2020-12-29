@@ -11,8 +11,7 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="title_activity_list_installed_apps_and_sign_out">ListInstalledAppsAndSignOut
-    </string>
+    <string name="title_activity_list_installed_apps_and_sign_out">ListInstalledAppsAndSignOut</string>
 
     <string name="foreground_service_notification_channel_id" translatable="false">foreground_channel</string>
     <string name="foreground_service_notification_channel_name" translatable="true">Foreground</string>
@@ -35,12 +34,22 @@
     <string name="stop_service">stop Service</string>
     <string name="proceed">Proceed</string>
     <string name="grant_permission">Grant Permission</string>
-    <string name="xyz_example_com">xyz@example.com</string>
+    <string name="enter_your_email">Enter your email</string>
     <string name="done">Done</string>
     <string name="user_name">com.example.us0.USER_NAME</string>
     <string name="hi_there_i_">Hi there,\nI am Spandy</string>
-    <string name="sign_in">Sign in</string>
+    <string name="sign_in">SIGN IN</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="by_signing">By signing up you are agreeing to the \n<u>Terms of Use</u> and <u>Privacy Policy</u></string>
+    <string name="or">OR</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="invalid_address_message">Please enter a valid email address and try again!</string>
+    <string name="no_internet_message">Make sure that Wi-Fi or your mobile data is turned on, and then try again.</string>
+    <string name="no_internet_title">No Internet Connection</string>
+    <string name="ok">OK</string>
+    <string name="link_verification_title">Verify your Email</string>
+    <string name="link_verification_message">Check your email and click the link to \nactivate your account</string>
 
 </resources>

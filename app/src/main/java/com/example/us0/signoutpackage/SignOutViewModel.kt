@@ -9,12 +9,7 @@ import com.google.firebase.ktx.Firebase
 
 
 class SignOutViewModel:ViewModel() {
-    var gso:GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-       .requestIdToken(com.example.us0.R.string.default_web_client_id.toString())
-       .requestEmail()
-       .build()
 
-    var auth: FirebaseAuth = Firebase.auth
 
 }
 

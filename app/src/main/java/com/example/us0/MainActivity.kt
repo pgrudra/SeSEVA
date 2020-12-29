@@ -6,10 +6,12 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import com.example.us0.databinding.ActivityMainBinding
+import com.example.us0.ui.login.LinkVerificationFragment
 
 
-class MainActivity: AppCompatActivity() {
+class MainActivity: AppCompatActivity(){
 
     lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {

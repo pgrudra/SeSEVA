@@ -16,6 +16,10 @@ import com.example.us0.R
 import com.example.us0.databinding.FragmentSignOutBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 class SignOut : Fragment() {
@@ -25,7 +29,7 @@ class SignOut : Fragment() {
     private lateinit var viewModel: SignOutViewModel
     private lateinit var viewModelFactory: SignOutViewModelFactory
     private lateinit var appContext: Context
-
+    private lateinit var auth: FirebaseAuth
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,7 +39,13 @@ class SignOut : Fragment() {
         viewModelFactory = SignOutViewModelFactory()
         viewModel = ViewModelProvider(this, viewModelFactory).get(SignOutViewModel::class.java)
         appContext = context?.applicationContext ?: return binding.root
-        googleSignInClient = GoogleSignIn.getClient(appContext, viewModel.gso)
+        val gso: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(com.example.us0.R.string.default_web_client_id.toString())
+            .requestEmail()
+            .build()
+
+        auth= Firebase.auth
+        googleSignInClient = GoogleSignIn.getClient(appContext, gso)
 
         return binding.root
     }
@@ -48,8 +58,14 @@ class SignOut : Fragment() {
     }
 
     private fun signOut() {
+        val sharedPref =
+            activity?.getSharedPreferences(
+                (R.string.shared_pref).toString(),
+                Context.MODE_PRIVATE
+            )
+        sharedPref?.edit()?.clear()?.apply()
         // Firebase sign out
-        viewModel.auth.signOut()
+        auth.signOut()
 
 
         // Google sign out
@@ -60,18 +76,28 @@ class SignOut : Fragment() {
     }
 
     private fun deleteAccount() {
-        var user = viewModel.auth.currentUser
-try{googleSignInClient.signOut()}
-catch(e:kotlin.Exception){}
-        try {
-
+        val sharedPref =
+            activity?.getSharedPreferences(
+                (R.string.shared_pref).toString(),
+                Context.MODE_PRIVATE
+            )
+        sharedPref?.edit()?.clear()?.apply()
+        val user = auth.currentUser
+      try {
+            Log.i("Delete", "swe")
+            //auth.signOut()
             user?.delete()?.addOnCompleteListener {
+
                 NavHostFragment.findNavController(this)
                     .navigate(SignOutDirections.actionSignOutToMainActivity())
             }
 
         } catch (e: kotlin.Exception) {
             Log.i("Delete", "ERROR")
+        }
+        try{googleSignInClient.signOut().addOnSuccessListener { Log.i("Delete", "sdc") }}
+        catch(e:kotlin.Exception){
+            Log.i("Delete", "qqq")
         }
 
     }

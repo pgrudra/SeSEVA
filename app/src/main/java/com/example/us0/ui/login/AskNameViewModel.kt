@@ -38,8 +38,8 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
     val goToNextFragment: LiveData<Boolean>
         get() = _goToNextFragment
 
-    private val _userName =MutableLiveData<String>()
-    val userName: LiveData<String>
+    private val _userName =MutableLiveData<String?>()
+    val userName: LiveData<String?>
         get()=_userName
 
     fun nameInserted(){
@@ -97,8 +97,9 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
 
                 // UID specific to the provider
                 val uid = profile.uid
-                val name = profile.displayName
-                _userName.value=name?:"User Name"
+                Log.i("opiul","$providerId")
+                _userName.value=profile.displayName
+                Log.i("opiul","${_userName.value}")
             }
         }
     }

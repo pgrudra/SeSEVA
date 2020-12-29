@@ -1,72 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+    <data>
+        <variable
+            name="LoginViewModel"
+            type="com.example.us0.ui.login.LoginViewModel" />
+    </data>
 
-    <RelativeLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/login_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="@dimen/fragment_horizontal_margin"
-        android:paddingTop="@dimen/fragment_vertical_margin"
-        android:paddingRight="@dimen/fragment_horizontal_margin"
-        android:paddingBottom="@dimen/fragment_vertical_margin"
+        android:background="@color/common_background"
         tools:context=".ui.login.LoginFragment">
 
-        <com.google.android.gms.common.SignInButton
+        <Button
             android:id="@+id/google_sign_in_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/editTextTextEmailAddress"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/common_google_signin_btn_text_dark"
+            android:elevation="8dp"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center_horizontal|center_vertical"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="@string/sign_in_with_google"
+            android:textAppearance="@style/google_custom_sign_in"
+            app:layout_constraintBottom_toTopOf="@+id/editTextEmailAddress"
+            app:layout_constraintEnd_toEndOf="@+id/other_email_button"
+            app:layout_constraintStart_toStartOf="@+id/editTextEmailAddress" />
+
+        <View
+            android:id="@+id/underline"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="@drawable/underline"
+            app:layout_constraintBottom_toBottomOf="@id/editTextEmailAddress"
+            app:layout_constraintEnd_toEndOf="@+id/other_email_button"
+            app:layout_constraintStart_toStartOf="@id/editTextEmailAddress" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="46dp"
+            app:layout_constraintBottom_toTopOf="@+id/google_sign_in_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="48dp"
+            android:layout_height="12dp"
+            android:layout_above="@+id/google_sign_in_button"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="100dp"
-            android:layout_marginEnd="100dp"
-            android:layout_marginBottom="30dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toTopOf="@+id/google_sign_in_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:tabBackground="@drawable/login_tab_page_selector"
+            app:tabGravity="center"
+            app:tabIndicatorHeight="0dp" />
+
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="#03DAC5"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <Button
+            android:id="@+id/other_email_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/login_other_sign_in_button"
+            android:gravity="center_horizontal|center_vertical"
+            android:lineSpacingExtra="3sp"
+            android:text="@string/sign_in"
+            android:textAppearance="@style/sign_in"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextEmailAddress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="84"
+            app:layout_constraintStart_toEndOf="@+id/editTextEmailAddress"
+            app:layout_constraintTop_toTopOf="@+id/editTextEmailAddress" />
+
         <EditText
-            android:id="@+id/editTextTextEmailAddress"
+            android:id="@+id/editTextEmailAddress"
+            style="@style/email_input_text"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="32dp"
+            android:autofillHints="@string/enter_your_email"
+            android:text="@{LoginViewModel.emailAddress}"
+            android:background="@drawable/login_email_edit_box_inactive"
+            android:hint="@string/enter_your_email"
+            android:inputType="textNoSuggestions|textEmailAddress"
+            android:paddingStart="8dp"
+            android:textColorHint="#61FFFFFF"
+            android:textCursorDrawable="@drawable/text_cursor"
+            app:layout_constraintBottom_toTopOf="@+id/login_terms_and_privacy_text"
+            app:layout_constraintEnd_toStartOf="@+id/other_email_button"
+            app:layout_constraintHorizontal_weight="236"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+
+        <TextView
+
+            android:id="@+id/login_terms_and_privacy_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/other_email_button"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="0dp"
-            android:layout_toStartOf="@+id/other_email_button"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/xyz_example_com"
-            android:inputType="textEmailAddress"
+            android:layout_marginBottom="36dp"
+            android:fontFamily="@font/montserrat_used"
+            android:gravity="center_horizontal|center_vertical"
+            android:letterSpacing="0.05"
+            android:lineSpacingExtra="0sp"
+            android:text="@string/by_signing"
+            android:textColor="#61FFFFFF"
+            android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/or"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/or"
+            android:textSize="12sp"
+            android:letterSpacing="0.03"
+            android:textColor="#99FFFFFF"
+            android:fontFamily="@font/montserrat_used"
+            android:lineSpacingExtra="1sp"
+            app:layout_constraintBottom_toTopOf="@+id/editTextEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/google_sign_in_button" />
 
-        <Button
-            android:id="@+id/other_email_button"
+        <TextView
+            android:id="@+id/errorMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="70dp"
-            android:text="@string/done"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress" />
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/google_sign_in_button"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="60dp"
-            android:layout_marginBottom="60dp" />
+            android:layout_marginTop="4dp"
+            android:text="@string/invalid_address_message"
+            android:visibility="invisible"
+            android:textColor="#CF6679"
+            android:lineSpacingExtra="1sp"
+            android:textSize="12sp"
+            android:letterSpacing="0.03"
+            android:fontFamily="@font/montserrat_used"
+            app:layout_constraintStart_toStartOf="@+id/editTextEmailAddress"
+            app:layout_constraintTop_toBottomOf="@+id/editTextEmailAddress" />
 
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

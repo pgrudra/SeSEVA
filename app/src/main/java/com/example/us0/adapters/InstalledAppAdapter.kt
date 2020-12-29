@@ -1,4 +1,4 @@
-package com.example.us0
+package com.example.us0.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.us0.data.apps.AppAndCategory
 import com.example.us0.databinding.InstalledAppItemViewBinding
 
-class InstalledAppAdapter: ListAdapter<AppAndCategory, InstalledAppAdapter.ViewHolder>(AppAndCategoryDiffCallback()){
+class InstalledAppAdapter: ListAdapter<AppAndCategory, InstalledAppAdapter.ViewHolder>(
+    AppAndCategoryDiffCallback()
+){
 
 
     class ViewHolder private constructor(val binding: InstalledAppItemViewBinding) : RecyclerView.ViewHolder(binding.root){
@@ -34,7 +36,7 @@ fun bind(item: AppAndCategory){
         holder.bind(item)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
 
