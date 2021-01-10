@@ -43,5 +43,8 @@ class NoInternetDialogFragment : DialogFragment() {
                     " must implement NoticeDialogListener"))
         }
     }
+
+
+
 }
 

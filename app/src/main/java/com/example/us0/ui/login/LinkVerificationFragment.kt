@@ -61,7 +61,7 @@ findNavController().navigate(LinkVerificationFragmentDirections.actionLinkVerifi
         super.onStart()
         val currentUser = Firebase.auth.currentUser
         if(currentUser!=null){
-findNavController().navigate(LinkVerificationFragmentDirections.actionLinkVerificationFragmentToAskName())
+findNavController().navigate(LinkVerificationFragmentDirections.actionLinkVerificationFragmentToHomeActivity())
         }
 
     }

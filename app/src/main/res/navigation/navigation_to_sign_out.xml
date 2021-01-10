@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_to_sign_out"
-    app:startDestination="@id/chooseMissionFragment">
+    app:startDestination="@id/homeFragment">
     <fragment
         android:id="@+id/installedApps"
         android:name="com.example.us0.installedapps.InstalledApps"
@@ -54,5 +54,88 @@
         <action
             android:id="@+id/action_choose_mission_fragment_to_installedApps"
             app:destination="@id/installedApps" />
+        <action
+            android:id="@+id/action_chooseMissionFragment_to_detailMission"
+            app:destination="@id/detailMission" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.us0.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_chooseMissionFragment"
+            app:destination="@id/chooseMissionFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_askName"
+            app:destination="@id/askName" />
+        <action
+            android:id="@+id/action_homeFragment_to_closedMissionsFragment"
+            app:destination="@id/closedMissionsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_lastMissionFragment"
+            app:destination="@id/lastMissionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/askName"
+        android:name="com.example.us0.home.askname.AskName"
+        android:label="AskName" >
+        <action
+            android:id="@+id/action_askName_to_introToApp3"
+            app:destination="@id/introToApp3" />
+    </fragment>
+    <fragment
+        android:id="@+id/introToApp3"
+        android:name="com.example.us0.home.appintro.IntroToApp"
+        android:label="IntroToApp" >
+        <action
+            android:id="@+id/action_introToApp3_to_introToApp22"
+            app:destination="@id/introToApp22" />
+    </fragment>
+    <fragment
+        android:id="@+id/introToApp22"
+        android:name="com.example.us0.home.appintro.IntroToApp2"
+        android:label="IntroToApp2" >
+        <action
+            android:id="@+id/action_introToApp22_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/closedMissionsFragment"
+        android:name="com.example.us0.home.closedmissions.ClosedMissionsFragment"
+        android:label="ClosedMissionsFragment" />
+    <fragment
+        android:id="@+id/lastMissionFragment"
+        android:name="com.example.us0.home.lastmission.LastMissionFragment"
+        android:label="LastMissionFragment" >
+        <action
+            android:id="@+id/action_lastMissionFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_lastMissionFragment_to_reportFragment"
+            app:destination="@id/reportFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reportFragment"
+        android:name="com.example.us0.home.report.ReportFragment"
+        android:label="ReportFragment" >
+        <action
+            android:id="@+id/action_reportFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <argument
+            android:name="missionNumber"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailMission"
+        android:name="com.example.us0.choosemission.DetailMission"
+        android:label="DetailMission">
+    <argument
+        android:name="selectedMission"
+        app:argType="com.example.us0.data.missions.DomainActiveMission"/>
+        <action
+            android:id="@+id/action_detailMission_to_chooseMissionFragment"
+            app:destination="@id/chooseMissionFragment" />
     </fragment>
 </navigation>

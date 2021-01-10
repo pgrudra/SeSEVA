@@ -1,13 +1,11 @@
-package com.example.us0.ui.login
+package com.example.us0.home.askname
 
 import android.app.Application
 import android.content.Context
-import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.us0.R
 import com.example.us0.data.missions.Mission
 import com.example.us0.data.missions.MissionsDatabaseDao
@@ -23,7 +21,6 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.sql.Timestamp
 import java.util.*
 
 class AskNameViewModel(private val database: MissionsDatabaseDao, application: Application) : AndroidViewModel(application)  {
@@ -72,7 +69,7 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
 
     private fun insertIntoCloudDatabase(userName: String){
         val userId=user!!.uid
-        var database: DatabaseReference = Firebase.database.reference
+        val database: DatabaseReference = Firebase.database.reference
         database.child("users").child(userId).child("username").setValue(userName)
             .addOnSuccessListener{Log.i("IOIO","PASS")}
             .addOnFailureListener { Log.i("IOIO","FAIL") }
@@ -89,7 +86,8 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
     fun goToNextFragmentComplete(){
         _goToNextFragment.value=false
     }
-    fun checkUserName() {
+    private fun checkUserName() {
+        //remove multiple providers and make this right
         user?.let {
             for (profile in it.providerData) {
                 // Id of the provider (ex: google.com)
@@ -104,69 +102,8 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
         }
     }
     init{
-        loadActiveMissions()
+        checkUserName()
     }
 
-    private fun loadActiveMissions(){
-        GlobalScope.launch{
-            insertIntoDatabase()
-        }
-    }
-    private suspend fun insertIntoDatabase(){
-        cloudDatabase = Firebase.database.reference
 
-        val usersActiveList:MutableList<Pair<Int,Int>> = arrayListOf()
-        val usersActiveReference=cloudDatabase.child("Users Active")
-        usersActiveReference.addListenerForSingleValueEvent(object:ValueEventListener{
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for(missionSnapShot in dataSnapshot.children ){
-                    usersActiveList.add(Pair(missionSnapShot.key!!.toInt(),missionSnapShot.value.toString().toInt()))
-                    Log.i("nji","$usersActiveList")
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.i("nji", "loadPost:onCancelled", databaseError.toException())
-            }
-        })
-
-        val moneyRaisedList:MutableList<Pair<Int,Int>> = arrayListOf()
-        val moneyRaisedReference=cloudDatabase.child("Money Raised")
-        moneyRaisedReference.addListenerForSingleValueEvent(object:ValueEventListener{
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for(missionSnapShot in dataSnapshot.children ){
-                    moneyRaisedList.add(Pair(missionSnapShot.key!!.toInt(),missionSnapShot.value.toString().toInt()))
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.i("nji", "loadPost:onCancelled", databaseError.toException())
-            }
-
-        })
-
-        val missionsReference=cloudDatabase.child("Missions")
-        missionsReference.addListenerForSingleValueEvent(object:ValueEventListener{
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (missionSnapshot in dataSnapshot.children) {
-                    val i=missionSnapshot.getValue<NetworkMission>()
-                    val mission: Mission? =i?.asDatabaseModel()
-                    val primaryKey= missionSnapshot.key?.toInt() ?: 0
-                    mission?.missionNumber=primaryKey
-                    mission?.usersActive= usersActiveList.find{it.first==primaryKey}?.second ?:0
-                    val now: Calendar = Calendar.getInstance()
-                    mission?.missionActive=now.timeInMillis<= mission?.deadline!!
-                    mission?.totalMoneyRaised=moneyRaisedList.find{it.first==primaryKey}?.second ?:0
-                    Log.i("nji","$mission")
-
-                }
-            }
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                Log.i("nji", "loadPost:onCancelled", databaseError.toException())
-                // ...
-            }
-        })
-
-    }
 }

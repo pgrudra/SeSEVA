@@ -1,6 +1,5 @@
-package com.example.us0.ui.login
+package com.example.us0.home.askname
 
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -17,6 +15,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.example.us0.R
 import com.example.us0.data.AllDatabase
 import com.example.us0.databinding.FragmentAskNameBinding
+
 
 
 class AskName : Fragment() {
@@ -36,7 +35,6 @@ class AskName : Fragment() {
         viewModel = ViewModelProvider(this, viewModelFactory).get(AskNameViewModel::class.java)
         binding.askNameViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        viewModel.checkUserName()
         viewModel.nameInsertDone.observe(viewLifecycleOwner, Observer<Boolean> { nameInserted ->
             if (nameInserted) {
                 val userName = binding.editTextTextPersonName.text.toString()
@@ -51,7 +49,7 @@ class AskName : Fragment() {
         viewModel.goToNextFragment.observe(viewLifecycleOwner, Observer<Boolean> { go ->
             if (go) {
                 NavHostFragment.findNavController(this)
-                    .navigate(AskNameDirections.actionAskNameToIntroToApp())
+                    .navigate(AskNameDirections.actionAskNameToIntroToApp3())
                 viewModel.goToNextFragmentComplete()
             }
         })
@@ -61,6 +59,7 @@ class AskName : Fragment() {
                     makeActiveBackground()
                 }
             }
+
 
         return binding.root
     }

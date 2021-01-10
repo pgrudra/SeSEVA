@@ -3,39 +3,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-<data>
-    <variable
-        name="ChooseMissionViewModel"
-        type="com.example.us0.choosemission.ChooseMissionViewModel" />
-</data>
+    <data>
+        <variable
+            name="ChooseMissionViewModel"
+            type="com.example.us0.choosemission.ChooseMissionViewModel" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/choose_mission_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/common_background"
         tools:context=".choosemission.ChooseMission">
 
-
-        <Button
-            android:id="@+id/choose_your_mission"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:onClick="@{() ->ChooseMissionViewModel.toNextFragment()}"
-            android:text="Choose Your Mission"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:background="@color/common_background"
+            android:elevation="4dp"
+            app:titleTextColor="@color/toolbar_text_color"
+            app:titleMarginStart="36dp"
+            android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
+            android:layout_height="?attr/actionBarSize"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/active_missions_list"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:scrollbars="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/choose_your_mission" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

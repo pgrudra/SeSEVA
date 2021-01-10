@@ -7,15 +7,18 @@ import java.util.*
 data class NetworkMission(
     val missionName: String = "",
     val deadline: String = "",
-    val description: String = ""
+    val missionDescription: String = "",
+    val sponsorName:String="",
+    val sponsorDescription:String="",
+    val category:String="",
+    val sponsorSite:String=""
 ){
     private fun deadlineStringToLong():Long{
         var l:Long=0L
-        val ONE_DAY=24*60*60*1000
         val f = SimpleDateFormat("dd-MMM-yyyy")
         try {
             val d: Date = f.parse(deadline)
-            l= d.time+ONE_DAY
+            l= d.time
         } catch (e: ParseException) {
             e.printStackTrace()
         }
@@ -24,8 +27,12 @@ data class NetworkMission(
 fun asDatabaseModel(): Mission {
     return Mission(
         missionName = missionName,
-        description = description,
-        deadline = deadlineStringToLong()
+        missionDescription = missionDescription,
+        deadline = deadlineStringToLong(),
+        sponsorName=sponsorName,
+        sponsorDescription = sponsorDescription,
+        missionCategory = category,
+        sponsorSite = sponsorSite
         )
 }
 }

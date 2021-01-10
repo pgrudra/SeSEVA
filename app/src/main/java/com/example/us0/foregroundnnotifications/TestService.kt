@@ -13,7 +13,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.us0.R
 import com.example.us0.data.AllDatabase
-import com.example.us0.installedapps.InstalledAppsActivity
+import com.example.us0.installedapps.HomeActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -56,7 +56,7 @@ class TestService : Service() {
         var launchables = listOf<String>()
         val sortedEvents = mutableMapOf<String, MutableList<UsageEvents.Event>>()
         val pendingIntent: PendingIntent =
-            Intent(this, InstalledAppsActivity::class.java).let { notificationIntent ->
+            Intent(this, HomeActivity::class.java).let { notificationIntent ->
                 PendingIntent.getActivity(this, REQUEST_CODE, notificationIntent, FLAGS)
             }
 

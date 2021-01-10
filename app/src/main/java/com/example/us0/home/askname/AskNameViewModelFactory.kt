@@ -1,4 +1,4 @@
-package com.example.us0.ui.login
+package com.example.us0.home.askname
 
 import android.app.Application
 import androidx.lifecycle.ViewModel

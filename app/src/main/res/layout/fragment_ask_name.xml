@@ -5,7 +5,7 @@
 <data>
     <variable
         name="AskNameViewModel"
-        type="com.example.us0.ui.login.AskNameViewModel" />
+        type="com.example.us0.home.askname.AskNameViewModel" />
 </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,7 +17,7 @@
         android:paddingTop="@dimen/fragment_vertical_margin"
         android:paddingRight="@dimen/fragment_horizontal_margin"
         android:paddingBottom="@dimen/fragment_vertical_margin"
-        tools:context=".ui.login.AskName">
+        tools:context=".home.askname.AskName">
 
 
         <EditText

@@ -1,4 +1,4 @@
-package com.example.us0.ui.login
+package com.example.us0.home.appintro
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.example.us0.R
 import com.example.us0.databinding.FragmentIntroToApp2Binding
-import com.example.us0.databinding.FragmentIntroToAppBinding
+
 
 
 class IntroToApp2 : Fragment() {
@@ -22,7 +22,7 @@ class IntroToApp2 : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_intro_to_app2, container, false)
 binding.button.setOnClickListener {
-    findNavController().navigate(IntroToApp2Directions.actionIntroToApp2ToInstalledAppsActivity())
+    findNavController().navigate(IntroToApp2Directions.actionIntroToApp22ToHomeFragment())
 }
         return binding.root
     }

@@ -13,12 +13,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.*
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.us0.R
@@ -36,6 +33,10 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.actionCodeSettings
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 
@@ -220,15 +221,17 @@ findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLinkVe
                         Log.d(TAG, "Successfully signed in with email link!")
                         val result = task.result
                         val user = auth.currentUser
+                        val userId=user!!.uid
                         binding.progressBar1.visibility=View.GONE
                         if (result?.additionalUserInfo?.isNewUser!!) {
                             Log.i("MN", "kj")
+                           goToHomeFragment()
                         } else {
-                            Log.i("MN", "UI")
+                            Log.i("Home", "UI")
+                            checkNameFromCloudDatabase(userId)
                         }
-                        sharedPref?.edit()?.remove((R.string.email_address).toString())?.apply()
-                        Log.i("sdfa","1")
-                        updateUI(user)
+                        //sharedPref?.edit()?.remove((R.string.email_address).toString())?.apply()
+
                         // You can access the new user via result.getUser()
                         // Additional user info profile *not* available via:
                         // result.getAdditionalUserInfo().getProfile() == null
@@ -244,12 +247,45 @@ findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLinkVe
                             ).show()
                         }
                         binding.progressBar1.visibility=View.GONE
-                        Log.i("sdfa","2")
-                        updateUI(null)
                     }
                 }
         }
         // [END auth_verify_sign_in_link]
+    }
+
+
+
+    private fun checkNameFromCloudDatabase(userId: String) {
+        val reference=Firebase.database.reference.child("users").child(userId).child("username")
+        reference.addListenerForSingleValueEvent(object:ValueEventListener{
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val userName=dataSnapshot.value
+                if(userName!=null){
+                    goToWelcomeBack(userName.toString())
+                }
+                else{
+                    goToHomeFragment()
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.i("nji", "loadPost:onCancelled", databaseError.toException())
+            }
+        })
+            }
+
+    private fun goToWelcomeBack(userName: String) {
+        Log.i("Home","$userName")
+        val sharedPref =  activity?.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
+        with (sharedPref?.edit()) {
+            this?.putBoolean((R.string.load_data).toString(), true)
+            this?.apply()
+        }
+        with (sharedPref?.edit()) {
+            this?.putString((R.string.user_name).toString(), userName)
+            this?.apply()
+        }
+        findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToWelcomeBackFragment(userName))
     }
 
 
@@ -264,7 +300,17 @@ findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLinkVe
         val currentUser = auth.currentUser
         Log.i("sdfa","3")
         Log.i("sdfa","ff${currentUser?.displayName}")
-        updateUI(currentUser)
+        if(currentUser!=null){
+            goToHomeFragment()
+        }
+    }
+
+    private fun goToHomeFragment() {
+    //toHomeFragment
+    findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToHomeActivity())
+    //In home fragment, immediately check user name and active mission and take to respective screens incase not selected.
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -297,18 +343,16 @@ findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLinkVe
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e)
-                if(checkInternetConnectivity()){
+                if(checkInternetConnectivity()) {
                     Log.i("zxc", "true")
                     view?.let {
                         Snackbar.make(it, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
                     }
-                    Log.i("sdfa","4")
-                    updateUI(null)}
+                }
                 else{
-                    Log.i("zxc", "false")
+
                     showNoInternetConnectionDialog()
-                    Log.i("sdfa","5")
-                    updateUI(null)
+
                 }
                 // ...
             }
@@ -321,33 +365,29 @@ findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLinkVe
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
+                    val user = auth.currentUser
+                    val userId=user!!.uid
                     Log.d(TAG, "signInWithCredential:success")
                     val result = task.result
                     if (result?.additionalUserInfo?.isNewUser!!) {
                         Log.i("MN", "kj")
+                        goToHomeFragment()
                     } else {
                         Log.i("MN", "UI")
+                        checkNameFromCloudDatabase(userId)
 
                     }
-                    val user = auth.currentUser
                     Log.i("sdfa","6")
-                    updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    // ...
-                    if(checkInternetConnectivity()){
-                        Log.i("zxc", "true")
-                    view?.let {
-                        Snackbar.make(it, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
+                    if(checkInternetConnectivity()) {
+                        view?.let {
+                            Snackbar.make(it, "Authentication Failed.", Snackbar.LENGTH_SHORT)
+                                .show()
+                        }
                     }
-                        Log.i("sdfa","7")
-                    updateUI(null)}
                     else{
-                        Log.i("zxc", "false")
                         showNoInternetConnectionDialog()
-                        Log.i("sdfa","8")
-                        updateUI(null)
                     }
                 }
 
@@ -355,14 +395,7 @@ findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLinkVe
     }
 
 
-    private fun updateUI(user: FirebaseUser?) {
-        Log.i("sdfa","9")
-        if (user != null) {
-            Log.i("sdfa","${user.metadata}")
-            findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToAskName())
-        } else {
-        }
-    }
+
 
     private fun makeActiveBackground() {
         binding.editTextEmailAddress.setBackgroundResource(R.drawable.login_email_edit_box_active)

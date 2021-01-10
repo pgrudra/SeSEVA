@@ -15,8 +15,6 @@ data class Mission(
     @ColumnInfo(name="deadline")
     var deadline:Long=0L,
 
-    @ColumnInfo(name="img")
-    var img:String="",
 
     @ColumnInfo(name="users_active")
     var usersActive:Int=0,
@@ -24,15 +22,42 @@ data class Mission(
     @ColumnInfo(name="mission_complete_notification")
     var missionCompleteNotification:Boolean=false,
 
-    @ColumnInfo(name="intro")
-    var intro:String="",
+    @ColumnInfo(name="sponsor_name")
+    var sponsorName:String="",
 
-    @ColumnInfo(name="description")
-    var description:String="",
+    @ColumnInfo(name = "sponsor_Description")
+    var sponsorDescription:String="",
+
+    @ColumnInfo(name="mission_description")
+    var missionDescription:String="",
+
+    @ColumnInfo(name="mission_category")
+    var missionCategory:String="",
 
     @ColumnInfo(name="mission_active")
     var missionActive:Boolean=true,
 
     @ColumnInfo(name="total_money_raised")
-    var totalMoneyRaised:Int=0
+    var totalMoneyRaised:Int=0,
+
+    @ColumnInfo(name="sponsor_site")
+    var sponsorSite:String=""
+
 )
+
+fun List<Mission>.asActiveDomainModel(): List<DomainActiveMission> {
+    return map {
+        DomainActiveMission(
+            missionNumber = it.missionNumber,
+            missionName = it.missionName,
+            deadline =it.deadline,
+            usersActive = it.usersActive,
+            sponsorName = it.sponsorName,
+            sponsorDescription = it.sponsorDescription,
+            missionDescription = it.missionDescription,
+            totalMoneyRaised = it.totalMoneyRaised,
+            category=it.missionCategory,
+            sponsorSite = it.sponsorSite
+        )
+    }
+}

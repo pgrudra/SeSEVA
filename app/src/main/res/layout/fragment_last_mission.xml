@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="LastMissionViewModel"
+            type="com.example.us0.home.lastmission.LastMissionViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/this_mission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{LastMissionViewModel.thisMission}"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/other_mission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{LastMissionViewModel.otherMission}"
+            android:onClick="@{()->LastMissionViewModel.chooseOtherMission()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/this_mission" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

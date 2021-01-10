@@ -85,17 +85,21 @@ class SignOut : Fragment() {
         val user = auth.currentUser
       try {
             Log.i("Delete", "swe")
-            //auth.signOut()
+           // auth.signOut()
+          if(user==null){
+              Log.i("Delete","OPK")
+          }
             user?.delete()?.addOnCompleteListener {
 
                 NavHostFragment.findNavController(this)
                     .navigate(SignOutDirections.actionSignOutToMainActivity())
             }
 
+
         } catch (e: kotlin.Exception) {
             Log.i("Delete", "ERROR")
         }
-        try{googleSignInClient.signOut().addOnSuccessListener { Log.i("Delete", "sdc") }}
+        try{googleSignInClient.revokeAccess().addOnSuccessListener {  Log.i("Delete","revokeAccess") }}
         catch(e:kotlin.Exception){
             Log.i("Delete", "qqq")
         }
