@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_to_sign_out"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/passageFragment">
     <fragment
         android:id="@+id/installedApps"
         android:name="com.example.us0.installedapps.InstalledApps"
@@ -59,21 +59,20 @@
             app:destination="@id/detailMission" />
     </fragment>
     <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.us0.home.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        android:id="@+id/passageFragment"
+        android:name="com.example.us0.home.PassageFragment"
+        android:label="fragment_passage">
         <action
-            android:id="@+id/action_homeFragment_to_chooseMissionFragment"
+            android:id="@+id/action_passageFragment_to_chooseMissionFragment"
             app:destination="@id/chooseMissionFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_askName"
+            android:id="@+id/action_passageFragment_to_askName"
             app:destination="@id/askName" />
         <action
-            android:id="@+id/action_homeFragment_to_closedMissionsFragment"
+            android:id="@+id/action_passageFragment_to_closedMissionsFragment"
             app:destination="@id/closedMissionsFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_lastMissionFragment"
+            android:id="@+id/action_passageFragment_to_lastMissionFragment"
             app:destination="@id/lastMissionFragment" />
     </fragment>
     <fragment
@@ -97,8 +96,8 @@
         android:name="com.example.us0.home.appintro.IntroToApp2"
         android:label="IntroToApp2" >
         <action
-            android:id="@+id/action_introToApp22_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            android:id="@+id/action_introToApp22_to_passageFragment"
+            app:destination="@id/passageFragment" />
     </fragment>
     <fragment
         android:id="@+id/closedMissionsFragment"
@@ -109,8 +108,8 @@
         android:name="com.example.us0.home.lastmission.LastMissionFragment"
         android:label="LastMissionFragment" >
         <action
-            android:id="@+id/action_lastMissionFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            android:id="@+id/action_lastMissionFragment_to_passageFragment"
+            app:destination="@id/passageFragment" />
         <action
             android:id="@+id/action_lastMissionFragment_to_reportFragment"
             app:destination="@id/reportFragment" />
@@ -120,8 +119,8 @@
         android:name="com.example.us0.home.report.ReportFragment"
         android:label="ReportFragment" >
         <action
-            android:id="@+id/action_reportFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            android:id="@+id/action_reportFragment_to_passageFragment"
+            app:destination="@id/passageFragment" />
         <argument
             android:name="missionNumber"
             app:argType="integer"

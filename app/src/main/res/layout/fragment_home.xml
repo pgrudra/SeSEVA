@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            name="HomeViewModel"
-            type="com.example.us0.home.HomeViewModel" />
+            name="PassageViewModel"
+            type="com.example.us0.home.PassageViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

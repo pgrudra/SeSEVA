@@ -17,5 +17,5 @@ data class DomainActiveMission(
     val sponsorSite:String
 ): Parcelable {
     val deadlineAsDate:String
-        get()="Available till "+SimpleDateFormat("dd/MM/yy").format(deadline)
+        get()="Available till "+SimpleDateFormat("dd/MM/yyyy").format(deadline)
 }

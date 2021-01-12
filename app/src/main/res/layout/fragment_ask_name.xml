@@ -22,7 +22,7 @@
 
         <EditText
             android:id="@+id/editTextTextPersonName"
-            style="@style/email_input_text"
+            style="@style/caption"
             android:layout_width="0dp"
             android:layout_height="42dp"
             android:layout_marginStart="20dp"
@@ -32,7 +32,7 @@
             android:inputType="textPersonName"
             android:paddingStart="8dp"
             android:text="@{AskNameViewModel.userName}"
-            android:textColorHint="#61FFFFFF"
+            android:textColorHint="@color/disabled_text"
             android:textCursorDrawable="@drawable/text_cursor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/username_button"
@@ -61,7 +61,7 @@
         <View
             android:id="@+id/underline"
             android:layout_width="0dp"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:background="@drawable/underline"
             app:layout_constraintBottom_toBottomOf="@+id/editTextTextPersonName"
             app:layout_constraintEnd_toEndOf="@+id/username_button"
@@ -69,15 +69,13 @@
 
         <TextView
             android:id="@+id/errorMessage"
+            style="@style/caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Please enter a user name"
+            android:layout_marginTop="4dp"
+            android:text="Username can not be empty!"
+            android:textColor="@color/colorError"
             android:visibility="invisible"
-            android:textColor="#CF6679"
-            android:lineSpacingExtra="1sp"
-            android:textSize="12sp"
-            android:letterSpacing="0.03"
-            android:fontFamily="@font/montserrat_used"
             app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
 

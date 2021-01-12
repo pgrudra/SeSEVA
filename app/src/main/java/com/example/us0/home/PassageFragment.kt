@@ -14,11 +14,11 @@ import com.example.us0.data.AllDatabase
 import com.example.us0.databinding.FragmentHomeBinding
 
 
-class HomeFragment : Fragment() {
+class PassageFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var viewModel: HomeViewModel
-    private lateinit var viewModelFactory: HomeViewModelFactory
+    private lateinit var viewModel: PassageViewModel
+    private lateinit var viewModelFactory: PassageViewModelFactory
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,20 +27,20 @@ class HomeFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         val application = requireNotNull(this.activity).application
         val datasource = AllDatabase.getInstance(application).MissionsDatabaseDao
-        viewModelFactory = HomeViewModelFactory(datasource, application)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
-        binding.homeViewModel=viewModel
+        viewModelFactory = PassageViewModelFactory(datasource, application)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(PassageViewModel::class.java)
+        binding.passageViewModel=viewModel
         binding.lifecycleOwner=viewLifecycleOwner
         //check Internet, then check name, then check mission
         viewModel.goToAskNameFragment.observe(viewLifecycleOwner, Observer<Boolean> {goto->
             if(goto){
-                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAskName())
+                findNavController().navigate(PassageFragmentDirections.actionPassageFragmentToAskName())
                 viewModel.goToAskNameFragmentComplete()
             }
         })
         viewModel.goToChooseMissionFragment.observe(viewLifecycleOwner, Observer<Boolean> {goto->
             if(goto){
-                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToChooseMissionFragment())
+               findNavController().navigate(PassageFragmentDirections.actionPassageFragmentToChooseMissionFragment())
                 viewModel.goToChosenMissionFragmentComplete()
             }
         })
@@ -51,7 +51,7 @@ class HomeFragment : Fragment() {
         })
         viewModel.goToLastMissionFragment.observe(viewLifecycleOwner, Observer<Boolean> {goto->
             if(goto){
-                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLastMissionFragment())
+                findNavController().navigate(PassageFragmentDirections.actionPassageFragmentToLastMissionFragment())
                 viewModel.goToLastMissionFragmentComplete()
             }
         })

@@ -19,7 +19,7 @@ import com.example.us0.R
 import com.example.us0.data.AllDatabase
 import com.example.us0.databinding.FragmentAskNameBinding
 import com.example.us0.databinding.FragmentWelcomeBackBinding
-import com.example.us0.home.HomeFragmentDirections
+
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 

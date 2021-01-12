@@ -22,7 +22,7 @@ class IntroToApp2 : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_intro_to_app2, container, false)
 binding.button.setOnClickListener {
-    findNavController().navigate(IntroToApp2Directions.actionIntroToApp22ToHomeFragment())
+    findNavController().navigate(IntroToApp2Directions.actionIntroToApp22ToPassageFragment())
 }
         return binding.root
     }

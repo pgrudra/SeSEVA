@@ -26,8 +26,8 @@
             android:elevation="8dp"
             android:fontFamily="@font/roboto_medium"
             android:gravity="center_horizontal|center_vertical"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:text="@string/sign_in_with_google"
             android:textAppearance="@style/google_custom_sign_in"
             app:layout_constraintBottom_toTopOf="@+id/editTextEmailAddress"
@@ -37,7 +37,7 @@
         <View
             android:id="@+id/underline"
             android:layout_width="0dp"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:background="@drawable/underline"
             app:layout_constraintBottom_toBottomOf="@id/editTextEmailAddress"
             app:layout_constraintEnd_toEndOf="@+id/other_email_button"
@@ -45,12 +45,8 @@
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginBottom="46dp"
+            android:layout_width="360dp"
+            android:layout_height="360dp"
             app:layout_constraintBottom_toTopOf="@+id/google_sign_in_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -73,30 +69,19 @@
             app:tabIndicatorHeight="0dp" />
 
 
-        <ProgressBar
-            android:id="@+id/progressBar1"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:indeterminateTint="#03DAC5"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+
 
         <Button
             android:id="@+id/other_email_button"
+            style="@style/button"
+            android:textColor="@color/black_text"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="20dp"
             android:background="@drawable/login_other_sign_in_button"
             android:gravity="center_horizontal|center_vertical"
-            android:lineSpacingExtra="3sp"
             android:text="@string/sign_in"
-            android:textAppearance="@style/sign_in"
             app:layout_constraintBottom_toBottomOf="@+id/editTextEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="84"
@@ -105,7 +90,8 @@
 
         <EditText
             android:id="@+id/editTextEmailAddress"
-            style="@style/email_input_text"
+            style="@style/caption"
+            android:textColor="@color/primary_text"
             android:layout_width="0dp"
             android:layout_height="42dp"
             android:layout_marginStart="20dp"
@@ -128,16 +114,14 @@
         <TextView
 
             android:id="@+id/login_terms_and_privacy_text"
+            style="@style/caption"
+            android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="36dp"
-            android:fontFamily="@font/montserrat_used"
             android:gravity="center_horizontal|center_vertical"
-            android:letterSpacing="0.05"
-            android:lineSpacingExtra="0sp"
             android:text="@string/by_signing"
             android:textColor="@color/disabled_text"
-            android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -159,19 +143,34 @@
 
         <TextView
             android:id="@+id/errorMessage"
+            style="@style/caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="start"
             android:layout_marginTop="4dp"
             android:text="@string/invalid_address_message"
             android:visibility="invisible"
-            android:textColor="#CF6679"
-            android:lineSpacingExtra="1sp"
-            android:textSize="12sp"
-            android:letterSpacing="0.03"
-            android:fontFamily="@font/montserrat_used"
+            android:textColor="@color/colorError"
             app:layout_constraintStart_toStartOf="@+id/editTextEmailAddress"
             app:layout_constraintTop_toBottomOf="@+id/editTextEmailAddress" />
 
-
+        <View
+            android:id="@+id/skrim"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/skrim"
+            android:visibility="gone" />
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="#03DAC5"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

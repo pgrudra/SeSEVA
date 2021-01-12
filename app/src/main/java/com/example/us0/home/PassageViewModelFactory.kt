@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.us0.data.missions.MissionsDatabaseDao
 
-class HomeViewModelFactory(private val dataSource: MissionsDatabaseDao, private val application: Application): ViewModelProvider.Factory {
+class PassageViewModelFactory(private val dataSource: MissionsDatabaseDao, private val application: Application): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
-            return HomeViewModel(dataSource,application) as T
+        if (modelClass.isAssignableFrom(PassageViewModel::class.java)) {
+            return PassageViewModel(dataSource,application) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

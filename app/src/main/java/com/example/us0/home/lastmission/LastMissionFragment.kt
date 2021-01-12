@@ -11,10 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.us0.R
 import com.example.us0.data.AllDatabase
-import com.example.us0.databinding.FragmentHomeBinding
 import com.example.us0.databinding.FragmentLastMissionBinding
-import com.example.us0.home.HomeViewModel
-import com.example.us0.home.HomeViewModelFactory
 
 
 class LastMissionFragment : Fragment() {
@@ -36,7 +33,7 @@ class LastMissionFragment : Fragment() {
         binding.lifecycleOwner=viewLifecycleOwner
 viewModel.goToHome.observe(viewLifecycleOwner, Observer<Boolean> { goto->
     if(goto){
-        findNavController().navigate(LastMissionFragmentDirections.actionLastMissionFragmentToHomeFragment())
+        findNavController().navigate(LastMissionFragmentDirections.actionLastMissionFragmentToPassageFragment())
         viewModel.goToHomeComplete()
     }
 })

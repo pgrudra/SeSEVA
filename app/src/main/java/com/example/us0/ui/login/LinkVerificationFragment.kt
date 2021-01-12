@@ -1,10 +1,12 @@
 package com.example.us0.ui.login
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -49,6 +51,7 @@ findNavController().navigate(LinkVerificationFragmentDirections.actionLinkVerifi
         })
         viewModel.enableResendButton.observe(viewLifecycleOwner, Observer { enableResend->
             if(enableResend){
+                context?.let {  binding.resend.setTextColor(ContextCompat.getColor(it,R.color.black_text))}
                 binding.resend.isEnabled=true
                 binding.resend.setBackgroundResource(R.drawable.login_resend_active)
             }

@@ -11,7 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.us0.R
 import com.example.us0.data.missions.MissionsDatabaseDao
 
-class HomeViewModel(private val database: MissionsDatabaseDao, application: Application) : AndroidViewModel(application)  {
+class PassageViewModel(private val database: MissionsDatabaseDao, application: Application) : AndroidViewModel(application)  {
     private val context = getApplication<Application>().applicationContext
     private val sharedPref = context.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
 

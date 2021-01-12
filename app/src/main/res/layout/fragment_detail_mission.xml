@@ -352,13 +352,14 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
+            style="@style/subtitle_1"
             android:layout_width="match_parent"
             android:background="@color/common_background"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
             android:layout_height="?attr/actionBarSize"
-            app:titleTextColor="@color/toolbar_text_color"
+            app:titleTextColor="@color/primary_text"
             app:layout_constraintTop_toTopOf="parent">
         </androidx.appcompat.widget.Toolbar>
 

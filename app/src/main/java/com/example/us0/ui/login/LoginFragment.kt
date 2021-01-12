@@ -78,6 +78,7 @@ class LoginFragment : Fragment(), View.OnClickListener,NoInternetDialogFragment.
                 Log.i("io","qw")
                 viewModel.resendComplete()
                 binding.progressBar1.visibility=View.VISIBLE
+                binding.skrim.visibility=View.VISIBLE
                 val sharedPref =
                     activity?.getSharedPreferences(
                         (R.string.shared_pref).toString(),
@@ -108,6 +109,7 @@ class LoginFragment : Fragment(), View.OnClickListener,NoInternetDialogFragment.
         val emailId = binding.editTextEmailAddress.text.toString()
         if (emailId != "") {
 binding.progressBar1.visibility=View.VISIBLE
+            binding.skrim.visibility=View.VISIBLE
             val sharedPref =
                 activity?.getSharedPreferences(
                     (R.string.shared_pref).toString(),
@@ -146,11 +148,12 @@ binding.progressBar1.visibility=View.VISIBLE
                 if (task.isSuccessful) {
                     Log.i("OPOP", "Email sent.")
                     binding.progressBar1.visibility=View.GONE
+                    binding.skrim.visibility=View.GONE
                     showLinkVerificationScreen()
 
                 } else {
                     binding.progressBar1.visibility=View.GONE
-
+                    binding.skrim.visibility=View.GONE
                     val sharedPref =
                         activity?.getSharedPreferences(
                             (R.string.shared_pref).toString(),
@@ -212,6 +215,7 @@ findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLinkVe
         // Confirm the link is a sign-in with email link.
         if (auth.isSignInWithEmailLink(emailLink)) {
             binding.progressBar1.visibility=View.VISIBLE
+            binding.skrim.visibility=View.VISIBLE
             val email =
                 sharedPref?.getString((R.string.email_address).toString(), defaultValue) ?: ""
             // The client SDK will parse the code from the link for you.
@@ -223,6 +227,7 @@ findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLinkVe
                         val user = auth.currentUser
                         val userId=user!!.uid
                         binding.progressBar1.visibility=View.GONE
+                        binding.skrim.visibility=View.GONE
                         if (result?.additionalUserInfo?.isNewUser!!) {
                             Log.i("MN", "kj")
                            goToHomeFragment()
@@ -247,6 +252,7 @@ findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLinkVe
                             ).show()
                         }
                         binding.progressBar1.visibility=View.GONE
+                        binding.skrim.visibility=View.GONE
                     }
                 }
         }
@@ -334,6 +340,8 @@ findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLinkVe
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
+            binding.progressBar1.visibility=View.VISIBLE
+            binding.skrim.visibility=View.VISIBLE
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 // Google Sign In was successful, authenticate with Firebase
@@ -342,6 +350,8 @@ findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLinkVe
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
+                binding.progressBar1.visibility=View.GONE
+                binding.skrim.visibility=View.GONE
                 Log.w(TAG, "Google sign in failed", e)
                 if(checkInternetConnectivity()) {
                     Log.i("zxc", "true")
@@ -377,6 +387,8 @@ findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLinkVe
                         checkNameFromCloudDatabase(userId)
 
                     }
+                    binding.progressBar1.visibility=View.GONE
+                    binding.skrim.visibility=View.GONE
                     Log.i("sdfa","6")
                 } else {
                     // If sign in fails, display a message to the user.
@@ -389,6 +401,8 @@ findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLinkVe
                     else{
                         showNoInternetConnectionDialog()
                     }
+                    binding.progressBar1.visibility=View.GONE
+                    binding.skrim.visibility=View.GONE
                 }
 
             }
