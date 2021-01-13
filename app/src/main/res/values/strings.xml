@@ -9,6 +9,7 @@
     <string name="load_data">com.example.us0.LOAD_DATA</string>
     <string name="missions_updated_today">com.example.us0.MISSIONS_UPDATED_TODAY</string>
     <string name="chosen_mission_number">com.example.us0.CHOSEN_MISSION_NUMBER</string>
+    <string name="rules_shown">com.example.us0.RULES_SHOWN</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome!"</string>

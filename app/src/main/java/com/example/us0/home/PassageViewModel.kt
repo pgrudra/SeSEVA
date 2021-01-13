@@ -26,6 +26,9 @@ class PassageViewModel(private val database: MissionsDatabaseDao, application: A
     private val _goToLastMissionFragment = MutableLiveData<Boolean>()
     val goToLastMissionFragment: LiveData<Boolean>
         get() = _goToLastMissionFragment
+    private val _goToHomeFragment = MutableLiveData<Boolean>()
+    val goToHomeFragment: LiveData<Boolean>
+        get() = _goToHomeFragment
 
     private val _connectedToNetwork = MutableLiveData<Boolean>()
     val connectedToNetwork: LiveData<Boolean>
@@ -45,6 +48,12 @@ class PassageViewModel(private val database: MissionsDatabaseDao, application: A
         if(chosenMissionNumber==0){
             _goToChooseMissionFragment.value=true
         }
+        else{
+            _goToHomeFragment.value=true
+        }
+    }
+    fun goToHomeFragmentComplete(){
+        _goToHomeFragment.value=false
     }
     private fun toLastMission() {
         _goToLastMissionFragment.value=true

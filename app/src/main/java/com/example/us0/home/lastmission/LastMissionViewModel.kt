@@ -82,7 +82,7 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
     private fun loadLastMission() {
 
         val reference1 =
-            userId?.let { cloudReference.child("users").child(it).child("activeMission") }
+            userId?.let { cloudReference.child("users").child(it).child("chosenMission") }
         reference1?.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 lastMissionNumber = dataSnapshot.value.toString().toIntOrNull()

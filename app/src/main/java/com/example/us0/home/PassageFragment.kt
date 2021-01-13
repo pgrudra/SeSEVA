@@ -12,11 +12,12 @@ import androidx.navigation.fragment.findNavController
 import com.example.us0.R
 import com.example.us0.data.AllDatabase
 import com.example.us0.databinding.FragmentHomeBinding
+import com.example.us0.databinding.FragmentPassageBinding
 
 
 class PassageFragment : Fragment() {
 
-    private lateinit var binding: FragmentHomeBinding
+    private lateinit var binding: FragmentPassageBinding
     private lateinit var viewModel: PassageViewModel
     private lateinit var viewModelFactory: PassageViewModelFactory
     override fun onCreateView(
@@ -24,13 +25,12 @@ class PassageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_passage, container, false)
         val application = requireNotNull(this.activity).application
         val datasource = AllDatabase.getInstance(application).MissionsDatabaseDao
         viewModelFactory = PassageViewModelFactory(datasource, application)
         viewModel = ViewModelProvider(this, viewModelFactory).get(PassageViewModel::class.java)
-        binding.passageViewModel=viewModel
-        binding.lifecycleOwner=viewLifecycleOwner
+        binding.lifecycleOwner=this
         //check Internet, then check name, then check mission
         viewModel.goToAskNameFragment.observe(viewLifecycleOwner, Observer<Boolean> {goto->
             if(goto){
@@ -53,6 +53,11 @@ class PassageFragment : Fragment() {
             if(goto){
                 findNavController().navigate(PassageFragmentDirections.actionPassageFragmentToLastMissionFragment())
                 viewModel.goToLastMissionFragmentComplete()
+            }
+        })
+        viewModel.goToHomeFragment.observe(viewLifecycleOwner,Observer<Boolean>{goto->
+            if(goto){
+                findNavController().navigate(PassageFragmentDirections.actionPassageFragmentToHomeFragment())
             }
         })
         return binding.root

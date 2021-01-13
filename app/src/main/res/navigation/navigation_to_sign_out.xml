@@ -52,9 +52,6 @@
         android:label="fragment_choose_mission"
         tools:layout="@layout/fragment_choose_mission" >
         <action
-            android:id="@+id/action_choose_mission_fragment_to_installedApps"
-            app:destination="@id/installedApps" />
-        <action
             android:id="@+id/action_chooseMissionFragment_to_detailMission"
             app:destination="@id/detailMission" />
     </fragment>
@@ -74,6 +71,9 @@
         <action
             android:id="@+id/action_passageFragment_to_lastMissionFragment"
             app:destination="@id/lastMissionFragment" />
+        <action
+            android:id="@+id/action_passageFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/askName"
@@ -136,5 +136,35 @@
         <action
             android:id="@+id/action_detailMission_to_chooseMissionFragment"
             app:destination="@id/chooseMissionFragment" />
+        <action
+            android:id="@+id/action_detailMission_to_rulesFragment1"
+            app:destination="@id/rulesFragment1" />
+        <action
+            android:id="@+id/action_detailMission_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/rulesFragment1"
+        android:name="com.example.us0.home.rules.RulesFragment1"
+        android:label="RulesFragment1" >
+        <action
+            android:id="@+id/action_rulesFragment1_to_rulesFragment2"
+            app:destination="@id/rulesFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/rulesFragment2"
+        android:name="com.example.us0.home.rules.RulesFragment2"
+        android:label="RulesFragment2" >
+        <action
+            android:id="@+id/action_rulesFragment2_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.us0.home.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_permissionFragment"
+            app:destination="@id/permissionFragment" />
     </fragment>
 </navigation>

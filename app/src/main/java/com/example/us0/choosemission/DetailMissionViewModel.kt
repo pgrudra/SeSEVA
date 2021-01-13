@@ -1,6 +1,7 @@
 package com.example.us0.choosemission
 
 import android.app.Application
+import android.content.Context
 import android.graphics.Color
 import android.text.Html
 import android.text.Spannable
@@ -13,11 +14,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.us0.R
 import com.example.us0.data.missions.DomainActiveMission
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import java.util.*
 
 class DetailMissionViewModel(mission:DomainActiveMission, application: Application):AndroidViewModel(application) {
     private val context = getApplication<Application>().applicationContext
     private val _selectedMission=MutableLiveData<DomainActiveMission>()
+    private val sharedPref = context.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
+    private val cloudReference = Firebase.database.reference
+    private val user = Firebase.auth.currentUser
     val selectedMission:LiveData<DomainActiveMission>
         get()=_selectedMission
     private val _showDetailMissionDescription=MutableLiveData<Boolean>()
@@ -38,7 +46,12 @@ class DetailMissionViewModel(mission:DomainActiveMission, application: Applicati
     private val _toChooseMission=MutableLiveData<Boolean>()
     val toChooseMission:LiveData<Boolean>
         get()=_toChooseMission
-
+    private val _toRulesFragment=MutableLiveData<Boolean>()
+    val toRulesFragment:LiveData<Boolean>
+        get()=_toRulesFragment
+    private val _toHomeFragment=MutableLiveData<Boolean>()
+    val toHomeFragment:LiveData<Boolean>
+        get()=_toHomeFragment
     init {
     _selectedMission.value=mission
     _showDetailMissionDescription.value=false
@@ -69,8 +82,31 @@ fun toSponsorWebsite(){
         _knowMore.value=false
     }
     fun thisMissionChosen(){
+        val userId=user!!.uid
+        cloudReference.child("users").child(userId).child("chosenMission").setValue(_selectedMission.value!!.missionNumber)
+            .addOnSuccessListener{Log.i("IOIO","PASS")
+                with (sharedPref?.edit()) {
+                    this?.putInt((R.string.chosen_mission_number).toString(), _selectedMission.value!!.missionNumber)
+                    this?.apply()
+                }
+                if(checkIfRulesShown()){
+                    _toHomeFragment.value=true
+                }
+            }
+            .addOnFailureListener { Log.i("IOIO","FAIL")
+
+            }
+    }
+
+    private fun checkIfRulesShown():Boolean {
+            val rulesShown = sharedPref?.getBoolean((R.string.rules_shown).toString(), false)
+            return if(rulesShown!=true){
+                _toRulesFragment.value=true
+                false
+            } else true
 
     }
+
     fun thisMissionChosenComplete(){
 
     }
@@ -78,7 +114,7 @@ fun toSponsorWebsite(){
         _toChooseMission.value=true
     }
     fun toChooseMissionComplete(){
-
+        _toChooseMission.value=false
     }
     fun expandOrContract(){
         _showDetailMissionDescription.value = _showDetailMissionDescription.value != true

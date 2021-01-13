@@ -96,6 +96,17 @@ class DetailMission : Fragment() {
             }
 
         })
+        viewModel.toRulesFragment.observe(viewLifecycleOwner,Observer<Boolean>{toRulesFragment->
+            if(toRulesFragment){
+findNavController().navigate(DetailMissionDirections.actionDetailMissionToRulesFragment1())
+            }
+        })
+        viewModel.toHomeFragment.observe(viewLifecycleOwner,Observer<Boolean>{toPermissionsFragment->
+            if(toPermissionsFragment){
+                findNavController().navigate(DetailMissionDirections.actionDetailMissionToHomeFragment())
+                viewModel.thisMissionChosenComplete()
+            }
+        })
         return binding.root
     }
 
