@@ -9,7 +9,11 @@
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name = "android.permission.ACCESS_NETWORK_STATE" />
-
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN"/>
+        </intent>
+    </queries>
     <application
         android:name=".ClickerApplication"
         android:allowBackup="false"

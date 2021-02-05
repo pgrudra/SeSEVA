@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,12 +17,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.us0.R
 import com.example.us0.databinding.FragmentDetailMissionBinding
+import com.example.us0.ui.login.NoInternetDialogFragment
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
 
-class DetailMission : Fragment() {
-    private val cloudImagesReference= Firebase.storage
+class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListener {
+    private val cloudImagesReference = Firebase.storage
     private lateinit var binding: FragmentDetailMissionBinding
     private lateinit var viewModel: DetailMissionViewModel
     private lateinit var viewModelFactory: DetailMissionViewModelFactory
@@ -37,18 +39,19 @@ class DetailMission : Fragment() {
             false
         )
         val application = requireNotNull(this.activity).application
-        val mission=DetailMissionArgs.fromBundle(requireArguments()).selectedMission
+        val mission = DetailMissionArgs.fromBundle(requireArguments()).selectedMission
         viewModelFactory = DetailMissionViewModelFactory(mission, application)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(DetailMissionViewModel::class.java)
+        viewModel =
+            ViewModelProvider(this, viewModelFactory).get(DetailMissionViewModel::class.java)
         binding.selectedMissionViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.toolbar.title=mission.missionName
-        binding.category.text=mission.category
-        val misDesLength=mission.missionDescription.length
-        if(misDesLength<268){
+        binding.toolbar.title = mission.missionName
+        binding.category.text = mission.category
+        val misDesLength = mission.missionDescription.length
+        if (misDesLength < 151) {
             Log.i("jji", "klop")
-            binding.expandOrContract.visibility=View.GONE
-            binding.missionDescription.text=mission.missionDescription
+            binding.expandOrContract.visibility = View.GONE
+            binding.missionDescription.text = mission.missionDescription
         }
         viewModel.showDetailMissionDescription.observe(
             viewLifecycleOwner,
@@ -56,21 +59,22 @@ class DetailMission : Fragment() {
                 if (show) {
                     binding.missionDescription.text = mission.missionDescription
                     binding.expandOrContract.setImageResource(R.drawable.ic_collapse_vector)
-                } else if (misDesLength > 267) {
+                } else if (misDesLength > 150) {
                     binding.missionDescription.text = getString(
                         R.string.dots, mission.missionDescription.substring(
                             0,
-                            267
+                            150
                         )
                     )
                     binding.expandOrContract.setImageResource(R.drawable.ic_expand_vector)
                 }
 
             })
-        binding.activeContributors.text=mission.usersActive.toString()
-        binding.money.text=mission.totalMoneyRaised.toString()
-        binding.sponsorName.text=mission.sponsorName
-        val reference=cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/sponsorLogos/mission${mission.missionNumber}SponsorLogo.png")
+        binding.activeContributors.text = mission.usersActive.toString()
+        binding.money.text = mission.totalMoneyRaised.toString()
+        binding.sponsorName.text = mission.sponsorName
+        val reference =
+            cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/sponsorLogos/mission${mission.missionNumber}SponsorLogo.png")
         Glide.with(this)
             .load(reference)
             .apply(
@@ -79,7 +83,7 @@ class DetailMission : Fragment() {
                     .error(R.drawable.ic_launcher_foreground)
             )
             .into(binding.sponsorLogo)
-        binding.sponsorDescription.text=mission.sponsorDescription
+        binding.sponsorDescription.text = mission.sponsorDescription
         viewModel.knowMore.observe(viewLifecycleOwner, Observer<Boolean> { knowMore ->
             if (knowMore) {
                 val i = Intent(Intent.ACTION_VIEW)
@@ -89,25 +93,42 @@ class DetailMission : Fragment() {
             }
 
         })
-        viewModel.toChooseMission.observe(viewLifecycleOwner,Observer<Boolean>{toChooseMission->
-            if(toChooseMission){
+        viewModel.toChooseMission.observe(viewLifecycleOwner, Observer<Boolean> { toChooseMission ->
+            if (toChooseMission) {
                 findNavController().navigate(DetailMissionDirections.actionDetailMissionToChooseMissionFragment())
                 viewModel.toChooseMissionComplete()
             }
 
         })
-        viewModel.toRulesFragment.observe(viewLifecycleOwner,Observer<Boolean>{toRulesFragment->
-            if(toRulesFragment){
-findNavController().navigate(DetailMissionDirections.actionDetailMissionToRulesFragment1())
+        viewModel.toRulesFragment.observe(viewLifecycleOwner, Observer<Boolean> { toRulesFragment ->
+            if (toRulesFragment) {
+                findNavController().navigate(DetailMissionDirections.actionDetailMissionToRulesFragment2())
+                viewModel.toRulesFragmentComplete()
             }
         })
-        viewModel.toHomeFragment.observe(viewLifecycleOwner,Observer<Boolean>{toPermissionsFragment->
-            if(toPermissionsFragment){
-                findNavController().navigate(DetailMissionDirections.actionDetailMissionToHomeFragment())
-                viewModel.thisMissionChosenComplete()
+        viewModel.toHomeFragment.observe(viewLifecycleOwner, Observer<Boolean> { goto ->
+                if (goto) {
+                    findNavController().navigate(DetailMissionDirections.actionDetailMissionToHomeFragment())
+                    viewModel.thisMissionChosenComplete()
+                }
+            })
+        viewModel.noInternet.observe(viewLifecycleOwner, Observer<Boolean> { noInternet ->
+            if (noInternet) {
+                showNoInternetConnectionDialog()
             }
         })
         return binding.root
+    }
+
+    override fun removeRedBackground(dialog: DialogFragment) {
+    }
+
+    private fun showNoInternetConnectionDialog() {
+        // Create an instance of the dialog fragment and show it
+        Log.i("fg", "sdf")
+        val dialog = NoInternetDialogFragment()
+        val fragmentManager = childFragmentManager
+        dialog.show(fragmentManager, "No Internet Connection")
     }
 
 }

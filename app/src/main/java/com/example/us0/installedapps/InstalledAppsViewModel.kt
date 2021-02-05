@@ -48,15 +48,11 @@ class InstalledAppsViewModel(
     private val _goToForegroundService=MutableLiveData<Boolean>()
     val goToForegroundService:LiveData<Boolean>
         get()=_goToForegroundService
-
-
-    val apps = database.getAll()
-
     //val appsString=Transformations.map(apps){apps-> formatApps(apps,application.resources) }
     private fun getApps() {
-        viewModelScope.launch {
+      /*  viewModelScope.launch {
             insertIntoDatabase()
-        }
+        }*/
     }
 
     private suspend fun insertIntoDatabase() {
@@ -204,7 +200,6 @@ else {
 
     fun onGoToSignOut() {
         _goToSignOut.value = true
-        Log.i("P", "${apps.value}")
     }
 
     fun onGoToSignOutComplete() {
@@ -213,7 +208,7 @@ else {
     fun onProceed(){
         _proceed.value=true
     }
-    fun onProceedComplete(){
+    private fun onProceedComplete(){
         _proceed.value=false
     }
     fun onGoToForegroundServiceComplete(){

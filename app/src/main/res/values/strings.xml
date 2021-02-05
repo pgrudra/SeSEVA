@@ -12,7 +12,7 @@
     <string name="rules_shown">com.example.us0.RULES_SHOWN</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome!"</string>
+    <string name="welcome_back">Welcome back</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
@@ -71,5 +71,25 @@
     <string name="mission_closes_in">Mission closes in</string>
     <string name="days">days</string>
     <string name="know_more">KNOW MORE</string>
+    <string name="continue_text">CONTINUE</string>
+    <string name="you_are_on">You are on</string>
+    <string name="you_raised">You raised</string>
+    <string name="great_work">Great work!!</string>
+    <string name="this_mission_has">This mission has</string>
+    <string name="sponsored_by">Sponsored by</string>
+    <string name="hurrah">Hurrah !!</string>
+    <string name="total_amount_raised">Total amount raised</string>
+    <string name="view_report">VIEW REPORT</string>
+    <string name="let_s_choose_a_new_mission">LET\'S CHOOSE A NEW MISSION</string>
+    <string name="allow">ALLOW</string>
+    <string name="one_last_thing">One last thing…</string>
+    <string name="data_collection_and_usage_disclosure">Data collection and usage disclosure</string>
+    <string name="grant_permissions">Grant permissions</string>
+    <string name="usage_access">Usage access</string>
+    <string name="reason_usage_access">Optox requires this permission to provide you your apps\' usage statistics and detect when you are about to break an Optox rule</string>
+    <string name="disclosure_brief">We value your privacy. Information regarding your apps\' usage statistics will only stored on your local device. Only the amount raised by you for Optox Missions will be collected at our cloud servers.</string>
+    <string name="help">help</string>
+    <string name="i_understand_the_rules">I UNDERSTAND THE RULES</string>
+    <string name="no_limit_no_penalty">No limit… No penalty !!</string>
 
 </resources>

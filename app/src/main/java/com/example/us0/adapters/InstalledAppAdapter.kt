@@ -1,5 +1,6 @@
 package com.example.us0.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -17,9 +18,7 @@ class InstalledAppAdapter: ListAdapter<AppAndCategory, InstalledAppAdapter.ViewH
 
 fun bind(item: AppAndCategory){
     binding.appName.text=item.appName
-    binding.packageName.text=item.packageName
-    binding.appCategory.text=item.appCategory
-
+    binding.appIcon.setImageDrawable(binding.appIcon.context.packageManager.getApplicationIcon(item.packageName))
 }
 
         companion object {

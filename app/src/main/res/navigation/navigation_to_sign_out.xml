@@ -37,10 +37,10 @@
         android:name="com.example.us0.foregroundnnotifications.PermissionFragment"
         android:label="PermissionFragment" >
         <action
-            android:id="@+id/action_permissionFragment_to_foregroundService"
-            app:destination="@id/foregroundService"
-            app:popUpTo="@id/installedApps"
-            app:popUpToInclusive="false" />
+            android:id="@+id/action_permissionFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/passageFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/usageStatsFragment"
@@ -61,19 +61,29 @@
         android:label="fragment_passage">
         <action
             android:id="@+id/action_passageFragment_to_chooseMissionFragment"
-            app:destination="@id/chooseMissionFragment" />
+            app:destination="@id/chooseMissionFragment"
+            app:popUpTo="@id/passageFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_passageFragment_to_askName"
-            app:destination="@id/askName" />
-        <action
-            android:id="@+id/action_passageFragment_to_closedMissionsFragment"
-            app:destination="@id/closedMissionsFragment" />
+            app:destination="@id/askName"
+            app:popUpTo="@id/passageFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_passageFragment_to_lastMissionFragment"
-            app:destination="@id/lastMissionFragment" />
+            app:destination="@id/lastMissionFragment"
+            app:popUpTo="@id/passageFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_passageFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/passageFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_passageFragment_to_rulesFragment2"
+            app:destination="@id/rulesFragment2"
+            app:popUpTo="@id/passageFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/askName"
@@ -102,7 +112,11 @@
     <fragment
         android:id="@+id/closedMissionsFragment"
         android:name="com.example.us0.home.closedmissions.ClosedMissionsFragment"
-        android:label="ClosedMissionsFragment" />
+        android:label="ClosedMissionsFragment" >
+        <action
+            android:id="@+id/action_closedMissionsFragment_to_detailClosedMissionFragment"
+            app:destination="@id/detailClosedMissionFragment" />
+    </fragment>
     <fragment
         android:id="@+id/lastMissionFragment"
         android:name="com.example.us0.home.lastmission.LastMissionFragment"
@@ -113,6 +127,14 @@
         <action
             android:id="@+id/action_lastMissionFragment_to_reportFragment"
             app:destination="@id/reportFragment" />
+        <action
+            android:id="@+id/action_lastMissionFragment_to_lastMissionCompletedFragment"
+            app:destination="@id/lastMissionCompletedFragment"
+            app:popUpTo="@id/passageFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_lastMissionFragment_to_rulesFragment2"
+            app:destination="@id/rulesFragment2" />
     </fragment>
     <fragment
         android:id="@+id/reportFragment"
@@ -137,18 +159,10 @@
             android:id="@+id/action_detailMission_to_chooseMissionFragment"
             app:destination="@id/chooseMissionFragment" />
         <action
-            android:id="@+id/action_detailMission_to_rulesFragment1"
-            app:destination="@id/rulesFragment1" />
-        <action
             android:id="@+id/action_detailMission_to_homeFragment"
             app:destination="@id/homeFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/rulesFragment1"
-        android:name="com.example.us0.home.rules.RulesFragment1"
-        android:label="RulesFragment1" >
         <action
-            android:id="@+id/action_rulesFragment1_to_rulesFragment2"
+            android:id="@+id/action_detailMission_to_rulesFragment2"
             app:destination="@id/rulesFragment2" />
     </fragment>
     <fragment
@@ -165,6 +179,44 @@
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_permissionFragment"
-            app:destination="@id/permissionFragment" />
+            app:destination="@id/permissionFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_homeFragment_to_closedMissionsFragment"
+            app:destination="@id/closedMissionsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_detailClosedMissionFragment"
+            app:destination="@id/detailClosedMissionFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_signOutActivity"
+            app:destination="@id/signOutActivity" />
+        <action
+            android:id="@+id/action_homeFragment_to_rulesFragment2"
+            app:destination="@id/rulesFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailClosedMissionFragment"
+        android:name="com.example.us0.home.closedmissions.DetailClosedMissionFragment"
+        android:label="fragment_deatil_closed_mission"
+        tools:layout="@layout/fragment_deatil_closed_mission">
+        <argument
+            android:name="selectedMission"
+            app:argType="com.example.us0.data.missions.DomainClosedMission"/>
+        <action
+            android:id="@+id/action_detailClosedMissionFragment_to_chooseMissionFragment"
+            app:destination="@id/chooseMissionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/lastMissionCompletedFragment"
+        android:name="com.example.us0.home.lastmission.LastMissionCompletedFragment"
+        android:label="LastMissionCompletedFragment" >
+        <action
+            android:id="@+id/action_lastMissionCompletedFragment_to_passageFragment"
+            app:destination="@id/passageFragment" />
+        <argument
+            android:name="missionNumber"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 </navigation>

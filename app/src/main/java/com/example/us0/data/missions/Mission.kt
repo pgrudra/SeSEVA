@@ -61,3 +61,18 @@ fun List<Mission>.asActiveDomainModel(): List<DomainActiveMission> {
         )
     }
 }
+fun Mission.asClosedDomainModel():DomainClosedMission{
+        return DomainClosedMission(
+            missionNumber = missionNumber,
+            missionName = missionName,
+            deadline =deadline,
+            usersActive = usersActive,
+            sponsorName = sponsorName,
+            sponsorDescription = sponsorDescription,
+            missionDescription = missionDescription,
+            totalMoneyRaised = totalMoneyRaised,
+            category=missionCategory,
+            sponsorSite = sponsorSite
+        )
+
+}

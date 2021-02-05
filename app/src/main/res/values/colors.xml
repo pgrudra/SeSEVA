@@ -22,5 +22,7 @@
     <color name="secondary_text">#99FFFFFF</color>
     <color name="disabled_text">#61FFFFFF</color>
     <color name="black_text">#000000</color>
-
+    <color name="rules_card">#1E1E1E</color>
+    <color name="selected_group_card_background">#2E2E2E</color>
+    <color name="selected_group_recycler_background">#1FFFFFFF</color>
 </resources>

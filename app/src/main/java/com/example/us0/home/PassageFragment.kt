@@ -44,11 +44,6 @@ class PassageFragment : Fragment() {
                 viewModel.goToChosenMissionFragmentComplete()
             }
         })
-        viewModel.connectedToNetwork.observe(viewLifecycleOwner, Observer<Boolean> {internetAvailable->
-            if(!internetAvailable){
-                //show no internet
-                }
-        })
         viewModel.goToLastMissionFragment.observe(viewLifecycleOwner, Observer<Boolean> {goto->
             if(goto){
                 findNavController().navigate(PassageFragmentDirections.actionPassageFragmentToLastMissionFragment())
@@ -58,10 +53,18 @@ class PassageFragment : Fragment() {
         viewModel.goToHomeFragment.observe(viewLifecycleOwner,Observer<Boolean>{goto->
             if(goto){
                 findNavController().navigate(PassageFragmentDirections.actionPassageFragmentToHomeFragment())
+                viewModel.goToHomeFragmentComplete()
+            }
+        })
+        viewModel.goToRules.observe(viewLifecycleOwner,Observer<Boolean>{goto->
+            if(goto){
+                findNavController().navigate(PassageFragmentDirections.actionPassageFragmentToRulesFragment2())
+                viewModel
             }
         })
         return binding.root
     }
+
 
 
 }

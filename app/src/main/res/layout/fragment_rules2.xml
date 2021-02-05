@@ -2,24 +2,950 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="Rules2ViewModel"
             type="com.example.us0.home.rules.Rules2ViewModel" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/common_background">
 
         <Button
-            android:id="@+id/to_permissions_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Proceed"
+            android:id="@+id/to_home"
+            style="@style/button"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginBottom="36dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/login_resend_active"
             android:onClick="@{()->Rules2ViewModel.goToHome()}"
+            android:text="@string/i_understand_the_rules"
+            android:textColor="@color/nav_color"
+            android:enabled="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/to_home"
+            app:layout_constraintTop_toTopOf="parent"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView5"
+                    style="@style/subtitle_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="24dp"
+                    android:text="@{Rules2ViewModel.contributeSentence}"
+                    android:textColor="@color/secondary_text"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Contribute upto Rs 6 per day by adhering to below rules" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/daily_rules_button"
+                        style="@style/caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:background="@drawable/all_corner_rounded_16dp_primary"
+                        android:onClick="@{()->Rules2ViewModel.dailyRulesChosen()}"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="Daily rules"
+                        android:textAllCaps="false"
+                        android:textColor="@color/primary_text" />
+
+                    <Button
+                        android:id="@+id/weekly_rules_button"
+                        style="@style/caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/all_corner_rounded_16dp_disabled"
+                        android:onClick="@{()->Rules2ViewModel.weeklyRulesChosen()}"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="Weekly rules"
+                        android:textAllCaps="false"
+                        android:textColor="@color/primary_text" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/daily_linear_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/social"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:background="@drawable/all_corner_rounded_4dp"
+                            android:elevation="3dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="22dp"
+                                android:src="@drawable/ic_launcher_foreground"
+                                app:layout_constraintEnd_toStartOf="@+id/t_c_1"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/social_expand_or_contract"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="4dp"
+                                android:background="@null"
+                                android:onClick="@{()->Rules2ViewModel.socialDropdown()}"
+                                android:src="@drawable/ic_expand_vector"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/i_social"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:background="@null"
+                                android:src="@drawable/ic_info"
+                                app:layout_constraintBottom_toBottomOf="@+id/social_expand_or_contract"
+                                app:layout_constraintEnd_toStartOf="@+id/social_expand_or_contract"
+                                app:layout_constraintTop_toTopOf="@+id/social_expand_or_contract" />
+
+                            <TextView
+                                android:id="@+id/t_c_1"
+                                style="@style/subtitle_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="72dp"
+                                android:layout_marginTop="18dp"
+                                android:text="Social"
+                                android:textColor="@color/colorSecondary"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/t_t_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Time limit: "
+                                app:layout_constraintStart_toStartOf="@id/t_c_1"
+                                app:layout_constraintTop_toBottomOf="@id/t_c_1" />
+
+
+                            <TextView
+                                android:id="@+id/t_p_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="App Launch limit: "
+                                app:layout_constraintStart_toStartOf="@id/t_c_1"
+                                app:layout_constraintTop_toBottomOf="@id/t_t_1" />
+
+                            <TextView
+                                android:id="@+id/t_s_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Penalty: "
+                                app:layout_constraintStart_toStartOf="@id/t_c_1"
+                                app:layout_constraintTop_toBottomOf="@id/t_p_1" />
+
+                            <TextView
+                                android:id="@+id/t_s_p_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Rs 2"
+                                app:layout_constraintBottom_toBottomOf="@+id/t_s_1"
+                                app:layout_constraintStart_toEndOf="@+id/t_s_1" />
+
+                            <TextView
+                                android:id="@+id/textView25"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="30 min"
+                                app:layout_constraintBottom_toBottomOf="@+id/t_t_1"
+                                app:layout_constraintStart_toEndOf="@+id/t_t_1" />
+
+                            <TextView
+                                android:id="@+id/textView26"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="18"
+                                app:layout_constraintBottom_toBottomOf="@+id/t_p_1"
+                                app:layout_constraintStart_toEndOf="@+id/t_p_1" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/social_apps_list"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:elevation="3dp"
+                                android:orientation="horizontal"
+                                app:layout_constraintTop_toBottomOf="@id/t_s_1" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/video"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:background="@drawable/all_corner_rounded_4dp"
+                            android:elevation="3dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="22dp"
+                                android:src="@drawable/ic_launcher_foreground"
+                                app:layout_constraintEnd_toStartOf="@+id/t_c_2"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/video_expand_or_contract"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="4dp"
+                                android:background="@null"
+                                android:onClick="@{()->Rules2ViewModel.videoDropdown()}"
+                                android:src="@drawable/ic_expand_vector"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/i_video"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:background="@null"
+                                android:src="@drawable/ic_info"
+                                app:layout_constraintBottom_toBottomOf="@+id/video_expand_or_contract"
+                                app:layout_constraintEnd_toStartOf="@+id/video_expand_or_contract"
+                                app:layout_constraintTop_toTopOf="@+id/video_expand_or_contract" />
+
+                            <TextView
+                                android:id="@+id/t_c_2"
+                                style="@style/subtitle_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="72dp"
+                                android:layout_marginTop="18dp"
+                                android:text="Video"
+                                android:textColor="@color/colorSecondary"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/t_t_2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Time limit: "
+                                app:layout_constraintStart_toStartOf="@id/t_c_2"
+                                app:layout_constraintTop_toBottomOf="@id/t_c_2" />
+
+
+                            <TextView
+                                android:id="@+id/t_p_2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="App Launch limit: "
+                                app:layout_constraintStart_toStartOf="@id/t_c_2"
+                                app:layout_constraintTop_toBottomOf="@id/t_t_2" />
+
+                            <TextView
+                                android:id="@+id/t_s_2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Penalty: "
+                                app:layout_constraintStart_toStartOf="@id/t_c_2"
+                                app:layout_constraintTop_toBottomOf="@id/t_p_2" />
+
+                            <TextView
+                                android:id="@+id/t_s_p_2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Rs 2"
+                                app:layout_constraintBottom_toBottomOf="@+id/t_s_2"
+                                app:layout_constraintStart_toEndOf="@+id/t_s_2" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="30 min"
+                                app:layout_constraintBottom_toBottomOf="@+id/t_t_2"
+                                app:layout_constraintStart_toEndOf="@+id/t_t_2" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="18"
+                                app:layout_constraintBottom_toBottomOf="@+id/t_p_2"
+                                app:layout_constraintStart_toEndOf="@+id/t_p_2" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/video_apps_list"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:orientation="horizontal"
+                                android:scrollbars="horizontal"
+                                app:layout_constraintTop_toBottomOf="@id/t_s_2" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/games"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:background="@drawable/all_corner_rounded_4dp"
+                            android:elevation="3dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="22dp"
+                                android:src="@drawable/ic_launcher_foreground"
+                                app:layout_constraintEnd_toStartOf="@+id/t_c_3"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/games_expand_or_contract"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="4dp"
+                                android:background="@null"
+                                android:onClick="@{()->Rules2ViewModel.gamesDropdown()}"
+                                android:src="@drawable/ic_expand_vector"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/i_games"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:background="@null"
+                                android:src="@drawable/ic_info"
+                                app:layout_constraintBottom_toBottomOf="@+id/games_expand_or_contract"
+                                app:layout_constraintEnd_toStartOf="@+id/games_expand_or_contract"
+                                app:layout_constraintTop_toTopOf="@+id/games_expand_or_contract" />
+
+                            <TextView
+                                android:id="@+id/t_c_3"
+                                style="@style/subtitle_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="72dp"
+                                android:layout_marginTop="18dp"
+                                android:text="Games"
+                                android:textColor="@color/colorSecondary"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/t_t_3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Time limit: "
+                                app:layout_constraintStart_toStartOf="@id/t_c_3"
+                                app:layout_constraintTop_toBottomOf="@id/t_c_3" />
+
+                            <TextView
+                                android:id="@+id/t_s_3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Penalty: "
+                                app:layout_constraintStart_toStartOf="@id/t_c_3"
+                                app:layout_constraintTop_toBottomOf="@id/t_t_3" />
+
+                            <TextView
+                                android:id="@+id/t_s_p_3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Rs 1"
+                                app:layout_constraintBottom_toBottomOf="@+id/t_s_3"
+                                app:layout_constraintStart_toEndOf="@+id/t_s_3" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="30 min"
+                                app:layout_constraintBottom_toBottomOf="@+id/t_t_3"
+                                app:layout_constraintStart_toEndOf="@+id/t_t_3" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/games_apps_list"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:orientation="horizontal"
+                                android:scrollbars="horizontal"
+                                app:layout_constraintTop_toBottomOf="@id/t_s_3" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/communication"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:background="@drawable/all_corner_rounded_4dp"
+                            android:elevation="3dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="22dp"
+                                android:src="@drawable/ic_launcher_foreground"
+                                app:layout_constraintEnd_toStartOf="@+id/t_c_4"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/communication_expand_or_contract"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="4dp"
+                                android:background="@null"
+                                android:onClick="@{()->Rules2ViewModel.communicationDropdown()}"
+                                android:src="@drawable/ic_expand_vector"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/i_communication"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:background="@null"
+                                android:src="@drawable/ic_info"
+                                app:layout_constraintBottom_toBottomOf="@+id/communication_expand_or_contract"
+                                app:layout_constraintEnd_toStartOf="@+id/communication_expand_or_contract"
+                                app:layout_constraintTop_toTopOf="@+id/communication_expand_or_contract" />
+
+                            <TextView
+                                android:id="@+id/t_c_4"
+                                style="@style/subtitle_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="72dp"
+                                android:layout_marginTop="18dp"
+                                android:text="Communication"
+                                android:textColor="@color/colorSecondary"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/t_t_4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Time limit: "
+                                app:layout_constraintStart_toStartOf="@id/t_c_4"
+                                app:layout_constraintTop_toBottomOf="@id/t_c_4" />
+
+
+                            <TextView
+                                android:id="@+id/t_p_4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="App Launch limit: "
+                                app:layout_constraintStart_toStartOf="@id/t_c_4"
+                                app:layout_constraintTop_toBottomOf="@id/t_t_4" />
+
+                            <TextView
+                                android:id="@+id/t_s_4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Penalty: "
+                                app:layout_constraintStart_toStartOf="@id/t_c_4"
+                                app:layout_constraintTop_toBottomOf="@id/t_p_4" />
+
+                            <TextView
+                                android:id="@+id/t_s_p_4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Rs 2"
+                                app:layout_constraintBottom_toBottomOf="@+id/t_s_4"
+                                app:layout_constraintStart_toEndOf="@+id/t_s_4" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="30 min"
+                                app:layout_constraintBottom_toBottomOf="@+id/t_t_4"
+                                app:layout_constraintStart_toEndOf="@+id/t_t_4" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="18"
+                                app:layout_constraintBottom_toBottomOf="@+id/t_p_4"
+                                app:layout_constraintStart_toEndOf="@+id/t_p_4" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/communication_apps_list"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:orientation="horizontal"
+                                android:scrollbars="horizontal"
+                                app:layout_constraintTop_toBottomOf="@id/t_s_4" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/msnbs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:background="@drawable/all_corner_rounded_4dp"
+                            android:elevation="3dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="22dp"
+                                android:src="@drawable/ic_launcher_foreground"
+                                app:layout_constraintEnd_toStartOf="@+id/t_c_6"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/msnbs_expand_or_contract"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="4dp"
+                                android:background="@null"
+                                android:onClick="@{()->Rules2ViewModel.msnbsDropdown()}"
+                                android:src="@drawable/ic_expand_vector"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/i_msnbs"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:background="@null"
+                                android:src="@drawable/ic_info"
+                                app:layout_constraintBottom_toBottomOf="@+id/msnbs_expand_or_contract"
+                                app:layout_constraintEnd_toStartOf="@+id/msnbs_expand_or_contract"
+                                app:layout_constraintTop_toTopOf="@+id/msnbs_expand_or_contract" />
+
+                            <TextView
+                                android:id="@+id/t_c_6"
+                                style="@style/subtitle_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="72dp"
+                                android:layout_marginTop="18dp"
+                                android:text="MSNBS"
+                                android:textColor="@color/colorSecondary"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/t_t_6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Time limit: "
+                                app:layout_constraintStart_toStartOf="@id/t_c_6"
+                                app:layout_constraintTop_toBottomOf="@id/t_c_6" />
+
+
+                            <TextView
+                                android:id="@+id/t_p_6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="App Launch limit: "
+                                app:layout_constraintStart_toStartOf="@id/t_c_6"
+                                app:layout_constraintTop_toBottomOf="@id/t_t_6" />
+
+                            <TextView
+                                android:id="@+id/t_s_6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Penalty: "
+                                app:layout_constraintStart_toStartOf="@id/t_c_6"
+                                app:layout_constraintTop_toBottomOf="@id/t_p_6" />
+
+                            <TextView
+                                android:id="@+id/t_s_p_6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Rs 2"
+                                app:layout_constraintBottom_toBottomOf="@+id/t_s_6"
+                                app:layout_constraintStart_toEndOf="@+id/t_s_6" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="30 min"
+                                app:layout_constraintBottom_toBottomOf="@+id/t_t_6"
+                                app:layout_constraintStart_toEndOf="@+id/t_t_6" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="18"
+                                app:layout_constraintBottom_toBottomOf="@+id/t_p_6"
+                                app:layout_constraintStart_toEndOf="@+id/t_p_6" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/msnbs_apps_list"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:orientation="horizontal"
+                                android:scrollbars="horizontal"
+                                app:layout_constraintTop_toBottomOf="@id/t_s_6" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/whitelisted"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:background="@drawable/all_corner_rounded_4dp"
+                            android:elevation="3dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="22dp"
+                                android:src="@drawable/ic_launcher_foreground"
+                                app:layout_constraintEnd_toStartOf="@+id/t_c_5"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/whitelisted_expand_or_contract"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="4dp"
+                                android:background="@null"
+                                android:onClick="@{()->Rules2ViewModel.whitelistedDropdown()}"
+                                android:src="@drawable/ic_expand_vector"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/i_whitelisted"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:background="@null"
+                                android:src="@drawable/ic_info"
+                                app:layout_constraintBottom_toBottomOf="@+id/whitelisted_expand_or_contract"
+                                app:layout_constraintEnd_toStartOf="@+id/whitelisted_expand_or_contract"
+                                app:layout_constraintTop_toTopOf="@+id/whitelisted_expand_or_contract" />
+
+                            <TextView
+                                android:id="@+id/t_c_5"
+                                style="@style/subtitle_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="72dp"
+                                android:layout_marginTop="18dp"
+                                android:text="Whitelisted apps"
+                                android:textColor="@color/colorSecondary"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/no_penalty"
+                                style="@style/caption"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/no_limit_no_penalty"
+                                android:textColor="@color/primary_text"
+                                app:layout_constraintStart_toStartOf="@id/t_c_5"
+                                app:layout_constraintTop_toBottomOf="@id/t_c_5" />
+
+                            <TextView
+                                android:id="@+id/t_s_5"
+                                style="@style/caption"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="18dp"
+                                android:text="You can use these as per your needs"
+                                android:textColor="@color/secondary_text"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="@id/t_c_5"
+                                app:layout_constraintTop_toBottomOf="@id/no_penalty" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/whitelisted_apps_list"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:orientation="horizontal"
+                                android:scrollbars="horizontal"
+                                app:layout_constraintTop_toBottomOf="@id/t_s_5" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/others"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginBottom="4dp"
+                            android:background="@drawable/all_corner_rounded_4dp"
+                            android:elevation="3dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="22dp"
+                                android:src="@drawable/ic_launcher_foreground"
+                                app:layout_constraintEnd_toStartOf="@+id/t_c_7"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/others_expand_or_contract"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="4dp"
+                                android:background="@null"
+                                android:onClick="@{()->Rules2ViewModel.otherAppsDropdown()}"
+                                android:src="@drawable/ic_expand_vector"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/i_others"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:background="@null"
+                                android:src="@drawable/ic_info"
+                                app:layout_constraintBottom_toBottomOf="@+id/others_expand_or_contract"
+                                app:layout_constraintEnd_toStartOf="@+id/others_expand_or_contract"
+                                app:layout_constraintTop_toTopOf="@+id/others_expand_or_contract" />
+
+                            <TextView
+                                android:id="@+id/t_c_7"
+                                style="@style/subtitle_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="72dp"
+                                android:layout_marginTop="18dp"
+                                android:text="Other apps"
+                                android:textColor="@color/colorSecondary"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/t_t_7"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Time limit: "
+                                app:layout_constraintStart_toStartOf="@id/t_c_7"
+                                app:layout_constraintTop_toBottomOf="@id/t_c_7" />
+
+
+                            <TextView
+                                android:id="@+id/t_p_7"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="App Launch limit: "
+                                app:layout_constraintStart_toStartOf="@id/t_c_7"
+                                app:layout_constraintTop_toBottomOf="@id/t_t_7" />
+
+                            <TextView
+                                android:id="@+id/t_s_7"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Penalty: "
+                                app:layout_constraintStart_toStartOf="@id/t_c_7"
+                                app:layout_constraintTop_toBottomOf="@id/t_p_7" />
+
+                            <TextView
+                                android:id="@+id/t_s_p_7"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Rs 2"
+                                app:layout_constraintBottom_toBottomOf="@+id/t_s_7"
+                                app:layout_constraintStart_toEndOf="@+id/t_s_7" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="30 min"
+                                app:layout_constraintBottom_toBottomOf="@+id/t_t_7"
+                                app:layout_constraintStart_toEndOf="@+id/t_t_7" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="18"
+                                app:layout_constraintBottom_toBottomOf="@+id/t_p_7"
+                                app:layout_constraintStart_toEndOf="@+id/t_p_7" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/others_apps_list"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:orientation="horizontal"
+                                android:scrollbars="horizontal"
+                                app:layout_constraintTop_toBottomOf="@id/t_s_7" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/weekly_linear_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/entertainment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:background="@drawable/all_corner_rounded_4dp"
+                            android:elevation="3dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="22dp"
+                                android:src="@drawable/ic_launcher_foreground"
+                                app:layout_constraintEnd_toStartOf="@+id/t_c_8"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/entertainment_expand_or_contract"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="4dp"
+                                android:background="@null"
+                                android:onClick="@{()->Rules2ViewModel.entertainmentDropdown()}"
+                                android:src="@drawable/ic_expand_vector"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/i_entertainment"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:background="@null"
+                                android:src="@drawable/ic_info"
+                                app:layout_constraintBottom_toBottomOf="@+id/entertainment_expand_or_contract"
+                                app:layout_constraintEnd_toStartOf="@+id/entertainment_expand_or_contract"
+                                app:layout_constraintTop_toTopOf="@+id/entertainment_expand_or_contract" />
+
+                            <TextView
+                                android:id="@+id/t_c_8"
+                                style="@style/subtitle_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="72dp"
+                                android:layout_marginTop="18dp"
+                                android:text="Entertainment"
+                                android:textColor="@color/colorSecondary"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/t_t_8"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Time limit: "
+                                app:layout_constraintStart_toStartOf="@id/t_c_8"
+                                app:layout_constraintTop_toBottomOf="@id/t_c_8" />
+
+
+                            <TextView
+                                android:id="@+id/t_p_8"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="App Launch limit: "
+                                app:layout_constraintStart_toStartOf="@id/t_c_8"
+                                app:layout_constraintTop_toBottomOf="@id/t_t_8" />
+
+                            <TextView
+                                android:id="@+id/t_s_8"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Penalty: "
+                                app:layout_constraintStart_toStartOf="@id/t_c_8"
+                                app:layout_constraintTop_toBottomOf="@id/t_p_8" />
+
+                            <TextView
+                                android:id="@+id/t_s_p_8"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Rs 2"
+                                app:layout_constraintBottom_toBottomOf="@+id/t_s_8"
+                                app:layout_constraintStart_toEndOf="@+id/t_s_8" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="30 min"
+                                app:layout_constraintBottom_toBottomOf="@+id/t_t_8"
+                                app:layout_constraintStart_toEndOf="@+id/t_t_8" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="18"
+                                app:layout_constraintBottom_toBottomOf="@+id/t_p_8"
+                                app:layout_constraintStart_toEndOf="@+id/t_p_8" />
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/entertainment_apps_list"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:scrollbars="horizontal"
+                                android:layout_marginTop="12dp"
+                                app:layout_constraintTop_toBottomOf="@id/t_s_8"/>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <ImageButton
+            android:id="@+id/intro_scrim"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/skrim"
+            android:onClick="@{()->Rules2ViewModel.scrimGoneOrNoInternet()}"
+            android:visibility="visible" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

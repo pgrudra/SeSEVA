@@ -37,21 +37,17 @@ viewModel.goToHome.observe(viewLifecycleOwner, Observer<Boolean> { goto->
         viewModel.goToHomeComplete()
     }
 })
-        viewModel.active.observe(viewLifecycleOwner, Observer<Boolean> { active->
-            if(active){
-                //viewModel.showCountdown()
-                //show choose this mission button
-                //show choose other mission
-            }
-            else{
-                //hide countdown
-                //show choose new mission button
-                //show extra button for report on completed mission
+        viewModel.goToRules.observe(viewLifecycleOwner, Observer<Boolean> { goto->
+            if(goto){
+                findNavController().navigate(LastMissionFragmentDirections.actionLastMissionFragmentToRulesFragment2())
+                viewModel.goToRulesComplete()
             }
         })
-        viewModel.reportMissionNumber.observe(viewLifecycleOwner,Observer<Int>{number->
-            findNavController().navigate(LastMissionFragmentDirections.actionLastMissionFragmentToReportFragment(number))
+        viewModel.goToLastMissionCompleted.observe(viewLifecycleOwner, Observer<Int> { number->
+                findNavController().navigate(LastMissionFragmentDirections.actionLastMissionFragmentToLastMissionCompletedFragment(number))
         })
+
+
        return binding.root
     }
 

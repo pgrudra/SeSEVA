@@ -29,10 +29,10 @@ class PassageViewModel(private val database: MissionsDatabaseDao, application: A
     private val _goToHomeFragment = MutableLiveData<Boolean>()
     val goToHomeFragment: LiveData<Boolean>
         get() = _goToHomeFragment
+    private val _goToRules = MutableLiveData<Boolean>()
+    val goToRules: LiveData<Boolean>
+        get() = _goToRules
 
-    private val _connectedToNetwork = MutableLiveData<Boolean>()
-    val connectedToNetwork: LiveData<Boolean>
-        get() = _connectedToNetwork
 
     private fun checkUserNameInSharedPref():Boolean {
         //if null, goto choose mission fragment
@@ -48,7 +48,7 @@ class PassageViewModel(private val database: MissionsDatabaseDao, application: A
         if(chosenMissionNumber==0){
             _goToChooseMissionFragment.value=true
         }
-        else{
+        else if(checkIfRulesShown()){
             _goToHomeFragment.value=true
         }
     }
@@ -67,30 +67,20 @@ class PassageViewModel(private val database: MissionsDatabaseDao, application: A
     fun goToChosenMissionFragmentComplete(){
         _goToChooseMissionFragment.value=false
     }
-    private fun checkInternetConnectivity(): Boolean {
-        val connectivityManager =
-            context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-        if (connectivityManager != null) {
-            val capabilities =
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                    connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-                } else {
-                    null
-                }
-            return if (capabilities != null) {
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
-                        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
-                        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
-            } else {
-                false
-            }
-        }
-        else return false
+    private fun checkIfRulesShown():Boolean {
+        val rulesShown = sharedPref?.getBoolean((R.string.rules_shown).toString(), false)
+        return if(rulesShown!=true){
+            _goToRules.value=true
+            false
+        } else true
+
+    }
+    fun goToRulesComplete(){
+        _goToRules.value=true
     }
 
     init{
-        if(checkInternetConnectivity()){
-            _connectedToNetwork.value=true
+
             if(sharedPref?.getBoolean((R.string.load_data).toString(), false) == true){
                 with (sharedPref.edit()) {
                     this?.putBoolean((R.string.load_data).toString(),false)
@@ -105,14 +95,10 @@ class PassageViewModel(private val database: MissionsDatabaseDao, application: A
                 if(!checkUserNameInSharedPref()){
                     Log.i("hone","kjui")
                     checkChosenMissionInSharedPref()
-
                 }
                    }
 
-        }
-        else{
-            _connectedToNetwork.value=false
-        }
+
     }
 
 

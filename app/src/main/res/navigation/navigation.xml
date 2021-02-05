@@ -13,12 +13,6 @@
         <action
             android:id="@+id/action_loginFragment_to_linkVerificationFragment"
             app:destination="@id/linkVerificationFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_welcomeBackFragment"
-            app:destination="@id/welcomeBackFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_homeActivity"
-            app:destination="@id/homeActivity" />
     </fragment>
     <activity
         android:id="@+id/homeActivity"
@@ -34,16 +28,5 @@
         <action
             android:id="@+id/action_linkVerificationFragment_to_homeActivity"
             app:destination="@id/homeActivity" />
-    </fragment>
-    <fragment
-        android:id="@+id/welcomeBackFragment"
-        android:name="com.example.us0.ui.login.WelcomeBackFragment"
-        android:label="WelcomeBackFragment" >
-        <action
-            android:id="@+id/action_welcomeBackFragment_to_homeActivity"
-            app:destination="@id/homeActivity" />
-        <argument
-            android:name="userName"
-            app:argType="string" />
     </fragment>
 </navigation>

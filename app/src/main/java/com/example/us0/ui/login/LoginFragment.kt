@@ -17,10 +17,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.*
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment.findNavController
-import androidx.navigation.fragment.findNavController
 import com.example.us0.R
 import com.example.us0.adapters.OnBoardingAdapter
 import com.example.us0.databinding.FragmentLoginBinding
+import com.example.us0.installedapps.HomeActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -203,7 +203,7 @@ binding.progressBar1.visibility=View.VISIBLE
     }
     private fun showLinkVerificationScreen(){
         viewModel.disableResendButton()
-findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLinkVerificationFragment())
+findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLinkVerificationFragment())
     }
 
     private fun verifySignInLink() {
@@ -233,7 +233,11 @@ findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLinkVe
                            goToHomeFragment()
                         } else {
                             Log.i("Home", "UI")
-                            checkNameFromCloudDatabase(userId)
+                            with (sharedPref?.edit()) {
+                                this?.putBoolean((R.string.load_data).toString(), true)
+                                this?.apply()
+                            }
+                            goToHomeFragment()
                         }
                         //sharedPref?.edit()?.remove((R.string.email_address).toString())?.apply()
 
@@ -260,41 +264,6 @@ findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLinkVe
     }
 
 
-
-    private fun checkNameFromCloudDatabase(userId: String) {
-        val reference=Firebase.database.reference.child("users").child(userId).child("username")
-        reference.addListenerForSingleValueEvent(object:ValueEventListener{
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val userName=dataSnapshot.value
-                if(userName!=null){
-                    goToWelcomeBack(userName.toString())
-                }
-                else{
-                    goToHomeFragment()
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.i("nji", "loadPost:onCancelled", databaseError.toException())
-            }
-        })
-            }
-
-    private fun goToWelcomeBack(userName: String) {
-        Log.i("Home","$userName")
-        val sharedPref =  activity?.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
-        with (sharedPref?.edit()) {
-            this?.putBoolean((R.string.load_data).toString(), true)
-            this?.apply()
-        }
-        with (sharedPref?.edit()) {
-            this?.putString((R.string.user_name).toString(), userName)
-            this?.apply()
-        }
-        findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToWelcomeBackFragment(userName))
-    }
-
-
     override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
@@ -313,7 +282,9 @@ findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLinkVe
 
     private fun goToHomeFragment() {
     //toHomeFragment
-    findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToHomeActivity())
+        val intent=Intent(activity,HomeActivity::class.java)
+        startActivity(intent)
+    //findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToHomeActivity())
     //In home fragment, immediately check user name and active mission and take to respective screens incase not selected.
 
 
@@ -384,7 +355,12 @@ findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLinkVe
                         goToHomeFragment()
                     } else {
                         Log.i("MN", "UI")
-                        checkNameFromCloudDatabase(userId)
+                        val sharedPref =  activity?.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
+                        with (sharedPref?.edit()) {
+                            this?.putBoolean((com.example.us0.R.string.load_data).toString(), true)
+                            this?.apply()
+                        }
+                        goToHomeFragment()
 
                     }
                     binding.progressBar1.visibility=View.GONE

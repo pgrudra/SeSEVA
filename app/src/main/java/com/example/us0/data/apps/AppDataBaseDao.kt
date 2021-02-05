@@ -16,8 +16,8 @@ interface AppDataBaseDao{
     @Query("SELECT * FROM list_of_installed_apps_and_their_category WHERE package_name=:pk")
     suspend fun isAppExist(pk:String): AppAndCategory?
 
-    @Query("SELECT * FROM list_of_installed_apps_and_their_category")
-    fun getAll(): LiveData<List<AppAndCategory>>
+    @Query("SELECT * FROM list_of_installed_apps_and_their_category WHERE app_category=:cat")
+    fun getAll(cat:String): LiveData<List<AppAndCategory>>
 
     @Query("DELETE FROM list_of_installed_apps_and_their_category")
     suspend fun clear()

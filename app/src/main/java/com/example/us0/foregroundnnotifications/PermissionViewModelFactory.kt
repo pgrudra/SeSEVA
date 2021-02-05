@@ -4,10 +4,10 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class PermissionViewModelFactory(): ViewModelProvider.Factory {
+class PermissionViewModelFactory(private val application: Application): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(PermissionViewModel::class.java)) {
-            return PermissionViewModel() as T
+            return PermissionViewModel(application) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

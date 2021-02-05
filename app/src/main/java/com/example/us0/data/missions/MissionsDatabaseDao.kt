@@ -26,4 +26,7 @@ interface MissionsDatabaseDao{
 
     @Query("SELECT * FROM list_of_missions WHERE deadline<:now")
     fun getAllClosedMissions(now:Long): LiveData<List<Mission>>
+
+    @Query("SELECT * FROM list_of_missions WHERE mission_complete_notification=:t")
+    suspend fun notifyIfClosed(t:Boolean):Mission?
 }

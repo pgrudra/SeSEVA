@@ -2,6 +2,8 @@ package com.example.us0.home.askname
 
 import android.app.Application
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -10,6 +12,7 @@ import com.example.us0.R
 import com.example.us0.data.missions.Mission
 import com.example.us0.data.missions.MissionsDatabaseDao
 import com.example.us0.data.missions.NetworkMission
+import com.example.us0.ui.login.NoInternetDialogFragment
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.DataSnapshot
@@ -26,7 +29,7 @@ import java.util.*
 class AskNameViewModel(private val database: MissionsDatabaseDao, application: Application) : AndroidViewModel(application)  {
     private val context = getApplication<Application>().applicationContext
     private val user = Firebase.auth.currentUser
-    private lateinit var cloudDatabase: DatabaseReference
+    private val cloudDatabase: DatabaseReference = Firebase.database.reference
     private val _nameInsertDone = MutableLiveData<Boolean>()
     val nameInsertDone: LiveData<Boolean>
         get() = _nameInsertDone
@@ -39,40 +42,47 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
     val userName: LiveData<String?>
         get()=_userName
 
+    private val _noInternet = MutableLiveData<Boolean>()
+    val noInternet: LiveData<Boolean>
+        get() = _noInternet
+
     fun nameInserted(){
+        _noInternet.value=false
         _nameInsertDone.value=true
+
     }
 
     fun saveEverywhere(userName: String){
-        insertIntoSharedPref((userName))
-        insertUsernameIntoFirebase(userName)
-        insertIntoCloudDatabase(userName)
-        _nameInsertDone.value=false
-        _goToNextFragment.value=true
+        if(checkInternetConnectivity()){
+            insertIntoCloudDatabase(userName)
+            Log.i("fg","p")
+            _nameInsertDone.value=false
+        }
+        else{
+            _noInternet.value=true
+            Log.i("fg","x")
+        }
+
     }
-
+    private fun insertIntoCloudDatabase(userName: String){
+        val userId=user!!.uid
+        cloudDatabase.child("users").child(userId).child("username").setValue(userName)
+            .addOnSuccessListener{Log.i("IOIO","PASS")
+                insertUsernameIntoFirebase(userName)}
+            .addOnFailureListener {
+            }
+    }
     private fun insertUsernameIntoFirebase(userName:String){
-
         val profileUpdates = userProfileChangeRequest {
             displayName = userName
         }
-
         user!!.updateProfile(profileUpdates)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.i("LL",userName)
+                    insertIntoSharedPref((userName))
                 }
             }
-    }
-
-
-
-    private fun insertIntoCloudDatabase(userName: String){
-        val userId=user!!.uid
-        val database: DatabaseReference = Firebase.database.reference
-        database.child("users").child(userId).child("username").setValue(userName)
-            .addOnSuccessListener{Log.i("IOIO","PASS")}
-            .addOnFailureListener { Log.i("IOIO","FAIL") }
     }
 
     private fun insertIntoSharedPref(userName: String){
@@ -81,6 +91,7 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
             this?.putString((R.string.user_name).toString(), userName)
             this?.apply()
         }
+        _goToNextFragment.value=true
     }
 
     fun goToNextFragmentComplete(){
@@ -93,11 +104,10 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
                 // Id of the provider (ex: google.com)
                 val providerId = profile.providerId
 
-                // UID specific to the provider
-                val uid = profile.uid
+                if(providerId=="google.com"){
                 Log.i("opiul","$providerId")
                 _userName.value=profile.displayName
-                Log.i("opiul","${_userName.value}")
+                Log.i("opiul","${_userName.value}")}
             }
         }
     }
@@ -105,5 +115,24 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
         checkUserName()
     }
 
-
+    private fun checkInternetConnectivity(): Boolean {
+        val connectivityManager =
+            context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        if (connectivityManager != null) {
+            val capabilities =
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+                } else {
+                    null
+                }
+            return if (capabilities != null) {
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+            } else {
+                false
+            }
+        }
+        else return false
+    }
 }

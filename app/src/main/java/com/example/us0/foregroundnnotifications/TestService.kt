@@ -20,21 +20,6 @@ import kotlinx.coroutines.launch
 import java.sql.Timestamp
 import java.util.*
 
-
-/*fun NotificationManager.sendNotifications(messageBody:String,appContext: Context){
-    val NOTIFICATION_ID = 0
-    val REQUEST_CODE = 0
-    val FLAGS = 0
-    val builder = NotificationCompat.Builder(
-        appContext,
-        appContext.getString(R.string.foreground_service_notification_channel_id)
-    )
-        .setSmallIcon(R.drawable.ic_launcher_foreground)
-        .setContentTitle(appContext.getString(R.string.notification_title))
-        .setContentText(messageBody)
-    notify(NOTIFICATION_ID, builder.build())
-}*/
-
 class TestService : Service() {
     private val NOTIFICATION_ID = 1
     private val REQUEST_CODE = 0
@@ -71,7 +56,6 @@ class TestService : Service() {
             .build()
         startForeground(NOTIFICATION_ID, notification)
         var handler: Handler? = Looper.myLooper()?.let { Handler(it) }
-
         //do heavy work on a background thread
         CoroutineScope(Dispatchers.IO).launch {
 
@@ -86,7 +70,7 @@ class TestService : Service() {
                     // Do something here on the main thread
                     getStats(applicationContext, sortedEvents)
                     Log.d("Handlers", "Called on main thread")
-                    handler?.postDelayed(this, 1000)
+                    handler?.postDelayed(this, 60000)
 
                 }
             }
@@ -94,10 +78,6 @@ class TestService : Service() {
             handler?.post(runnableCode)
 
         }
-
-
-
-        Log.i("HLK", "OPK")
         return START_NOT_STICKY
     }
 

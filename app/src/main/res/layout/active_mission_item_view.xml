@@ -89,7 +89,7 @@
             style="@style/overline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="2dp"
             android:textColor="@color/secondary_text"
             app:layout_constraintBottom_toTopOf="@+id/mission_name"
             app:layout_constraintStart_toStartOf="@+id/mission_name"
@@ -101,7 +101,7 @@
             style="@style/subtitle_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="16dp"
             android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toTopOf="@+id/textView3"
             app:layout_constraintStart_toStartOf="@+id/textView3"
@@ -112,6 +112,7 @@
             style="@style/overline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
             android:text="@string/sponsor"
             android:textColor="@color/secondary_text"
             app:layout_constraintBottom_toTopOf="@+id/sponsor_name"
@@ -123,7 +124,7 @@
             style="@style/subtitle_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="35dp"
+            android:layout_marginBottom="36dp"
             android:textColor="@color/primary_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/available_till"
@@ -135,18 +136,18 @@
             style="@style/subtitle_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="34dp"
             android:textColor="@color/primary_text"
             app:layout_constraintBottom_toTopOf="@+id/amountRaised"
             app:layout_constraintStart_toStartOf="@+id/appCompatImageView2"
-            tools:text="10000000" />
+            tools:text="100000000" />
 
         <TextView
             android:id="@+id/amountRaised"
             style="@style/tertiary_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="18dp"
             android:text="@string/amount_raised"
             android:textColor="@color/secondary_text"
             app:layout_constraintBottom_toTopOf="@+id/active_contributors"
@@ -159,7 +160,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/primary_text"
             app:layout_constraintBottom_toTopOf="@+id/textView4"
-            app:layout_constraintStart_toStartOf="@+id/money"
+            app:layout_constraintStart_toStartOf="@+id/amountRaised"
             tools:text="150" />
 
         <TextView
@@ -167,7 +168,7 @@
             style="@style/tertiary_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="35dp"
+            android:layout_marginBottom="36dp"
             android:text="@string/contributors"
             android:textColor="@color/secondary_text"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -176,9 +177,9 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="6dp"
+            android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/active_contributors"
-            app:layout_constraintEnd_toStartOf="@+id/active_contributors"
+            app:layout_constraintStart_toStartOf="@+id/appCompatImageView2"
             app:layout_constraintTop_toTopOf="@+id/active_contributors"
             app:srcCompat="@drawable/users_symbol" />
 
@@ -186,9 +187,9 @@
             android:id="@+id/appCompatImageView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="6dp"
+            android:layout_marginStart="16dp"
             app:layout_constraintBottom_toTopOf="@+id/amountRaised"
-            app:layout_constraintEnd_toStartOf="@+id/money"
+            app:layout_constraintStart_toStartOf="@+id/appCompatImageView2"
             app:layout_constraintTop_toTopOf="@+id/money"
             app:srcCompat="@drawable/rupee_symbol" />
 

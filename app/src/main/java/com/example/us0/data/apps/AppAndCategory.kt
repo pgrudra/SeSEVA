@@ -14,6 +14,7 @@ data class AppAndCategory(
     var appName:String="",
     @ColumnInfo(name="app_category")
     var appCategory:String=""
+
 )
 
 

@@ -3,6 +3,8 @@ package com.example.us0.choosemission
 import android.app.Application
 import android.content.Context
 import android.graphics.Color
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.text.Html
 import android.text.Spannable
 import android.text.SpannableString
@@ -40,6 +42,9 @@ class DetailMissionViewModel(mission:DomainActiveMission, application: Applicati
     private val _knowMore=MutableLiveData<Boolean>()
     val knowMore:LiveData<Boolean>
         get()=_knowMore
+    private val _noInternet=MutableLiveData<Boolean>()
+    val noInternet:LiveData<Boolean>
+        get()=_noInternet
     private val _thisMissionChosen=MutableLiveData<Boolean>()
     val thisMissionChosen:LiveData<Boolean>
         get()=_thisMissionChosen
@@ -82,20 +87,31 @@ fun toSponsorWebsite(){
         _knowMore.value=false
     }
     fun thisMissionChosen(){
-        val userId=user!!.uid
-        cloudReference.child("users").child(userId).child("chosenMission").setValue(_selectedMission.value!!.missionNumber)
-            .addOnSuccessListener{Log.i("IOIO","PASS")
-                with (sharedPref?.edit()) {
-                    this?.putInt((R.string.chosen_mission_number).toString(), _selectedMission.value!!.missionNumber)
-                    this?.apply()
+        if(!checkInternetConnectivity()){
+            _noInternet.value=true
+        }
+        else {
+            val userId = user!!.uid
+            cloudReference.child("users").child(userId).child("chosenMission")
+                .setValue(_selectedMission.value!!.missionNumber)
+                .addOnSuccessListener {
+                    Log.i("IOIO", "PASS")
+                    with(sharedPref?.edit()) {
+                        this?.putInt(
+                            (R.string.chosen_mission_number).toString(),
+                            _selectedMission.value!!.missionNumber
+                        )
+                        this?.apply()
+                    }
+                    if (checkIfRulesShown()) {
+                        _toHomeFragment.value = true
+                    }
                 }
-                if(checkIfRulesShown()){
-                    _toHomeFragment.value=true
-                }
-            }
-            .addOnFailureListener { Log.i("IOIO","FAIL")
+                .addOnFailureListener {
+                    Log.i("IOIO", "FAIL")
 
-            }
+                }
+        }
     }
 
     private fun checkIfRulesShown():Boolean {
@@ -106,9 +122,11 @@ fun toSponsorWebsite(){
             } else true
 
     }
-
+fun toRulesFragmentComplete(){
+    _toRulesFragment.value=false
+}
     fun thisMissionChosenComplete(){
-
+_toHomeFragment.value=false
     }
     fun toChooseMission(){
         _toChooseMission.value=true
@@ -118,6 +136,26 @@ fun toSponsorWebsite(){
     }
     fun expandOrContract(){
         _showDetailMissionDescription.value = _showDetailMissionDescription.value != true
+    }
+    private fun checkInternetConnectivity(): Boolean {
+        val connectivityManager =
+            context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        if (connectivityManager != null) {
+            val capabilities =
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+                } else {
+                    null
+                }
+            return if (capabilities != null) {
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+            } else {
+                false
+            }
+        }
+        else return false
     }
 
     companion object {
