@@ -16,33 +16,43 @@
 
         <TextView
             android:id="@+id/textView7"
+            style="@style/subtitle_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{LastMissionCompletedViewModel.userName}"
+            android:textColor="@color/primary_text"
             app:layout_constraintBottom_toBottomOf="@+id/textView8"
             app:layout_constraintStart_toEndOf="@+id/textView8"
-            tools:text="UserName"/>
+            app:layout_constraintTop_toTopOf="@+id/textView8"
+            tools:text="UserName" />
 
         <TextView
             android:id="@+id/textView8"
+            style="@style/subtitle_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="24dp"
             android:text="@string/welcome_back"
+            android:textColor="@color/primary_text"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView9"
+            style="@style/subtitle_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             android:text="@string/hurrah"
+            android:textColor="#F2C94C"
             app:layout_constraintStart_toStartOf="@+id/textView8"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
         <TextView
             android:id="@+id/textView10"
+            style="@style/body_1"
+            android:textColor="@color/primary_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{LastMissionCompletedViewModel.lastMissionName}"
@@ -52,71 +62,89 @@
 
         <TextView
             android:id="@+id/textView11"
+            style="@style/subtitle_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             android:text="@{LastMissionCompletedViewModel.personalContribution}"
+            android:textColor="@color/colorPrimary"
             app:layout_constraintStart_toStartOf="@+id/textView8"
             app:layout_constraintTop_toBottomOf="@+id/textView10"
-            tools:text="You raised Rs1000 for this charity"/>
+            tools:text="You raised \nRs1000 \nfor this charity" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/appCompatImageView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appCompatImageView7"
+            app:layout_constraintBottom_toBottomOf="@+id/textView18"
+            app:layout_constraintStart_toStartOf="@+id/appCompatImageView7"
+            app:layout_constraintTop_toTopOf="@+id/textView18"
             app:srcCompat="@drawable/users_symbol" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/appCompatImageView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView12"
             app:layout_constraintStart_toStartOf="@+id/textView8"
-            app:layout_constraintTop_toBottomOf="@+id/textView11"
+            app:layout_constraintTop_toTopOf="@+id/textView12"
             app:srcCompat="@drawable/rupee_symbol" />
 
         <TextView
             android:id="@+id/textView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/montserrat_used"
             android:text="@{LastMissionCompletedViewModel.totalMoneyRaised}"
+            android:textColor="@color/colorAccent"
+            android:textFontWeight="500"
+            android:textSize="24sp"
             app:layout_constraintStart_toEndOf="@+id/appCompatImageView7"
             app:layout_constraintTop_toBottomOf="@+id/textView11"
             tools:text="10000" />
 
         <TextView
             android:id="@+id/textView13"
+            style="@style/body_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/total_amount_raised"
+            android:textColor="@color/secondary_text"
             app:layout_constraintStart_toStartOf="@+id/textView12"
             app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
         <Button
             android:id="@+id/button4"
+            style="@style/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@null"
+            android:paddingStart="8dp"
             android:text="@string/view_report"
+            android:textColor="@color/colorSecondary"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView11" />
+            app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
         <TextView
             android:id="@+id/textView18"
+            style="@style/body_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="@{LastMissionCompletedViewModel.contributors}"
-            app:layout_constraintStart_toEndOf="@+id/appCompatImageView6"
+            android:textColor="@color/secondary_text"
+            app:layout_constraintStart_toStartOf="@+id/textView12"
             app:layout_constraintTop_toBottomOf="@+id/textView13"
-            tools:text="150 total contributors"/>
+            tools:text="150 total contributors" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/appCompatImageView8"
-            android:layout_width="240dp"
-            android:layout_height="240dp"
+            android:layout_width="254dp"
+            android:layout_height="175dp"
+            android:layout_marginBottom="2dp"
             app:layout_constraintBottom_toTopOf="@+id/choose_this_mission"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -129,7 +157,7 @@
             android:layout_height="42dp"
             android:layout_marginBottom="36dp"
             android:background="@drawable/login_resend_active"
-            android:onClick="@{()->LastMissionCompletedViewModel.goToHome}"
+            android:onClick="@{()->LastMissionCompletedViewModel.onGoToHome()}"
             android:text="@string/let_s_choose_a_new_mission"
             android:textColor="@color/nav_color"
             app:layout_constraintBottom_toBottomOf="parent"

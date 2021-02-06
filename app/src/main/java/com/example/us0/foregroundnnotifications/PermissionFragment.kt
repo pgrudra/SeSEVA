@@ -72,11 +72,6 @@ class PermissionFragment : Fragment() {
                 binding.allow.isEnabled = true
             }
         })
-        viewModel.helpVisible.observe(viewLifecycleOwner, Observer<Boolean> { visible ->
-            if (visible) {
-                //mn
-            }
-        })
         viewModel.toHome.observe(viewLifecycleOwner, Observer<Boolean> { toHome ->
             if (toHome) {
                 findNavController().navigate(PermissionFragmentDirections.actionPermissionFragmentToHomeFragment())

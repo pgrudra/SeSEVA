@@ -26,7 +26,7 @@ class LastMissionCompletedFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val args=LastMissionCompletedFragmentArgs.fromBundle(requireArguments())
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_last_mission, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_last_mission_completed, container, false)
         val application = requireNotNull(this.activity).application
         val datasource = AllDatabase.getInstance(application).MissionsDatabaseDao
         viewModelFactory = LastMissionCompletedViewModelFactory(datasource, application)
@@ -37,8 +37,8 @@ class LastMissionCompletedFragment : Fragment() {
 
         viewModel.goToHome.observe(viewLifecycleOwner, Observer<Boolean> { goto->
             if(goto){
-                findNavController().navigate(LastMissionFragmentDirections.actionLastMissionFragmentToPassageFragment())
-                viewModel.goToHomeComplete()
+                findNavController().navigate(LastMissionCompletedFragmentDirections.actionLastMissionCompletedFragmentToPassageFragment())
+                viewModel.onGoToHomeComplete()
             }
         })
         return binding.root

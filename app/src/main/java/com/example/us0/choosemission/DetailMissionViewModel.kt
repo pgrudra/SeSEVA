@@ -10,6 +10,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -75,7 +76,7 @@ class DetailMissionViewModel(mission:DomainActiveMission, application: Applicati
         }
         val possibleMoney=intDaysLeft*6
         val spannable=SpannableString("Your chance to add\nRs $possibleMoney more\nbefore mission closes !!")
-        spannable.setSpan(ForegroundColorSpan(Color.WHITE),19,27+possibleMoney.toString().length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannable.setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.primary_text)),19,27+possibleMoney.toString().length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         _trigger.value= spannable
 //18,26+possibleMoney.toString().length
     }

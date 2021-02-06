@@ -84,7 +84,7 @@
     <string name="allow">ALLOW</string>
     <string name="one_last_thing">One last thing…</string>
     <string name="data_collection_and_usage_disclosure">Data collection and usage disclosure</string>
-    <string name="grant_permissions">Grant permissions</string>
+    <string name="grant_usage_access">Grant usage access</string>
     <string name="usage_access">Usage access</string>
     <string name="reason_usage_access">Optox requires this permission to provide you your apps\' usage statistics and detect when you are about to break an Optox rule</string>
     <string name="disclosure_brief">We value your privacy. Information regarding your apps\' usage statistics will only stored on your local device. Only the amount raised by you for Optox Missions will be collected at our cloud servers.</string>

@@ -7,6 +7,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -60,7 +61,7 @@ init {
 }
 
     private fun loadUserName() {
-        _userName.value = sharedPref?.getString((R.string.user_name).toString(), "") ?: ""
+        _userName.value =" "+ sharedPref?.getString((R.string.user_name).toString(), "") ?: ""
     }
 
     fun loadMission(missionNumber: Int) {
@@ -71,9 +72,9 @@ init {
             reference2?.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val personalContri=dataSnapshot.value.toString()
-                    val spannable= SpannableString("You raised Rs $personalContri for this charity")
+                    val spannable= SpannableString("You raised \nRs $personalContri \nfor this charity")
                     spannable.setSpan(
-                        ForegroundColorSpan(Color.WHITE),11,15+personalContri.length,
+                        ForegroundColorSpan(ContextCompat.getColor(context,R.color.primary_text)),11,15+personalContri.length,
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                     _personalContribution.value = spannable
                 }
@@ -117,7 +118,10 @@ init {
             })
     }
 
-    fun goToHomeComplete() {
+    fun onGoToHomeComplete() {
         _goToHome.value=false
+    }
+    fun onGoToHome(){
+        _goToHome.value=true
     }
 }

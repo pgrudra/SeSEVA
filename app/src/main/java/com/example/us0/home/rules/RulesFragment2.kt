@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.marginBottom
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
@@ -40,11 +41,13 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
             if(expand){
                 binding.socialAppsList.visibility=View.VISIBLE
                 binding.social.setBackgroundResource(R.drawable.all_corner_rounded_highlighted_4dp)
+                binding.iSocial.visibility=View.VISIBLE
                 binding.socialExpandOrContract.setImageResource(R.drawable.ic_collapse_vector)
             }
             else{
                 binding.socialAppsList.visibility=View.GONE
                 binding.social.setBackgroundResource(R.drawable.all_corner_rounded_4dp)
+                binding.iSocial.visibility=View.GONE
                 binding.socialExpandOrContract.setImageResource(R.drawable.ic_expand_vector)
 
             }
@@ -52,11 +55,13 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
         viewModel.communication.observe(viewLifecycleOwner,Observer<Boolean>{expand->
             if(expand){
                 binding.communicationAppsList.visibility=View.VISIBLE
+                binding.iCommunication.visibility=View.VISIBLE
                 binding.communication.setBackgroundResource(R.drawable.all_corner_rounded_highlighted_4dp)
                 binding.communicationExpandOrContract.setImageResource(R.drawable.ic_collapse_vector)
             }
             else{
                 binding.communicationAppsList.visibility=View.GONE
+                binding.iCommunication.visibility=View.GONE
                 binding.communication.setBackgroundResource(R.drawable.all_corner_rounded_4dp)
                 binding.communicationExpandOrContract.setImageResource(R.drawable.ic_expand_vector)
 
@@ -65,11 +70,13 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
         viewModel.games.observe(viewLifecycleOwner,Observer<Boolean>{expand->
             if(expand){
                 binding.gamesAppsList.visibility=View.VISIBLE
+                binding.iGames.visibility=View.VISIBLE
                 binding.games.setBackgroundResource(R.drawable.all_corner_rounded_highlighted_4dp)
                 binding.gamesExpandOrContract.setImageResource(R.drawable.ic_collapse_vector)
             }
             else{
                 binding.gamesAppsList.visibility=View.GONE
+                binding.iGames.visibility=View.GONE
                 binding.games.setBackgroundResource(R.drawable.all_corner_rounded_4dp)
                 binding.gamesExpandOrContract.setImageResource(R.drawable.ic_expand_vector)
 
@@ -78,11 +85,13 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
         viewModel.video.observe(viewLifecycleOwner,Observer<Boolean>{expand->
             if(expand){
                 binding.videoAppsList.visibility=View.VISIBLE
+                binding.iVideo.visibility=View.VISIBLE
                 binding.video.setBackgroundResource(R.drawable.all_corner_rounded_highlighted_4dp)
                 binding.videoExpandOrContract.setImageResource(R.drawable.ic_collapse_vector)
             }
             else{
                 binding.videoAppsList.visibility=View.GONE
+                binding.iVideo.visibility=View.GONE
                 binding.video.setBackgroundResource(R.drawable.all_corner_rounded_4dp)
                 binding.videoExpandOrContract.setImageResource(R.drawable.ic_expand_vector)
 
@@ -91,11 +100,13 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
         viewModel.msnbs.observe(viewLifecycleOwner,Observer<Boolean>{expand->
             if(expand){
                 binding.msnbsAppsList.visibility=View.VISIBLE
+                binding.iMsnbs.visibility=View.VISIBLE
                 binding.msnbs.setBackgroundResource(R.drawable.all_corner_rounded_highlighted_4dp)
                 binding.msnbsExpandOrContract.setImageResource(R.drawable.ic_collapse_vector)
             }
             else{
                 binding.msnbsAppsList.visibility=View.GONE
+                binding.iMsnbs.visibility=View.GONE
                 binding.msnbs.setBackgroundResource(R.drawable.all_corner_rounded_4dp)
                 binding.msnbsExpandOrContract.setImageResource(R.drawable.ic_expand_vector)
 
@@ -104,11 +115,13 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
         viewModel.whitelisted.observe(viewLifecycleOwner,Observer<Boolean>{expand->
             if(expand){
                 binding.whitelistedAppsList.visibility=View.VISIBLE
+                binding.iWhitelisted.visibility=View.VISIBLE
                 binding.whitelisted.setBackgroundResource(R.drawable.all_corner_rounded_highlighted_4dp)
                 binding.whitelistedExpandOrContract.setImageResource(R.drawable.ic_collapse_vector)
             }
             else{
                 binding.whitelistedAppsList.visibility=View.GONE
+                binding.iWhitelisted.visibility=View.GONE
                 binding.whitelisted.setBackgroundResource(R.drawable.all_corner_rounded_4dp)
                 binding.whitelistedExpandOrContract.setImageResource(R.drawable.ic_expand_vector)
 
@@ -117,11 +130,13 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
         viewModel.others.observe(viewLifecycleOwner,Observer<Boolean>{expand->
             if(expand){
                 binding.othersAppsList.visibility=View.VISIBLE
+                binding.iOthers.visibility=View.VISIBLE
                 binding.others.setBackgroundResource(R.drawable.all_corner_rounded_highlighted_4dp)
                 binding.othersExpandOrContract.setImageResource(R.drawable.ic_collapse_vector)
             }
             else{
                 binding.othersAppsList.visibility=View.GONE
+                binding.iOthers.visibility=View.GONE
                 binding.others.setBackgroundResource(R.drawable.all_corner_rounded_4dp)
                 binding.othersExpandOrContract.setImageResource(R.drawable.ic_expand_vector)
 
@@ -130,11 +145,13 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
         viewModel.entertainment.observe(viewLifecycleOwner,Observer<Boolean>{expand->
             if(expand){
                 binding.entertainmentAppsList.visibility=View.VISIBLE
+                binding.iEntertainment.visibility=View.VISIBLE
                 binding.entertainment.setBackgroundResource(R.drawable.all_corner_rounded_highlighted_4dp)
                 binding.entertainmentExpandOrContract.setImageResource(R.drawable.ic_collapse_vector)
             }
             else{
                 binding.entertainmentAppsList.visibility=View.GONE
+                binding.iEntertainment.visibility=View.GONE
                 binding.entertainment.setBackgroundResource(R.drawable.all_corner_rounded_4dp)
                 binding.entertainmentExpandOrContract.setImageResource(R.drawable.ic_expand_vector)
 

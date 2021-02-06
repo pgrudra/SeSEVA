@@ -14,6 +14,7 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -93,10 +94,10 @@ class Rules2ViewModel(
     val otherApps=database.getAll("OTHERS")
     init {
 
-        spannable1.setSpan(ForegroundColorSpan(Color.MAGENTA),11,16, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spannable1.setSpan(RelativeSizeSpan(1.666f),11,16,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spannable2.setSpan(ForegroundColorSpan(Color.MAGENTA),11,16, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spannable2.setSpan(RelativeSizeSpan(1.666f),11,16,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannable1.setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.colorAccent)),11,16, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannable1.setSpan(RelativeSizeSpan(1.333f),11,16,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannable2.setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.colorAccent)),11,16, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannable2.setSpan(RelativeSizeSpan(1.333f),11,16,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         _contributeSentence.value= spannable1
 
         when {

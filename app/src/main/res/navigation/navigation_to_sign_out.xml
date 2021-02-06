@@ -39,7 +39,7 @@
         <action
             android:id="@+id/action_permissionFragment_to_homeFragment"
             app:destination="@id/homeFragment"
-            app:popUpTo="@id/passageFragment"
+            app:popUpTo="@id/navigation_to_sign_out"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment

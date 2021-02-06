@@ -14,10 +14,6 @@
             android:id="@+id/action_loginFragment_to_linkVerificationFragment"
             app:destination="@id/linkVerificationFragment" />
     </fragment>
-    <activity
-        android:id="@+id/homeActivity"
-        android:name="com.example.us0.installedapps.HomeActivity"
-        android:label="HomeActivity" />
     <fragment
         android:id="@+id/linkVerificationFragment"
         android:name="com.example.us0.ui.login.LinkVerificationFragment"
@@ -25,8 +21,5 @@
         <action
             android:id="@+id/action_linkVerificationFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
-        <action
-            android:id="@+id/action_linkVerificationFragment_to_homeActivity"
-            app:destination="@id/homeActivity" />
     </fragment>
 </navigation>

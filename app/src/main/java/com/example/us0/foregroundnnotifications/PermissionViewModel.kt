@@ -48,10 +48,6 @@ class PermissionViewModel(application: Application): AndroidViewModel(applicatio
         _disclosureVisible.value=false
     }
 
-    fun help(){
-        _helpVisible.value=true
-    }
-
     fun checkUsageAccessPermission() {
         val appOps = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
         val mode = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {

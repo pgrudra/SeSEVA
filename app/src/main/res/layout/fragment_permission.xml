@@ -16,103 +16,81 @@
         android:id="@+id/permission_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="@dimen/fragment_horizontal_margin"
-        android:paddingRight="@dimen/fragment_horizontal_margin"
         tools:context=".foregroundnnotifications.PermissionFragment">
 
         <Button
             android:id="@+id/allow"
             style="@style/button"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="42dp"
             android:layout_marginBottom="56dp"
             android:background="@drawable/login_change_email"
             android:onClick="@{() ->PermissionViewModel.onGrantPermission()}"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:text="@string/allow"
             android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:layout_editor_absoluteX="16dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/textView19"
             style="@style/body_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="94dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="48dp"
             android:text="@string/one_last_thing"
             android:textColor="@color/secondary_text"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/button5"
-            style="@style/tertiary_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/common_background"
-            android:onClick="@{()->PermissionViewModel.help()}"
-            android:text="@string/help"
-            android:textAllCaps="false"
-            android:textColor="@color/colorSecondary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
         <TextView
             android:id="@+id/textView20"
             style="@style/subtitle_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/grant_permissions"
+            android:text="@string/grant_usage_access"
             android:textColor="@color/primary_text"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView19"
             app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
-            android:layout_width="match_parent"
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="4dp"
+            android:background="@null"
+            android:onClick="@{()->PermissionViewModel.usageDisclosure()}"
+            android:src="@drawable/ic_info"
+            app:layout_constraintBottom_toBottomOf="@+id/textView20"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView20" />
+
+        <TextView
+            android:id="@+id/textView6"
+            style="@style/subtitle_2"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="104dp"
-            android:background="@drawable/all_corner_rounded_4dp"
-            android:paddingStart="20dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/textView20"
-            tools:layout_editor_absoluteX="16dp">
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/reason_usage_access"
+            android:textColor="@color/disabled_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
-            <TextView
-                android:id="@+id/textView21"
-                style="@style/subtitle_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/usage_access"
-                android:textColor="@color/primary_text"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@null"
-                android:onClick="@{()->PermissionViewModel.usageDisclosure()}"
-                android:src="@drawable/ic_info"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                style="@style/subtitle_2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/reason_usage_access"
-                android:textColor="@color/disabled_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView21" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/appCompatImageView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6"
+            app:srcCompat="@drawable/ic_guide_usage_access" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include layout="@layout/fragment_disclosure"

@@ -11,6 +11,7 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -193,7 +194,7 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                             }
                             val spannable= SpannableString("You have $days more $s\n to give your best !!")
                             spannable.setSpan(
-                                ForegroundColorSpan(Color.WHITE),9,19+days.toString().length,
+                                ForegroundColorSpan(ContextCompat.getColor(context,R.color.primary_text)),9,19+days.toString().length,
                                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
                             _timeLeft.value= spannable
