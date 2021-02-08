@@ -316,6 +316,7 @@ class Rules2ViewModel(
             }*/
         }
     }
+
     private fun allotGroup(cat:String): String {
         return when(cat){
             "WEATHER"->"WHITELISTED"

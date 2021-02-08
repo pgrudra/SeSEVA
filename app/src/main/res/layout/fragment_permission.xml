@@ -23,14 +23,14 @@
             style="@style/button"
             android:layout_width="0dp"
             android:layout_height="42dp"
-            android:layout_marginBottom="56dp"
-            android:background="@drawable/login_change_email"
-            android:onClick="@{() ->PermissionViewModel.onGrantPermission()}"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/login_change_email"
+            android:onClick="@{() ->PermissionViewModel.onGrantPermission()}"
             android:text="@string/allow"
             android:textColor="@color/colorPrimary"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/ask_me_later"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -86,11 +86,25 @@
             android:id="@+id/appCompatImageView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView6"
             app:srcCompat="@drawable/ic_guide_usage_access" />
+
+        <Button
+            android:id="@+id/ask_me_later"
+            style="@style/button"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:layout_marginBottom="24dp"
+            android:background="@null"
+            android:text="ASK ME LATER"
+            android:textColor="@color/disabled_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.524"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include layout="@layout/fragment_disclosure"
