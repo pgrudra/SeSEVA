@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Process
+import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import androidx.core.content.ContextCompat
 
@@ -17,6 +18,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
+import com.example.us0.Actions
 import com.example.us0.R
 
 class PermissionViewModel(application: Application): AndroidViewModel(application) {
@@ -66,34 +68,21 @@ class PermissionViewModel(application: Application): AndroidViewModel(applicatio
             }
         }
         if (mode == AppOpsManager.MODE_ALLOWED) {
-            createChannel(
-                context.getString(R.string.foreground_service_notification_channel_id),
-                context.getString(R.string.foreground_service_notification_channel_name)
-            )
-            val serviceIntent = Intent(context, TestService::class.java)
-            serviceIntent.putExtra("inputExtra", "Serve")
-            ContextCompat.startForegroundService(context, serviceIntent)
+
+            Intent(context, TestService::class.java).also{
+                it.action= Actions.START.name
+                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+                    context.startForegroundService(it)
+                }
+                else{
+                    context.startService(it)
+                }
+            }
             _toHome.value=true
         }
     }
 fun toHomeComplete(){
     _toHome.value=false
 }
-    private fun createChannel(channelId: String, channelName: String) {
-        // TODO: Step 1.6 START create a channel
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val foregroundServiceNotificationChannel = NotificationChannel(
-                channelId,
-                channelName,
-                // TODO: Step 2.4 change importance
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-
-            val notificationManager = context.getSystemService(
-                NotificationManager::class.java
-            )
-            notificationManager.createNotificationChannel(foregroundServiceNotificationChannel)
-        }
-    }
 
 }

@@ -1,22 +1,22 @@
 package com.example.us0.foregroundnnotifications
 
-import android.app.PendingIntent
-import android.app.Service
+import android.app.*
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
-import android.os.Handler
-import android.os.IBinder
-import android.os.Looper
+import android.os.*
+import android.telephony.ServiceState
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.example.us0.Actions
 import com.example.us0.R
 import com.example.us0.data.AllDatabase
 import com.example.us0.installedapps.HomeActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.us0.setServiceState
+import kotlinx.coroutines.*
+import timber.log.Timber
+import java.lang.Runnable
 import java.sql.Timestamp
 import java.util.*
 
@@ -24,68 +24,114 @@ class TestService : Service() {
     private val NOTIFICATION_ID = 1
     private val REQUEST_CODE = 0
     private val FLAGS = 0
-
+    private var isServiceStarted=false
     override fun onBind(p0: Intent?): IBinder? {
         return null
     }
 
-
+//wakeLock not implemented
     override fun onCreate() {
         super.onCreate()
-
+            val notification=createNotification()
+            startForeground(NOTIFICATION_ID,notification)
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val input = intent!!.getStringExtra("inputExtra")
-        val database = AllDatabase.getInstance(application).AppDatabaseDao
-        var launchables = listOf<String>()
-        val sortedEvents = mutableMapOf<String, MutableList<UsageEvents.Event>>()
+    private fun createNotification(): Notification? {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val foregroundServiceNotificationChannel = NotificationChannel(
+                getString(R.string.foreground_service_notification_channel_id),
+                getString(R.string.foreground_service_notification_channel_name),
+                // TODO: Step 2.4 change importance
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+
+            val notificationManager = getSystemService(
+                NotificationManager::class.java
+            )
+            notificationManager.createNotificationChannel(foregroundServiceNotificationChannel)
+        }
         val pendingIntent: PendingIntent =
             Intent(this, HomeActivity::class.java).let { notificationIntent ->
                 PendingIntent.getActivity(this, REQUEST_CODE, notificationIntent, FLAGS)
             }
-
         val notification = NotificationCompat.Builder(
             this,
             getString(R.string.foreground_service_notification_channel_id)
         )
+                return notification
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(getString(R.string.notification_title))
-            .setContentText(input)
             .setContentIntent(pendingIntent)
             .build()
-        startForeground(NOTIFICATION_ID, notification)
-        var handler: Handler? = Looper.myLooper()?.let { Handler(it) }
-        //do heavy work on a background thread
-        CoroutineScope(Dispatchers.IO).launch {
-
-            launchables = database.getLaunchablesList()
-
-            for (l in launchables) {
-                sortedEvents[l] = mutableListOf()
-            }
-
-            val runnableCode: Runnable = object : Runnable {
-                override fun run() {
-                    // Do something here on the main thread
-                    getStats(applicationContext, sortedEvents)
-                    Log.d("Handlers", "Called on main thread")
-                    handler?.postDelayed(this, 60000)
-
-                }
-            }
-
-            handler?.post(runnableCode)
-
-        }
-        return START_NOT_STICKY
+        //.setContentText("not used")
     }
 
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if(intent!=null){
+            when(intent.action){
+                Actions.START.name->startService()
+                Actions.STOP.name->stopService()
+                else->Timber.i("never_happens")
+            }
+        }
+        return START_STICKY
+    }
+
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        val restartServiceIntent=Intent(applicationContext,TestService::class.java).also {
+            it.setPackage(packageName)
+        }
+        val restartServicePendingIntent:PendingIntent=PendingIntent.getService(this,1,restartServiceIntent,PendingIntent.FLAG_ONE_SHOT)
+        applicationContext.getSystemService(Context.ALARM_SERVICE)
+        val alarmService:AlarmManager=applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmService.set(AlarmManager.ELAPSED_REALTIME,SystemClock.elapsedRealtime()+1000,restartServicePendingIntent)
+    }
     override fun onDestroy() {
         super.onDestroy()
     }
+    private fun startService(){
+        if(isServiceStarted)return
+        isServiceStarted=true
+        setServiceState(this, com.example.us0.ServiceState.STARTED)
 
-    fun getStats(context: Context, sortedEvents: Map<String, MutableList<UsageEvents.Event>>) {
+        //Try CoroutineScope instead of GlobalScope
+        GlobalScope.launch(Dispatchers.IO){
+            val main = Intent(Intent.ACTION_MAIN, null)
+            main.addCategory(Intent.CATEGORY_LAUNCHER)
+            val pm = requireNotNull(applicationContext.packageManager)
+            val launchables = pm.queryIntentActivities(main, 0)
+            val appPackageListR = ArrayList<String>()
+            for (item in launchables) {
+                try {
+                    val nameOfPackage: String = item.activityInfo.packageName
+                    appPackageListR.add(nameOfPackage)
+                } catch (e: Exception) {}
+            }
+            val sortedEvents = mutableMapOf<String, MutableList<UsageEvents.Event>>()
+            val appPackageList=appPackageListR.distinct()
+            for (l in appPackageList) {
+                sortedEvents[l] = mutableListOf()
+            }
+            while(isServiceStarted){
+                launch(Dispatchers.IO){
+                    getStats(applicationContext, sortedEvents)
+                }
+                delay(10000)
+            }
+        }
+    }
+    private fun stopService(){
+try{
+    stopForeground(true)
+    stopSelf()
+} catch (e:Exception){
+
+}
+        isServiceStarted=false
+        setServiceState(this,com.example.us0.ServiceState.STOPPED)
+    }
+
+    private fun getStats(context: Context, sortedEvents: Map<String, MutableList<UsageEvents.Event>>) {
         sortedEvents.forEach { (packageName, events) -> events.clear() }
         val usm = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         val now = Calendar.getInstance()
@@ -126,15 +172,28 @@ class TestService : Service() {
                 var endTime = 0L
                 var launches = 0
                 var totalTime = 0L
-
+                var transt=0L
                 events.forEach {
                     if (it.eventType == UsageEvents.Event.ACTIVITY_RESUMED) {
                         // App was moved to the foreground: set the start time
                         startTime = it.timeStamp
                         launches += 1
-                        Log.i("kk", packageName + "   " + Timestamp(startTime))
+
+
                     } else if (it.eventType == UsageEvents.Event.ACTIVITY_PAUSED) {
-                        endTime = it.timeStamp
+                        if(startTime!=0L || totalTime==0L){
+                            endTime = it.timeStamp
+                            transt=it.timeStamp}
+                    }
+                    if(startTime!=0L && transt!=0L && startTime>transt && (startTime-transt)<50){
+                        launches-=1
+                        transt=0L
+                    }
+                    if(it.eventType==UsageEvents.Event.ACTIVITY_RESUMED || it.eventType==UsageEvents.Event.ACTIVITY_PAUSED){
+
+                        if(packageName=="com.google.android.youtube"){
+                            Log.i("DWN",it.eventType.toString()+" "+Timestamp(it.timeStamp))
+                        }
                     }
                     if (startTime == 0L && endTime != 0L) {
                         startTime = begin.timeInMillis
@@ -145,6 +204,9 @@ class TestService : Service() {
                         // Reset the start/end times to 0
                         startTime = 0L
                         endTime = 0L
+                        if(packageName=="com.google.android.youtube"){
+                            Log.i("DWN","${totalTime/60000}")
+                        }
                     }
                 }
                 if (startTime != 0L && endTime == 0L) {
