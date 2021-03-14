@@ -11,6 +11,10 @@
     <string name="chosen_mission_number">com.example.us0.CHOSEN_MISSION_NUMBER</string>
     <string name="rules_shown">com.example.us0.RULES_SHOWN</string>
     <string name="service_state">com.example.us0.SERVICE_STATE</string>
+    <string name="money_raised_today">com.example.us0.MONEY_RAISED_TODAY</string>
+    <string name="days_after_installation">com.example.us0.DAYS_AFTER_INSTALLATION</string>
+    <string name="entertainment_time">com.example.us0.ENTERTAINMENT_TIME</string>
+    <string name="entertainment_launches">com.example.us0.ENTERTAINMENT_LAUNCHES</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome_back">Welcome back</string>
@@ -93,4 +97,5 @@
     <string name="i_understand_the_rules">I UNDERSTAND THE RULES</string>
     <string name="no_limit_no_penalty">No limit… No penalty !!</string>
     <string name="categoriy_social">Weather, Travel, Sports, Productivity, Photography, Pdde, Parenting, Medical, Navigation, Health, Finance</string>
+    <string name="category_refresh">categoryRefresh</string>
 </resources>

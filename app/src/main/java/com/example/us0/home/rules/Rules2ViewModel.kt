@@ -19,7 +19,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.work.*
+import com.example.us0.CategoryRefreshWorker
 import com.example.us0.R
+import com.example.us0.allotGroup
 import com.example.us0.data.apps.AppAndCategory
 import com.example.us0.data.apps.AppDataBaseDao
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +31,7 @@ import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import timber.log.Timber
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class Rules2ViewModel(
     private val database: AppDataBaseDao,
@@ -317,61 +321,7 @@ class Rules2ViewModel(
         }
     }
 
-    private fun allotGroup(cat:String): String {
-        return when(cat){
-            "WEATHER"->"WHITELISTED"
-            "BUSINESS"-> "WHITELISTED"
-            "TRAVEL_AND_LOCAL"-> "WHITELISTED"
-            "TOOLS"-> "WHITELISTED"
-            "PRODUCTIVITY"->"WHITELISTED"
-            "PHOTOGRAPHY"-> "WHITELISTED"
-            "PERSONALIZATION"->"WHITELISTED"
-            "PARENTING"->"WHITELISTED"
-            "MEDICAL"->"WHITELISTED"
-            "MAPS_AND_NAVIGATION"->"WHITELISTED"
-            "LIBRARIES_AND_DEMO"->"WHITELISTED"
-            "HOUSE_AND_HOME"->"WHITELISTED"
-            "HEALTH_AND_FITNESS"->"WHITELISTED"
-            "FOOD_AND_DRINK"->"WHITELISTED"
-            "FINANCE"->"WHITELISTED"
-            "EVENTS"->"WHITELISTED"
-            "EDUCATION"->"WHITELISTED"
-            "BOOKS_AND_REFERENCE"->"WHITELISTED"
-            "AUTO_AND_VEHICLES"->"WHITELISTED"
-            "ART_AND_DESIGN"->"WHITELISTED"
-            "GAME_EDUCATIONAL"->"WHITELISTED"
-            "GAME_PUZZLE"->"WHITELISTED"
-            "GAME_TRIVIA"->"WHITELISTED"
-            "GAME_WORD"->"WHITELISTED"
-            "OTHERS"->"OTHERS"
-            "COMMUNICATION"->"COMMUNICATION"
-            "GAME_ACTION"->"GAMES"
-            "GAME_ADVENTURE"->"GAMES"
-            "GAME_ARCADE"->"GAMES"
-            "GAME_BOARD"->"GAMES"
-            "GAME_CARD"->"GAMES"
-            "GAME_CASINO"->"GAMES"
-            "GAME_CASUAL"->"GAMES"
-            "GAME_MUSIC"->"GAMES"
-            "GAME_RACING"->"GAMES"
-            "GAME_ROLE_PLAYING"->"GAMES"
-            "GAME_SIMULATION"->"GAMES"
-            "GAME_SPORTS"->"GAMES"
-            "GAME_STRATEGY"->"GAMES"
-            "DATING"->"SOCIAL"
-            "LIFESTYLE"->"SOCIAL"
-            "SOCIAL"->"SOCIAL"
-            "VIDEO_PLAYERS"->"VIDEO_PLAYERS_N_COMICS"
-            "COMICS"->"VIDEO_PLAYERS_N_COMICS"
-            "MUSIC_AND_AUDIO"->"MSNBS"
-            "SHOPPING"->"MSNBS"
-            "NEWS_AND_MAGAZINES"->"MSNBS"
-            "BEAUTY"->"MSNBS"
-            "SPORTS"->"MSNBS"
-            "ENTERTAINMENT"->"ENTERTAINMENT"
-            else-> "OTHERS"
-        }
-    }
+
     companion object {
         private const val GOOGLE_URL = "https://play.google.com/store/apps/details?id="
         private const val CAT_SIZE = 9

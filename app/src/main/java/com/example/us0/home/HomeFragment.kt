@@ -38,7 +38,9 @@ class HomeFragment : Fragment() {
         )
         val application = requireNotNull(this.activity).application
         val datasource = AllDatabase.getInstance(application).MissionsDatabaseDao
-        viewModelFactory = HomeViewModelFactory(datasource, application)
+        val appDatasource = AllDatabase.getInstance(application).AppDatabaseDao
+        val pm = requireNotNull(activity?.packageManager)
+        viewModelFactory = HomeViewModelFactory(datasource,appDatasource, application,pm)
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
         binding.lifecycleOwner=viewLifecycleOwner
         binding.homeViewModel=viewModel

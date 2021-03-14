@@ -162,7 +162,6 @@ try{
                 }
                 sortedEvents[event.packageName]?.add(event)
             }
-
         }
         val statss = mutableListOf<stat>()
         if (eval) {
