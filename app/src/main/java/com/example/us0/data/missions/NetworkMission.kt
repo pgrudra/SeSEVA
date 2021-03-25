@@ -11,6 +11,7 @@ data class NetworkMission(
     val sponsorName:String="",
     val sponsorDescription:String="",
     val category:String="",
+    val rulesNumber:Long=0L,
     val sponsorSite:String=""
 ){
     private fun deadlineStringToLong():Long{
@@ -32,7 +33,8 @@ fun asDatabaseModel(): Mission {
         sponsorName=sponsorName,
         sponsorDescription = sponsorDescription,
         missionCategory = category,
-        sponsorSite = sponsorSite
+        sponsorSite = sponsorSite,
+        rulesNumber = rulesNumber.toInt()
         )
 }
 }

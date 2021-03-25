@@ -1,5 +1,7 @@
 package com.example.us0.home
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.us0.Actions
 import com.example.us0.R
 import com.example.us0.choosemission.ChooseMissionViewModel
 import com.example.us0.choosemission.ChooseMissionViewModelFactory
@@ -18,6 +21,7 @@ import com.example.us0.choosemission.DetailMissionViewModelFactory
 import com.example.us0.data.AllDatabase
 import com.example.us0.databinding.FragmentDetailMissionBinding
 import com.example.us0.databinding.FragmentHomeBinding
+import com.example.us0.foregroundnnotifications.TestService
 import com.example.us0.installedapps.InstalledAppsDirections
 
 class HomeFragment : Fragment() {
@@ -61,9 +65,17 @@ class HomeFragment : Fragment() {
             if (goToSignOut) {
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSignOutActivity())
                 viewModel.onGoToSignOutComplete()
+
             }
         })
+        viewModel.goToRules.observe(viewLifecycleOwner, Observer<Boolean>{ goToRules ->
+            if (goToRules) {
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToRulesFragment2())
+                viewModel.onGoToRulesComplete()
 
+            }
+        })
+        binding.toolbar.title=getString(R.string.app_name)
         return binding.root
     }
 

@@ -37,6 +37,11 @@ viewModel.goToHome.observe(viewLifecycleOwner, Observer<Boolean> { goto->
         viewModel.goToHomeComplete()
     }
 })
+        viewModel.enableChooseThisMissionButton.observe(viewLifecycleOwner, Observer<Boolean> { enable->
+            if(enable){
+                binding.chooseThisMission.isEnabled=true
+            }
+        })
         viewModel.goToRules.observe(viewLifecycleOwner, Observer<Boolean> { goto->
             if(goto){
                 findNavController().navigate(LastMissionFragmentDirections.actionLastMissionFragmentToRulesFragment2())

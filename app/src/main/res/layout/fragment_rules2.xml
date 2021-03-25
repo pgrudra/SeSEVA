@@ -190,7 +190,7 @@
                                 style="@style/subtitle_2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Rs 2"
+                                android:text="@{Rules2ViewModel.socialPenalty}"
                                 android:textColor="@color/colorError"
                                 app:layout_constraintBottom_toBottomOf="@+id/t_s_1"
                                 app:layout_constraintStart_toEndOf="@+id/t_s_1"
@@ -201,7 +201,7 @@
                                 style="@style/subtitle_2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="30 min"
+                                android:text="@{Rules2ViewModel.socialMaxTime}"
                                 android:textColor="@color/primary_text"
                                 app:layout_constraintBottom_toBottomOf="@+id/t_t_1"
                                 app:layout_constraintStart_toEndOf="@+id/t_t_1"
@@ -212,7 +212,7 @@
                                 style="@style/subtitle_2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="18"
+                                android:text="@{Rules2ViewModel.socialMaxLaunches}"
                                 android:textColor="@color/primary_text"
                                 app:layout_constraintBottom_toBottomOf="@+id/t_p_1"
                                 app:layout_constraintStart_toEndOf="@+id/t_p_1"
@@ -321,7 +321,7 @@
                                 style="@style/subtitle_2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Rs 2"
+                                android:text="@{Rules2ViewModel.videoPenalty}"
                                 android:textColor="@color/colorError"
                                 app:layout_constraintTop_toTopOf="@id/t_s_2"
                                 app:layout_constraintBottom_toBottomOf="@+id/t_s_2"
@@ -332,7 +332,7 @@
                                 android:textColor="@color/primary_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="30 min"
+                                android:text="@{Rules2ViewModel.videoMaxTime}"
                                 app:layout_constraintTop_toTopOf="@id/t_t_2"
                                 app:layout_constraintBottom_toBottomOf="@+id/t_t_2"
                                 app:layout_constraintStart_toEndOf="@+id/t_t_2" />
@@ -342,7 +342,7 @@
                                 android:textColor="@color/primary_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="18"
+                                android:text="@{Rules2ViewModel.videoMaxLaunches}"
                                 app:layout_constraintTop_toTopOf="@id/t_p_2"
                                 app:layout_constraintBottom_toBottomOf="@+id/t_p_2"
                                 app:layout_constraintStart_toEndOf="@+id/t_p_2" />
@@ -424,6 +424,15 @@
                                 app:layout_constraintTop_toBottomOf="@id/t_c_3" />
 
                             <TextView
+                                android:id="@+id/t_p_3"
+                                style="@style/caption"
+                                android:textColor="@color/secondary_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="App Launch limit: "
+                                app:layout_constraintStart_toStartOf="@id/t_c_3"
+                                app:layout_constraintTop_toBottomOf="@id/t_t_3" />
+                            <TextView
                                 android:id="@+id/t_s_3"
                                 style="@style/caption"
                                 android:textColor="@color/secondary_text"
@@ -431,7 +440,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Penalty: "
                                 app:layout_constraintStart_toStartOf="@id/t_c_3"
-                                app:layout_constraintTop_toBottomOf="@id/t_t_3" />
+                                app:layout_constraintTop_toBottomOf="@id/t_p_3" />
 
                             <TextView
                                 android:id="@+id/t_s_p_3"
@@ -439,7 +448,7 @@
                                 android:textColor="@color/colorError"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Rs 1"
+                                android:text="@{Rules2ViewModel.gamesPenalty}"
                                 app:layout_constraintTop_toTopOf="@id/t_s_3"
                                 app:layout_constraintBottom_toBottomOf="@+id/t_s_3"
                                 app:layout_constraintStart_toEndOf="@+id/t_s_3" />
@@ -449,10 +458,20 @@
                                 android:textColor="@color/primary_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="30 min"
+                                android:text="@{Rules2ViewModel.gamesMaxTime}"
                                 app:layout_constraintTop_toTopOf="@id/t_t_3"
                                 app:layout_constraintBottom_toBottomOf="@+id/t_t_3"
                                 app:layout_constraintStart_toEndOf="@+id/t_t_3" />
+
+                            <TextView
+                                style="@style/subtitle_2"
+                                android:textColor="@color/primary_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{Rules2ViewModel.gamesMaxLaunches}"
+                                app:layout_constraintTop_toTopOf="@id/t_p_3"
+                                app:layout_constraintBottom_toBottomOf="@+id/t_p_3"
+                                app:layout_constraintStart_toEndOf="@+id/t_p_3" />
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/games_apps_list"
@@ -557,7 +576,7 @@
                                 android:textColor="@color/colorError"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Rs 2"
+                                android:text="@{Rules2ViewModel.communicationPenalty}"
                                 app:layout_constraintTop_toTopOf="@id/t_s_4"
                                 app:layout_constraintBottom_toBottomOf="@+id/t_s_4"
                                 app:layout_constraintStart_toEndOf="@+id/t_s_4" />
@@ -567,7 +586,7 @@
                                 android:textColor="@color/primary_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="30 min"
+                                android:text="@{Rules2ViewModel.communicationMaxTime}"
                                 app:layout_constraintTop_toTopOf="@id/t_t_4"
                                 app:layout_constraintBottom_toBottomOf="@+id/t_t_4"
                                 app:layout_constraintStart_toEndOf="@+id/t_t_4" />
@@ -577,7 +596,7 @@
                                 android:textColor="@color/primary_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="18"
+                                android:text="@{Rules2ViewModel.communicationMaxLaunches}"
                                 app:layout_constraintTop_toTopOf="@id/t_p_4"
                                 app:layout_constraintBottom_toBottomOf="@+id/t_p_4"
                                 app:layout_constraintStart_toEndOf="@+id/t_p_4" />
@@ -685,7 +704,7 @@
                                 android:textColor="@color/colorError"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Rs 2"
+                                android:text="@{Rules2ViewModel.msnbsPenalty}"
                                 app:layout_constraintTop_toTopOf="@id/t_s_6"
                                 app:layout_constraintBottom_toBottomOf="@+id/t_s_6"
                                 app:layout_constraintStart_toEndOf="@+id/t_s_6" />
@@ -695,7 +714,7 @@
                                 android:textColor="@color/primary_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="30 min"
+                                android:text="@{Rules2ViewModel.msnbsMaxTime}"
                                 app:layout_constraintTop_toTopOf="@id/t_t_6"
                                 app:layout_constraintBottom_toBottomOf="@+id/t_t_6"
                                 app:layout_constraintStart_toEndOf="@+id/t_t_6" />
@@ -705,7 +724,7 @@
                                 android:textColor="@color/primary_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="18"
+                                android:text="@{Rules2ViewModel.msnbsMaxLaunches}"
                                 app:layout_constraintTop_toTopOf="@id/t_p_6"
                                 app:layout_constraintBottom_toBottomOf="@+id/t_p_6"
                                 app:layout_constraintStart_toEndOf="@+id/t_p_6" />
@@ -902,7 +921,7 @@
                                 android:textColor="@color/colorError"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Rs 2"
+                                android:text="@{Rules2ViewModel.othersPenalty}"
                                 app:layout_constraintTop_toTopOf="@id/t_s_7"
                                 app:layout_constraintBottom_toBottomOf="@+id/t_s_7"
                                 app:layout_constraintStart_toEndOf="@+id/t_s_7" />
@@ -912,7 +931,7 @@
                                 android:textColor="@color/primary_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="30 min"
+                                android:text="@{Rules2ViewModel.othersMaxTime}"
                                 app:layout_constraintTop_toTopOf="@id/t_t_7"
                                 app:layout_constraintBottom_toBottomOf="@+id/t_t_7"
                                 app:layout_constraintStart_toEndOf="@+id/t_t_7" />
@@ -922,7 +941,7 @@
                                 android:textColor="@color/primary_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="18"
+                                android:text="@{Rules2ViewModel.othersMaxLaunches}"
                                 app:layout_constraintTop_toTopOf="@id/t_p_7"
                                 app:layout_constraintBottom_toBottomOf="@+id/t_p_7"
                                 app:layout_constraintStart_toEndOf="@+id/t_p_7" />
@@ -1039,7 +1058,7 @@
                                 android:textColor="@color/colorError"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Rs 2"
+                                android:text="@{Rules2ViewModel.entertainmentPenalty}"
                                 app:layout_constraintTop_toTopOf="@id/t_s_8"
                                 app:layout_constraintBottom_toBottomOf="@+id/t_s_8"
                                 app:layout_constraintStart_toEndOf="@+id/t_s_8" />
@@ -1049,7 +1068,7 @@
                                 android:textColor="@color/primary_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="30 min"
+                                android:text="@{Rules2ViewModel.entertainmentMaxTime}"
                                 app:layout_constraintTop_toTopOf="@id/t_t_8"
                                 app:layout_constraintBottom_toBottomOf="@+id/t_t_8"
                                 app:layout_constraintStart_toEndOf="@+id/t_t_8" />
@@ -1059,7 +1078,7 @@
                                 android:textColor="@color/primary_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="18"
+                                android:text="@{Rules2ViewModel.entertainmentMaxLaunches}"
                                 app:layout_constraintTop_toTopOf="@id/t_p_8"
                                 app:layout_constraintBottom_toBottomOf="@+id/t_p_8"
                                 app:layout_constraintStart_toEndOf="@+id/t_p_8" />

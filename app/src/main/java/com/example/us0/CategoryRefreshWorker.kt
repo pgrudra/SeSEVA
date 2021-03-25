@@ -22,7 +22,7 @@ class CategoryRefreshWorker(appContext: Context, workerParams: WorkerParameters)
                 main.addCategory(Intent.CATEGORY_LAUNCHER)
                 val launchables = pm.queryIntentActivities(main, 0)
                 val appPackageList = ArrayList<String>()
-                val otherCategory:List<AppAndCategory>? =dao.getAll("OTHERS").value
+                val otherCategory:List<AppAndCategory>? =dao.getCatApps("OTHERS")
                 if(otherCategory!=null){
                     for(i in otherCategory){
                         val nameOfPackage: String =i.packageName

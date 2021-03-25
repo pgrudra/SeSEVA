@@ -15,9 +15,11 @@ data class Mission(
     @ColumnInfo(name="deadline")
     var deadline:Long=0L,
 
-
     @ColumnInfo(name="users_active")
     var usersActive:Int=0,
+
+    @ColumnInfo(name="rules_number")
+    var rulesNumber:Int=0,
 
     @ColumnInfo(name="mission_complete_notification")
     var missionCompleteNotification:Boolean=false,
@@ -52,6 +54,7 @@ fun List<Mission>.asActiveDomainModel(): List<DomainActiveMission> {
             missionName = it.missionName,
             deadline =it.deadline,
             usersActive = it.usersActive,
+            rulesNumber = it.rulesNumber,
             sponsorName = it.sponsorName,
             sponsorDescription = it.sponsorDescription,
             missionDescription = it.missionDescription,
@@ -67,6 +70,7 @@ fun Mission.asClosedDomainModel():DomainClosedMission{
             missionName = missionName,
             deadline =deadline,
             usersActive = usersActive,
+            rulesNumber=rulesNumber,
             sponsorName = sponsorName,
             sponsorDescription = sponsorDescription,
             missionDescription = missionDescription,

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">US0</string>
+    <string name="app_name">SquiSewa</string>
     <!-- Strings related to login -->
 
     <string name="shared_pref">com.example.us0.SHARED_PREF</string>
@@ -10,11 +10,38 @@
     <string name="missions_updated_today">com.example.us0.MISSIONS_UPDATED_TODAY</string>
     <string name="chosen_mission_number">com.example.us0.CHOSEN_MISSION_NUMBER</string>
     <string name="rules_shown">com.example.us0.RULES_SHOWN</string>
+    <string name="saved_rules_number">com.example.us0.SAVED_RULES_NUMBER</string>
     <string name="service_state">com.example.us0.SERVICE_STATE</string>
-    <string name="money_raised_today">com.example.us0.MONEY_RAISED_TODAY</string>
     <string name="days_after_installation">com.example.us0.DAYS_AFTER_INSTALLATION</string>
     <string name="entertainment_time">com.example.us0.ENTERTAINMENT_TIME</string>
     <string name="entertainment_launches">com.example.us0.ENTERTAINMENT_LAUNCHES</string>
+    <string name="money_to_be_updated">com.example.us0.MONEY_TO_BE_UPDATED</string>
+    <string name="daily_reward">com.example.us0.DAILY_REWARD</string>
+    <string name="weekly_reward">com.example.us0.WEEKLY_REWARD</string>
+
+    <string name="rules_number">com.example.us0.RULES_NUMBER</string>
+    <string name="social_max_time">com.example.us0.SOCIAL_MAX_TIME</string>
+    <string name="social_max_launches">com.example.us0.SOCIAL_MAX_LAUNCHES</string>
+    <string name="social_penalty">com.example.us0.SOCIAL_PENALTY</string>
+    <string name="communication_max_time">com.example.us0.COMMUNICATION_MAX_TIME</string>
+    <string name="communication_max_launches">com.example.us0.COMMUNICATION_MAX_LAUNCHES</string>
+    <string name="communication_penalty">com.example.us0.COMMUNICATION_PENALTY</string>
+    <string name="games_max_time">com.example.us0.GAMES_MAX_TIME</string>
+    <string name="games_max_launches">com.example.us0.GAMES_MAX_LAUNCHES</string>
+    <string name="games_penalty">com.example.us0.GAMES_PENALTY</string>
+    <string name="video_max_time">com.example.us0.VIDEO_MAX_TIME</string>
+    <string name="video_max_launches">com.example.us0.VIDEO_MAX_LAUNCHES</string>
+    <string name="video_penalty">com.example.us0.VIDEO_PENALTY</string>
+    <string name="msnbs_max_time">com.example.us0.MSNBS_MAX_TIME</string>
+    <string name="msnbs_max_launches">com.example.us0.MSNBS_MAX_LAUNCHES</string>
+    <string name="msnbs_penalty">com.example.us0.MSNBS_PENALTY</string>
+    <string name="entertainment_max_time">com.example.us0.ENTERTAINMENT_MAX_TIME</string>
+    <string name="entertainment_max_launches">com.example.us0.ENTERTAINMENT_MAX_LAUNCHES</string>
+    <string name="entertainment_penalty">com.example.us0.ENTERTAINMENT_PENALTY</string>
+    <string name="others_max_time">com.example.us0.OTHERS_MAX_TIME</string>
+    <string name="others_max_launches">com.example.us0.OTHERS_MAX_LAUNCHES</string>
+    <string name="others_penalty">com.example.us0.OTHERS_PENALTY</string>
+
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome_back">Welcome back</string>
@@ -26,6 +53,11 @@
     <string name="foreground_service_notification_channel_id" translatable="false">foreground_channel</string>
     <string name="foreground_service_notification_channel_name" translatable="true">Foreground</string>
     <string name="notification_title">UnSlave</string>
+
+    <string name="usage_alert_notification_channel_id" translatable="false">usage_alert_channel</string>
+    <string name="usage_alert_notification_channel_name" translatable="false">UsageAlert</string>
+    <string name="usage_alert_title">Title</string>
+    <string name="usage_alert_notification_channel_description">ChannelDescription</string>
     <!--
     This string is used for square devices and overridden by hello_world in
     values-round/strings.xml for round devices.
@@ -98,4 +130,5 @@
     <string name="no_limit_no_penalty">No limit… No penalty !!</string>
     <string name="categoriy_social">Weather, Travel, Sports, Productivity, Photography, Pdde, Parenting, Medical, Navigation, Health, Finance</string>
     <string name="category_refresh">categoryRefresh</string>
+    <string name="loading">Loading</string>
 </resources>

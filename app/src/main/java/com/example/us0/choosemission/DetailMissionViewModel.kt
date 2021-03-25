@@ -104,9 +104,20 @@ fun toSponsorWebsite(){
                         )
                         this?.apply()
                     }
-                    if (checkIfRulesShown()) {
-                        _toHomeFragment.value = true
+                    Log.i("DMVM","${_selectedMission.value!!.missionNumber}")
+                    with(sharedPref?.edit()) {
+                        this?.putInt(
+                            (R.string.rules_number).toString(),
+                            _selectedMission.value!!.rulesNumber
+                        )
+                        this?.apply()
                     }
+                    Log.i("DMVM","${_selectedMission.value!!.rulesNumber}")
+
+                    _toRulesFragment.value=true
+                    /*if (checkIfRulesShown()) {
+                        _toHomeFragment.value = true
+                    }*/
                 }
                 .addOnFailureListener {
                     Log.i("IOIO", "FAIL")

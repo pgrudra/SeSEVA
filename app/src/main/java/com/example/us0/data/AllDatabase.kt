@@ -13,7 +13,7 @@ import com.example.us0.data.missions.MissionsDatabaseDao
 import com.example.us0.data.stats.Stat
 import com.example.us0.data.stats.StatDataBaseDao
 
-@Database(entities = [AppAndCategory::class, Mission::class, Stat::class, CategoryStat::class], version = 4, exportSchema = false)
+@Database(entities = [AppAndCategory::class, Mission::class, Stat::class, CategoryStat::class], version = 5, exportSchema = false)
 abstract class AllDatabase : RoomDatabase() {
 
     abstract val AppDatabaseDao: AppDataBaseDao

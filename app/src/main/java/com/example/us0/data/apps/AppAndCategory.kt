@@ -13,7 +13,7 @@ data class AppAndCategory(
     @ColumnInfo(name="app_name")
     var appName:String="",
     @ColumnInfo(name="app_category")
-    var appCategory:String=""
+    var appCategory:String="OTHERS"
 )
 
 

@@ -47,10 +47,11 @@ class LocalDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                     .setConstraints(constraintNet)
                     .addTag("cloudDateBase")
                     .build()
+                val minute:Int=(0..2).random()
                 val currentTime = Calendar.getInstance()
                 val twelveOne = Calendar.getInstance()
                 twelveOne.set(Calendar.HOUR_OF_DAY, 0)
-                twelveOne.set(Calendar.MINUTE, 1)
+                twelveOne.set(Calendar.MINUTE, minute)
                 twelveOne.add(Calendar.DATE, 1)
                 Log.i("LDUWT", Timestamp(twelveOne.timeInMillis).toString())
                 Log.i("LDUWT", Timestamp(currentTime.timeInMillis).toString())
@@ -103,11 +104,12 @@ class LocalDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                 sortedEvents[event.packageName]?.add(event)
             }
         }
+
         val categoryTimes:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to 0,"COMMUNICATION" to 0, "GAMES" to 0,"WHITELISTED" to 0,"VIDEO_PLAYERS_N_COMICS" to 0,"ENTERTAINMENT" to 0,"MSNBS" to 0,"OTHERS" to 0)
         val categoryLaunches:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to 0,"COMMUNICATION" to 0, "GAMES" to 0,"WHITELISTED" to 0,"VIDEO_PLAYERS_N_COMICS" to 0,"ENTERTAINMENT" to 0,"MSNBS" to 0,"OTHERS" to 0)
-        val timeRules:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to 0,"COMMUNICATION" to 0, "GAMES" to 0,"WHITELISTED" to 0,"VIDEO_PLAYERS_N_COMICS" to 0,"ENTERTAINMENT" to 0,"MSNBS" to 0,"OTHERS" to 0)
-        val launchRules:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to 0,"COMMUNICATION" to 0, "GAMES" to 0,"WHITELISTED" to 0,"VIDEO_PLAYERS_N_COMICS" to 0,"ENTERTAINMENT" to 0,"MSNBS" to 0,"OTHERS" to 0)
-        val categoryPenalties:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to 2,"COMMUNICATION" to 2, "GAMES" to 0,"WHITELISTED" to 0,"VIDEO_PLAYERS_N_COMICS" to 2,"ENTERTAINMENT" to 2,"MSNBS" to 2,"OTHERS" to 2)
+        val timeRules:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to sharedPref.getInt((R.string.social_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"COMMUNICATION" to sharedPref.getInt((R.string.communication_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS, "GAMES" to sharedPref.getInt((R.string.games_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"WHITELISTED" to 0,"VIDEO_PLAYERS_N_COMICS" to sharedPref.getInt((R.string.video_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"ENTERTAINMENT" to sharedPref.getInt((R.string.entertainment_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"MSNBS" to sharedPref.getInt((R.string.msnbs_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"OTHERS" to sharedPref.getInt((R.string.others_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS)
+        val launchRules:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to sharedPref.getInt((R.string.social_max_launches).toString(),0),"COMMUNICATION" to sharedPref.getInt((R.string.communication_max_launches).toString(),0), "GAMES" to sharedPref.getInt((R.string.games_max_launches).toString(),0),"WHITELISTED" to 0,"VIDEO_PLAYERS_N_COMICS" to sharedPref.getInt((R.string.video_max_launches).toString(),0),"ENTERTAINMENT" to sharedPref.getInt((R.string.entertainment_launches).toString(),0),"MSNBS" to sharedPref.getInt((R.string.msnbs_max_launches).toString(),0),"OTHERS" to sharedPref.getInt((R.string.others_max_launches).toString(),0))
+        val categoryPenalties:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to sharedPref.getInt((R.string.social_penalty).toString(),0),"COMMUNICATION" to sharedPref.getInt((R.string.communication_penalty).toString(),0), "GAMES" to sharedPref.getInt((R.string.games_penalty).toString(),0),"WHITELISTED" to 0,"VIDEO_PLAYERS_N_COMICS" to sharedPref.getInt((R.string.video_penalty).toString(),0),"ENTERTAINMENT" to sharedPref.getInt((R.string.entertainment_penalty).toString(),0),"MSNBS" to sharedPref.getInt((R.string.msnbs_penalty).toString(),0),"OTHERS" to sharedPref.getInt((R.string.others_penalty).toString(),0))
 
         sortedEvents.forEach { (packageName, events) ->
             // Keep track of the current start and end times
@@ -153,20 +155,22 @@ class LocalDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
             if (startTime != 0L && endTime == 0L) {
                 totalTime += end.timeInMillis - startTime
             }
-            val timeInInt=(totalTime/60000).toInt()
+            val timeInSeconds=(totalTime/1000).toInt()
             val app=appDao.isAppExist(packageName)
             if(app!=null) {
-                val stat = Stat(packageName = packageName,appCategory = app.appCategory,appName = app.appName,timeSpent = timeInInt,appLaunches = launches,date = begin.timeInMillis)
+                val stat = Stat(packageName = packageName,appCategory = app.appCategory,appName = app.appName,timeSpent = timeInSeconds,appLaunches = launches,date = begin.timeInMillis)
                 statDao.insert(stat)
-                categoryTimes[app.appCategory]=categoryTimes[app.appCategory]!!+timeInInt
+                categoryTimes[app.appCategory]=categoryTimes[app.appCategory]!!+timeInSeconds
                 categoryLaunches[app.appCategory]=categoryLaunches[app.appCategory]!!+launches
-                categoryTimes["TOTAL"]=categoryTimes["TOTAL"]!!+timeInInt
+                categoryTimes["TOTAL"]=categoryTimes["TOTAL"]!!+timeInSeconds
                 categoryLaunches["TOTAL"]=categoryLaunches["TOTAL"]!!+launches
-                Log.i("LDUWT", "$timeInInt"+"${app.appName}")
+                Log.i("LDUWT", "$timeInSeconds"+"${app.appName}")
             }
         }
         var penaltyToday=0
-        var moneyRaisedToday=60
+        val dailyReward=sharedPref.getInt((R.string.daily_reward).toString(), 0)
+        var moneyToBeUpdated=sharedPref.getInt((R.string.money_to_be_updated).toString(), 0)
+        moneyToBeUpdated+=dailyReward
 for(key in categoryTimes.keys){
 
     if(key=="ENTERTAINMENT"){
@@ -189,7 +193,7 @@ for(key in categoryTimes.keys){
 
         if(dayAfterInstallation>6){
             if(entertainmentTime<timeRules[key]!! && entertainmentLaunches<launchRules[key]!! )
-            moneyRaisedToday+=4
+            moneyToBeUpdated+=sharedPref.getInt((R.string.weekly_reward).toString(),0)
             with(sharedPref.edit()) {
                 this?.putInt((R.string.days_after_installation).toString(), 0)
                 this?.apply()
@@ -231,13 +235,20 @@ for(key in categoryTimes.keys){
     }
 
 }
-        moneyRaisedToday-=penaltyToday
+        if(penaltyToday>dailyReward){
+            penaltyToday=dailyReward
+        }
+        moneyToBeUpdated-=penaltyToday
         with(sharedPref.edit()) {
-            this?.putInt((R.string.money_raised_today).toString(), moneyRaisedToday)
+            this?.putInt((R.string.money_to_be_updated).toString(),moneyToBeUpdated)
             this?.apply()
         }
-        Log.i("LDUWT", "MONEY_RAISED=$moneyRaisedToday Penalty=$penaltyToday")
+        Log.i("LDUWT", "MONEY_RAISED=$moneyToBeUpdated Penalty=$penaltyToday")
         //save penalties
         //calculate money raised
+    }
+
+    companion object {
+        const val ONE_MINUTE_IN_SECONDS = 60
     }
 }

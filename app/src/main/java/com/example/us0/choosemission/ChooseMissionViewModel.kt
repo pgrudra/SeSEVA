@@ -21,7 +21,6 @@ class ChooseMissionViewModel(
     application: Application) : AndroidViewModel(application) {
     private val context = getApplication<Application>().applicationContext
     private val sharedPref = context.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
-
     private val cloudReference = Firebase.database.reference
 
     private val _navigateToSelectedMission=MutableLiveData<DomainActiveMission?>()

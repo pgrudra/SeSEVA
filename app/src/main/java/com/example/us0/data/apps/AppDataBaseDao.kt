@@ -22,6 +22,15 @@ interface AppDataBaseDao{
     @Query("SELECT * FROM list_of_installed_apps_and_their_category WHERE app_category=:cat")
     fun getAll(cat:String): LiveData<List<AppAndCategory>>
 
+    @Query("SELECT * FROM list_of_installed_apps_and_their_category")
+    fun getEntireList(): LiveData<List<AppAndCategory>>
+
+    @Query("SELECT * FROM list_of_installed_apps_and_their_category")
+    suspend fun getList(): List<AppAndCategory>?
+
+    @Query("SELECT * FROM list_of_installed_apps_and_their_category WHERE app_category=:cat")
+    suspend fun getCatApps(cat:String): List<AppAndCategory>?
+
     @Query("DELETE FROM list_of_installed_apps_and_their_category")
     suspend fun clear()
 

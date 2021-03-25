@@ -9,6 +9,7 @@ data class DomainClosedMission(
     val missionName: String,
     val deadline: Long,
     val usersActive: Int,
+    val rulesNumber: Int,
     val sponsorName: String,
     val sponsorDescription: String,
     val missionDescription: String,

@@ -36,6 +36,7 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
     private val userId = Firebase.auth.currentUser?.uid
     private val cloudReference = Firebase.database.reference
     var lastMissionNumber: Int? = null
+    var rulesNumber:Int=0
     private val _viGreatWork = MutableLiveData<Int>()
     val viGreatWork: LiveData<Int>
         get() = _viGreatWork
@@ -43,6 +44,9 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
     val viContribution: LiveData<Int>
         get() = _viContribution
 
+    private val _enableChooseThisMissionButton= MutableLiveData<Boolean>()
+    val enableChooseThisMissionButton: LiveData<Boolean>
+        get() = _enableChooseThisMissionButton
     private val _goToHome = MutableLiveData<Boolean>()
     val goToHome: LiveData<Boolean>
         get() = _goToHome
@@ -76,6 +80,7 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
         get()=_userName
 
     init {
+        _userName.value=context.getString(R.string.loading)
         loadUserName()
     }
 
@@ -92,7 +97,6 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                         this?.putString((com.example.us0.R.string.user_name).toString(), name.toString())
                         this?.apply()
                     }
-                    userName.value?.let { Log.i("ni", it) }
                     loadLastMission()
                 }
                 else
@@ -112,7 +116,9 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
         reference1?.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 lastMissionNumber = dataSnapshot.value.toString().toIntOrNull()
+
                 if (lastMissionNumber != null) {
+                    _enableChooseThisMissionButton.value=true
                     val referenceDeadline = userId?.let {
                         cloudReference.child("Missions").child((lastMissionNumber.toString()))
                             .child("deadline")
@@ -174,6 +180,8 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                             val mission = dataSnapshot.getValue<NetworkMission>()
                             _lastMissionName.value=mission?.missionName
                            _lastMissionSponsorName.value=" "+mission?.sponsorName
+                            rulesNumber=mission?.rulesNumber?.toInt()?:0
+
                             val reference4 = cloudReference.child("Users Active").child(lastMissionNumber.toString())
                             reference4.addListenerForSingleValueEvent(object : ValueEventListener {
                                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -269,9 +277,14 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                 }
                 this?.apply()
             }
-        if (checkIfRulesShown()) {
-            _goToHome.value = true
+        with(sharedPref?.edit()) {
+            this?.putInt(
+                (R.string.rules_number).toString(),
+                rulesNumber
+            )
+            this?.apply()
         }
+            _goToHome.value = true
     }
     private fun checkIfRulesShown():Boolean {
         val rulesShown = sharedPref?.getBoolean((R.string.rules_shown).toString(), false)

@@ -23,7 +23,7 @@
             android:background="@drawable/login_resend_active"
             android:onClick="@{()->LastMissionViewModel.chooseThisMission()}"
             android:text="@string/continue_text"
-
+            android:enabled="false"
             android:textColor="@color/nav_color"
             app:layout_constraintBottom_toTopOf="@+id/choose_a_different_mission"
             tools:layout_editor_absoluteX="16dp" />

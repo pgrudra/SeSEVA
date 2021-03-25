@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Process
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -19,6 +20,7 @@ import com.example.us0.R
 import com.example.us0.data.apps.AppAndCategory
 import com.example.us0.data.apps.AppDataBaseDao
 import com.example.us0.data.missions.*
+import com.example.us0.foregroundnnotifications.TestService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -39,6 +41,9 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     private val _goToSignOut = MutableLiveData<Boolean>()
     val goToSignOut: LiveData<Boolean>
         get() = _goToSignOut
+    private val _goToRules = MutableLiveData<Boolean>()
+    val goToRules: LiveData<Boolean>
+        get() = _goToRules
     init{
         checkPermission()
     }
@@ -48,13 +53,26 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
 
     private fun notifyAndServiceAndRefreshAppsDatabase() {
         viewModelScope.launch {
-            notifyMissionClosedIfAny()
             refreshAppsDatabase()
-            //checkService()
+            notifyMissionClosedIfAny()
+            startService()
+        }
+    }
+
+    private fun startService() {
+        Intent(context, TestService::class.java).also{
+            it.action= Actions.START.name
+            if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
+                context?.startForegroundService(it)
+            }
+            else{
+                context?.startService(it)
+            }
         }
     }
 
     private suspend fun refreshAppsDatabase() {
+        Log.i("HVM","refreshApp")
         val main = Intent(Intent.ACTION_MAIN, null)
         main.addCategory(Intent.CATEGORY_LAUNCHER)
         val launchables = pm.queryIntentActivities(main, 0)
@@ -62,7 +80,8 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
 
         if(checkInternet()){
             withContext(Dispatchers.IO) {
-                val otherCategory:List<AppAndCategory>? =appDatabase.getAll("OTHERS").value
+                val otherCategory:List<AppAndCategory>? =appDatabase.getCatApps("OTHERS")
+                Log.i("HVM","$otherCategory")
                 if(otherCategory!=null){
                     for(i in otherCategory){
                         val nameOfPackage: String =i.packageName
@@ -226,11 +245,11 @@ val mission=database.notifyIfClosed(true)
                 .build()
             WorkManager.getInstance(context).enqueueUniquePeriodicWork("categoryRefresh",
                 ExistingPeriodicWorkPolicy.KEEP,categoryRefreshRequest)
-
+val minute:Int=(0..2).random()
             val currentTime= Calendar.getInstance()
             val twelveOne=Calendar.getInstance()
             twelveOne.set(Calendar.HOUR_OF_DAY,0)
-            twelveOne.set(Calendar.MINUTE,1)
+            twelveOne.set(Calendar.MINUTE,minute)
             twelveOne.add(Calendar.DATE,1)
             Log.i("LODR", Timestamp(twelveOne.timeInMillis).toString())
             Log.i("LODP", Timestamp(currentTime.timeInMillis).toString())
@@ -244,7 +263,8 @@ val mission=database.notifyIfClosed(true)
                 .addTag("cloudDateBase")
                 .build()
             WorkManager.getInstance(context).beginUniqueWork("databaseUpdate",ExistingWorkPolicy.KEEP,updateStatsLocalRequest).then(updateStatsCloudRequest).enqueue()
-        notifyAndServiceAndRefreshAppsDatabase()
+        Log.i("HVM","here")
+            notifyAndServiceAndRefreshAppsDatabase()
         }
         else {
             _goToPermissionScreen.value = true
@@ -261,6 +281,13 @@ val mission=database.notifyIfClosed(true)
 
     fun onGoToSignOutComplete() {
         _goToSignOut.value = false
+    }
+
+    fun onGoToRules(){
+        _goToRules.value=true
+    }
+    fun onGoToRulesComplete(){
+        _goToRules.value=false
     }
     companion object {
         private const val GOOGLE_URL = "https://play.google.com/store/apps/details?id="
