@@ -31,16 +31,20 @@ import java.util.concurrent.TimeUnit
 
 class HomeViewModel(private val database: MissionsDatabaseDao, private val appDatabase: AppDataBaseDao, application: Application, private val pm: PackageManager) : AndroidViewModel(application) {
     private val context = getApplication<Application>().applicationContext
+    private val sharedPref = context.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
     private val _notifyClosedMission = MutableLiveData<DomainClosedMission?>()
     val notifyClosedMission : LiveData<DomainClosedMission?>
          get() = _notifyClosedMission
     private val _goToPermissionScreen = MutableLiveData<Boolean>()
     val goToPermissionScreen:LiveData<Boolean>
         get()=_goToPermissionScreen
+    private val _goToChooseMission=MutableLiveData<Boolean>()
+    val goToChooseMission:LiveData<Boolean>
+        get()=_goToChooseMission
 
-    private val _goToSignOut = MutableLiveData<Boolean>()
-    val goToSignOut: LiveData<Boolean>
-        get() = _goToSignOut
+    private val _goToDetailsScreen =MutableLiveData<DomainActiveMission?>()
+    val goToDetailsScreen:LiveData<DomainActiveMission?>
+        get() = _goToDetailsScreen
     private val _goToRules = MutableLiveData<Boolean>()
     val goToRules: LiveData<Boolean>
         get() = _goToRules
@@ -275,12 +279,30 @@ val minute:Int=(0..2).random()
         _goToPermissionScreen.value=false
     }
 
-    fun onGoToSignOut() {
-        _goToSignOut.value = true
+    fun onGoToDetailsScreen() {
+        viewModelScope.launch {
+            retrieveChosenMission()
+        }
     }
 
-    fun onGoToSignOutComplete() {
-        _goToSignOut.value = false
+    private suspend fun retrieveChosenMission() {
+        val chosenMissionNumber=sharedPref?.getInt((R.string.chosen_mission_number).toString(), 0) ?: 0
+        val chosenMission=database.doesMissionExist(chosenMissionNumber)?.asActiveDomainModel()
+
+        if(chosenMission!=null){
+            _goToDetailsScreen.value=chosenMission
+        }
+        else{
+            //this case must never come
+            _goToChooseMission.value=true
+        }
+    }
+
+    fun onGoToChosenMissionComplete(){
+        _goToChooseMission.value=false
+    }
+    fun onGoToDetailsScreenComplete() {
+        _goToDetailsScreen.value=null
     }
 
     fun onGoToRules(){

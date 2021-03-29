@@ -131,4 +131,5 @@
     <string name="categoriy_social">Weather, Travel, Sports, Productivity, Photography, Pdde, Parenting, Medical, Navigation, Health, Finance</string>
     <string name="category_refresh">categoryRefresh</string>
     <string name="loading">Loading</string>
+    <string name="faqs">FAQs</string>
 </resources>

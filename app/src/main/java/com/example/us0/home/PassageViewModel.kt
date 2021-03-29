@@ -68,15 +68,23 @@ class PassageViewModel(private val database: MissionsDatabaseDao, application: A
         _goToChooseMissionFragment.value=false
     }
     private fun checkIfRulesShown():Boolean {
-        val rulesShown = sharedPref?.getBoolean((R.string.rules_shown).toString(), false)
+       /* val rulesShown = sharedPref?.getBoolean((R.string.rules_shown).toString(), false)
         return if(rulesShown!=true){
             _goToRules.value=true
             false
-        } else true
+        } else true*/
+        val rN=sharedPref.getInt((R.string.rules_number).toString(),-1)
+        val sRN=sharedPref.getInt((R.string.saved_rules_number).toString(),-2)
+        return if(rN==sRN){
+            true
+        } else{
+            _goToRules.value=true
+            false
+        }
 
     }
     fun goToRulesComplete(){
-        _goToRules.value=true
+        _goToRules.value=false
     }
 
     init{

@@ -4,12 +4,15 @@ import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.example.us0.data.AllDatabase
+import com.example.us0.data.contributions.MissionContribution
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParameters): CoroutineWorker(appContext, workerParams) {
@@ -105,6 +108,15 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                                                     with(sharedPref.edit()) {
                                                         this?.putInt((R.string.money_to_be_updated).toString(), 0)
                                                         this?.apply()
+                                                    }
+                                                    //update mission Contribution Database
+                                                    launch (Dispatchers.IO) {
+                                                        val dao = AllDatabase.getInstance(applicationContext).MissionsDatabaseDao
+                                                        val mC = dao.doesMissionExist(chosenMission)
+                                                        if(mC!=null){
+                                                            mC.contribution=missionContribution
+                                                            dao.update(mC)
+                                                        }
                                                     }
                                                 }
                                             }

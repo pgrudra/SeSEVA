@@ -1,5 +1,6 @@
 package com.example.us0.home.rules
 
+import android.app.AppOpsManager
 import android.app.Application
 import android.content.Context
 import android.content.Intent
@@ -9,6 +10,8 @@ import android.content.pm.ResolveInfo
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.os.Build
+import android.os.Process
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -20,11 +23,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.work.*
+import com.example.us0.Actions
 import com.example.us0.CategoryRefreshWorker
 import com.example.us0.R
 import com.example.us0.allotGroup
 import com.example.us0.data.apps.AppAndCategory
 import com.example.us0.data.apps.AppDataBaseDao
+import com.example.us0.foregroundnnotifications.TestService
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
@@ -48,6 +53,10 @@ class Rules2ViewModel(
     private val _toHomeFragment = MutableLiveData<Boolean>()
     val toHomeFragment: LiveData<Boolean>
         get() = _toHomeFragment
+
+    private val _toolBarNDrawer = MutableLiveData<Boolean>()
+    val toolBarNDrawer: LiveData<Boolean>
+        get() = _toolBarNDrawer
 
     private val _social = MutableLiveData<Boolean>()
     val social: LiveData<Boolean>
@@ -153,6 +162,9 @@ class Rules2ViewModel(
     private val _scrimVisible = MutableLiveData<Boolean>()
     val scrimVisible: LiveData<Boolean>
         get() = _scrimVisible
+    private val _iUnderstandRulesVisible = MutableLiveData<Boolean>()
+    val iUnderstandRulesVisible: LiveData<Boolean>
+        get() = _iUnderstandRulesVisible
     private val _noInternet = MutableLiveData<Boolean>()
     val noInternet: LiveData<Boolean>
         get() = _noInternet
@@ -165,20 +177,26 @@ class Rules2ViewModel(
     val whitelistedApps=database.getAll("WHITELISTED")
     val otherApps=database.getAll("OTHERS")
     init {
-
+        checkUsageAccessPermission()
          when {
             checkIfRulesShown() -> {
-                Log.i("RVM","CIRS")
+
                 _scrimVisible.value=false
+                //_toolBarNDrawer.value=true
+                Log.i("RVM","${_toolBarNDrawer.value}")
                 loadRules()
+                _iUnderstandRulesVisible.value=false
             }
             checkInternet() -> {
                 Log.i("RVM","CI")
                 getAndLoadRules()
                 getApps()
+                _iUnderstandRulesVisible.value=true
+               // _toolBarNDrawer.value=false
             }
             else -> {
                 _noInternet.value=true
+                //_toolBarNDrawer.value=false
             }
         }
 
@@ -191,6 +209,25 @@ class Rules2ViewModel(
         _msnbs.value=false
         _others.value=false
 
+    }
+    private fun checkUsageAccessPermission() {
+        val appOps = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+        val mode = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            context.packageName?.let {
+                appOps.unsafeCheckOpNoThrow(
+                    "android:get_usage_stats",
+                    Process.myUid(), it
+                )
+            }
+        } else {
+            context?.packageName?.let {
+                appOps.checkOpNoThrow(
+                    "android:get_usage_stats",
+                    Process.myUid(), it
+                )
+            }
+        }
+        _toolBarNDrawer.value = mode == AppOpsManager.MODE_ALLOWED
     }
 
     private fun loadRules() {
@@ -334,10 +371,10 @@ class Rules2ViewModel(
     }
 
     fun goToHome() {
-        with(sharedPref?.edit()) {
+        /*with(sharedPref?.edit()) {
             this?.putBoolean((R.string.rules_shown).toString(), true)
             this?.apply()
-        }
+        }*/
         _toHomeFragment.value = true
     }
 

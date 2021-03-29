@@ -1,7 +1,9 @@
 package com.example.us0.choosemission
 
+import android.app.AppOpsManager
 import android.app.Application
 import android.content.Context
+import android.os.Process
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.us0.R
@@ -26,7 +28,9 @@ class ChooseMissionViewModel(
     private val _navigateToSelectedMission=MutableLiveData<DomainActiveMission?>()
     val navigateToSelectedMission:LiveData<DomainActiveMission?>
         get()=_navigateToSelectedMission
-
+    private val _drawer = MutableLiveData<Boolean>()
+    val drawer: LiveData<Boolean>
+        get() = _drawer
     private val nowMinusOneDay= Calendar.getInstance().timeInMillis-24*60*60*1000
     val activeMissions:LiveData<List<DomainActiveMission>> = Transformations.map(database.getAllActiveMissions(nowMinusOneDay)){it.asActiveDomainModel()}
     fun toDetailMission(mission:DomainActiveMission){
@@ -124,6 +128,26 @@ class ChooseMissionViewModel(
     init {
         Log.i("nji","hhuuh")
         checkIfUpdated()
+        checkUsageAccessPermission()
+    }
 
+    private fun checkUsageAccessPermission() {
+        val appOps = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+        val mode = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            context.packageName?.let {
+                appOps.unsafeCheckOpNoThrow(
+                    "android:get_usage_stats",
+                    Process.myUid(), it
+                )
+            }
+        } else {
+            context?.packageName?.let {
+                appOps.checkOpNoThrow(
+                    "android:get_usage_stats",
+                    Process.myUid(), it
+                )
+            }
+        }
+        _drawer.value = mode == AppOpsManager.MODE_ALLOWED
     }
 }

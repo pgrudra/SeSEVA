@@ -8,18 +8,21 @@ import com.example.us0.data.appcategories.CategoryStat
 import com.example.us0.data.appcategories.CategoryStatDatabaseDao
 import com.example.us0.data.apps.AppAndCategory
 import com.example.us0.data.apps.AppDataBaseDao
+import com.example.us0.data.contributions.MissionContribution
+import com.example.us0.data.contributions.MissionContributionDatabaseDao
 import com.example.us0.data.missions.Mission
 import com.example.us0.data.missions.MissionsDatabaseDao
 import com.example.us0.data.stats.Stat
 import com.example.us0.data.stats.StatDataBaseDao
 
-@Database(entities = [AppAndCategory::class, Mission::class, Stat::class, CategoryStat::class], version = 5, exportSchema = false)
+@Database(entities = [AppAndCategory::class, Mission::class, Stat::class, CategoryStat::class], version = 7, exportSchema = false)
 abstract class AllDatabase : RoomDatabase() {
 
     abstract val AppDatabaseDao: AppDataBaseDao
     abstract val MissionsDatabaseDao:MissionsDatabaseDao
     abstract val StatDataBaseDao:StatDataBaseDao
     abstract val CategoryStatDatabaseDao:CategoryStatDatabaseDao
+
     companion object {
         @Volatile
         private var INSTANCE: com.example.us0.data.AllDatabase? = null

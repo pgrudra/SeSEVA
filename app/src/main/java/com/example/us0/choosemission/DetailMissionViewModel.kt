@@ -1,10 +1,12 @@
 package com.example.us0.choosemission
 
+import android.app.AppOpsManager
 import android.app.Application
 import android.content.Context
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.os.Process
 import android.text.Html
 import android.text.Spannable
 import android.text.SpannableString
@@ -25,10 +27,11 @@ import java.util.*
 
 class DetailMissionViewModel(mission:DomainActiveMission, application: Application):AndroidViewModel(application) {
     private val context = getApplication<Application>().applicationContext
-    private val _selectedMission=MutableLiveData<DomainActiveMission>()
+
     private val sharedPref = context.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
     private val cloudReference = Firebase.database.reference
     private val user = Firebase.auth.currentUser
+    private val _selectedMission=MutableLiveData<DomainActiveMission>()
     val selectedMission:LiveData<DomainActiveMission>
         get()=_selectedMission
     private val _showDetailMissionDescription=MutableLiveData<Boolean>()
@@ -58,12 +61,35 @@ class DetailMissionViewModel(mission:DomainActiveMission, application: Applicati
     private val _toHomeFragment=MutableLiveData<Boolean>()
     val toHomeFragment:LiveData<Boolean>
         get()=_toHomeFragment
+    private val _drawer=MutableLiveData<Boolean>()
+    val drawer:LiveData<Boolean>
+        get()=_drawer
     init {
     _selectedMission.value=mission
     _showDetailMissionDescription.value=false
-    makeTriggerText()
+    checkUsageAccessPermission()
+        makeTriggerText()
 
 }
+    private fun checkUsageAccessPermission() {
+        val appOps = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+        val mode = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            context.packageName?.let {
+                appOps.unsafeCheckOpNoThrow(
+                    "android:get_usage_stats",
+                    Process.myUid(), it
+                )
+            }
+        } else {
+            context?.packageName?.let {
+                appOps.checkOpNoThrow(
+                    "android:get_usage_stats",
+                    Process.myUid(), it
+                )
+            }
+        }
+        _drawer.value = mode == AppOpsManager.MODE_ALLOWED
+    }
 
     private fun makeTriggerText() {
         val now= Calendar.getInstance().timeInMillis

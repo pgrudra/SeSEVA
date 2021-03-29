@@ -15,7 +15,8 @@ data class DomainClosedMission(
     val missionDescription: String,
     val totalMoneyRaised: Int,
     val category:String,
-    val sponsorSite:String
+    val sponsorSite:String,
+    val contribution:Int
 ): Parcelable {
     val deadlineAsDate:String
         get()=SimpleDateFormat("dd/MM/yyyy").format(deadline)

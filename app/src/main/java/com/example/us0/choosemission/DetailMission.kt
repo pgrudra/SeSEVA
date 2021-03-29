@@ -1,5 +1,6 @@
 package com.example.us0.choosemission
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -16,7 +17,9 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.us0.R
+import com.example.us0.data.missions.DomainActiveMission
 import com.example.us0.databinding.FragmentDetailMissionBinding
+import com.example.us0.installedapps.DrawerLocker
 import com.example.us0.ui.login.NoInternetDialogFragment
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -39,10 +42,15 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
             false
         )
         val application = requireNotNull(this.activity).application
-        val mission = DetailMissionArgs.fromBundle(requireArguments()).selectedMission
+        val sharedPref = activity?.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
+        val mission:DomainActiveMission = DetailMissionArgs.fromBundle(requireArguments()).selectedMission
+        val showImage=DetailMissionArgs.fromBundle(requireArguments()).showImage
         viewModelFactory = DetailMissionViewModelFactory(mission, application)
-        viewModel =
-            ViewModelProvider(this, viewModelFactory).get(DetailMissionViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(DetailMissionViewModel::class.java)
+        if(showImage){
+            //binding.Img.visibility=View.VISIBLE
+            binding.chooseThisMission.visibility=View.GONE
+        }
         binding.selectedMissionViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         binding.toolbar.title = mission.missionName
@@ -53,6 +61,16 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
             binding.expandOrContract.visibility = View.GONE
             binding.missionDescription.text = mission.missionDescription
         }
+        viewModel.drawer.observe(viewLifecycleOwner, Observer<Boolean> { visible ->
+            if (visible) {
+                binding.toolbar.setNavigationIcon(R.drawable.ic_navdrawer_icon)
+                binding.toolbar.setNavigationOnClickListener { v -> (activity as DrawerLocker?)!!.openCloseNavigationDrawer(v) }
+                (activity as DrawerLocker?)!!.setDrawerEnabled(true)
+                Log.i("RF","$visible")
+            } else {
+                (activity as DrawerLocker?)!!.setDrawerEnabled(false)
+            }
+        })
         viewModel.showDetailMissionDescription.observe(
             viewLifecycleOwner,
             Observer<Boolean> { show ->

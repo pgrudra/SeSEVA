@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.us0.R
 import com.example.us0.data.AllDatabase
-import com.example.us0.databinding.FragmentHomeBinding
 import com.example.us0.databinding.FragmentPassageBinding
 
 
@@ -59,7 +58,7 @@ class PassageFragment : Fragment() {
         viewModel.goToRules.observe(viewLifecycleOwner,Observer<Boolean>{goto->
             if(goto){
                 findNavController().navigate(PassageFragmentDirections.actionPassageFragmentToRulesFragment2())
-                viewModel
+                viewModel.goToRulesComplete()
             }
         })
         return binding.root

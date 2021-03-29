@@ -2,9 +2,14 @@ package com.example.us0.home.rules
 
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.marginTop
+import androidx.core.view.updateLayoutParams
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -17,7 +22,10 @@ import com.example.us0.adapters.InstalledAppAdapter
 import com.example.us0.data.AllDatabase
 import com.example.us0.databinding.FragmentRules2Binding
 import com.example.us0.foregroundnnotifications.InfoPopUpWindow
+import com.example.us0.installedapps.DrawerLocker
+import com.example.us0.installedapps.HomeActivity
 import com.example.us0.ui.login.NoInternetDialogFragment
+
 
 class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListener,View.OnClickListener {
     private lateinit var binding:FragmentRules2Binding
@@ -42,13 +50,13 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
                 binding.socialAppsList.visibility = View.VISIBLE
                 binding.social.setBackgroundResource(R.drawable.all_corner_rounded_highlighted_4dp)
                 binding.iSocial.visibility = View.VISIBLE
-                binding.social.elevation=elevationSelectedCard
+                binding.social.elevation = elevationSelectedCard
                 binding.socialExpandOrContract.setImageResource(R.drawable.ic_collapse_vector)
             } else {
                 binding.socialAppsList.visibility = View.GONE
                 binding.social.setBackgroundResource(R.drawable.all_corner_rounded_4dp)
                 binding.iSocial.visibility = View.GONE
-                binding.social.elevation=elevationUnSelectedCard
+                binding.social.elevation = elevationUnSelectedCard
                 binding.socialExpandOrContract.setImageResource(R.drawable.ic_expand_vector)
 
             }
@@ -57,13 +65,13 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
             if (expand) {
                 binding.communicationAppsList.visibility = View.VISIBLE
                 binding.iCommunication.visibility = View.VISIBLE
-                binding.communication.elevation=elevationSelectedCard
+                binding.communication.elevation = elevationSelectedCard
                 binding.communication.setBackgroundResource(R.drawable.all_corner_rounded_highlighted_4dp)
                 binding.communicationExpandOrContract.setImageResource(R.drawable.ic_collapse_vector)
             } else {
                 binding.communicationAppsList.visibility = View.GONE
                 binding.iCommunication.visibility = View.GONE
-                binding.communication.elevation=elevationUnSelectedCard
+                binding.communication.elevation = elevationUnSelectedCard
                 binding.communication.setBackgroundResource(R.drawable.all_corner_rounded_4dp)
                 binding.communicationExpandOrContract.setImageResource(R.drawable.ic_expand_vector)
 
@@ -73,13 +81,13 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
             if (expand) {
                 binding.gamesAppsList.visibility = View.VISIBLE
                 binding.iGames.visibility = View.VISIBLE
-                binding.games.elevation=elevationSelectedCard
+                binding.games.elevation = elevationSelectedCard
                 binding.games.setBackgroundResource(R.drawable.all_corner_rounded_highlighted_4dp)
                 binding.gamesExpandOrContract.setImageResource(R.drawable.ic_collapse_vector)
             } else {
                 binding.gamesAppsList.visibility = View.GONE
                 binding.iGames.visibility = View.GONE
-                binding.games.elevation=elevationUnSelectedCard
+                binding.games.elevation = elevationUnSelectedCard
                 binding.games.setBackgroundResource(R.drawable.all_corner_rounded_4dp)
                 binding.gamesExpandOrContract.setImageResource(R.drawable.ic_expand_vector)
 
@@ -89,13 +97,13 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
             if (expand) {
                 binding.videoAppsList.visibility = View.VISIBLE
                 binding.iVideo.visibility = View.VISIBLE
-                binding.video.elevation=elevationSelectedCard
+                binding.video.elevation = elevationSelectedCard
                 binding.video.setBackgroundResource(R.drawable.all_corner_rounded_highlighted_4dp)
                 binding.videoExpandOrContract.setImageResource(R.drawable.ic_collapse_vector)
             } else {
                 binding.videoAppsList.visibility = View.GONE
                 binding.iVideo.visibility = View.GONE
-                binding.video.elevation=elevationUnSelectedCard
+                binding.video.elevation = elevationUnSelectedCard
                 binding.video.setBackgroundResource(R.drawable.all_corner_rounded_4dp)
                 binding.videoExpandOrContract.setImageResource(R.drawable.ic_expand_vector)
 
@@ -105,13 +113,13 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
             if (expand) {
                 binding.msnbsAppsList.visibility = View.VISIBLE
                 binding.iMsnbs.visibility = View.VISIBLE
-                binding.msnbs.elevation=elevationSelectedCard
+                binding.msnbs.elevation = elevationSelectedCard
                 binding.msnbs.setBackgroundResource(R.drawable.all_corner_rounded_highlighted_4dp)
                 binding.msnbsExpandOrContract.setImageResource(R.drawable.ic_collapse_vector)
             } else {
                 binding.msnbsAppsList.visibility = View.GONE
                 binding.iMsnbs.visibility = View.GONE
-                binding.msnbs.elevation=elevationUnSelectedCard
+                binding.msnbs.elevation = elevationUnSelectedCard
                 binding.msnbs.setBackgroundResource(R.drawable.all_corner_rounded_4dp)
                 binding.msnbsExpandOrContract.setImageResource(R.drawable.ic_expand_vector)
 
@@ -121,13 +129,13 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
             if (expand) {
                 binding.whitelistedAppsList.visibility = View.VISIBLE
                 binding.iWhitelisted.visibility = View.VISIBLE
-                binding.whitelisted.elevation=elevationSelectedCard
+                binding.whitelisted.elevation = elevationSelectedCard
                 binding.whitelisted.setBackgroundResource(R.drawable.all_corner_rounded_highlighted_4dp)
                 binding.whitelistedExpandOrContract.setImageResource(R.drawable.ic_collapse_vector)
             } else {
                 binding.whitelistedAppsList.visibility = View.GONE
                 binding.iWhitelisted.visibility = View.GONE
-                binding.whitelisted.elevation=elevationUnSelectedCard
+                binding.whitelisted.elevation = elevationUnSelectedCard
                 binding.whitelisted.setBackgroundResource(R.drawable.all_corner_rounded_4dp)
                 binding.whitelistedExpandOrContract.setImageResource(R.drawable.ic_expand_vector)
 
@@ -137,13 +145,13 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
             if (expand) {
                 binding.othersAppsList.visibility = View.VISIBLE
                 binding.iOthers.visibility = View.VISIBLE
-                binding.others.elevation=elevationSelectedCard
+                binding.others.elevation = elevationSelectedCard
                 binding.others.setBackgroundResource(R.drawable.all_corner_rounded_highlighted_4dp)
                 binding.othersExpandOrContract.setImageResource(R.drawable.ic_collapse_vector)
             } else {
                 binding.othersAppsList.visibility = View.GONE
                 binding.iOthers.visibility = View.GONE
-                binding.others.elevation=elevationUnSelectedCard
+                binding.others.elevation = elevationUnSelectedCard
                 binding.others.setBackgroundResource(R.drawable.all_corner_rounded_4dp)
                 binding.othersExpandOrContract.setImageResource(R.drawable.ic_expand_vector)
 
@@ -153,13 +161,13 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
             if (expand) {
                 binding.entertainmentAppsList.visibility = View.VISIBLE
                 binding.iEntertainment.visibility = View.VISIBLE
-                binding.entertainment.elevation=elevationSelectedCard
+                binding.entertainment.elevation = elevationSelectedCard
                 binding.entertainment.setBackgroundResource(R.drawable.all_corner_rounded_highlighted_4dp)
                 binding.entertainmentExpandOrContract.setImageResource(R.drawable.ic_collapse_vector)
             } else {
                 binding.entertainmentAppsList.visibility = View.GONE
                 binding.iEntertainment.visibility = View.GONE
-                binding.entertainment.elevation=elevationUnSelectedCard
+                binding.entertainment.elevation = elevationUnSelectedCard
                 binding.entertainment.setBackgroundResource(R.drawable.all_corner_rounded_4dp)
                 binding.entertainmentExpandOrContract.setImageResource(R.drawable.ic_expand_vector)
 
@@ -191,6 +199,36 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
             if (!visible) {
                 binding.introScrim.visibility = View.GONE
                 binding.toHome.isEnabled = true
+                //binding.toHome.visibility=View.GONE
+            }
+        })
+        viewModel.iUnderstandRulesVisible.observe(viewLifecycleOwner, Observer<Boolean> { visible ->
+            if (!visible) {
+                binding.toHome.visibility=View.GONE
+            }
+            if(visible){
+                binding.toHome.visibility=View.VISIBLE
+            }
+        })
+        //If scrim becomes invisible and toolbar is present and iUnder... is invisible, then show bottom navigation.
+        viewModel.toolBarNDrawer.observe(viewLifecycleOwner, Observer<Boolean> { visible ->
+            if (visible) {
+                binding.toolbar.visibility = View.VISIBLE
+                binding.toolbar.setNavigationIcon(R.drawable.ic_navdrawer_icon)
+                binding.toolbar.setNavigationOnClickListener { v -> (activity as DrawerLocker?)!!.openCloseNavigationDrawer(v) }
+                (activity as DrawerLocker?)!!.setDrawerEnabled(true)
+                val params=LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT)
+                val r=activity?.resources
+                val px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24F,r?.displayMetrics)
+                params.setMargins(0,0,0,0)
+                binding.textView5.layoutParams = params
+                Log.i("RF","$visible")
+            } else {
+                (activity as DrawerLocker?)!!.setDrawerEnabled(false)
+                binding.toolbar.visibility = View.GONE
+                binding.toHome.visibility=View.VISIBLE
+                Log.i("RF","$visible")
             }
         })
         Log.i("fg", "sdf")
@@ -310,6 +348,7 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
         binding.iMsnbs.setOnClickListener(this)
         binding.iWhitelisted.setOnClickListener(this)
         binding.iOthers.setOnClickListener(this)
+        //viewModel.initiate()
         return binding.root
     }
     private fun showNoInternetConnectionDialog() {
