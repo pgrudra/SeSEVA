@@ -4,10 +4,8 @@ import android.app.AppOpsManager
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
-import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
@@ -22,11 +20,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.work.*
-import com.example.us0.Actions
-import com.example.us0.CategoryRefreshWorker
-import com.example.us0.R
-import com.example.us0.allotGroup
+import com.example.us0.*
 import com.example.us0.data.apps.AppAndCategory
 import com.example.us0.data.apps.AppDataBaseDao
 import com.example.us0.foregroundnnotifications.TestService
@@ -36,9 +30,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
-import timber.log.Timber
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 class Rules2ViewModel(
     private val database: AppDataBaseDao,
@@ -177,7 +169,7 @@ class Rules2ViewModel(
     val whitelistedApps=database.getAll("WHITELISTED")
     val otherApps=database.getAll("OTHERS")
     init {
-        checkUsageAccessPermission()
+        val serviceRestart=checkUsageAccessPermission()
          when {
             checkIfRulesShown() -> {
 
@@ -189,7 +181,7 @@ class Rules2ViewModel(
             }
             checkInternet() -> {
                 Log.i("RVM","CI")
-                getAndLoadRules()
+                getAndLoadRules(serviceRestart)
                 getApps()
                 _iUnderstandRulesVisible.value=true
                // _toolBarNDrawer.value=false
@@ -210,7 +202,7 @@ class Rules2ViewModel(
         _others.value=false
 
     }
-    private fun checkUsageAccessPermission() {
+    private fun checkUsageAccessPermission():Boolean {
         val appOps = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
         val mode = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
             context.packageName?.let {
@@ -227,7 +219,14 @@ class Rules2ViewModel(
                 )
             }
         }
-        _toolBarNDrawer.value = mode == AppOpsManager.MODE_ALLOWED
+        return if (mode == AppOpsManager.MODE_ALLOWED){
+            _toolBarNDrawer.value=true
+            true
+        } else{
+            _toolBarNDrawer.value=false
+            false
+        }
+
     }
 
     private fun loadRules() {
@@ -261,7 +260,7 @@ class Rules2ViewModel(
         _contributeSentence.value=spannable1
     }
 
-    private fun getAndLoadRules() {
+    private fun getAndLoadRules(serviceRestart: Boolean) {
         val rulesNumber=sharedPref.getInt((R.string.rules_number).toString(), 0)
         cloudReference.child("rules").child(rulesNumber.toString()).get().addOnSuccessListener {
             val sMT=it.child("socialMaxTime").value.toString()
@@ -366,7 +365,25 @@ class Rules2ViewModel(
                 this?.putInt((R.string.saved_rules_number).toString(), rulesNumber)
                 this?.apply()
             }
+            if(serviceRestart){
+                actionOnService(Actions.STOP)
+                actionOnService(Actions.START)
+                Log.i("RVM","serviceRestarted")
+            }
             Log.i("RVM","rulesNumber=$rulesNumber")
+        }
+    }
+
+    private fun actionOnService(action: Actions) {
+        if(getServiceState(context)==ServiceState.STOPPED && action==Actions.STOP) return
+        Intent(context, TestService::class.java).also{
+            it.action= Actions.START.name
+            if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
+                context?.startForegroundService(it)
+            }
+            else{
+                context?.startService(it)
+            }
         }
     }
 

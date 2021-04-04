@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,11 +15,7 @@ import com.example.us0.R
 import com.example.us0.adapters.ActiveMissionsAdapter
 import com.example.us0.data.AllDatabase
 import com.example.us0.databinding.FragmentChooseMissionBinding
-import com.example.us0.databinding.FragmentInstalledAppsBinding
-import com.example.us0.foregroundnnotifications.ForegroundServiceDirections
-import com.example.us0.installedapps.DrawerLocker
-import com.example.us0.installedapps.InstalledAppsViewModel
-import com.example.us0.installedapps.InstalledAppsViewModelFactory
+import com.example.us0.home.DrawerLocker
 
 class ChooseMission : Fragment() {
     private lateinit var binding: FragmentChooseMissionBinding
@@ -41,8 +36,7 @@ class ChooseMission : Fragment() {
         val application = requireNotNull(this.activity).application
         val datasource = AllDatabase.getInstance(application).MissionsDatabaseDao
         viewModelFactory = ChooseMissionViewModelFactory(datasource, application)
-        viewModel =
-            ViewModelProvider(this, viewModelFactory).get(ChooseMissionViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(ChooseMissionViewModel::class.java)
         binding.chooseMissionViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         viewModel.navigateToSelectedMission.observe(viewLifecycleOwner, Observer {

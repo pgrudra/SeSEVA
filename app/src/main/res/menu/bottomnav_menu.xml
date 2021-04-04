@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item
+    android:id="@+id/detailMission"
+    android:title="@string/charity"
+    android:icon="@drawable/ic_launcher_foreground" />
+    <item
+        android:id="@+id/featsFragment"
+        android:title="@string/feats"
+        android:icon="@drawable/ic_launcher_foreground"/>
+    <item
+        android:id="@+id/rulesFragment2"
+        android:title="@string/rules"
+        android:icon="@drawable/ic_launcher_foreground"/>
+    <item
+        android:id="@+id/usageStatsFragment"
+        android:title="@string/usage"
+        android:icon="@drawable/ic_launcher_foreground"/>
+
+</menu>

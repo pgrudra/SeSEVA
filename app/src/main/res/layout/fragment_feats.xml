@@ -2,19 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <data>
-
         <variable
-            name="HomeViewModel"
-            type="com.example.us0.home.HomeViewModel" />
+            name="FeatsViewModel"
+            type="com.example.us0.home.feats.FeatsViewModel" />
     </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/common_background">
-
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             style="@style/subtitle_1"
@@ -22,32 +18,10 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/common_background"
             android:elevation="4dp"
+            app:title="Feats"
             android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
             app:layout_constraintTop_toTopOf="parent"
             app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
             app:titleTextColor="@color/primary_text" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{()->HomeViewModel.onGoToDetailsScreen()}"
-            android:text="Charity"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/button5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{()->HomeViewModel.onGoToRules()}"
-            android:text="Rules"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button3" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

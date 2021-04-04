@@ -25,7 +25,7 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".signoutpackage.SignOutActivity" />
-        <activity android:name=".installedapps.HomeActivity" />
+        <activity android:name=".home.HomeActivity" />
 
         <service android:name=".foregroundnnotifications.TestService" />
         <activity

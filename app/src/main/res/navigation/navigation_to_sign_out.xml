@@ -4,34 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_to_sign_out"
     app:startDestination="@id/passageFragment">
-    <fragment
-        android:id="@+id/installedApps"
-        android:name="com.example.us0.installedapps.InstalledApps"
-        android:label="fragment_installed_apps"
-        tools:layout="@layout/fragment_installed_apps" >
-        <action
-            android:id="@+id/action_installedApps_to_signOutActivity"
-            app:destination="@id/signOutActivity" />
-        <action
-            android:id="@+id/action_installedApps_to_foregroundService"
-            app:destination="@id/foregroundService" />
-        <action
-            android:id="@+id/action_installedApps_to_permissionFragment"
-            app:destination="@id/permissionFragment" />
-    </fragment>
 
     <activity
         android:id="@+id/signOutActivity"
         android:name="com.example.us0.signoutpackage.SignOutActivity"
         android:label="SignOutActivity" />
-    <fragment
-        android:id="@+id/foregroundService"
-        android:name="com.example.us0.foregroundnnotifications.ForegroundService"
-        android:label="ForegroundService" >
-        <action
-            android:id="@+id/action_foregroundService_to_usageStatsFragment"
-            app:destination="@id/usageStatsFragment" />
-    </fragment>
     <fragment
         android:id="@+id/permissionFragment"
         android:name="com.example.us0.foregroundnnotifications.PermissionFragment"
@@ -44,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/usageStatsFragment"
-        android:name="com.example.us0.usagestats.UsageStatsFragment"
+        android:name="com.example.us0.home.usagestats.UsageStatsFragment"
         android:label="UsageStatsFragment" />
     <fragment
         android:id="@+id/chooseMissionFragment"
@@ -158,7 +135,7 @@
         android:label="DetailMission">
     <argument
         android:name="selectedMission"
-        app:argType="com.example.us0.data.missions.DomainActiveMission"/>
+        app:argType="com.example.us0.data.missions.DomainActiveMission" />
 
         <action
             android:id="@+id/action_detailMission_to_chooseMissionFragment"
@@ -238,4 +215,20 @@
         android:id="@+id/FAQFragment"
         android:name="com.example.us0.home.navscreens.FAQFragment"
         android:label="FAQFragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.us0.home.navscreens.SettingsFragment"
+        android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.example.us0.home.navscreens.AboutFragment"
+        android:label="AboutFragment" />
+    <fragment
+        android:id="@+id/reportBugFragment"
+        android:name="com.example.us0.home.navscreens.ReportBugFragment"
+        android:label="ReportBugFragment" />
+    <fragment
+        android:id="@+id/featsFragment"
+        android:name="com.example.us0.home.feats.FeatsFragment"
+        android:label="FeatsFragment" />
 </navigation>

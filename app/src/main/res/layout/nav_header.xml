@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/nav_header"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="112dp"
+    android:background="@color/nav_drawer_background">
+
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Prajwal Rudrakshi" />
+
+    <TextView
+        android:id="@+id/level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/user_name"
+        app:layout_constraintStart_toStartOf="@+id/user_name"
+        tools:text="SUPER SEVAK" />
+
+    <!--<ImageButton
+        android:id="@+id/close_nav_drawer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_close"
+        android:background="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />-->
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/level_symbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="14dp"
+        app:layout_constraintBottom_toTopOf="@+id/user_name"
+        app:layout_constraintEnd_toStartOf="@+id/level"
+        app:layout_constraintTop_toTopOf="@+id/level"
+        app:srcCompat="@drawable/users_symbol" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#3F3F3F"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

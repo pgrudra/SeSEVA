@@ -188,6 +188,7 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                                                                 missionToBeSaved.missionDescription= mission?.missionDescription ?: ""
                                                                 missionToBeSaved.missionCategory= mission?.category ?: ""
                                                                 missionToBeSaved.sponsorSite= mission?.sponsorSite ?: ""
+                                                                missionToBeSaved.goal=mission?.goal ?:""
 
                                                                 val reference4 = cloudReference.child("Users Active")
                                                                     .child(lastMissionNumber.toString())

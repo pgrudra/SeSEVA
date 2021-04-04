@@ -46,7 +46,10 @@ data class Mission(
     var sponsorSite:String="",
 
     @ColumnInfo(name = "contribution")
-    var contribution: Int = 0
+    var contribution: Int = 0,
+
+    @ColumnInfo(name="goal")
+    var goal:String="",
 
 )
 
@@ -64,7 +67,8 @@ fun List<Mission>.asActiveDomainModel(): List<DomainActiveMission> {
             totalMoneyRaised = it.totalMoneyRaised,
             category=it.missionCategory,
             sponsorSite = it.sponsorSite,
-            contribution = it.contribution
+            contribution = it.contribution,
+            goal = it.goal
         )
     }
 }
@@ -81,7 +85,8 @@ fun Mission.asActiveDomainModel(): DomainActiveMission {
             totalMoneyRaised = totalMoneyRaised,
             category=missionCategory,
             sponsorSite = sponsorSite,
-            contribution = contribution
+            contribution = contribution,
+            goal=goal
         )
 
 }
@@ -98,7 +103,8 @@ fun Mission.asClosedDomainModel():DomainClosedMission{
             totalMoneyRaised = totalMoneyRaised,
             category=missionCategory,
             sponsorSite = sponsorSite,
-            contribution = contribution
+            contribution = contribution,
+            goal=goal
         )
 
 }

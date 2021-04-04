@@ -13,7 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Transformations
 import com.example.us0.*
 import com.example.us0.data.AllDatabase
-import com.example.us0.installedapps.HomeActivity
+import com.example.us0.home.HomeActivity
 import kotlinx.coroutines.*
 import timber.log.Timber
 import java.sql.Timestamp

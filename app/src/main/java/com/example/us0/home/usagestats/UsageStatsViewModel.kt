@@ -1,4 +1,4 @@
-package com.example.us0.usagestats
+package com.example.us0.home.usagestats
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

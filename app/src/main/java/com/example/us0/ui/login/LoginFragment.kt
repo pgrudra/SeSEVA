@@ -20,7 +20,7 @@ import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.us0.R
 import com.example.us0.adapters.OnBoardingAdapter
 import com.example.us0.databinding.FragmentLoginBinding
-import com.example.us0.installedapps.HomeActivity
+import com.example.us0.home.HomeActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -29,14 +29,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.actionCodeSettings
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 
@@ -282,7 +277,7 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
 
     private fun goToHomeFragment() {
     //toHomeFragment
-        val intent=Intent(activity,HomeActivity::class.java)
+        val intent=Intent(activity, HomeActivity::class.java)
         startActivity(intent)
     //findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToHomeActivity())
     //In home fragment, immediately check user name and active mission and take to respective screens incase not selected.

@@ -3,24 +3,21 @@ package com.example.us0.choosemission
 import android.app.AppOpsManager
 import android.app.Application
 import android.content.Context
-import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Process
-import android.text.Html
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
 import android.util.Log
 import androidx.core.content.ContextCompat
-import androidx.core.text.HtmlCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.us0.R
 import com.example.us0.data.missions.DomainActiveMission
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.*
@@ -40,6 +37,9 @@ class DetailMissionViewModel(mission:DomainActiveMission, application: Applicati
     private val _trigger=MutableLiveData<SpannableString>()
     val trigger:LiveData<SpannableString>
         get()=_trigger
+    private val _trigger2=MutableLiveData<SpannableString>()
+    val trigger2:LiveData<SpannableString>
+        get()=_trigger2
     private val _daysLeft=MutableLiveData<String>()
     val daysLeft:LiveData<String>
         get()=_daysLeft
@@ -68,8 +68,6 @@ class DetailMissionViewModel(mission:DomainActiveMission, application: Applicati
     _selectedMission.value=mission
     _showDetailMissionDescription.value=false
     checkUsageAccessPermission()
-        makeTriggerText()
-
 }
     private fun checkUsageAccessPermission() {
         val appOps = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
@@ -91,19 +89,44 @@ class DetailMissionViewModel(mission:DomainActiveMission, application: Applicati
         _drawer.value = mode == AppOpsManager.MODE_ALLOWED
     }
 
-    private fun makeTriggerText() {
-        val now= Calendar.getInstance().timeInMillis
-        val intDaysLeft=((_selectedMission.value!!.deadline-now+ ONE_DAY)/ Companion.ONE_DAY)+1
-        if(intDaysLeft<10){
-            _daysLeft.value= "0$intDaysLeft"
-        }
-        else{
-            _daysLeft.value= intDaysLeft.toString()
-        }
-        val possibleMoney=intDaysLeft*6
-        val spannable=SpannableString("Your chance to add\nRs $possibleMoney more\nbefore mission closes !!")
-        spannable.setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.primary_text)),19,27+possibleMoney.toString().length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        _trigger.value= spannable
+  fun makeTriggerText(showImage: Boolean, contribution: Int) {
+      val now= Calendar.getInstance().timeInMillis
+      val intDaysLeft=((_selectedMission.value!!.deadline-now+ ONE_DAY)/ Companion.ONE_DAY)+1
+      if(intDaysLeft<10){
+          _daysLeft.value= "0$intDaysLeft"
+      }
+      else{
+          _daysLeft.value= intDaysLeft.toString()
+      }
+      if(!showImage){
+          val possibleMoney=intDaysLeft*6
+          //recalculate
+          Log.i("DMVM","NO Image")
+          if(contribution==0){
+              val spannable=SpannableString("Your chance to add\nRs $possibleMoney more\nbefore mission closes !!")
+              spannable.setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.primary_text)),19,27+possibleMoney.toString().length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+              _trigger.value= spannable
+              Log.i("DMVM","contri=0")
+          }
+          else{
+              Log.i("DMVM","contri=$contribution")
+              val spannable2=SpannableString("You raised\nRs $contribution")
+              spannable2.setSpan(RelativeSizeSpan(2f),10,14+contribution.toString().length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+              spannable2.setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.secondary_text)),0,10,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+              _trigger.value=spannable2
+              val spannable=SpannableString("Your chance to add Rs $possibleMoney more\nbefore mission closes !!")
+              spannable.setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.primary_text)),19,27+possibleMoney.toString().length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+              _trigger2.value=spannable
+          }
+      }
+      else{
+          Log.i("DMVM","ImagePresent")
+          val spannable2=SpannableString("You raised\nRs $contribution")
+          spannable2.setSpan(RelativeSizeSpan(2f),10,14+contribution.toString().length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+          spannable2.setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.secondary_text)),0,10,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+          _trigger.value=spannable2
+      }
+
 //18,26+possibleMoney.toString().length
     }
 

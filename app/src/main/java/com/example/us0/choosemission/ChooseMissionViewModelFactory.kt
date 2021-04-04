@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.us0.data.missions.MissionsDatabaseDao
-import com.example.us0.installedapps.InstalledAppsViewModel
 
 class ChooseMissionViewModelFactory(private val dataSource: MissionsDatabaseDao, private val application: Application): ViewModelProvider.Factory {
     @Suppress("unchecked_cast")

@@ -1,7 +1,6 @@
 package com.example.us0.ui.login
 
 import android.content.Intent
-import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,7 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.us0.R
 import com.example.us0.databinding.FragmentLinkVerificationBinding
-import com.example.us0.installedapps.HomeActivity
+import com.example.us0.home.HomeActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -66,7 +65,7 @@ findNavController().navigate(LinkVerificationFragmentDirections.actionLinkVerifi
         super.onStart()
         val currentUser = Firebase.auth.currentUser
         if(currentUser!=null){
-            val intent= Intent(activity,HomeActivity::class.java)
+            val intent= Intent(activity, HomeActivity::class.java)
             startActivity(intent)
 //findNavController().navigate(LinkVerificationFragmentDirections.actionLinkVerificationFragmentToHomeActivity())
         }

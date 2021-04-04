@@ -1,4 +1,4 @@
-package com.example.us0.usagestats
+package com.example.us0.home.usagestats
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,10 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.us0.R
-import com.example.us0.databinding.FragmentForegroundBinding
 import com.example.us0.databinding.FragmentUsageStatsBinding
-import com.example.us0.foregroundnnotifications.ForegroundServiceViewModel
-import com.example.us0.foregroundnnotifications.ForegroundServiceViewModelFactory
 
 
 class UsageStatsFragment : Fragment() {

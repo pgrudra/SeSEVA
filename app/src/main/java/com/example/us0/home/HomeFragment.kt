@@ -1,28 +1,18 @@
 package com.example.us0.home
 
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.us0.Actions
 import com.example.us0.R
-import com.example.us0.choosemission.*
 import com.example.us0.data.AllDatabase
-import com.example.us0.databinding.FragmentDetailMissionBinding
 import com.example.us0.databinding.FragmentHomeBinding
-import com.example.us0.foregroundnnotifications.TestService
-import com.example.us0.installedapps.HomeActivity
-import com.example.us0.installedapps.InstalledAppsDirections
 
 class HomeFragment : Fragment() {
 
@@ -49,6 +39,7 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
         binding.lifecycleOwner=viewLifecycleOwner
         binding.homeViewModel=viewModel
+        (activity as DrawerLocker?)!!.displayBottomNavigation(false)
         viewModel.notifyClosedMission.observe(viewLifecycleOwner, Observer {
             if(null!=it){
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailClosedMissionFragment(it))
@@ -85,7 +76,7 @@ class HomeFragment : Fragment() {
         })
         binding.toolbar.title=getString(R.string.app_name)
         binding.toolbar.setNavigationIcon(R.drawable.ic_navdrawer_icon)
-        binding.toolbar.setNavigationOnClickListener { v->(activity as HomeActivity).openCloseNavigationDrawer(v) }
+        binding.toolbar.setNavigationOnClickListener { v-> (activity as HomeActivity).openCloseNavigationDrawer(v)}
         //binding.toolbar.na
         return binding.root
     }

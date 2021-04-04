@@ -7,9 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.marginTop
-import androidx.core.view.updateLayoutParams
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -22,8 +19,7 @@ import com.example.us0.adapters.InstalledAppAdapter
 import com.example.us0.data.AllDatabase
 import com.example.us0.databinding.FragmentRules2Binding
 import com.example.us0.foregroundnnotifications.InfoPopUpWindow
-import com.example.us0.installedapps.DrawerLocker
-import com.example.us0.installedapps.HomeActivity
+import com.example.us0.home.DrawerLocker
 import com.example.us0.ui.login.NoInternetDialogFragment
 
 
@@ -217,6 +213,7 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
                 binding.toolbar.setNavigationIcon(R.drawable.ic_navdrawer_icon)
                 binding.toolbar.setNavigationOnClickListener { v -> (activity as DrawerLocker?)!!.openCloseNavigationDrawer(v) }
                 (activity as DrawerLocker?)!!.setDrawerEnabled(true)
+                (activity as DrawerLocker?)!!.displayBottomNavigation(true)
                 val params=LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT)
                 val r=activity?.resources
@@ -228,6 +225,7 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
                 (activity as DrawerLocker?)!!.setDrawerEnabled(false)
                 binding.toolbar.visibility = View.GONE
                 binding.toHome.visibility=View.VISIBLE
+                (activity as DrawerLocker?)!!.displayBottomNavigation(false)
                 Log.i("RF","$visible")
             }
         })

@@ -132,4 +132,13 @@
     <string name="category_refresh">categoryRefresh</string>
     <string name="loading">Loading</string>
     <string name="faqs">FAQs</string>
+    <string name="charity_details_title">Charity details</string>
+    <string name="home">Home</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+    <string name="help_report_bug">Help/Report Bug</string>
+    <string name="charity">Charity</string>
+    <string name="rules">Rules</string>
+    <string name="usage">Usage</string>
+    <string name="feats">Feats</string>
 </resources>

@@ -26,4 +26,7 @@ interface MissionsDatabaseDao{
 
     @Query("SELECT * FROM list_of_missions WHERE mission_complete_notification=:t")
     suspend fun notifyIfClosed(t:Boolean):Mission?
+
+    @Query("SELECT missionNumber FROM list_of_missions")
+    suspend fun getDownloadedMissions(): List<Int>?
 }

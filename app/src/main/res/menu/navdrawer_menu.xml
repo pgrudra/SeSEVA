@@ -2,6 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/homeFragment"
+        android:title="@string/home"
+        />
+    <item
+        android:id="@+id/settingsFragment"
+        android:title="@string/settings"/>
+    <item
+        android:id="@+id/reportBugFragment"
+        android:title="@string/help_report_bug"/>
+    <item
         android:id="@+id/FAQFragment"
         android:title="@string/faqs" />
+    <item
+        android:id="@+id/aboutFragment"
+        android:title="@string/about"/>
+
+
 </menu>
