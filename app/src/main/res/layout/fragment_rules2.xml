@@ -42,13 +42,14 @@
             android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
             app:layout_constraintTop_toTopOf="parent"
             app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
-            app:title="Rules"
-            app:titleTextColor="@color/primary_text" />
+            app:title="Rulebook"
+            app:titleTextColor="@color/secondary_text" />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/to_home"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
             android:paddingStart="16dp"
             android:paddingEnd="16dp">
 
@@ -63,7 +64,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:layout_marginBottom="24dp"
                     android:text="@{Rules2ViewModel.contributeSentence}"
                     android:textColor="@color/primary_text"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -72,9 +72,11 @@
                     tools:text="Raise upto Rs 6 per day by adhering to below rules" />
 
                 <LinearLayout
+                    android:id="@+id/daily_weekly_buttons_holder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="24dp"
                     android:orientation="horizontal">
 
                     <Button
@@ -102,10 +104,9 @@
                         android:paddingEnd="16dp"
                         android:text="Weekly rules"
                         android:textAllCaps="false"
-                        android:textColor="@color/primary_text" />
+                        android:textColor="@color/secondary_text" />
 
                 </LinearLayout>
-
                 <LinearLayout
                     android:id="@+id/daily_linear_layout"
                     android:layout_width="match_parent"

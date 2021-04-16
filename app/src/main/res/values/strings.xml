@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SquiSewa</string>
+    <string name="app_name">SeSeva</string>
     <!-- Strings related to login -->
 
     <string name="shared_pref">com.example.us0.SHARED_PREF</string>
@@ -18,7 +18,7 @@
     <string name="money_to_be_updated">com.example.us0.MONEY_TO_BE_UPDATED</string>
     <string name="daily_reward">com.example.us0.DAILY_REWARD</string>
     <string name="weekly_reward">com.example.us0.WEEKLY_REWARD</string>
-
+    <string name="update_contributions_cloud">com.example.us0.UPDATE_CONTRI_CLOUD</string>
     <string name="rules_number">com.example.us0.RULES_NUMBER</string>
     <string name="social_max_time">com.example.us0.SOCIAL_MAX_TIME</string>
     <string name="social_max_launches">com.example.us0.SOCIAL_MAX_LAUNCHES</string>
@@ -105,6 +105,7 @@
     <string name="titlebar_choose_your_mission">Choose your mission</string>
     <string name="dots">%1$s…</string>
     <string name="rs">Rs %1$d</string>
+    <string name="min">%1$d min</string>
     <string name="mission_closes_in">Mission closes in</string>
     <string name="days">days</string>
     <string name="know_more">KNOW MORE</string>
@@ -141,4 +142,6 @@
     <string name="rules">Rules</string>
     <string name="usage">Usage</string>
     <string name="feats">Feats</string>
+    <string name="today_s_statistics">Today\'s statistics</string>
+    <string name="meaningOfThisWeeK">since last sunday, the day to started using SeSeva</string>
 </resources>

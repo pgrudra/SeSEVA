@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.us0.R
 import com.example.us0.data.AllDatabase
 import com.example.us0.databinding.FragmentLastMissionBinding
+import com.example.us0.home.DrawerLocker
 
 
 class LastMissionFragment : Fragment() {
@@ -31,6 +32,7 @@ class LastMissionFragment : Fragment() {
         viewModel = ViewModelProvider(this, viewModelFactory).get(LastMissionViewModel::class.java)
         binding.lastMissionViewModel=viewModel
         binding.lifecycleOwner=viewLifecycleOwner
+        (activity as DrawerLocker?)!!.displayBottomNavigation(false)
 viewModel.goToHome.observe(viewLifecycleOwner, Observer<Boolean> { goto->
     if(goto){
         findNavController().navigate(LastMissionFragmentDirections.actionLastMissionFragmentToPassageFragment())

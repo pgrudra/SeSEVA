@@ -61,7 +61,7 @@ init {
 }
 
     private fun loadUserName() {
-        _userName.value =" "+ sharedPref?.getString((R.string.user_name).toString(), "") ?: ""
+        _userName.value =" "+ sharedPref?.getString((R.string.user_name).toString(), "")
     }
 
     fun loadMission(missionNumber: Int) {

@@ -191,7 +191,7 @@ for(key in categoryTimes.keys){
             }
         }
 
-        if(dayAfterInstallation>6){
+        if(dayAfterInstallation>5){
             if(entertainmentTime<timeRules[key]!! && entertainmentLaunches<launchRules[key]!! )
             moneyToBeUpdated+=sharedPref.getInt((R.string.weekly_reward).toString(),0)
             with(sharedPref.edit()) {

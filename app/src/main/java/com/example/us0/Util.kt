@@ -13,6 +13,15 @@ enum class ServiceState{
     STARTED,
     STOPPED
 }
+enum class AppsCategoryType{
+    DAILY,
+    WEEKLY
+}
+enum class CategoryRuleStatus{
+    BROKEN,
+    WARNING,
+    SAFE
+}
 fun setServiceState(context: Context, state:ServiceState){
     val sharedPref = getPreferences(context)
     with(sharedPref.edit()) {

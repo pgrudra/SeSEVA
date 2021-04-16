@@ -1,10 +1,13 @@
 package com.example.us0.home
 
+import android.graphics.LinearGradient
+import android.graphics.Shader
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -39,6 +42,7 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
         binding.lifecycleOwner=viewLifecycleOwner
         binding.homeViewModel=viewModel
+        //context?.let { binding.usageStatistics.paint.shader=LinearGradient(0,0,0,20,ContextCompat.getColor(it,R.color.t1),null,Shader.TileMode.CLAMP) }
         (activity as DrawerLocker?)!!.displayBottomNavigation(false)
         viewModel.notifyClosedMission.observe(viewLifecycleOwner, Observer {
             if(null!=it){
@@ -53,28 +57,32 @@ class HomeFragment : Fragment() {
             }
         })
 
-        viewModel.goToDetailsScreen.observe(viewLifecycleOwner, Observer {
-            if(null!=it) {
-                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailMission(it,true))
-                viewModel.onGoToDetailsScreenComplete()
+        viewModel.goToMissionsScreen.observe(viewLifecycleOwner, Observer {go->
+            if(go) {
+                //findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailMission(it,true))
+                viewModel.onGoToMissionsScreenComplete()
             }
         })
-        viewModel.goToChooseMission.observe(viewLifecycleOwner, Observer<Boolean>{ goToRules ->
-            if (goToRules) {
-                //this case must never come
-                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToChooseMissionFragment())
-                viewModel.onGoToChosenMissionComplete()
 
-            }
-        })
         viewModel.goToRules.observe(viewLifecycleOwner, Observer<Boolean>{ goToRules ->
             if (goToRules) {
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToRulesFragment2())
                 viewModel.onGoToRulesComplete()
-
             }
         })
-        binding.toolbar.title=getString(R.string.app_name)
+        viewModel.goToProfile.observe(viewLifecycleOwner, Observer<Boolean>{ goToFeats ->
+            if (goToFeats) {
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToProfileFragment())
+                viewModel.onGoToProfileComplete()
+            }
+        })
+        viewModel.goToUsageOverview.observe(viewLifecycleOwner, Observer<Boolean>{ goToUsageOverview ->
+            if (goToUsageOverview) {
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToUsageOverViewFragment())
+                viewModel.onGoToUsageOverviewComplete()
+            }
+        })
+        //binding.toolbar.title=getString(R.string.app_name)
         binding.toolbar.setNavigationIcon(R.drawable.ic_navdrawer_icon)
         binding.toolbar.setNavigationOnClickListener { v-> (activity as HomeActivity).openCloseNavigationDrawer(v)}
         //binding.toolbar.na

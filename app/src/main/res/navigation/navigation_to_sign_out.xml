@@ -20,9 +20,16 @@
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
-        android:id="@+id/usageStatsFragment"
-        android:name="com.example.us0.home.usagestats.UsageStatsFragment"
-        android:label="UsageStatsFragment" />
+        android:id="@+id/usageOverViewFragment"
+        android:name="com.example.us0.home.usagestats.UsageOverviewFragment"
+        android:label="UsageOverViewFragment" >
+        <action
+            android:id="@+id/action_usageOverViewFragment_to_categoryUsageFragment"
+            app:destination="@id/categoryUsageFragment" />
+        <action
+            android:id="@+id/action_usageOverViewFragment_to_appUsageFragment"
+            app:destination="@id/appUsageFragment" />
+    </fragment>
     <fragment
         android:id="@+id/chooseMissionFragment"
         android:name="com.example.us0.choosemission.ChooseMission"
@@ -186,6 +193,15 @@
         <action
             android:id="@+id/action_homeFragment_to_chooseMissionFragment"
             app:destination="@id/chooseMissionFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_usageOverViewFragment"
+            app:destination="@id/usageOverViewFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_featsFragment"
+            app:destination="@id/featsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailClosedMissionFragment"
@@ -231,4 +247,21 @@
         android:id="@+id/featsFragment"
         android:name="com.example.us0.home.feats.FeatsFragment"
         android:label="FeatsFragment" />
+    <fragment
+        android:id="@+id/categoryUsageFragment"
+        android:name="com.example.us0.home.usagestats.CategoryUsageFragment"
+        android:label="CategoryUsageFragment" >
+        <action
+            android:id="@+id/action_categoryUsageFragment_to_appUsageFragment"
+            app:destination="@id/appUsageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/appUsageFragment"
+        android:name="com.example.us0.home.usagestats.AppUsageFragment"
+        android:label="AppUsageFragment" >
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.us0.home.profile.ProfileFragment"
+        android:label="ProfileFragment" />
 </navigation>

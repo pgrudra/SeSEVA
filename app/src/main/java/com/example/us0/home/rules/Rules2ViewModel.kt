@@ -15,6 +15,7 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.util.Log
+import androidx.appcompat.widget.AppCompatSeekBar
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -264,7 +265,7 @@ class Rules2ViewModel(
         val rulesNumber=sharedPref.getInt((R.string.rules_number).toString(), 0)
         cloudReference.child("rules").child(rulesNumber.toString()).get().addOnSuccessListener {
             val sMT=it.child("socialMaxTime").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.social_max_time).toString(),sMT.toInt() )
+            with(sharedPref?.edit()) { this?.putInt((R.string.social_max_time).toString(),sMT.toInt())
                 this?.apply() }
             val sML=it.child("socialMaxLaunches").value.toString()
             with(sharedPref?.edit()) { this?.putInt((R.string.social_max_launches).toString(), sML.toInt())
@@ -326,11 +327,11 @@ class Rules2ViewModel(
             val eP= it.child("entertainmentPenalty").value.toString()
             with(sharedPref?.edit()) { this?.putInt((R.string.entertainment_penalty).toString(),eP.toInt())
                 this?.apply() }
-            val dR=it.child("dailyReward").value.toString().toInt()
-            with(sharedPref?.edit()) { this?.putInt((R.string.daily_reward).toString(),dR)
+            val dR=it.child("dailyReward").value.toString()
+            with(sharedPref?.edit()) { this?.putInt((R.string.daily_reward).toString(),dR.toInt())
                 this?.apply() }
-            val wR=it.child("weeklyReward").value.toString().toInt()
-            with(sharedPref?.edit()) { this?.putInt((R.string.weekly_reward).toString(),wR)
+            val wR=it.child("weeklyReward").value.toString()
+            with(sharedPref?.edit()) { this?.putInt((R.string.weekly_reward).toString(),wR.toInt())
                 this?.apply() }
             spannable1=SpannableString("Raise upto Rs $dR per day by adhering to below rules")
             spannable2= SpannableString("Raise upto Rs $wR per week by adhering to below rules")

@@ -199,6 +199,7 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                                                                         _contributors.value = contri
                                                                         if(contri.toIntOrNull()!=null){
                                                                             missionToBeSaved.usersActive=contri.toInt()
+                                                                            Log.i("1LMVM","$contri")
                                                                         }
                                                                         val reference5 =
                                                                             cloudReference.child("Money Raised")
@@ -354,6 +355,10 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                 }
                 this?.apply()
             }
+        with (sharedPref.edit()) {
+            this?.putBoolean((R.string.update_contributions_cloud).toString(),true)
+            this?.apply()
+        }
         with(sharedPref?.edit()) {
             this?.putInt(
                 (R.string.rules_number).toString(),

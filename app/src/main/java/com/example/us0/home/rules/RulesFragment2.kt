@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -179,6 +180,8 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
             if (daily) {
                 binding.dailyRulesButton.setBackgroundResource(R.drawable.all_corner_rounded_16dp_primary)
                 binding.weeklyRulesButton.setBackgroundResource(R.drawable.all_corner_rounded_16dp_disabled)
+                context?.let{binding.dailyRulesButton.setTextColor(ContextCompat.getColor(it,R.color.primary_text))}
+                context?.let{binding.dailyRulesButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text))}
                 binding.dailyLinearLayout.visibility = View.VISIBLE
                 binding.weeklyLinearLayout.visibility = View.GONE
             }
@@ -187,6 +190,8 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
             if (weekly) {
                 binding.dailyRulesButton.setBackgroundResource(R.drawable.all_corner_rounded_16dp_disabled)
                 binding.weeklyRulesButton.setBackgroundResource(R.drawable.all_corner_rounded_16dp_primary)
+                context?.let{binding.weeklyRulesButton.setTextColor(ContextCompat.getColor(it,R.color.primary_text))}
+                context?.let{binding.dailyRulesButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text))}
                 binding.dailyLinearLayout.visibility = View.GONE
                 binding.weeklyLinearLayout.visibility = View.VISIBLE
             }
@@ -208,24 +213,26 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
         })
         //If scrim becomes invisible and toolbar is present and iUnder... is invisible, then show bottom navigation.
         viewModel.toolBarNDrawer.observe(viewLifecycleOwner, Observer<Boolean> { visible ->
+            val drawerLoker=(activity as DrawerLocker?)
             if (visible) {
                 binding.toolbar.visibility = View.VISIBLE
                 binding.toolbar.setNavigationIcon(R.drawable.ic_navdrawer_icon)
                 binding.toolbar.setNavigationOnClickListener { v -> (activity as DrawerLocker?)!!.openCloseNavigationDrawer(v) }
-                (activity as DrawerLocker?)!!.setDrawerEnabled(true)
-                (activity as DrawerLocker?)!!.displayBottomNavigation(true)
+                drawerLoker!!.setDrawerEnabled(true)
+                drawerLoker.displayBottomNavigation(true)
                 val params=LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT)
                 val r=activity?.resources
-                val px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24F,r?.displayMetrics)
-                params.setMargins(0,0,0,0)
+                val px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16F,r?.displayMetrics)
+                params.setMargins(0,px.toInt(),0,0)
                 binding.textView5.layoutParams = params
                 Log.i("RF","$visible")
             } else {
-                (activity as DrawerLocker?)!!.setDrawerEnabled(false)
+
+                drawerLoker!!.setDrawerEnabled(false)
+                drawerLoker.displayBottomNavigation(false)
                 binding.toolbar.visibility = View.GONE
                 binding.toHome.visibility=View.VISIBLE
-                (activity as DrawerLocker?)!!.displayBottomNavigation(false)
                 Log.i("RF","$visible")
             }
         })
@@ -311,23 +318,13 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
         binding.entertainmentAppsList.adapter=entertainmentAdapter
         binding.lifecycleOwner = this
         val socialManager = GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false)
-        val communicationManager = GridLayoutManager(
-            activity,
-            1,
-            GridLayoutManager.HORIZONTAL,
-            false
-        )
+        val communicationManager = GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false)
         val gamesManager = GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false)
         val videoManager = GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false)
         val msnbsManager=GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false)
         val whitelistedManager=GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false)
         val otherManager=GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false)
-        val entertainmentManager = GridLayoutManager(
-            activity,
-            1,
-            GridLayoutManager.HORIZONTAL,
-            false
-        )
+        val entertainmentManager = GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false)
 
         binding.socialAppsList.layoutManager=socialManager
         binding.communicationAppsList.layoutManager=communicationManager

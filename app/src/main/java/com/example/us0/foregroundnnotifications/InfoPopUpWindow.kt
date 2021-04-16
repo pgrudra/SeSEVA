@@ -1,13 +1,10 @@
 package com.example.us0.foregroundnnotifications
 
 import android.content.Context
-import android.content.res.Resources
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import com.example.us0.R
 
 class InfoPopUpWindow {
@@ -45,6 +42,7 @@ class InfoPopUpWindow {
                 R.id.i_others -> R.string.choose_a_different_mission
                 R.id.i_video -> R.string.choose_new_mission
                 R.id.i_whitelisted -> R.string.choose_a_different_mission
+                R.id.i->R.string.meaningOfThisWeeK
                 else -> R.string.active
             }
         )

@@ -45,34 +45,32 @@ class ChooseMissionViewModel(
     private fun checkAndLoad(){
         viewModelScope.launch {
             val loadedList=database.getDownloadedMissions()
-            Log.i("CMVM","loadedList=$loadedList")
             val entireList:MutableList<Int> = arrayListOf()
             val usersActiveList:MutableList<Pair<Int,Int>> = arrayListOf()
-            val reference=cloudReference.child("Money Raised")
-            reference.get().addOnSuccessListener {
-                Log.i("CMVM","MR=$it")
-                for (i in it.children){
-                    entireList.add(i.key.toString().toInt())
-                    usersActiveList.add(Pair(i.key.toString().toInt(),i.value.toString().toInt()))
+            val reference=cloudReference.child("Users Active")
+            reference.addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (i in snapshot.children){
+                        entireList.add(i.key.toString().toInt())
+                        usersActiveList.add(Pair(i.key.toString().toInt(),i.value.toString().toInt()))
+                    }
+                    if(loadedList!=null){
+                        val toDownloadList=entireList.minus(loadedList)
+                        insertIntoDatabase(toDownloadList,loadedList,usersActiveList)
+                    }
+                    else{
+                        insertIntoDatabase(entireList,null,usersActiveList)
+                    }
                 }
-                if(loadedList!=null){
-                    Log.i("CMVM","entireList=$entireList")
-                    val toDownloadList=entireList.minus(loadedList)
-                    insertIntoDatabase(toDownloadList,loadedList,usersActiveList)
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
                 }
-                else{
-                    Log.i("CMVM","here")
-                    Log.i("CMVM","entireList=$entireList")
-                    insertIntoDatabase(entireList,null,usersActiveList)
-                }
-            }
 
-
-
+            })
         }
     }
     private fun insertIntoDatabase(list: List<Int>,loadedList: List<Int>?,usersActiveList:MutableList<Pair<Int,Int>>){
-        Log.i("CMVM","now here")
         val moneyRaisedList:MutableList<Pair<Int,Int>> = arrayListOf()
         val moneyRaisedReference=cloudReference.child("Money Raised")
         moneyRaisedReference.addListenerForSingleValueEvent(object: ValueEventListener {
@@ -97,8 +95,8 @@ class ChooseMissionViewModel(
                                 mission?.usersActive= usersActiveList.find{it.first==primaryKey}?.second ?:0
                                 val now: Calendar = Calendar.getInstance()
                                 mission?.missionActive=now.timeInMillis<= mission?.deadline!!
-                                mission?.totalMoneyRaised=moneyRaisedList.find{it.first==primaryKey}?.second ?:0
-                                mission?.contribution=contributionsList.find { it.first==primaryKey }?.second ?:0
+                                mission.totalMoneyRaised=moneyRaisedList.find{it.first==primaryKey}?.second ?:0
+                                mission.contribution=contributionsList.find { it.first==primaryKey }?.second ?:0
                                 Log.i("CMVM","$mission")
                                 viewModelScope.launch { database.insert(mission) }
                             }

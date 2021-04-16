@@ -113,15 +113,16 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
             binding.missionDescription.text = mission.missionDescription
         }
         viewModel.drawer.observe(viewLifecycleOwner, Observer<Boolean> { visible ->
+            val drawerLoker=(activity as DrawerLocker?)
             if (visible) {
                 binding.toolbar.setNavigationIcon(R.drawable.ic_navdrawer_icon)
                 binding.toolbar.setNavigationOnClickListener { v -> (activity as DrawerLocker?)!!.openCloseNavigationDrawer(v) }
-                (activity as DrawerLocker?)!!.setDrawerEnabled(true)
-                (activity as DrawerLocker?)!!.displayBottomNavigation(true)
+                drawerLoker!!.setDrawerEnabled(true)
+                drawerLoker.displayBottomNavigation(true)
                 Log.i("RF","$visible")
             } else {
-                (activity as DrawerLocker?)!!.setDrawerEnabled(false)
-                (activity as DrawerLocker?)!!.displayBottomNavigation(false)
+                drawerLoker!!.setDrawerEnabled(false)
+                drawerLoker.displayBottomNavigation(false)
             }
         })
         viewModel.showDetailMissionDescription.observe(

@@ -12,6 +12,8 @@ import com.example.us0.choosemission.ChooseMissionViewModel
 import com.example.us0.choosemission.ChooseMissionViewModelFactory
 import com.example.us0.data.AllDatabase
 import com.example.us0.databinding.FragmentFeatsBinding
+import com.example.us0.home.DrawerLocker
+import com.example.us0.home.HomeActivity
 
 
 class FeatsFragment : Fragment() {
@@ -30,6 +32,11 @@ class FeatsFragment : Fragment() {
         viewModel=ViewModelProvider(this, viewModelFactory).get(FeatsViewModel::class.java)
         binding.featsViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        val drawerLoker=(activity as DrawerLocker?)
+        binding.toolbar.setNavigationIcon(R.drawable.ic_navdrawer_icon)
+        binding.toolbar.setNavigationOnClickListener { v -> (activity as DrawerLocker?)!!.openCloseNavigationDrawer(v) }
+        drawerLoker!!.setDrawerEnabled(true)
+        drawerLoker.displayBottomNavigation(true)
         return binding.root
     }
 }

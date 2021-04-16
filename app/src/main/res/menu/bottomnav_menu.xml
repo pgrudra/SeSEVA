@@ -13,7 +13,7 @@
         android:title="@string/rules"
         android:icon="@drawable/ic_launcher_foreground"/>
     <item
-        android:id="@+id/usageStatsFragment"
+        android:id="@+id/usageOverViewFragment"
         android:title="@string/usage"
         android:icon="@drawable/ic_launcher_foreground"/>
 

@@ -23,303 +23,308 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="0dp">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
-    android:paddingBottom="12dp"
-    >
 
-    <TextView
-        android:id="@+id/you_are_on"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="You are on"
-        android:textColor="@color/disabled_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="12dp">
 
-    <TextView
-        android:id="@+id/mission_name2"
-        style="@style/subtitle_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:textColor="@color/primary_text"
-        app:layout_constraintStart_toEndOf="@id/you_are_on"
-        app:layout_constraintTop_toTopOf="@id/you_are_on"
-        app:layout_constraintBottom_toBottomOf="@id/you_are_on"
-        tools:text="Mission name" />
+                    <TextView
+                        android:id="@+id/you_are_on"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="You are on"
+                        android:textColor="@color/disabled_text"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/goal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:paddingTop="10dp"
-        android:background="@drawable/ic_goal_background"
-        app:layout_constraintTop_toBottomOf="@id/you_are_on"
-        android:textColor="@color/primary_text"
-        tools:text="Goal of the mission in one line"/>
-    <ImageView
-        android:id="@+id/mission_image"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:layout_constraintTop_toBottomOf="@id/goal"
-        tools:srcCompat="@drawable/ic_sponsor_logo" />
-    <ImageView
-        android:id="@+id/sponsor_logo"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        app:layout_constraintBottom_toBottomOf="@id/sponsor_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView3"
-        tools:srcCompat="@drawable/ic_sponsor_logo" />
+                    <TextView
+                        android:id="@+id/mission_name2"
+                        style="@style/subtitle_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:textColor="@color/primary_text"
+                        app:layout_constraintBottom_toBottomOf="@id/you_are_on"
+                        app:layout_constraintStart_toEndOf="@id/you_are_on"
+                        app:layout_constraintTop_toTopOf="@id/you_are_on"
+                        tools:text="Mission name" />
 
-    <TextView
-        android:id="@+id/textView3"
-        style="@style/overline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/sponsor"
-        android:textColor="@color/disabled_text"
-        app:layout_constraintStart_toEndOf="@+id/sponsor_logo"
-        app:layout_constraintTop_toBottomOf="@id/mission_image"
-        tools:layout_editor_absoluteY="16dp" />
+                    <TextView
+                        android:id="@+id/goal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_goal_background"
+                        android:gravity="center_vertical"
+                        android:paddingStart="8dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="8dp"
+                        android:textColor="@color/primary_text"
+                        app:layout_constraintTop_toBottomOf="@id/you_are_on"
+                        tools:text="Goal of the mission in one line" />
 
+                    <ImageView
+                        android:id="@+id/mission_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        app:layout_constraintTop_toBottomOf="@id/goal"
+                        tools:srcCompat="@drawable/ic_sponsor_logo" />
 
-    <TextView
-        android:id="@+id/sponsor_name"
-        style="@style/subtitle_1"
-        android:textColor="@color/primary_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/textView3"
-        app:layout_constraintTop_toBottomOf="@id/textView3"
-        tools:text="Sponsor name" />
+                    <ImageView
+                        android:id="@+id/sponsor_logo"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:layout_constraintBottom_toBottomOf="@id/sponsor_name"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView3"
+                        tools:srcCompat="@drawable/ic_sponsor_logo" />
 
-    <TextView
-        android:id="@+id/category"
-        style="@style/overline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/disabled_text"
-        app:layout_constraintBottom_toBottomOf="@+id/category_text"
-        app:layout_constraintStart_toEndOf="@+id/category_text"
-        app:layout_constraintTop_toTopOf="@+id/category_text"
-        tools:text="Education" />
-    <TextView
-        android:id="@+id/category_text"
-        style="@style/overline"
-        android:text="Category: "
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/disabled_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/timer"/>
-    <FrameLayout
-        android:id="@+id/frame_layout"
-        android:layout_marginTop="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/category_text">
+                    <TextView
+                        android:id="@+id/textView3"
+                        style="@style/overline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/sponsor"
+                        android:textColor="@color/disabled_text"
+                        app:layout_constraintStart_toEndOf="@+id/sponsor_logo"
+                        app:layout_constraintTop_toBottomOf="@id/mission_image"
+                        tools:layout_editor_absoluteY="16dp" />
 
 
-        <ImageButton
-            android:id="@+id/expand_or_contract"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="bottom|end"
-            android:background="@color/common_background"
-            android:onClick="@{()->selectedMissionViewModel.expandOrContract()}"
-            android:src="@drawable/ic_expand_vector"
-            app:layout_constraintEnd_toEndOf="@+id/mission_description" />
+                    <TextView
+                        android:id="@+id/sponsor_name"
+                        style="@style/subtitle_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primary_text"
+                        app:layout_constraintStart_toStartOf="@id/textView3"
+                        app:layout_constraintTop_toBottomOf="@id/textView3"
+                        tools:text="Sponsor name" />
 
-        <TextView
-            android:id="@+id/mission_description"
-            style="@style/caption"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:textColor="@color/secondary_text"
-            tools:text="asdffk adsd fssdf sdfgdfg dgfg sdfds effrew gddsfg sdfdsf sdgdg sdfgf sgdsdf ffffffffffff ddddddddddd fff" />
-    </FrameLayout>
+                    <TextView
+                        android:id="@+id/category"
+                        style="@style/overline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/disabled_text"
+                        app:layout_constraintBottom_toBottomOf="@+id/category_text"
+                        app:layout_constraintStart_toEndOf="@+id/category_text"
+                        app:layout_constraintTop_toTopOf="@+id/category_text"
+                        tools:text="Education" />
 
-    <TextView
-        android:id="@+id/money"
-        style="@style/subtitle_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/primary_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sponsor_name"
-        tools:text="10000000" />
+                    <TextView
+                        android:id="@+id/category_text"
+                        style="@style/overline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Category: "
+                        android:textColor="@color/disabled_text"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/timer" />
 
-    <TextView
-        android:id="@+id/amountRaised"
-        style="@style/tertiary_text"
-        android:textColor="@color/secondary_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/montserrat_used"
-        android:text="@string/amount_raised"
-        app:layout_constraintStart_toStartOf="@+id/money"
-        app:layout_constraintTop_toBottomOf="@+id/money" />
-
-    <TextView
-        android:id="@+id/active_contributors"
-        style="@style/subtitle_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:textColor="@color/primary_text"
-        app:layout_constraintStart_toStartOf="@+id/money"
-        app:layout_constraintTop_toBottomOf="@+id/amountRaised"
-        tools:text="150" />
-
-    <TextView
-        android:id="@+id/textView4"
-        style="@style/tertiary_text"
-        android:textColor="@color/secondary_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/contributors"
-        app:layout_constraintStart_toStartOf="@+id/active_contributors"
-        app:layout_constraintTop_toBottomOf="@+id/active_contributors" />
-
-    <TextView
-        android:id="@+id/textView2"
-        style="@style/body_2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="18dp"
-        android:background="@drawable/all_corner_rounded_4dp"
-        android:elevation="15dp"
-        android:gravity="center"
-        android:letterSpacing="0.04"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:text="@{selectedMissionViewModel.trigger}"
-        android:textColor="@color/colorAccent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/amountRaised"
-        app:layout_constraintTop_toTopOf="@+id/money"
-        tools:text="Your chance to add\nRs %1$d more\nbefore mission closes!!" />
+                    <FrameLayout
+                        android:id="@+id/frame_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/category_text">
 
 
-    <TextView
-        android:id="@+id/textView22"
-        style="@style/body_2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
-        android:background="@drawable/all_corner_rounded_4dp"
-        android:elevation="15dp"
-        android:gravity="center"
-        android:letterSpacing="0.04"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:text="@{selectedMissionViewModel.trigger2}"
-        android:textColor="@color/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        tools:layout_editor_absoluteX="16dp"
-        tools:text="Your chance to add Rs %1$d more\nbefore mission closes!!" />
+                        <ImageButton
+                            android:id="@+id/expand_or_contract"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="bottom|end"
+                            android:background="@color/common_background"
+                            android:onClick="@{()->selectedMissionViewModel.expandOrContract()}"
+                            android:src="@drawable/ic_expand_vector"
+                            app:layout_constraintEnd_toEndOf="@+id/mission_description" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/active_contributors"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/active_contributors"
-        app:srcCompat="@drawable/users_symbol" />
+                        <TextView
+                            android:id="@+id/mission_description"
+                            style="@style/caption"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="24dp"
+                            android:textColor="@color/secondary_text"
+                            tools:text="asdffk adsd fssdf sdfgdfg dgfg sdfds effrew gddsfg sdfdsf sdgdg sdfgf sgdsdf ffffffffffff ddddddddddd fff" />
+                    </FrameLayout>
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/appCompatImageView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/money"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/money"
-        app:srcCompat="@drawable/rupee_symbol" />
+                    <TextView
+                        android:id="@+id/money"
+                        style="@style/subtitle_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="8dp"
+                        android:textColor="@color/primary_text"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/sponsor_name"
+                        tools:text="10000000" />
 
-    <TextView
-        android:id="@+id/timer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/ic_timer_container__shadowless"
-        android:elevation="4dp"
-        android:fontFamily="@font/share_tech_mono"
-        android:gravity="center"
-        android:letterSpacing="0"
-        android:paddingStart="8dp"
-        android:paddingTop="12dp"
-        android:paddingEnd="8dp"
-        android:paddingBottom="12dp"
-        android:text="@{selectedMissionViewModel.daysLeft}"
-        android:textColor="@color/primary_text"
-        android:textFontWeight="400"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView22"
-        tools:text="0478" />
+                    <TextView
+                        android:id="@+id/amountRaised"
+                        style="@style/tertiary_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_used"
+                        android:text="@string/amount_raised"
+                        android:textColor="@color/secondary_text"
+                        app:layout_constraintStart_toStartOf="@+id/money"
+                        app:layout_constraintTop_toBottomOf="@+id/money" />
 
-    <TextView
-        android:id="@+id/mission_closes_in"
-        style="@style/subtitle_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:gravity="end"
-        android:text="@string/mission_closes_in"
-        android:textColor="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="@+id/timer"
-        app:layout_constraintEnd_toStartOf="@+id/timer"
-        app:layout_constraintTop_toTopOf="@+id/timer" />
-    <TextView
-        android:id="@+id/days"
-        style="@style/subtitle_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:gravity="start"
-        android:text="@string/days"
-        android:textColor="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="@+id/timer"
-        app:layout_constraintStart_toEndOf="@+id/timer"
-        app:layout_constraintTop_toTopOf="@+id/timer" />
+                    <TextView
+                        android:id="@+id/active_contributors"
+                        style="@style/subtitle_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:textColor="@color/primary_text"
+                        app:layout_constraintStart_toStartOf="@+id/money"
+                        app:layout_constraintTop_toBottomOf="@+id/amountRaised"
+                        tools:text="150" />
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        style="@style/tertiary_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/contributors"
+                        android:textColor="@color/secondary_text"
+                        app:layout_constraintStart_toStartOf="@+id/active_contributors"
+                        app:layout_constraintTop_toBottomOf="@+id/active_contributors" />
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        style="@style/body_2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="18dp"
+                        android:background="@drawable/all_corner_rounded_4dp"
+                        android:elevation="15dp"
+                        android:gravity="center"
+                        android:letterSpacing="0.04"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
+                        android:text="@{selectedMissionViewModel.trigger}"
+                        android:textColor="@color/colorAccent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/amountRaised"
+                        app:layout_constraintTop_toTopOf="@+id/money"
+                        tools:text="Your chance to add\nRs %1$d more\nbefore mission closes!!" />
+
+
+                    <TextView
+                        android:id="@+id/textView22"
+                        style="@style/body_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="35dp"
+                        android:background="@drawable/all_corner_rounded_4dp"
+                        android:elevation="15dp"
+                        android:gravity="center"
+                        android:letterSpacing="0.04"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
+                        android:text="@{selectedMissionViewModel.trigger2}"
+                        android:textColor="@color/colorPrimary"
+                        app:layout_constraintTop_toBottomOf="@+id/textView2"
+                        tools:layout_editor_absoluteX="16dp"
+                        tools:text="Your chance to add Rs %1$d more\nbefore mission closes!!" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="@+id/active_contributors"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/active_contributors"
+                        app:srcCompat="@drawable/users_symbol" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/appCompatImageView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="@+id/money"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/money"
+                        app:srcCompat="@drawable/rupee_symbol" />
+
+                    <TextView
+                        android:id="@+id/timer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/ic_timer_container__shadowless"
+                        android:elevation="4dp"
+                        android:fontFamily="@font/share_tech_mono"
+                        android:gravity="center"
+                        android:letterSpacing="0"
+                        android:paddingStart="8dp"
+                        android:paddingTop="12dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="12dp"
+                        android:text="@{selectedMissionViewModel.daysLeft}"
+                        android:textColor="@color/primary_text"
+                        android:textFontWeight="400"
+                        android:textSize="24sp"
+                        app:layout_constraintEnd_toEndOf="@+id/textView2"
+                        app:layout_constraintStart_toStartOf="@+id/textView2"
+                        app:layout_constraintTop_toBottomOf="@+id/textView22"
+                        tools:text="0478" />
+
+                    <TextView
+                        android:id="@+id/mission_closes_in"
+                        style="@style/subtitle_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:gravity="end"
+                        android:text="@string/mission_closes_in"
+                        android:textColor="@color/colorAccent"
+                        app:layout_constraintBottom_toBottomOf="@+id/timer"
+                        app:layout_constraintEnd_toStartOf="@+id/timer"
+                        app:layout_constraintTop_toTopOf="@+id/timer" />
+
+                    <TextView
+                        android:id="@+id/days"
+                        style="@style/subtitle_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:gravity="start"
+                        android:text="@string/days"
+                        android:textColor="@color/colorAccent"
+                        app:layout_constraintBottom_toBottomOf="@+id/timer"
+                        app:layout_constraintStart_toEndOf="@+id/timer"
+                        app:layout_constraintTop_toTopOf="@+id/timer" />
 
 
                     <TextView
                         android:id="@+id/about_the_sponsor"
                         style="@style/tertiary_text"
-                        android:textColor="@color/secondary_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="About the sponsor"
+                        android:textColor="@color/secondary_text"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/frame_layout"/>
+                        app:layout_constraintTop_toBottomOf="@id/frame_layout" />
 
-    <TextView
-        android:id="@+id/sponsor_description"
-        style="@style/caption"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/secondary_text"
-        app:layout_constraintTop_toBottomOf="@+id/about_the_sponsor"
-        tools:layout_editor_absoluteX="16dp"
-        tools:text="Dsd fg gg ee er" />
+                    <TextView
+                        android:id="@+id/sponsor_description"
+                        style="@style/caption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/secondary_text"
+                        app:layout_constraintTop_toBottomOf="@+id/about_the_sponsor"
+                        tools:layout_editor_absoluteX="16dp"
+                        tools:text="Dsd fg gg ee er" />
 
                     <Button
                         android:id="@+id/know_more_sponsor"
@@ -330,9 +335,9 @@
                         android:onClick="@{()->selectedMissionViewModel.toSponsorWebsite()}"
                         android:text="@string/know_more"
                         android:textColor="@color/colorSecondary"
+                        app:layout_constraintBottom_toBottomOf="@id/about_the_sponsor"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/about_the_sponsor"
-                        app:layout_constraintBottom_toBottomOf="@id/about_the_sponsor"/>
+                        app:layout_constraintTop_toTopOf="@id/about_the_sponsor" />
 
                     <Button
                         android:id="@+id/choose_this_mission"
@@ -341,11 +346,12 @@
                         android:layout_height="42dp"
                         android:layout_marginTop="28dp"
                         android:background="@drawable/login_resend_active"
+                        android:onClick="@{()->selectedMissionViewModel.thisMissionChosen()}"
                         android:text="@string/choose_this_mission"
                         android:textColor="@color/nav_color"
-                        android:onClick="@{()->selectedMissionViewModel.thisMissionChosen()}"
                         app:layout_constraintTop_toBottomOf="@id/sponsor_description"
                         tools:layout_editor_absoluteX="16dp" />
+
                     <Button
                         android:id="@+id/choose_a_different_mission"
                         style="@style/button"
@@ -353,9 +359,9 @@
                         android:layout_height="42dp"
                         android:layout_marginTop="12dp"
                         android:background="@drawable/login_change_email"
+                        android:onClick="@{()->selectedMissionViewModel.toChooseMission()}"
                         android:text="@string/choose_a_different_mission"
                         android:textColor="@color/colorPrimary"
-                        android:onClick="@{()->selectedMissionViewModel.toChooseMission()}"
                         app:layout_constraintTop_toBottomOf="@id/choose_this_mission"
                         tools:layout_editor_absoluteX="16dp" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
