@@ -118,7 +118,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                     entireList.add(i.key.toString().toInt())
                     moneyRaisedList.add(Pair(i.key.toString().toInt(),i.value.toString().toInt()))
                 }
-                _totalMoneyRaised.value = "Rs$totalRaisedMoney"
+                _totalMoneyRaised.value = "Rs $totalRaisedMoney"
                     for (i in snapshot.children){
 
                     }

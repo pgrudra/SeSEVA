@@ -41,6 +41,7 @@
     <string name="others_max_time">com.example.us0.OTHERS_MAX_TIME</string>
     <string name="others_max_launches">com.example.us0.OTHERS_MAX_LAUNCHES</string>
     <string name="others_penalty">com.example.us0.OTHERS_PENALTY</string>
+    <string name="user_level">com.example.us0.USER_LEVEL</string>
 
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>

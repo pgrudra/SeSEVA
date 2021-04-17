@@ -263,5 +263,9 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.us0.home.profile.ProfileFragment"
-        android:label="ProfileFragment" />
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_chooseMissionFragment"
+            app:destination="@id/chooseMissionFragment" />
+    </fragment>
 </navigation>
