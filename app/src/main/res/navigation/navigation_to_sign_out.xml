@@ -267,5 +267,24 @@
         <action
             android:id="@+id/action_profileFragment_to_chooseMissionFragment"
             app:destination="@id/chooseMissionFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_yourPreviousMissionsFragment"
+            app:destination="@id/yourPreviousMissionsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/yourPreviousMissionsFragment"
+        android:name="com.example.us0.home.yourpreviousmissions.YourPreviousMissionsFragment"
+        android:label="YourPreviousMissionsFragment" >
+        <action
+            android:id="@+id/action_yourPreviousMissionsFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="currentMission"
+            app:argType="com.example.us0.data.missions.DomainActiveMission" />
+        <action
+            android:id="@+id/action_yourPreviousMissionsFragment_to_detailMission"
+            app:destination="@id/detailMission" />
     </fragment>
 </navigation>

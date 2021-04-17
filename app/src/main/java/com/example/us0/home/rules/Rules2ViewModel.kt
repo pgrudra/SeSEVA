@@ -484,6 +484,7 @@ class Rules2ViewModel(
     }
 
     private suspend fun insertIntoDatabase() {
+        Log.i("R2VM","ophere")
         val main = Intent(Intent.ACTION_MAIN, null)
         main.addCategory(Intent.CATEGORY_LAUNCHER)
         val launchables = pm.queryIntentActivities(main, 0)
@@ -509,10 +510,14 @@ class Rules2ViewModel(
                 if (!copy) {
                     appNameList.add(nameOfApp)
                     appPackageList.add(nameOfPackage)
-                    val app = AppAndCategory()
-                    app.appName = nameOfApp
-                    app.packageName = nameOfPackage
-                    database.insert(app)
+                    val k=database.isAppExist(nameOfPackage)
+                    if(k==null){
+                        val app = AppAndCategory()
+                        app.appName = nameOfApp
+                        app.packageName = nameOfPackage
+                        database.insert(app)
+                    }
+
                 }
             } catch (e: Exception) {
             }

@@ -65,6 +65,7 @@ class ProfileFragment : Fragment() {
                             .error(R.drawable.ic_launcher_foreground)
                     )
                     .into(binding.sponsorLogo)
+                binding.previousMissionsButton.isEnabled=true
             }
         })
         viewModel.makeExpandOrContractIconVisible.observe(viewLifecycleOwner, Observer { show->
@@ -88,7 +89,7 @@ class ProfileFragment : Fragment() {
         })
         viewModel.goToYourPreviousMissions.observe(viewLifecycleOwner, Observer { go->
             if(go){
-
+                findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToYourPreviousMissionsFragment(viewModel.getCurrentMission()))
                 viewModel.toYourPreviousMissionsComplete()
             }
         })

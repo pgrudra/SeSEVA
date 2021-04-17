@@ -15,14 +15,14 @@ interface MissionsDatabaseDao{
     @Query("SELECT * FROM list_of_missions WHERE missionNumber=:key")
     suspend fun doesMissionExist(key:Int): Mission?
 
-    @Query("SELECT * FROM list_of_missions WHERE deadline>:now")
-    fun getAllActiveMissions(now:Long): LiveData<List<Mission>>
+    @Query("SELECT * FROM list_of_missions WHERE deadline>:now AND contribution>:contribution")
+    fun getAllActiveMissions(now:Long,contribution:Int): LiveData<List<Mission>>
 
     @Query("DELETE FROM list_of_missions")
     suspend fun clear()
 
-    @Query("SELECT * FROM list_of_missions WHERE deadline<:now")
-    fun getAllClosedMissions(now:Long): LiveData<List<Mission>>
+    @Query("SELECT * FROM list_of_missions WHERE deadline<:now AND contribution>:contribution")
+    fun getAllAccomplishedMissions(now:Long,contribution:Int): LiveData<List<Mission>>
 
     @Query("SELECT * FROM list_of_missions WHERE mission_complete_notification=:t")
     suspend fun notifyIfClosed(t:Boolean):Mission?

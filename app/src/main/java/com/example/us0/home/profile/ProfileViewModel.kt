@@ -5,7 +5,10 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.us0.R
+import com.example.us0.data.missions.DomainActiveMission
+import com.example.us0.data.missions.Mission
 import com.example.us0.data.missions.MissionsDatabaseDao
+import com.example.us0.data.missions.asActiveDomainModel
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -70,6 +73,7 @@ class ProfileViewModel(
         get() = _category
     //private val _missionDescription=MutableLiveData<String>()
     var missionDescription=""
+    private lateinit var currentMission: Mission
         //get() = _missionDescription
 
     fun expandOrContract(){
@@ -101,6 +105,11 @@ class ProfileViewModel(
     fun knowMoreAboutSponsor(){
 
     }
+
+    fun getCurrentMission(): DomainActiveMission {
+        return currentMission.asActiveDomainModel()
+    }
+
     init {
         //_userName.value=sharedPref.getString((R.string.user_name).toString(),"User")
         /*val userLevel=sharedPref.getInt((R.string.user_level).toString(),1)
@@ -111,42 +120,37 @@ class ProfileViewModel(
         }*/
         val currentMissionNumber=sharedPref.getInt((R.string.chosen_mission_number).toString(),0)
         viewModelScope.launch {
-            val currentMission=dataBaseDAO.doesMissionExist(currentMissionNumber)
-            if(currentMission!=null){
-                _currentMissionNumber.value=currentMission.missionNumber
-                _currentMissionName.value=currentMission.missionName
-                missionDescription=currentMission.missionDescription
-                if(missionDescription.length<150){
-                    Log.i("PVM","h")
-                    _currentMissionDescription.value=missionDescription
-                }
-                else{
-                    Log.i("PVM","k")
-                    _makeExpandOrContractIconVisible.value=true
-                    val k=context.getString(
-                        R.string.dots, missionDescription.substring(
-                            0,
-                            150
-                        )
+            currentMission= dataBaseDAO.doesMissionExist(currentMissionNumber)!!
+            _currentMissionNumber.value=currentMission.missionNumber
+            _currentMissionName.value=currentMission.missionName
+            missionDescription=currentMission.missionDescription
+            if(missionDescription.length<150){
+                _currentMissionDescription.value=missionDescription
+            }
+            else{
+                _makeExpandOrContractIconVisible.value=true
+                val k=context.getString(
+                    R.string.dots, missionDescription.substring(
+                        0,
+                        150
                     )
-                    _currentMissionDescription.value=k
-                    Log.i("PVM","$k")
-                }
-                _currentMissionSponsorName.value=currentMission.sponsorName
-                _currentMissionSponsorDescription.value=currentMission.sponsorDescription
-                _goal.value=currentMission.goal
-                _amountRaised.value=currentMission.totalMoneyRaised.toString()
-                _contributors.value=currentMission.usersActive.toString()
-                _contribution.value="Rs " + currentMission.contribution.toString()
-                _category.value=currentMission.missionCategory
-                val now= Calendar.getInstance().timeInMillis
-                val intDaysLeft=((currentMission.deadline-now+ ONE_DAY)/ ONE_DAY)+1
-                if(intDaysLeft<10){
-                    _daysLeft.value= "0$intDaysLeft"
-                }
-                else{
-                    _daysLeft.value= intDaysLeft.toString()
-                }
+                )
+                _currentMissionDescription.value=k
+            }
+            _currentMissionSponsorName.value=currentMission.sponsorName
+            _currentMissionSponsorDescription.value=currentMission.sponsorDescription
+            _goal.value=currentMission.goal
+            _amountRaised.value=currentMission.totalMoneyRaised.toString()
+            _contributors.value=currentMission.usersActive.toString()
+            _contribution.value="Rs " + currentMission.contribution.toString()
+            _category.value=currentMission.missionCategory
+            val now= Calendar.getInstance().timeInMillis
+            val intDaysLeft=((currentMission.deadline-now+ ONE_DAY)/ ONE_DAY)+1
+            if(intDaysLeft<10){
+                _daysLeft.value= "0$intDaysLeft"
+            }
+            else{
+                _daysLeft.value= intDaysLeft.toString()
             }
         }
     }

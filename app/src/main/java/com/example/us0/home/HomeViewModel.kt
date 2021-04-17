@@ -63,18 +63,20 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
         get() = _moneyRaised
     private val nowMinusOneDay= Calendar.getInstance().timeInMillis-24*60*60*1000
     val activeMissions=Transformations.map(database.getActiveMissionsCount(nowMinusOneDay)){it.toString()}
+    val totalMoneyRaised=Transformations.map(database.getTotalMoneyRaised()){it.toString()}
+    val totalMissions=Transformations.map(database.getMissionsCount(-1)){it.toString()}
     private val _levelName = MutableLiveData<String>()
     val levelName: LiveData<String>
         get() = _levelName
     private val _timeSpent = MutableLiveData<String>()
     val timeSpent: LiveData<String>
         get() = _timeSpent
-    private val _totalMoneyRaised = MutableLiveData<String>()
+   /* private val _totalMoneyRaised = MutableLiveData<String>()
     val totalMoneyRaised: LiveData<String>
-        get() = _totalMoneyRaised
-    private val _totalMissions = MutableLiveData<String>()
+        get() = _totalMoneyRaised*/
+    /*private val _totalMissions = MutableLiveData<String>()
     val totalMissions: LiveData<String>
-        get() = _totalMissions
+        get() = _totalMissions*/
     private val _appLaunches = MutableLiveData<String>()
     val appLaunches: LiveData<String>
         get() = _appLaunches
@@ -111,14 +113,14 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
         val moneyRaisedReference=cloudReference.child("Money Raised")
         moneyRaisedReference.addListenerForSingleValueEvent(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                _totalMissions.value= snapshot.childrenCount.toString()
-                var totalRaisedMoney=0
+                //_totalMissions.value= snapshot.childrenCount.toString()
+                //var totalRaisedMoney=0
                 for(i in snapshot.children) {
-                    totalRaisedMoney += i.getValue<Int>() ?: 0
+                    //totalRaisedMoney += i.getValue<Int>() ?: 0
                     entireList.add(i.key.toString().toInt())
                     moneyRaisedList.add(Pair(i.key.toString().toInt(),i.value.toString().toInt()))
                 }
-                _totalMoneyRaised.value = "Rs $totalRaisedMoney"
+                //_totalMoneyRaised.value = "Rs $totalRaisedMoney"
                     for (i in snapshot.children){
 
                     }

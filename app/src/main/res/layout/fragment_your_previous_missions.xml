@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="YPMViewModel"
+            type="com.example.us0.home.yourpreviousmissions.YPMViewModel" />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_background">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/subtitle_1"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/common_background"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
+        app:title="Profile"
+        app:titleTextColor="@color/primary_text" />
+    <Button
+        android:id="@+id/active_missions_button"
+        android:layout_width="144dp"
+        android:layout_height="32dp"
+        style="@style/caption"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="16dp"
+        android:text="Active"
+        android:onClick="@{()->YPMViewModel.onActiveMissionsButtonClick()}"
+        android:textColor="@color/primary_text"
+        android:textAllCaps="false"
+        android:background="@drawable/login_resend_active"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"/>
+
+    <Button
+        android:id="@+id/accomplished_missions_button"
+        android:layout_width="144dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/login_resend_inactive"
+        android:text="Accomplished"
+        android:textAllCaps="false"
+        android:onClick="@{()->YPMViewModel.onAccomplishedMissionsButtonClick()}"
+        android:textColor="@color/secondary_text"
+        app:layout_constraintStart_toEndOf="@id/active_missions_button"
+        app:layout_constraintTop_toTopOf="@id/active_missions_button" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/missions_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scrollbars="vertical"
+        android:layout_marginTop="4dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/active_missions_button" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/noCardsText"
+        android:text="No Missions to display"
+        tools:text="No Missions to display"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:visibility="gone"
+        android:textColor="@color/primary_text"
+        app:layout_constraintTop_toBottomOf="@id/active_missions_button"
+        android:layout_marginTop="16dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
