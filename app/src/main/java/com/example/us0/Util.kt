@@ -4,6 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.LifecycleService
+import androidx.room.ColumnInfo
+import com.github.mikephil.charting.charts.BarLineChartBase
+import com.github.mikephil.charting.formatter.ValueFormatter
+import java.util.*
 
 enum class Actions{
     START,
@@ -92,6 +96,77 @@ fun allotGroup(cat:String): String {
         "ENTERTAINMENT" -> "ENTERTAINMENT"
         else -> "OTHERS"
     }
+}
+
+data class TimeLaunchesDate(
+    @ColumnInfo(name="time_spent") val time: Int?,
+    @ColumnInfo(name="app_launches") val launches: Int?,
+    @ColumnInfo(name="date") val date: Long?
+)
+
+fun getDay(i: Int): String {
+    return when(i){
+        Calendar.SUNDAY -> "Sun."
+        Calendar.MONDAY -> "Mon."
+        Calendar.TUESDAY -> "Tue."
+        Calendar.WEDNESDAY -> "Wed."
+        Calendar.THURSDAY -> "Thu."
+        Calendar.FRIDAY -> "Fri."
+        else->"Sat."
+    }
+}
+fun getMonth(i: Int): String {
+    return when(i){
+        0->"Jan."
+        1->"Feb."
+        2->"Mar."
+        3->"Apr."
+        4->"May"
+        5->"Jun."
+        6->"Jul."
+        7->"Aug."
+        8->"Sept."
+        9->"Oct."
+        10->"Nov."
+        else->"Dec."
+    }
+}
+
+class WeekAxisValueFormatter(private val chart: BarLineChartBase<*>, private val labels: ArrayList<String>) : ValueFormatter() {
+    override fun getFormattedValue(value: Float): String {
+        return  if(value==6f){ "YDA" }
+        else{labels[value.toInt()]}
+    }
+}
+class MonthAxisValueFormatter(private val chart: BarLineChartBase<*>, private val labels: ArrayList<String>) : ValueFormatter() {
+    override fun getFormattedValue(value: Float): String {
+        return  if(value==28f){ "YDA" }
+        else{labels[value.toInt()]}
+    }
+}
+class YearAxisValueFormatter(private val chart: BarLineChartBase<*>, private val labels: ArrayList<String>) : ValueFormatter() {
+    override fun getFormattedValue(value: Float): String {
+        return  if(value==363f){ "YDA" }
+        else{labels[value.toInt()]}
+    }
+}
+fun secToHrMin(timeWeekAggregate: Int): CharSequence {
+    val hrs=(timeWeekAggregate/3600)
+    val mins=(timeWeekAggregate%3600)/60
+    return "$hrs hrs $mins mins "
+}
+fun getDayAndMonth(lastMonthStart: Calendar): String {
+    return lastMonthStart.get(Calendar.DATE).toString()+" "+getMonth(lastMonthStart.get(Calendar.MONTH))
+}
+fun checkIfSameDay(lastMonthStart: Calendar, calender: Calendar): Boolean {
+    if(lastMonthStart.get(Calendar.DATE)==calender.get(Calendar.DATE)){
+        if(lastMonthStart.get(Calendar.MONTH)==calender.get((Calendar.MONTH))){
+            if(lastMonthStart.get(Calendar.YEAR)==calender.get(Calendar.YEAR)){
+                return true
+            }
+        }
+    }
+    return false
 }
 
 

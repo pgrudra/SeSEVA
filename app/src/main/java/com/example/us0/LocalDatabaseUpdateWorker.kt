@@ -5,6 +5,7 @@ import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import androidx.room.ColumnInfo
 import androidx.work.*
 import com.example.us0.data.AllDatabase
 import com.example.us0.data.appcategories.CategoryStat
@@ -78,6 +79,7 @@ class LocalDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
         val appDao = AllDatabase.getInstance(applicationContext).AppDatabaseDao
         val statDao=AllDatabase.getInstance(applicationContext).StatDataBaseDao
         val categoryStatDao=AllDatabase.getInstance(applicationContext).CategoryStatDatabaseDao
+        val missionDao=AllDatabase.getInstance(applicationContext).MissionsDatabaseDao
         val sharedPref = applicationContext.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
         val end: Calendar = Calendar.getInstance()
         end.set(Calendar.HOUR_OF_DAY, 0)
@@ -170,6 +172,7 @@ class LocalDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
         var penaltyToday=0
         val dailyReward=sharedPref.getInt((R.string.daily_reward).toString(), 0)
         var moneyToBeUpdated=sharedPref.getInt((R.string.money_to_be_updated).toString(), 0)
+        val pendingMoneyToBeUpdated=moneyToBeUpdated
         moneyToBeUpdated+=dailyReward
 for(key in categoryTimes.keys){
 
@@ -242,6 +245,12 @@ for(key in categoryTimes.keys){
         with(sharedPref.edit()) {
             this?.putInt((R.string.money_to_be_updated).toString(),moneyToBeUpdated)
             this?.apply()
+        }
+        val choseMission=sharedPref.getInt((R.string.chosen_mission_number).toString(),0)
+        val mission=missionDao.doesMissionExist(choseMission)
+        if(mission!=null){
+            mission.contribution+=moneyToBeUpdated-pendingMoneyToBeUpdated
+            missionDao.update(mission)
         }
         Log.i("LDUWT", "MONEY_RAISED=$moneyToBeUpdated Penalty=$penaltyToday")
         //save penalties

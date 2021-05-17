@@ -3,6 +3,7 @@ package com.example.us0
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.us0.data.AllDatabase

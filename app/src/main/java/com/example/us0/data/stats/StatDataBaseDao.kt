@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.example.us0.TimeLaunchesDate
 import com.example.us0.data.apps.AppAndCategory
 
 @Dao
@@ -20,6 +21,9 @@ interface StatDataBaseDao{
 
     @Query("SELECT * FROM list_of_stats WHERE date=:chosenDate")
     suspend fun getAppsStatsOnChosenDate(chosenDate:Long): List<Stat>?
+
+    @Query("SELECT time_spent,app_launches,date FROM list_of_stats WHERE package_name=:pkg AND date>:d ORDER BY date ASC")
+    suspend fun getTimeLaunchesDate(pkg:String,d:Long): List<TimeLaunchesDate>
 
     @Query("DELETE FROM list_of_stats WHERE package_name=:pk")
     suspend fun deleteAppStats(pk:String)

@@ -17,6 +17,9 @@ import com.example.us0.data.AllDatabase
 import com.example.us0.data.appcategories.AppsCategory
 import com.example.us0.data.apps.AppAndCategory
 import com.example.us0.data.stats.Stat
+import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.utils.ColorTemplate
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -86,6 +89,23 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
     private val _appsListEmptyOrApplications = MutableLiveData<String>()
     val appsListEmptyOrApplications: LiveData<String>
         get() = _appsListEmptyOrApplications
+    private val _totalTimeSpentPieChartVisible=MutableLiveData<Boolean>()
+    val totalTimeSpentPieChartVisible:LiveData<Boolean>
+        get()=_totalTimeSpentPieChartVisible
+    private val _totalAppLaunchesPieChartVisible=MutableLiveData<Boolean>()
+    val totalAppLaunchesPieChartVisible:LiveData<Boolean>
+        get()=_totalAppLaunchesPieChartVisible
+    private val _catTimeSpentPieChartVisible=MutableLiveData<Boolean>()
+    val catTimeSpentPieChartVisible:LiveData<Boolean>
+        get()=_catTimeSpentPieChartVisible
+    private val _catAppLaunchesPieChartVisible=MutableLiveData<Boolean>()
+    val catAppLaunchesPieChartVisible:LiveData<Boolean>
+        get()=_catAppLaunchesPieChartVisible
+
+    private val _processingDataForPieChartDone=MutableLiveData<Boolean>()
+    val processingDataForPieChartDone:LiveData<Boolean>
+        get()=_processingDataForPieChartDone
+
     val categoryTimes:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"OTHERS" to 0,"WHITELISTED" to 0, "GAMES" to 0,"MSNBS" to 0,"VIDEO_PLAYERS_N_COMICS" to 0,"ENTERTAINMENT" to 0,"COMMUNICATION" to 0,"SOCIAL" to 0)
     val categoryLaunches:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to 0,"COMMUNICATION" to 0, "GAMES" to 0,"WHITELISTED" to 0,"VIDEO_PLAYERS_N_COMICS" to 0,"ENTERTAINMENT" to 0,"MSNBS" to 0,"OTHERS" to 0)
     val timeRules:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to sharedPref!!.getInt((R.string.social_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"COMMUNICATION" to sharedPref.getInt((R.string.communication_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS, "GAMES" to sharedPref.getInt((R.string.games_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"WHITELISTED" to 0,"VIDEO_PLAYERS_N_COMICS" to sharedPref.getInt((R.string.video_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"ENTERTAINMENT" to sharedPref.getInt((R.string.entertainment_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"MSNBS" to sharedPref.getInt((R.string.msnbs_max_time).toString(),0)*ONE_MINUTE_IN_SECONDS,"OTHERS" to sharedPref.getInt((R.string.others_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS)
@@ -127,8 +147,8 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
         _catNameForAppScreen.value=stat.appCategory!!
         _appTimeSpent.value=inHrsMins(stat.timeSpent!!)
         _appLaunches.value=stat.appLaunches.toString()
-        _navigateToSelectedApp.value=true
         _appPackageNameForAppScreen.value=stat.packageName!!
+        _navigateToSelectedApp.value=true
     }
     fun goToMaxUsedAppUsageFragment(){
         val stat=appStats.maxByOrNull { it.timeSpent!! }
@@ -287,6 +307,7 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
                     list.add(entertainmentAppsCategory)
                 }
             _listOfCats.value=list
+            _processingDataForPieChartDone.value=true
 
         }
 
@@ -316,6 +337,21 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
             }
         }
     }
+    fun totalTimeSpentConstraintLayoutClicked(){
+        _totalTimeSpentPieChartVisible.value = _totalTimeSpentPieChartVisible.value != true
+        Log.i("UOVVM","test")
+    }
+    fun catTimeSpentConstraintLayoutClicked(){
+        _catTimeSpentPieChartVisible.value = _catTimeSpentPieChartVisible.value != true
+    }
+    fun totalAppLaunchesConstraintLayoutClicked(){
+        _totalAppLaunchesPieChartVisible.value = _totalAppLaunchesPieChartVisible.value != true
+    }
+    fun catAppLaunchesConstraintLayoutClicked(){
+        _catAppLaunchesPieChartVisible.value = _catAppLaunchesPieChartVisible.value != true
+    }
+
+
 
     /*fun provideSharedPref(sharedPref: SharedPreferences?) {
         timeRules["SOCIAL"]=sharedPref!!.getInt((R.string.social_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS

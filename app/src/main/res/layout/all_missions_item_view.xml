@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="488dp"
+    android:paddingStart="16dp"
+    android:elevation="3dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/all_corner_rounded_4dp_1e">
+<TextView
+    android:id="@+id/mission_category"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:text="ARCHITECTURE"
+    android:textColor="@color/secondary_text"
+    style="@style/overline"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:layout_marginTop="16dp"/>
+    <ImageView
+        android:id="@+id/mission_image"
+        android:layout_width="160dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mission_category"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/bottom_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_non_selected_mission_image_bottom_right"
+        app:layout_constraintBottom_toBottomOf="@id/mission_image"
+        app:layout_constraintEnd_toEndOf="@id/mission_image"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/top_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_non_selected_mission_image_top_left"
+        app:layout_constraintTop_toTopOf="@id/mission_image"
+        app:layout_constraintStart_toStartOf="@id/mission_image"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/bottom_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_non_selsected_mission_image_bottom_left"
+        app:layout_constraintBottom_toBottomOf="@id/mission_image"
+        app:layout_constraintStart_toStartOf="@id/mission_image"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/top_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_non_selected_mission_image_top_right"
+        app:layout_constraintTop_toTopOf="@id/mission_image"
+        app:layout_constraintEnd_toEndOf="@id/mission_image"/>
+
+    <TextView
+        android:id="@+id/mission_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/caption"
+        android:textColor="@color/colorSecondary"
+        app:layout_constraintTop_toBottomOf="@id/mission_image"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Mission Name"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/rupee_symbol"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:layout_marginStart="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/total_money_raised"
+        app:layout_constraintStart_toEndOf="@id/mission_image"
+        app:layout_constraintTop_toTopOf="@+id/total_money_raised"
+        app:srcCompat="@drawable/rupee_symbol" />
+
+    <TextView
+        android:id="@+id/total_money_raised"
+        style="@style/subtitle_1"
+        android:textColor="@color/primary_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/rupee_symbol"
+        app:layout_constraintTop_toTopOf="@id/mission_image"
+        tools:text="10000" />
+
+    <TextView
+        android:id="@+id/total_raised_text"
+        style="@style/caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total raised"
+        android:textColor="@color/secondary_text"
+        app:layout_constraintStart_toStartOf="@id/total_money_raised"
+        app:layout_constraintTop_toBottomOf="@id/total_money_raised" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/contributors_symbol"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:layout_marginStart="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/contributors"
+        app:layout_constraintStart_toEndOf="@id/mission_image"
+        app:layout_constraintTop_toTopOf="@+id/contributors"
+        app:srcCompat="@drawable/users_symbol" />
+
+    <TextView
+        android:id="@+id/contributors"
+        style="@style/subtitle_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/primary_text"
+        app:layout_constraintStart_toStartOf="@+id/total_money_raised"
+        app:layout_constraintTop_toBottomOf="@id/total_raised_text"
+        tools:text="760" />
+
+    <TextView
+        android:id="@+id/contributors_text"
+        style="@style/caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contributors"
+        android:textColor="@color/secondary_text"
+        app:layout_constraintStart_toStartOf="@+id/total_raised_text"
+        app:layout_constraintTop_toBottomOf="@id/contributors" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/active_symbol"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        app:srcCompat="@drawable/ic_active_mission_symbol"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

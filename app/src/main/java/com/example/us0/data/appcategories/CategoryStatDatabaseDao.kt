@@ -3,6 +3,7 @@ package com.example.us0.data.appcategories
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.example.us0.TimeLaunchesDate
 
 @Dao
 interface CategoryStatDatabaseDao{
@@ -20,6 +21,10 @@ interface CategoryStatDatabaseDao{
     @Query("SELECT * FROM list_of_category_stats WHERE date=:chosenDate")
     suspend fun getCategoryStatsOfChosenDate(chosenDate:Long): List<CategoryStat>?
     //may not be necessary till here
+
+    @Query("SELECT time_spent,app_launches,date FROM list_of_category_stats WHERE category_name=:cat AND date>:d ORDER BY date ASC")
+    suspend fun getTimeLaunchesDate(cat:String,d:Long): List<TimeLaunchesDate>
+
     @Query("DELETE FROM list_of_category_stats")
     suspend fun clear()
 

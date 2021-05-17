@@ -254,11 +254,17 @@
         <action
             android:id="@+id/action_categoryUsageFragment_to_appUsageFragment"
             app:destination="@id/appUsageFragment" />
+        <argument
+            android:name="catName"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/appUsageFragment"
         android:name="com.example.us0.home.usagestats.AppUsageFragment"
         android:label="AppUsageFragment" >
+        <argument
+            android:name="appPackageName"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"

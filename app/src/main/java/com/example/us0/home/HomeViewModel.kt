@@ -121,9 +121,6 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                     moneyRaisedList.add(Pair(i.key.toString().toInt(),i.value.toString().toInt()))
                 }
                 //_totalMoneyRaised.value = "Rs $totalRaisedMoney"
-                    for (i in snapshot.children){
-
-                    }
                     if(loadedList!=null){
                         val toDownloadList=entireList.minus(loadedList)
                         insertIntoDatabase(toDownloadList,loadedList,moneyRaisedList)

@@ -153,7 +153,7 @@ binding.bottomNavView.setOnNavigationItemSelectedListener(this)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        if(item.itemId==R.id.detailMission){
+        /*if(item.itemId==R.id.detailMission){
             val args=Bundle()
             CoroutineScope(Dispatchers.Main).launch {
                 withContext(Dispatchers.IO){
@@ -165,10 +165,9 @@ binding.bottomNavView.setOnNavigationItemSelectedListener(this)
                     }
                 }
             }.invokeOnCompletion { this@HomeActivity.findNavController(R.id.myNavHostFragmentToSignOut).navigate(item.itemId,args) }
-        }
-        else {
+        }*/
             this@HomeActivity.findNavController(R.id.myNavHostFragmentToSignOut).navigate(item.itemId)
-        }
+
         return false
     }
 

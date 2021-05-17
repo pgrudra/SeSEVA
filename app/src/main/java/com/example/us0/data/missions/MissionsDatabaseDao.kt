@@ -18,6 +18,9 @@ interface MissionsDatabaseDao{
     @Query("SELECT * FROM list_of_missions WHERE deadline>:now AND contribution>:contribution")
     fun getAllActiveMissions(now:Long,contribution:Int): LiveData<List<Mission>>
 
+    @Query("SELECT * FROM list_of_missions")
+    fun getAllMissions(): LiveData<List<Mission>>
+
     @Query("DELETE FROM list_of_missions")
     suspend fun clear()
 
