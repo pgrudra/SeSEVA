@@ -451,8 +451,8 @@ class CategoryUsageFragment : Fragment() {
 
         }
         val weekButton=binding.thisWeekButton
-        val monthButton=binding.thisWeekButton
-        val yearButton=binding.thisWeekButton
+        val monthButton=binding.thisMonthButton
+        val yearButton=binding.thisYearButton
         weekButton.setOnClickListener {
             weekButton.setBackgroundResource(R.drawable.primary_60p_rounded_corner_4)
             monthButton.setBackgroundResource(R.drawable.all_corner_rounded_4dp_2e)

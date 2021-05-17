@@ -411,8 +411,8 @@ class UsageOverviewFragment : Fragment() {
 
         }
         val weekButton=binding.thisWeekButton
-        val monthButton=binding.thisWeekButton
-        val yearButton=binding.thisWeekButton
+        val monthButton=binding.thisMonthButton
+        val yearButton=binding.thisYearButton
         weekButton.setOnClickListener {
             weekButton.setBackgroundResource(R.drawable.primary_60p_rounded_corner_4)
             monthButton.setBackgroundResource(R.drawable.all_corner_rounded_4dp_2e)
@@ -421,7 +421,6 @@ class UsageOverviewFragment : Fragment() {
                 weekButton.setTextColor(ContextCompat.getColor(it,R.color.primary_text))
                 monthButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text))
                 yearButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text)) }
-
             if(noChartsToDisplay){
                 binding.noChartsText.visibility=View.VISIBLE
                 binding.weekChartsConstraintLayout.visibility=View.GONE
@@ -443,7 +442,6 @@ class UsageOverviewFragment : Fragment() {
                 weekButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text))
                 monthButton.setTextColor(ContextCompat.getColor(it,R.color.primary_text))
                 yearButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text)) }
-
             if(noChartsToDisplay){
                 binding.noChartsText.visibility=View.VISIBLE
                 binding.weekChartsConstraintLayout.visibility=View.GONE
@@ -464,7 +462,7 @@ class UsageOverviewFragment : Fragment() {
             context?.let{
                 weekButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text))
                 monthButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text))
-                yearButton.setTextColor(ContextCompat.getColor(it,R.color.primary_text))}
+                yearButton.setTextColor(ContextCompat.getColor(it,R.color.primary_text)) }
             if(noChartsToDisplay){
                 binding.noChartsText.visibility=View.VISIBLE
                 binding.weekChartsConstraintLayout.visibility=View.GONE

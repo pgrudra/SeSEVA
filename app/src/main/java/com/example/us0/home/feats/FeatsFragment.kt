@@ -60,8 +60,8 @@ class FeatsFragment : Fragment() {
                     sponsorsList.isNestedScrollingEnabled=true
                 } else {
                     //scroll view is not at bottom
-                    missionList.isNestedScrollingEnabled=false
-                    sponsorsList.isNestedScrollingEnabled=false
+                    //missionList.isNestedScrollingEnabled=false
+                    //sponsorsList.isNestedScrollingEnabled=false
                 }
             })
 
@@ -72,7 +72,7 @@ class FeatsFragment : Fragment() {
             sponsorsButton.setBackgroundResource(R.drawable.login_resend_inactive)
             missionList.visibility=View.VISIBLE
             sponsorsList.visibility=View.GONE
-            binding.listDescriptionText.text="List of missions hosted on SeSeva to date"
+            binding.listDescriptionText.text="List of missions hosted on SeSeva"
             binding.activeMissionLegendConstraintLayout.visibility=View.VISIBLE
             context?.let{missionsButton.setTextColor(ContextCompat.getColor(it,R.color.primary_text))}
             context?.let{sponsorsButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text))}
@@ -82,7 +82,7 @@ class FeatsFragment : Fragment() {
             sponsorsButton.setBackgroundResource(R.drawable.login_resend_active)
             missionList.visibility=View.GONE
             sponsorsList.visibility=View.VISIBLE
-            binding.listDescriptionText.text="List of companies that have fulfilled their\n pledges towards missions hosted on SeSeva"
+            binding.listDescriptionText.text="List of companies that have fulfilled their pledges towards missions hosted on SeSeva"
             binding.activeMissionLegendConstraintLayout.visibility=View.GONE
             context?.let{missionsButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text))}
             context?.let{sponsorsButton.setTextColor(ContextCompat.getColor(it,R.color.primary_text))}

@@ -1,7 +1,12 @@
 package com.example.us0.adapters
 
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -29,11 +34,17 @@ class AllSponsorsAdapter(private val onCLickListener: AllSponsorsAdapter.OnClick
                         .placeholder(R.drawable.ic_launcher_background)
                         .error(R.drawable.ic_launcher_foreground))
                 .into(binding.sponsorLogo)
-            var sponsoredMissionsText="Sponsored Rs${item.totalMoneySponsored} for\n"
+            var sponsoredMissionsText="Sponsored Rs ${item.totalMoneySponsored} for\n"
             for(i in item.sponsoredMissions){
-                sponsoredMissionsText+="$i,\n"
+                sponsoredMissionsText+="$i\n"
             }
-            binding.sponsoredMoneyAndMissiions.text=sponsoredMissionsText
+            val money_text_length=item.totalMoneySponsored.toString().length
+            val spannable= SpannableString(sponsoredMissionsText)
+            spannable.setSpan(ForegroundColorSpan(ContextCompat.getColor(binding.sponsorName.context,R.color.primary_text)),10,13+money_text_length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            spannable.setSpan(RelativeSizeSpan(1.3f),10,13+money_text_length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+            binding.sponsoredMoneyAndMissions.text=spannable
+            binding.sponsorName.text=item.sponsorName
         }
 
         companion object {

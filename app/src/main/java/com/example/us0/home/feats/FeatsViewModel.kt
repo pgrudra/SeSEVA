@@ -24,6 +24,9 @@ class FeatsViewModel(
         get()=_navigateToSelectedSponsorPage
     val missions:LiveData<List<DomainActiveMission>> = Transformations.map(dataBaseDAO.getAllMissions()){it.asActiveDomainModel()}
     private val nowMinusOneDay= Calendar.getInstance().timeInMillis-24*60*60*1000
+    val activeMissions=Transformations.map(dataBaseDAO.getActiveMissionsCount(nowMinusOneDay)){it.toString()}
+    val totMoneyRaised=Transformations.map(dataBaseDAO.getTotalMoneyRaised()){ "Rs $it" }
+    val totalMissions=Transformations.map(dataBaseDAO.getMissionsCount(-1)){it.toString()}
     val sponsors:LiveData<List<SponsorCardContents>> = Transformations.map(dataBaseDAO.getAllAccomplishedMissions(nowMinusOneDay,-1)){
         val sponsorMissionNumbersList:HashMap<String,MutableList<Int>> = hashMapOf()
         val sponsorMissionList:HashMap<String,MutableList<String>> = hashMapOf()
