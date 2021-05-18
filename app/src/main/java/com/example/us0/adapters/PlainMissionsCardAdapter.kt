@@ -24,7 +24,7 @@ class PlainMissionsCardAdapter(private val onCLickListener: OnClickListener): Li
         fun bind(item: DomainActiveMission){
             binding.missionCategory.text=item.category
             binding.missionName.text=item.missionName
-            binding.sponsorName.text=item.sponsorName
+            binding.sponsor.text="Sponsored by ${item.sponsorName}"
             binding.contribution.text=item.contribution.toString()
             binding.totalMoneyRaised.text=item.totalMoneyRaised.toString()
             binding.contributors.text=item.usersActive.toString()

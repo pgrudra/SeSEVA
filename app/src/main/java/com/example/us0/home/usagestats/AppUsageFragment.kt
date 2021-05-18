@@ -17,6 +17,7 @@ import com.example.us0.databinding.FragmentAppUsageBinding
 import com.example.us0.databinding.FragmentCategoryUsageBinding
 import com.example.us0.home.DrawerLocker
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
 import kotlinx.coroutines.launch
@@ -59,6 +60,7 @@ class AppUsageFragment : Fragment() {
         timeWeekChart.description.isEnabled=false
         timeWeekChart.xAxis.textColor=R.color.disabled_text
         timeWeekChart.axisLeft.textColor=R.color.disabled_text
+        timeWeekChart.axisLeft.axisMinimum=0f
         timeWeekChart.invalidate()
         val launchesWeekChart=binding.appLaunchesBarChart
         launchesWeekChart.setNoDataText("Loading")
@@ -72,6 +74,7 @@ class AppUsageFragment : Fragment() {
         launchesWeekChart.description.isEnabled=false
         launchesWeekChart.xAxis.textColor=R.color.disabled_text
         launchesWeekChart.axisLeft.textColor=R.color.disabled_text
+        launchesWeekChart.axisLeft.axisMinimum=0f
         launchesWeekChart.invalidate()
 
         val timeMonthChart=binding.timeSpentMonthLineChart
@@ -86,6 +89,7 @@ class AppUsageFragment : Fragment() {
         timeMonthChart.description.isEnabled=false
         timeMonthChart.xAxis.textColor= Color.WHITE
         timeMonthChart.axisRight.textColor= Color.WHITE
+        timeMonthChart.axisLeft.axisMinimum=0f
         timeMonthChart.invalidate()
 
         val launchesMonthChart=binding.appLaunchesMonthLineChart
@@ -100,6 +104,7 @@ class AppUsageFragment : Fragment() {
         launchesMonthChart.description.isEnabled=false
         launchesMonthChart.xAxis.textColor= Color.WHITE
         launchesMonthChart.axisRight.textColor= Color.WHITE
+        launchesMonthChart.axisLeft.axisMinimum=0f
         launchesMonthChart.invalidate()
 
         val timeYearChart=binding.timeSpentYearLineChart
@@ -114,6 +119,7 @@ class AppUsageFragment : Fragment() {
         timeYearChart.description.isEnabled=false
         timeYearChart.xAxis.textColor= Color.WHITE
         timeYearChart.axisRight.textColor= Color.WHITE
+        timeYearChart.axisLeft.axisMinimum=0f
         timeYearChart.invalidate()
 
         val launchesYearChart=binding.appLaunchesYearLineChart
@@ -128,6 +134,7 @@ class AppUsageFragment : Fragment() {
         launchesYearChart.description.isEnabled=false
         launchesYearChart.xAxis.textColor= Color.WHITE
         launchesYearChart.axisRight.textColor= Color.WHITE
+        launchesYearChart.axisLeft.axisMinimum=0f
         launchesYearChart.invalidate()
         viewLifecycleOwner.lifecycleScope.launch {
             val lastWeekStart: Calendar = Calendar.getInstance()

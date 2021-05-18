@@ -10,7 +10,7 @@
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="228dp"
+        android:layout_height="208dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="12dp"
@@ -22,7 +22,7 @@
             style="@style/overline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:textColor="@color/secondary_text"
             app:layout_constraintStart_toStartOf="parent"
@@ -69,33 +69,25 @@
 
         <TextView
             android:id="@+id/mission_name"
-            style="@style/subtitle_1"
+            style="@style/caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textColor="@color/primary_text"
+            android:textColor="@color/colorPrimary"
             app:layout_constraintStart_toStartOf="@+id/mission_category"
             app:layout_constraintTop_toBottomOf="@id/mission_image"
             tools:text="Mission name" />
 
         <TextView
-            android:id="@+id/sponsor_text"
+            android:id="@+id/sponsor"
             style="@style/tertiary_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Sponsor"
-            android:textColor="@color/secondary_text"
-            app:layout_constraintStart_toStartOf="@id/mission_category"
-            app:layout_constraintTop_toBottomOf="@id/mission_name" />
-
-        <TextView
-            android:id="@+id/sponsor_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/mission_category"
-            app:layout_constraintTop_toBottomOf="@+id/sponsor_text"
-            tools:text="Sponsor name" />
+            android:layout_marginBottom="16dp"
+            android:textColor="@color/disabled_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/mission_category"
+            tools:text="Sponsored by Abcd Pvt. Ltd" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/rupee_symbol_1"
@@ -109,7 +101,7 @@
 
         <TextView
             android:id="@+id/contribution"
-            style="@style/subtitle_1"
+            style="@style/caption"
             android:textColor="@color/primary_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -142,7 +134,7 @@
 
         <TextView
             android:id="@+id/total_money_raised"
-            style="@style/subtitle_1"
+            style="@style/caption"
             android:textColor="@color/primary_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -175,7 +167,7 @@
 
         <TextView
             android:id="@+id/contributors"
-            style="@style/subtitle_1"
+            style="@style/caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

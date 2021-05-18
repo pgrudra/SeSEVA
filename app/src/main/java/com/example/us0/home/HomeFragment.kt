@@ -59,7 +59,7 @@ class HomeFragment : Fragment() {
 
         viewModel.goToMissionsScreen.observe(viewLifecycleOwner, Observer {go->
             if(go) {
-                //findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailMission(it,true))
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToFeatsFragment())
                 viewModel.onGoToMissionsScreenComplete()
             }
         })

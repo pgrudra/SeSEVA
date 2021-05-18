@@ -1,6 +1,7 @@
 package com.example.us0.home.yourpreviousmissions
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -46,6 +47,8 @@ class YourPreviousMissionsFragment : Fragment() {
             if(accomplishedSelected){
                 binding.accomplishedMissionsButton.setBackgroundResource(R.drawable.login_resend_active)
                 binding.activeMissionsButton.setBackgroundResource(R.drawable.login_resend_inactive)
+                binding.activeMissionsList.visibility=View.GONE
+                binding.accomplishedMissionsList.visibility=View.VISIBLE
                 context?.let{binding.accomplishedMissionsButton.setTextColor(ContextCompat.getColor(it,R.color.primary_text))}
                 context?.let{binding.activeMissionsButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text))}
             }
@@ -54,28 +57,42 @@ class YourPreviousMissionsFragment : Fragment() {
             if(activeSelected){
                 binding.activeMissionsButton.setBackgroundResource(R.drawable.login_resend_active)
                 binding.accomplishedMissionsButton.setBackgroundResource(R.drawable.login_resend_inactive)
+                binding.activeMissionsList.visibility=View.VISIBLE
+                binding.accomplishedMissionsList.visibility=View.GONE
                 context?.let{binding.activeMissionsButton.setTextColor(ContextCompat.getColor(it,R.color.primary_text))}
                 context?.let{binding.accomplishedMissionsButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text))}
             }
         })
-        val adapter=PlainMissionsCardAdapter(PlainMissionsCardAdapter.OnClickListener{
-            if(it.deadline>nowMinusOneDay){
+        val activeMissionsAdapter=PlainMissionsCardAdapter(PlainMissionsCardAdapter.OnClickListener{
                 findNavController().navigate(YourPreviousMissionsFragmentDirections.actionYourPreviousMissionsFragmentToDetailMission(it,true))
-            }
-            else{
-                //download report
-            }})
-        viewModel.missionsToDisplay.observe(viewLifecycleOwner, Observer {
-            val list=it.filter { mission -> mission!=currentMission }
-            if(list.isNotEmpty()){
-                adapter.submitList(it)
-                binding.noCardsText.visibility=View.GONE
-            }
-            else{
-                binding.noCardsText.visibility=View.VISIBLE
+            })
+        val accomplishedMissionsAdapter=PlainMissionsCardAdapter(PlainMissionsCardAdapter.OnClickListener{
+            findNavController().navigate(YourPreviousMissionsFragmentDirections.actionYourPreviousMissionsFragmentToDetailMission(it,true))
+        })
+        viewModel.activeMissionsToDisplay.observe(viewLifecycleOwner, Observer {
+            val list = it.filter { mission -> mission != currentMission }
+            if (list.isNotEmpty()) {
+                activeMissionsAdapter.submitList(it)
+                binding.activeMissionsList.visibility=View.VISIBLE
+                binding.noCardsText.visibility = View.GONE
+            } else {
+                binding.activeMissionsList.visibility=View.GONE
+                binding.noCardsText.visibility = View.VISIBLE
             }
         })
-        binding.missionsList.adapter=adapter
+        viewModel.accomplishedMissionsToDisplay.observe(viewLifecycleOwner, Observer {
+            val list = it.filter { mission -> mission != currentMission }
+            if (list.isNotEmpty()) {
+                accomplishedMissionsAdapter.submitList(it)
+                binding.accomplishedMissionsList.visibility=View.VISIBLE
+                binding.noCardsText.visibility = View.GONE
+            } else {
+                binding.accomplishedMissionsList.visibility=View.GONE
+                binding.noCardsText.visibility = View.VISIBLE
+            }
+        })
+        binding.activeMissionsList.adapter=activeMissionsAdapter
+        binding.accomplishedMissionsList.adapter=accomplishedMissionsAdapter
         drawerLocker!!.setDrawerEnabled(false)
         drawerLocker.displayBottomNavigation(true)
 

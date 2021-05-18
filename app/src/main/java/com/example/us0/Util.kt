@@ -2,6 +2,7 @@ package com.example.us0
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Resources
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.LifecycleService
 import androidx.room.ColumnInfo
@@ -169,4 +170,4 @@ fun checkIfSameDay(lastMonthStart: Calendar, calender: Calendar): Boolean {
     return false
 }
 
-
+val Int.px: Int get() = (this * Resources.getSystem().displayMetrics.density).toInt()
