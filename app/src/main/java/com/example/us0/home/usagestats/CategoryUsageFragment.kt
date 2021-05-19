@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.us0.*
+import com.example.us0.adapters.PieChartLegendAdapter
 import com.example.us0.adapters.StatAdapter
 import com.example.us0.choosemission.DetailMissionArgs
 import com.example.us0.data.AllDatabase
@@ -87,18 +88,22 @@ class CategoryUsageFragment : Fragment() {
         val manager = GridLayoutManager(activity, 2, GridLayoutManager.HORIZONTAL, false)
         binding.appRecyclerView.layoutManager=manager
         val drawerLocker=(activity as DrawerLocker?)
-        binding.toolbar.setNavigationIcon(R.drawable.ic_navdrawer_icon)
-        binding.toolbar.setNavigationOnClickListener { v -> (activity as DrawerLocker?)!!.openCloseNavigationDrawer(v) }
+        binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_left)
+        binding.toolbar.setNavigationOnClickListener {
+                //v -> (activity as DrawerLocker?)!!.openCloseNavigationDrawer(v)
+            activity?.onBackPressed()}
         drawerLocker!!.setDrawerEnabled(true)
         drawerLocker.displayBottomNavigation(true)
 
         viewModel.catTimeSpentPieChartVisible.observe(viewLifecycleOwner,Observer{visible->
             if(visible){
                 binding.timePieChart.visibility=View.VISIBLE
+                binding.timePieChartLegend.visibility=View.VISIBLE
                 binding.timeSpentDropdownIcon.setImageResource(R.drawable.ic_collapse_vector)
             }
             else{
                 binding.timePieChart.visibility=View.GONE
+                binding.timePieChartLegend.visibility=View.GONE
                 binding.timeSpentDropdownIcon.setImageResource(R.drawable.ic_expand_vector)
             }
 
@@ -106,35 +111,39 @@ class CategoryUsageFragment : Fragment() {
         viewModel.catAppLaunchesPieChartVisible.observe(viewLifecycleOwner,Observer{visible->
             if(visible){
                 binding.appLaunchesPieChart.visibility=View.VISIBLE
+                binding.launchesPieChartLegend.visibility=View.VISIBLE
                 binding.appLaunchesDropdownIcon.setImageResource(R.drawable.ic_collapse_vector)
             }
             else{
                 binding.appLaunchesPieChart.visibility=View.GONE
+                binding.launchesPieChartLegend.visibility=View.GONE
                 binding.appLaunchesDropdownIcon.setImageResource(R.drawable.ic_expand_vector)
             }
         })
 
         val timePieChart=binding.timePieChart
         val timeLegend=timePieChart.legend
-        timeLegend.form= Legend.LegendForm.CIRCLE
+        /*timeLegend.form= Legend.LegendForm.CIRCLE
         timeLegend.textColor=R.color.disabled_text
         timeLegend.textSize=12f
         timeLegend.formSize=12f
         timeLegend.formToTextSpace=4f
         timeLegend.orientation=Legend.LegendOrientation.VERTICAL
         timeLegend.verticalAlignment=Legend.LegendVerticalAlignment.BOTTOM
-        timeLegend.horizontalAlignment=Legend.LegendHorizontalAlignment.CENTER
+        timeLegend.horizontalAlignment=Legend.LegendHorizontalAlignment.CENTER*/
+        timeLegend.isEnabled=false
         timePieChart.description.isEnabled=false
         timePieChart.setDrawEntryLabels(false)
         timePieChart.transparentCircleRadius=0f
         val launchesPieChart=binding.appLaunchesPieChart
         val launchesLegend=launchesPieChart.legend
-        launchesLegend.form=Legend.LegendForm.CIRCLE
+        /*launchesLegend.form=Legend.LegendForm.CIRCLE
         launchesLegend.textColor=R.color.disabled_text
         launchesLegend.textSize=12f
         launchesLegend.formSize=12f
         launchesLegend.formToTextSpace=4f
-        launchesLegend.orientation=Legend.LegendOrientation.VERTICAL
+        launchesLegend.orientation=Legend.LegendOrientation.VERTICAL*/
+        launchesLegend.isEnabled=false
         launchesPieChart.description.isEnabled=false
         launchesPieChart.setDrawEntryLabels(false)
         launchesPieChart.transparentCircleRadius=0f
@@ -179,12 +188,32 @@ class CategoryUsageFragment : Fragment() {
             catTimePieDataSet.colors = colorsList
             val catTimePieData= PieData(catTimePieDataSet)
             timePieChart.data=catTimePieData
+            val timeLegendManager=GridLayoutManager(activity,2,GridLayoutManager.VERTICAL,false)
+            val timeEntries = timeLegend.entries
+            val timeLegendList:MutableList<PieChartLegendItem> = mutableListOf()
+            for (i in timeEntries.indices){
+                timeLegendList.add(PieChartLegendItem(timeEntries[i].formColor,timeEntries[i].label))
+            }
+            val timePieChartAdapter= PieChartLegendAdapter()
+            timePieChartAdapter.submitList(timeLegendList)
+            binding.timePieChartLegend.adapter=timePieChartAdapter
+            binding.timePieChartLegend.layoutManager=timeLegendManager
             timePieChart.invalidate()
 
             val catLaunchesPieDataSet= PieDataSet(catLaunchesPieChartEntries, "")
             catLaunchesPieDataSet.colors=colorsList
             val catLaunchesPieData= PieData(catLaunchesPieDataSet)
             launchesPieChart.data=catLaunchesPieData
+            val launchesLegendManager=GridLayoutManager(activity,2,GridLayoutManager.VERTICAL,false)
+            val launchesEntries = launchesLegend.entries
+            val launchesLegendList:MutableList<PieChartLegendItem> = mutableListOf()
+            for (i in launchesEntries.indices){
+                launchesLegendList.add(PieChartLegendItem(timeEntries[i].formColor,timeEntries[i].label))
+            }
+            val launchesPieChartAdapter=PieChartLegendAdapter()
+            launchesPieChartAdapter.submitList(launchesLegendList)
+            binding.launchesPieChartLegend.adapter=launchesPieChartAdapter
+            binding.launchesPieChartLegend.layoutManager=launchesLegendManager
             launchesPieChart.invalidate()
         }
 

@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.us0.R
 import com.example.us0.adapters.AllMissionsAdapter
 import com.example.us0.adapters.AllSponsorsAdapter
@@ -118,6 +119,7 @@ class FeatsFragment : Fragment() {
                     //accomplished
                 } else {
                     //active
+                    findNavController().navigate(FeatsFragmentDirections.actionFeatsFragmentToDetailMission(it,true))
                 }
                 viewModel.toDetailMissionComplete()
             }

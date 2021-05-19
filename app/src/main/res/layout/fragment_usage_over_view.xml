@@ -22,6 +22,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/common_background"
             android:elevation="4dp"
+            app:title="Usage overview"
             android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
             app:layout_constraintTop_toTopOf="parent"
             app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
@@ -100,6 +101,14 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/total_time_spent_text"
                     android:visibility="gone"/>
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/timePieChartLegend"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toBottomOf="@id/time_pie_chart"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"/>
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -153,6 +162,14 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/total_app_launches_text"
+                    android:visibility="gone"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/launchesPieChartLegend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/app_launches_pie_chart"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     android:visibility="gone"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 

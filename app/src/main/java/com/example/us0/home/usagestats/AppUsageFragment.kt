@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.us0.*
 import com.example.us0.data.AllDatabase
 import com.example.us0.databinding.FragmentAppUsageBinding
@@ -43,8 +44,12 @@ class AppUsageFragment : Fragment() {
             binding.appIcon.setImageDrawable(context?.packageManager?.getApplicationIcon(it))
         })
         val drawerLocker=(activity as DrawerLocker?)
-        binding.toolbar.setNavigationIcon(R.drawable.ic_navdrawer_icon)
-        binding.toolbar.setNavigationOnClickListener { v -> (activity as DrawerLocker?)!!.openCloseNavigationDrawer(v) }
+        binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_left)
+        binding.toolbar.setNavigationOnClickListener {
+            activity?.onBackPressed()
+//findNavController().navigate(AppUsageFragmentDirections.actionAppUsageFragmentToCategoryUsageFragment(viewModel.catNameForAppScreen.value!!))
+                //v -> (activity as DrawerLocker?)!!.openCloseNavigationDrawer(v)
+        }
         drawerLocker!!.setDrawerEnabled(true)
         drawerLocker.displayBottomNavigation(true)
 

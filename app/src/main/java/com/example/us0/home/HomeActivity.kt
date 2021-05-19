@@ -72,9 +72,10 @@ binding.bottomNavView.setOnNavigationItemSelectedListener(this)
 
 }
         }*/
-        val header=binding.navView.getHeaderView(0)
+        /*val header=binding.navView.getHeaderView(0)
         val userName=this.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE).getString((R.string.user_name).toString(),"User")
         header.user_name.text=userName
+        */
        /* val closeButton=findViewById<ImageButton>(R.id.close_nav_drawer)
         closeButton.setOnClickListener { drawerLayout.closeDrawer(GravityCompat.START) }*/
         //val appBarConfiguration= AppBarConfiguration(setOf(R.id.homeFragment))
@@ -112,19 +113,19 @@ binding.bottomNavView.setOnNavigationItemSelectedListener(this)
         }
     }
 
-    override fun displayUserName(userName: String) {
+    /*override fun displayUserName(userName: String) {
         val header=binding.navView.getHeaderView(0)
         header.user_name.text=userName
-    }
+    }*/
 
-    override fun displayLevel(level: Int) {
+    /*override fun displayLevel(level: Int) {
         val header=binding.navView.getHeaderView(0)
         when(level){
             1->{header.level.text="p"}
             2->{header.level.text="p"}
             else->{header.level.text="p"}
         }
-    }
+    }*/
 
     override fun displayBottomNavigation(display: Boolean) {
         if(display)
@@ -177,7 +178,7 @@ binding.bottomNavView.setOnNavigationItemSelectedListener(this)
 interface DrawerLocker {
     fun setDrawerEnabled(enabled: Boolean)
     fun openCloseNavigationDrawer(view: View)
-    fun displayUserName(userName:String)
-    fun displayLevel(level:Int)
+    //fun displayUserName(userName:String)
+    //fun displayLevel(level:Int)
     fun displayBottomNavigation(display:Boolean)
 }

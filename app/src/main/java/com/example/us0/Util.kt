@@ -169,5 +169,8 @@ fun checkIfSameDay(lastMonthStart: Calendar, calender: Calendar): Boolean {
     }
     return false
 }
-
+data class PieChartLegendItem(
+    val formColor:Int,
+    val label:String
+)
 val Int.px: Int get() = (this * Resources.getSystem().displayMetrics.density).toInt()

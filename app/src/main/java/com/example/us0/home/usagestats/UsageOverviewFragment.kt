@@ -2,7 +2,6 @@ package com.example.us0.home.usagestats
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,12 +15,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.us0.*
 import com.example.us0.adapters.AppsCategoryBriefAdapter
+import com.example.us0.adapters.PieChartLegendAdapter
 import com.example.us0.data.AllDatabase
 import com.example.us0.databinding.FragmentUsageOverViewBinding
 import com.example.us0.home.DrawerLocker
-import com.github.mikephil.charting.charts.BarLineChartBase
-import com.github.mikephil.charting.charts.Chart
-import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
@@ -63,11 +60,19 @@ class UsageOverviewFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         val adapter=AppsCategoryBriefAdapter(AppsCategoryBriefAdapter.OnClickListener {
             viewModel.toCatUsageScreen(it)
-            findNavController().navigate(UsageOverviewFragmentDirections.actionUsageOverViewFragmentToCategoryUsageFragment(it.categoryName))
+            findNavController().navigate(
+                UsageOverviewFragmentDirections.actionUsageOverViewFragmentToCategoryUsageFragment(
+                    it.categoryName
+                )
+            )
         })
         viewModel.navigateToSelectedApp.observe(viewLifecycleOwner, Observer { navigate ->
             if (navigate) {
-                findNavController().navigate(UsageOverviewFragmentDirections.actionUsageOverViewFragmentToAppUsageFragment(viewModel.appPackageNameForAppScreen.value!!))
+                findNavController().navigate(
+                    UsageOverviewFragmentDirections.actionUsageOverViewFragmentToAppUsageFragment(
+                        viewModel.appPackageNameForAppScreen.value!!
+                    )
+                )
                 viewModel.navigateToSelectedAppComplete()
             }
         })
@@ -80,82 +85,120 @@ class UsageOverviewFragment : Fragment() {
         binding.catRecyclerView.layoutManager=manager
         val drawerLocker=(activity as DrawerLocker?)
         binding.toolbar.setNavigationIcon(R.drawable.ic_navdrawer_icon)
-        binding.toolbar.setNavigationOnClickListener { v -> (activity as DrawerLocker?)!!.openCloseNavigationDrawer(v) }
+        binding.toolbar.setNavigationOnClickListener { v -> (activity as DrawerLocker?)!!.openCloseNavigationDrawer(
+            v
+        ) }
         drawerLocker!!.setDrawerEnabled(true)
         drawerLocker.displayBottomNavigation(true)
 
-        viewModel.totalTimeSpentPieChartVisible.observe(viewLifecycleOwner,Observer{visible->
-            if(visible){
-                binding.timePieChart.visibility=View.VISIBLE
+        viewModel.totalTimeSpentPieChartVisible.observe(viewLifecycleOwner, Observer { visible ->
+            if (visible) {
+                binding.timePieChart.visibility = View.VISIBLE
+                binding.timePieChartLegend.visibility=View.VISIBLE
                 binding.timeSpentDropdownIcon.setImageResource(R.drawable.ic_collapse_vector)
-            }
-            else{
-                binding.timePieChart.visibility=View.GONE
+            } else {
+                binding.timePieChart.visibility = View.GONE
+                binding.timePieChartLegend.visibility=View.GONE
                 binding.timeSpentDropdownIcon.setImageResource(R.drawable.ic_expand_vector)
             }
 
         })
-        viewModel.totalAppLaunchesPieChartVisible.observe(viewLifecycleOwner,Observer{visible->
-            if(visible){
-                binding.appLaunchesPieChart.visibility=View.VISIBLE
+        viewModel.totalAppLaunchesPieChartVisible.observe(viewLifecycleOwner, Observer { visible ->
+            if (visible) {
+                binding.appLaunchesPieChart.visibility = View.VISIBLE
+                binding.launchesPieChartLegend.visibility=View.VISIBLE
                 binding.appLaunchesDropdownIcon.setImageResource(R.drawable.ic_collapse_vector)
-            }
-            else{
-                binding.appLaunchesPieChart.visibility=View.GONE
+            } else {
+                binding.appLaunchesPieChart.visibility = View.GONE
+                binding.launchesPieChartLegend.visibility=View.GONE
                 binding.appLaunchesDropdownIcon.setImageResource(R.drawable.ic_expand_vector)
             }
         })
         val timePieChart=binding.timePieChart
         val timeLegend=timePieChart.legend
-        timeLegend.form= Legend.LegendForm.CIRCLE
+        /*timeLegend.form= Legend.LegendForm.CIRCLE
         timeLegend.textColor=R.color.disabled_text
         timeLegend.textSize=12f
         timeLegend.formSize=12f
         timeLegend.formToTextSpace=4f
-        timeLegend.orientation=Legend.LegendOrientation.VERTICAL
+        timeLegend.orientation=Legend.LegendOrientation.VERTICAL*/
+        timeLegend.isEnabled=false
         timePieChart.description.isEnabled=false
         timePieChart.setDrawEntryLabels(false)
         timePieChart.transparentCircleRadius=0f
         val launchesPieChart=binding.appLaunchesPieChart
         val launchesLegend=launchesPieChart.legend
-        launchesLegend.form=Legend.LegendForm.CIRCLE
+        /*launchesLegend.form=Legend.LegendForm.CIRCLE
         launchesLegend.textColor=R.color.disabled_text
         launchesLegend.textSize=12f
         launchesLegend.formSize=12f
         launchesLegend.formToTextSpace=4f
-        launchesLegend.orientation=Legend.LegendOrientation.VERTICAL
+        launchesLegend.orientation=Legend.LegendOrientation.VERTICAL*/
+        launchesLegend.isEnabled=false
         launchesPieChart.description.isEnabled=false
         launchesPieChart.setDrawEntryLabels(false)
         launchesPieChart.transparentCircleRadius=0f
         context?.let {
-            timePieChart.setHoleColor(ContextCompat.getColor(it,R.color.rules_card))
-            launchesPieChart.setHoleColor(ContextCompat.getColor(it,R.color.rules_card)) }
-        viewModel.processingDataForPieChartDone.observe(viewLifecycleOwner,Observer{done->
-            if(done){
+            timePieChart.setHoleColor(ContextCompat.getColor(it, R.color.rules_card))
+            launchesPieChart.setHoleColor(ContextCompat.getColor(it, R.color.rules_card)) }
+        viewModel.processingDataForPieChartDone.observe(viewLifecycleOwner, Observer { done ->
+            if (done) {
                 val totalTimePieChartEntries: ArrayList<PieEntry> = ArrayList()
                 val totalLaunchesPieChartEntries: ArrayList<PieEntry> = ArrayList()
-                for(key in viewModel.categoryTimes.keys){
-                    if(key!="TOTAL"){
-                        if(viewModel.categoryTimes[key]?:0!=0)
-                            totalTimePieChartEntries.add(PieEntry((viewModel.categoryTimes[key]?:0).toFloat(),key))
-                        if(viewModel.categoryLaunches[key]?:0!=0)
-                            totalLaunchesPieChartEntries.add(PieEntry((viewModel.categoryLaunches[key]?:0).toFloat(),key))
+                for (key in viewModel.categoryTimes.keys) {
+                    if (key != "TOTAL") {
+                        if (viewModel.categoryTimes[key] ?: 0 != 0)
+                            totalTimePieChartEntries.add(
+                                PieEntry(
+                                    (viewModel.categoryTimes[key] ?: 0).toFloat(), key
+                                )
+                            )
+                        if (viewModel.categoryLaunches[key] ?: 0 != 0)
+                            totalLaunchesPieChartEntries.add(
+                                PieEntry(
+                                    (viewModel.categoryLaunches[key] ?: 0).toFloat(), key
+                                )
+                            )
                     }
                 }
-                val colorsList:MutableList<Int> = mutableListOf()
-                for (c in ColorTemplate.MATERIAL_COLORS){
+                val colorsList: MutableList<Int> = mutableListOf()
+                for (c in ColorTemplate.MATERIAL_COLORS) {
                     colorsList.add(c)
                 }
-                val totalTimePieDataSet= PieDataSet(totalTimePieChartEntries, "")
+                for(c in ColorTemplate.COLORFUL_COLORS){
+                    colorsList.add(c)
+                }
+                val totalTimePieDataSet = PieDataSet(totalTimePieChartEntries, "")
                 totalTimePieDataSet.colors = colorsList
-                val totalTimePieData= PieData(totalTimePieDataSet)
-                timePieChart.data=totalTimePieData
+                val totalTimePieData = PieData(totalTimePieDataSet)
+                timePieChart.data = totalTimePieData
+                val timeLegendManager=GridLayoutManager(activity,2,GridLayoutManager.VERTICAL,false)
+                val timeEntries = timeLegend.entries
+                //val colors = IntArray(timeEntries.size)
+                //val legendTexts = Array<String>(timeEntries.size){" "}
+                val timeLegendList:MutableList<PieChartLegendItem> = mutableListOf()
+                for (i in timeEntries.indices){
+                    timeLegendList.add(PieChartLegendItem(timeEntries[i].formColor,timeEntries[i].label))
+                }
+                val timePieChartAdapter=PieChartLegendAdapter()
+                timePieChartAdapter.submitList(timeLegendList)
+                binding.timePieChartLegend.adapter=timePieChartAdapter
+                binding.timePieChartLegend.layoutManager=timeLegendManager
                 timePieChart.invalidate()
-
-                val totalLaunchesPieDataSet= PieDataSet(totalLaunchesPieChartEntries, "")
+                val totalLaunchesPieDataSet = PieDataSet(totalLaunchesPieChartEntries, "")
                 totalLaunchesPieDataSet.colors = colorsList
-                val totalLaunchesPieData= PieData(totalLaunchesPieDataSet)
-                launchesPieChart.data=totalLaunchesPieData
+                val totalLaunchesPieData = PieData(totalLaunchesPieDataSet)
+                launchesPieChart.data = totalLaunchesPieData
+                val launchesLegendManager=GridLayoutManager(activity,2,GridLayoutManager.VERTICAL,false)
+                val launchesEntries = launchesLegend.entries
+                val launchesLegendList:MutableList<PieChartLegendItem> = mutableListOf()
+                for (i in launchesEntries.indices){
+                    launchesLegendList.add(PieChartLegendItem(timeEntries[i].formColor,timeEntries[i].label))
+                }
+                val launchesPieChartAdapter=PieChartLegendAdapter()
+                launchesPieChartAdapter.submitList(launchesLegendList)
+                binding.launchesPieChartLegend.adapter=launchesPieChartAdapter
+                binding.launchesPieChartLegend.layoutManager=launchesLegendManager
                 launchesPieChart.invalidate()
             }
         })
@@ -277,9 +320,19 @@ class UsageOverviewFragment : Fragment() {
                     weekLabels.add(getDay(lastWeekStart.get(Calendar.DAY_OF_WEEK)))
                     val calender=Calendar.getInstance()
                     calender.timeInMillis=weekData.date!!
-                    if(checkIfSameDay(lastWeekStart,calender)){
-                        weekTimeEntries.add(BarEntry(i.toFloat(), ((weekData.time ?: 0) / 60).toFloat()))
-                        weekLaunchesEntries.add(BarEntry(i.toFloat(),(weekData.launches?:0).toFloat()))
+                    if(checkIfSameDay(lastWeekStart, calender)){
+                        weekTimeEntries.add(
+                            BarEntry(
+                                i.toFloat(),
+                                ((weekData.time ?: 0) / 60).toFloat()
+                            )
+                        )
+                        weekLaunchesEntries.add(
+                            BarEntry(
+                                i.toFloat(),
+                                (weekData.launches ?: 0).toFloat()
+                            )
+                        )
                         //made data entry
                         if(weekDataIterator.hasNext()){
                             weekData=weekDataIterator.next()
@@ -296,13 +349,19 @@ class UsageOverviewFragment : Fragment() {
                 val weekTimeDataSet= BarDataSet(weekTimeEntries, "Time in mins")
                 val weekTimeData=BarData(weekTimeDataSet)
                 timeWeekChart.data=weekTimeData
-                val xAxisWeekTimeFormatter: ValueFormatter = WeekAxisValueFormatter(binding.timeSpentBarChart, weekLabels)
+                val xAxisWeekTimeFormatter: ValueFormatter = WeekAxisValueFormatter(
+                    binding.timeSpentBarChart,
+                    weekLabels
+                )
                 timeWeekChart.xAxis.valueFormatter=xAxisWeekTimeFormatter
 
                 val weekLaunchesDataSet= BarDataSet(weekLaunchesEntries, "Launches")
                 val weekLaunchesData=BarData(weekLaunchesDataSet)
                 launchesWeekChart.data=weekLaunchesData
-                val xAxisWeekLaunchesFormatter: ValueFormatter = WeekAxisValueFormatter(binding.appLaunchesBarChart, weekLabels)
+                val xAxisWeekLaunchesFormatter: ValueFormatter = WeekAxisValueFormatter(
+                    binding.appLaunchesBarChart,
+                    weekLabels
+                )
                 launchesWeekChart.xAxis.valueFormatter=xAxisWeekLaunchesFormatter
                 binding.timeSpentWeekAggregate.text=secToHrMin(timeWeekAggregate)
                 binding.appLaunchesWeekAggregate.text=launchesWeekAggregate.toString()
@@ -329,9 +388,19 @@ class UsageOverviewFragment : Fragment() {
                     monthLabels.add(getDayAndMonth(lastMonthStart))
                     val calender=Calendar.getInstance()
                     calender.timeInMillis=monthData.date!!
-                    if(checkIfSameDay(lastMonthStart,calender)){
-                        monthTimeEntries.add(Entry(i.toFloat(), ((monthData.time ?: 0) / 60).toFloat()))
-                        monthLaunchesEntries.add(Entry(i.toFloat(),(monthData.launches?:0).toFloat()))
+                    if(checkIfSameDay(lastMonthStart, calender)){
+                        monthTimeEntries.add(
+                            Entry(
+                                i.toFloat(),
+                                ((monthData.time ?: 0) / 60).toFloat()
+                            )
+                        )
+                        monthLaunchesEntries.add(
+                            Entry(
+                                i.toFloat(),
+                                (monthData.launches ?: 0).toFloat()
+                            )
+                        )
                         //made data entry
                         if(monthDataIterator.hasNext()){
                             monthData=monthDataIterator.next()
@@ -348,13 +417,19 @@ class UsageOverviewFragment : Fragment() {
                 val monthTimeDataSet= LineDataSet(monthTimeEntries, "Time in mins")
                 val monthTimeData=LineData(monthTimeDataSet)
                 timeMonthChart.data=monthTimeData
-                val xAxisMonthTimeFormatter: ValueFormatter = MonthAxisValueFormatter(timeMonthChart, monthLabels)
+                val xAxisMonthTimeFormatter: ValueFormatter = MonthAxisValueFormatter(
+                    timeMonthChart,
+                    monthLabels
+                )
                 timeMonthChart.xAxis.valueFormatter=xAxisMonthTimeFormatter
 
                 val monthLaunchesDataSet= LineDataSet(monthLaunchesEntries, "Launches")
                 val monthLaunchesData=LineData(monthLaunchesDataSet)
                 launchesMonthChart.data=monthLaunchesData
-                val xAxisMonthLaunchesFormatter: ValueFormatter = MonthAxisValueFormatter(launchesMonthChart, monthLabels)
+                val xAxisMonthLaunchesFormatter: ValueFormatter = MonthAxisValueFormatter(
+                    launchesMonthChart,
+                    monthLabels
+                )
                 launchesMonthChart.xAxis.valueFormatter=xAxisMonthLaunchesFormatter
                 binding.timeSpentMonthAggregate.text=secToHrMin(timeMonthAggregate)
                 binding.appLaunchesMonthAggregate.text=launchesMonthAggregate.toString()
@@ -381,9 +456,19 @@ class UsageOverviewFragment : Fragment() {
                     yearLabels.add(getDayAndMonth(lastYearStart))
                     val calender=Calendar.getInstance()
                     calender.timeInMillis=yearData.date!!
-                    if(checkIfSameDay(lastYearStart,calender)){
-                        yearTimeEntries.add(Entry(i.toFloat(), ((yearData.time ?: 0) / 60).toFloat()))
-                        yearLaunchesEntries.add(Entry(i.toFloat(),(yearData.launches?:0).toFloat()))
+                    if(checkIfSameDay(lastYearStart, calender)){
+                        yearTimeEntries.add(
+                            Entry(
+                                i.toFloat(),
+                                ((yearData.time ?: 0) / 60).toFloat()
+                            )
+                        )
+                        yearLaunchesEntries.add(
+                            Entry(
+                                i.toFloat(),
+                                (yearData.launches ?: 0).toFloat()
+                            )
+                        )
                         //made data entry
                         if(yearDataIterator.hasNext()){
                             yearData=yearDataIterator.next()
@@ -400,13 +485,19 @@ class UsageOverviewFragment : Fragment() {
                 val yearTimeDataSet= LineDataSet(yearTimeEntries, "Time in mins")
                 val yearTimeData=LineData(yearTimeDataSet)
                 timeYearChart.data=yearTimeData
-                val xAxisYearTimeFormatter: ValueFormatter = YearAxisValueFormatter(timeYearChart, yearLabels)
+                val xAxisYearTimeFormatter: ValueFormatter = YearAxisValueFormatter(
+                    timeYearChart,
+                    yearLabels
+                )
                 timeYearChart.xAxis.valueFormatter=xAxisYearTimeFormatter
 
                 val yearLaunchesDataSet= LineDataSet(yearLaunchesEntries, "Launches")
                 val yearLaunchesData=LineData(yearLaunchesDataSet)
                 launchesYearChart.data=yearLaunchesData
-                val xAxisYearLaunchesFormatter: ValueFormatter = YearAxisValueFormatter(launchesYearChart, yearLabels)
+                val xAxisYearLaunchesFormatter: ValueFormatter = YearAxisValueFormatter(
+                    launchesYearChart,
+                    yearLabels
+                )
                 launchesYearChart.xAxis.valueFormatter=xAxisYearLaunchesFormatter
                 binding.timeSpentYearAggregate.text=secToHrMin(timeYearAggregate)
                 binding.appLaunchesYearAggregate.text=launchesYearAggregate.toString()
@@ -424,9 +515,9 @@ class UsageOverviewFragment : Fragment() {
             monthButton.setBackgroundResource(R.drawable.all_corner_rounded_4dp_2e)
             yearButton.setBackgroundResource(R.drawable.all_corner_rounded_4dp_2e)
             context?.let{
-                weekButton.setTextColor(ContextCompat.getColor(it,R.color.primary_text))
-                monthButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text))
-                yearButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text)) }
+                weekButton.setTextColor(ContextCompat.getColor(it, R.color.primary_text))
+                monthButton.setTextColor(ContextCompat.getColor(it, R.color.secondary_text))
+                yearButton.setTextColor(ContextCompat.getColor(it, R.color.secondary_text)) }
             if(noChartsToDisplay){
                 binding.noChartsText.visibility=View.VISIBLE
                 binding.weekChartsConstraintLayout.visibility=View.GONE
@@ -445,9 +536,9 @@ class UsageOverviewFragment : Fragment() {
             weekButton.setBackgroundResource(R.drawable.all_corner_rounded_4dp_2e)
             yearButton.setBackgroundResource(R.drawable.all_corner_rounded_4dp_2e)
             context?.let{
-                weekButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text))
-                monthButton.setTextColor(ContextCompat.getColor(it,R.color.primary_text))
-                yearButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text)) }
+                weekButton.setTextColor(ContextCompat.getColor(it, R.color.secondary_text))
+                monthButton.setTextColor(ContextCompat.getColor(it, R.color.primary_text))
+                yearButton.setTextColor(ContextCompat.getColor(it, R.color.secondary_text)) }
             if(noChartsToDisplay){
                 binding.noChartsText.visibility=View.VISIBLE
                 binding.weekChartsConstraintLayout.visibility=View.GONE
@@ -466,9 +557,9 @@ class UsageOverviewFragment : Fragment() {
             monthButton.setBackgroundResource(R.drawable.all_corner_rounded_4dp_2e)
             weekButton.setBackgroundResource(R.drawable.all_corner_rounded_4dp_2e)
             context?.let{
-                weekButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text))
-                monthButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text))
-                yearButton.setTextColor(ContextCompat.getColor(it,R.color.primary_text)) }
+                weekButton.setTextColor(ContextCompat.getColor(it, R.color.secondary_text))
+                monthButton.setTextColor(ContextCompat.getColor(it, R.color.secondary_text))
+                yearButton.setTextColor(ContextCompat.getColor(it, R.color.primary_text)) }
             if(noChartsToDisplay){
                 binding.noChartsText.visibility=View.VISIBLE
                 binding.weekChartsConstraintLayout.visibility=View.GONE
@@ -488,4 +579,3 @@ class UsageOverviewFragment : Fragment() {
 
 
 }
-

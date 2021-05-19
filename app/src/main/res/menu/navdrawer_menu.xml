@@ -6,8 +6,17 @@
         android:title="@string/home"
         />
     <item
+        android:id="@+id/inviteFriends"
+        android:title="Invite Friends"
+        />
+    <item
         android:id="@+id/settingsFragment"
         android:title="@string/settings"/>
+    <item
+        android:id="@+id/rateUs"
+        android:title="Rate Us"
+        />
+
     <item
         android:id="@+id/reportBugFragment"
         android:title="@string/help_report_bug"/>

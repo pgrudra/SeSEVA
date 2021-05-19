@@ -246,7 +246,11 @@
     <fragment
         android:id="@+id/featsFragment"
         android:name="com.example.us0.home.feats.FeatsFragment"
-        android:label="FeatsFragment" />
+        android:label="FeatsFragment" >
+        <action
+            android:id="@+id/action_featsFragment_to_detailMission"
+            app:destination="@id/detailMission" />
+    </fragment>
     <fragment
         android:id="@+id/categoryUsageFragment"
         android:name="com.example.us0.home.usagestats.CategoryUsageFragment"
@@ -257,6 +261,9 @@
         <argument
             android:name="catName"
             app:argType="string" />
+        <action
+            android:id="@+id/action_categoryUsageFragment_to_usageOverViewFragment"
+            app:destination="@id/usageOverViewFragment" />
     </fragment>
     <fragment
         android:id="@+id/appUsageFragment"
@@ -265,6 +272,12 @@
         <argument
             android:name="appPackageName"
             app:argType="string" />
+        <action
+            android:id="@+id/action_appUsageFragment_to_categoryUsageFragment"
+            app:destination="@id/categoryUsageFragment" />
+        <action
+            android:id="@+id/action_appUsageFragment_to_usageOverViewFragment"
+            app:destination="@id/usageOverViewFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
