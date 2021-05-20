@@ -30,7 +30,7 @@
             android:onClick="@{() ->PermissionViewModel.onGrantPermission()}"
             android:text="@string/allow"
             android:textColor="@color/colorPrimary"
-            app:layout_constraintBottom_toTopOf="@+id/ask_me_later"
+            app:layout_constraintBottom_toTopOf="@+id/never_mind"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -40,8 +40,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="48dp"
-            android:text="@string/one_last_thing"
+            android:layout_marginTop="40dp"
+            android:text="@string/permissions"
             android:textColor="@color/secondary_text"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -51,6 +51,7 @@
             style="@style/subtitle_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="@string/grant_usage_access"
             android:textColor="@color/primary_text"
             app:layout_constraintStart_toStartOf="@+id/textView19"
@@ -93,13 +94,13 @@
             app:srcCompat="@drawable/ic_guide_usage_access" />
 
         <Button
-            android:id="@+id/ask_me_later"
+            android:id="@+id/never_mind"
             style="@style/button"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
             android:layout_marginBottom="24dp"
             android:background="@null"
-            android:text="ASK ME LATER"
+            android:text="NEVER MIND"
             android:textColor="@color/disabled_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

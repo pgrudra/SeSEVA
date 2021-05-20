@@ -18,6 +18,9 @@
             app:destination="@id/homeFragment"
             app:popUpTo="@id/navigation_to_sign_out"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_permissionFragment_to_DOOAFragment"
+            app:destination="@id/DOOAFragment" />
     </fragment>
     <fragment
         android:id="@+id/usageOverViewFragment"
@@ -305,5 +308,13 @@
         <action
             android:id="@+id/action_yourPreviousMissionsFragment_to_detailMission"
             app:destination="@id/detailMission" />
+    </fragment>
+    <fragment
+        android:id="@+id/DOOAFragment"
+        android:name="com.example.us0.drawoverotherapps.DOOAFragment"
+        android:label="DOOAFragment" >
+        <action
+            android:id="@+id/action_DOOAFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>

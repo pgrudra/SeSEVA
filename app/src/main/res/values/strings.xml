@@ -85,7 +85,7 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
-    <string name="by_signing">By signing up you are agreeing to the \n<u>Terms of Use</u> and <u>Privacy Policy</u></string>
+    <string name="by_signing">By signing up you are agreeing to the \nTerms of Use and Privacy Policy</string>
     <string name="or">OR</string>
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="invalid_address_message">Please enter a valid email address &amp; try again!</string>
@@ -121,12 +121,12 @@
     <string name="view_report">VIEW REPORT</string>
     <string name="let_s_choose_a_new_mission">LET\'S CHOOSE A NEW MISSION</string>
     <string name="allow">ALLOW</string>
-    <string name="one_last_thing">One last thing…</string>
     <string name="data_collection_and_usage_disclosure">Data collection and usage disclosure</string>
     <string name="grant_usage_access">Grant usage access</string>
     <string name="usage_access">Usage access</string>
-    <string name="reason_usage_access">Optox requires this permission to provide you your apps\' usage statistics and detect when you are about to break an Optox rule</string>
-    <string name="disclosure_brief">We value your privacy. Information regarding your apps\' usage statistics will only stored on your local device. Only the amount raised by you for Optox Missions will be collected at our cloud servers.</string>
+    <string name="reason_usage_access">SeSEVA requires this permission to provide you your apps\' usage statistics and detect when you are about to break a SeSEVA rule</string>
+    <string name="reason_d_o_o_a">SeSEVA requires this permission to diaplay a blocking screen that will warn you when you are about to break a SeSEVA Rule</string>
+    <string name="disclosure_brief">We value your privacy. Information regarding your apps\' usage statistics will only be stored on your local device. Only the amount raised by you for Optox Missions will be collected at our cloud servers.</string>
     <string name="help">help</string>
     <string name="i_understand_the_rules">I UNDERSTAND THE RULES</string>
     <string name="no_limit_no_penalty">No limit… No penalty !!</string>
@@ -146,4 +146,6 @@
     <string name="today_s_statistics">Today\'s statistics</string>
     <string name="meaningOfThisWeeK">since last sunday, the day to started using SeSeva</string>
     <string name="profile">Profile</string>
+    <string name="permissions">Permissions</string>
+    <string name="display_over_other_apps">Display over other apps</string>
 </resources>

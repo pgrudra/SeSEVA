@@ -33,9 +33,9 @@ class PermissionViewModel(application: Application): AndroidViewModel(applicatio
     private val _helpVisible= MutableLiveData<Boolean>()
     val helpVisible:LiveData<Boolean>
         get()=_helpVisible
-    private val _toHome=MutableLiveData<Boolean>()
-    val toHome:LiveData<Boolean>
-        get()=_toHome
+    private val _toDOOA=MutableLiveData<Boolean>()
+    val toDOOA:LiveData<Boolean>
+        get()=_toDOOA
     fun onGrantPermission(){
         _grantPermission.value=true
     }
@@ -78,11 +78,12 @@ class PermissionViewModel(application: Application): AndroidViewModel(applicatio
                     context.startService(it)
                 }
             }
-            _toHome.value=true
+            _toDOOA.value=true
         }
     }
-fun toHomeComplete(){
-    _toHome.value=false
+
+fun toDOOAComplete(){
+    _toDOOA.value=false
 }
 
 }

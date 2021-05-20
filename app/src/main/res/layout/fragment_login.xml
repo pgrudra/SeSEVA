@@ -112,7 +112,6 @@
 
 
         <TextView
-
             android:id="@+id/login_terms_and_privacy_text"
             style="@style/caption"
             android:textSize="12sp"
@@ -120,7 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="36dp"
             android:gravity="center_horizontal|center_vertical"
-            android:text="@string/by_signing"
+            tools:text="@string/by_signing"
             android:textColor="@color/disabled_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

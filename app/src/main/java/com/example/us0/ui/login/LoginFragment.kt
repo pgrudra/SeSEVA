@@ -8,13 +8,21 @@ import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ClickableSpan
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.*
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.us0.R
@@ -53,12 +61,11 @@ class LoginFragment : Fragment(), View.OnClickListener,NoInternetDialogFragment.
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
-
         val appContext = context?.applicationContext ?: return binding.root
         mgoogleSignInClient = GoogleSignIn.getClient(appContext, gso)
         auth = Firebase.auth
 
-        Log.i("jio","${auth.currentUser}")
+
 
         verifySignInLink()
         val adapter = OnBoardingAdapter()
@@ -68,12 +75,29 @@ class LoginFragment : Fragment(), View.OnClickListener,NoInternetDialogFragment.
 
         binding.loginViewModel=viewModel
         binding.lifecycleOwner=this
-        viewModel.resendEmail.observe(viewLifecycleOwner, Observer{ resend->
-            if(resend){
-                Log.i("io","qw")
+        val termsAndPolicyString=SpannableString(getString(R.string.by_signing))
+        val termsOfUseText: ClickableSpan = object : ClickableSpan() {
+            override fun onClick(textView: View) {
+                // do some thing
+            }
+        }
+        val privacyPolicyText: ClickableSpan = object : ClickableSpan() {
+            override fun onClick(textView: View) {
+                // do another thing
+            }
+        }
+        termsAndPolicyString.setSpan(termsOfUseText,39,51,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        termsAndPolicyString.setSpan(privacyPolicyText,56,70,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        termsAndPolicyString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.disabled_text)),39,51,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        termsAndPolicyString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.disabled_text)),56,70,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        binding.loginTermsAndPrivacyText.text=termsAndPolicyString
+
+        viewModel.resendEmail.observe(viewLifecycleOwner, Observer { resend ->
+            if (resend) {
+                Log.i("io", "qw")
                 viewModel.resendComplete()
-                binding.progressBar1.visibility=View.VISIBLE
-                binding.skrim.visibility=View.VISIBLE
+                binding.progressBar1.visibility = View.VISIBLE
+                binding.skrim.visibility = View.VISIBLE
                 val sharedPref =
                     activity?.getSharedPreferences(
                         (R.string.shared_pref).toString(),
@@ -194,7 +218,7 @@ binding.progressBar1.visibility=View.VISIBLE
 
         val dialog = NoInternetDialogFragment()
         val fragmentManager=childFragmentManager
-        dialog.show(fragmentManager,"No Internet Connection")
+        dialog.show(fragmentManager, "No Internet Connection")
     }
     private fun showLinkVerificationScreen(){
         viewModel.disableResendButton()
@@ -228,7 +252,7 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
                            goToHomeFragment()
                         } else {
                             Log.i("Home", "UI")
-                            with (sharedPref?.edit()) {
+                            with(sharedPref?.edit()) {
                                 this?.putBoolean((R.string.load_data).toString(), true)
                                 this?.apply()
                             }
@@ -262,14 +286,14 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
     override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        Log.i("sdfa","onstart")
+        Log.i("sdfa", "onstart")
         checkCurrentUser()
     }
 
     private fun checkCurrentUser() {
         val currentUser = auth.currentUser
-        Log.i("sdfa","3")
-        Log.i("sdfa","ff${currentUser?.displayName}")
+        Log.i("sdfa", "3")
+        Log.i("sdfa", "ff${currentUser?.displayName}")
         if(currentUser!=null){
             goToHomeFragment()
         }
@@ -350,8 +374,11 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
                         goToHomeFragment()
                     } else {
                         Log.i("MN", "UI")
-                        val sharedPref =  activity?.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
-                        with (sharedPref?.edit()) {
+                        val sharedPref =  activity?.getSharedPreferences(
+                            (R.string.shared_pref).toString(),
+                            Context.MODE_PRIVATE
+                        )
+                        with(sharedPref?.edit()) {
                             this?.putBoolean((com.example.us0.R.string.load_data).toString(), true)
                             this?.apply()
                         }
@@ -360,7 +387,7 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
                     }
                     binding.progressBar1.visibility=View.GONE
                     binding.skrim.visibility=View.GONE
-                    Log.i("sdfa","6")
+                    Log.i("sdfa", "6")
                 } else {
                     // If sign in fails, display a message to the user.
                     if(checkInternetConnectivity()) {
@@ -387,7 +414,7 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
         binding.underline.visibility = View.GONE
     }
 
-    private fun makeErrorBackground(emailError:Boolean) {
+    private fun makeErrorBackground(emailError: Boolean) {
         binding.editTextEmailAddress.setBackgroundResource(R.drawable.login_email_edit_box_error)
         binding.otherEmailButton.setBackgroundResource(R.drawable.login_other_sign_in_error_button)
         if(emailError) {
