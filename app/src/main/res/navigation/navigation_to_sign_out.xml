@@ -5,10 +5,6 @@
     android:id="@+id/navigation_to_sign_out"
     app:startDestination="@id/passageFragment">
 
-    <activity
-        android:id="@+id/signOutActivity"
-        android:name="com.example.us0.signoutpackage.SignOutActivity"
-        android:label="SignOutActivity" />
     <fragment
         android:id="@+id/permissionFragment"
         android:name="com.example.us0.foregroundnnotifications.PermissionFragment"
@@ -184,9 +180,6 @@
         <action
             android:id="@+id/action_homeFragment_to_detailClosedMissionFragment"
             app:destination="@id/detailClosedMissionFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_signOutActivity"
-            app:destination="@id/signOutActivity" />
         <action
             android:id="@+id/action_homeFragment_to_rulesFragment2"
             app:destination="@id/rulesFragment2" />

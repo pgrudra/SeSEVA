@@ -30,7 +30,7 @@
         android:textColor="@color/secondary_text"
         tools:text="Usage access permission is required for the core functionality of SeSeva, hence you can't proceed without giving this permission"/>
     <Button
-        android:id="@+id/delete"
+        android:id="@+id/delete_delete_account_sign_out"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="delete"

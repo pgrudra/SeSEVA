@@ -81,7 +81,6 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
         get()=_userName
 
     init {
-        _userName.value=context.getString(R.string.loading)
         loadUserName()
     }
 

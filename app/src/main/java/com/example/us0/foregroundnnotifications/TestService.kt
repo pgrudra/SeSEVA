@@ -5,8 +5,13 @@ import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.PixelFormat
 import android.os.*
 import android.util.Log
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.WindowManager
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -14,6 +19,7 @@ import androidx.lifecycle.Transformations
 import com.example.us0.*
 import com.example.us0.data.AllDatabase
 import com.example.us0.home.HomeActivity
+import kotlinx.android.synthetic.main.blocking_screen.view.*
 import kotlinx.coroutines.*
 import timber.log.Timber
 import java.sql.Timestamp
@@ -27,6 +33,7 @@ class TestService : Service() {
     private val ONE_MINUTE_IN_SECONDS = 60
     private var isServiceStarted = false
     var gS:Job?=null
+
     private val pkgAndCat =
         Transformations.map(AllDatabase.getInstance(this).AppDatabaseDao.getEntireList()) { it ->
             it.map { it.packageName to it.appCategory }.toMap()
@@ -220,7 +227,7 @@ pkgAndCat.observeForever {
 
     private fun getStats(
         context: Context,
-        sortedEvents: Map<String, MutableList<UsageEvents.Event>>
+        sortedEvents: Map<String, MutableList<UsageEvents.Event>>,
     ) {
 
         sortedEvents.forEach { (packageName, events) -> events.clear() }
@@ -321,16 +328,47 @@ pkgAndCat.observeForever {
 
             Log.i("MXT", "$catLaunches")
             if (maxTime > 0) {
-                if (catTimeInSeconds >= maxTime || catLaunches >= maxLaunches) {
-                    if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
+                if (catTimeInSeconds >= maxTime || catLaunches > maxLaunches) {
+                    /*if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
                         val handler = Handler(Looper.getMainLooper())
                         handler.post {
                             Toast.makeText(context, "Rule Broken!!", Toast.LENGTH_LONG).show()
                         }
-                    }
+                    }*/
+                    val handler = Handler(Looper.getMainLooper())
+                    handler.post {
 
+                        val blockingScreenParams: WindowManager.LayoutParams? =
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                WindowManager.LayoutParams(
+                                    WindowManager.LayoutParams.MATCH_PARENT,
+                                    WindowManager.LayoutParams.MATCH_PARENT,
+                                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                                    WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+                                    PixelFormat.TRANSLUCENT
+                                )
+                            } else {
+                                null
+                            }
+                        val wm = this.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+
+                        val blockingScreenView = LayoutInflater.from(context).inflate(
+                            R.layout.blocking_screen,
+                            null
+                        )
+
+                         blockingScreenView.i_understand.setOnClickListener {
+                            wm.removeView(blockingScreenView) }
+                        blockingScreenView.text.text="sdfgd"
+                        if (blockingScreenParams != null) {
+                            Log.i("TS87", "qqw")
+                            wm.addView(blockingScreenView, blockingScreenParams)
+                            Log.i("TS87", "dvfsd")
+                        }
+                    }
                 } else {
-                    if (catTimeInSeconds >= maxTime - 20 && catTimeInSeconds < maxTime - 8) {
+                    Log.i("TS", "sww")
+                    if (catTimeInSeconds >= maxTime - 25 && catTimeInSeconds < maxTime - 13) {
 
                         val notificationManager = ContextCompat.getSystemService(
                             context,
@@ -341,7 +379,7 @@ pkgAndCat.observeForever {
                             "Less than 20 seconds remaining",
                             context
                         )
-                    } else if (catLaunches == maxLaunches - 1) {
+                    } else if (catLaunches == maxLaunches) {
                         if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
                             val notificationManager = ContextCompat.getSystemService(
                                 context,
@@ -360,7 +398,7 @@ pkgAndCat.observeForever {
                         ) as NotificationManager
                         notificationManager.cancelNotifications()
                         notificationManager.sendNotification("Less than a min remaining", context)
-                    } else if (catLaunches == maxLaunches - 2) {
+                    } else if (catLaunches == maxLaunches - 1) {
                         if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
                             val notificationManager = ContextCompat.getSystemService(
                                 context,
@@ -378,6 +416,13 @@ pkgAndCat.observeForever {
                             Toast.makeText(context, "Half time up", Toast.LENGTH_SHORT).show()
                         }
 
+                    }
+                    else if(catTimeInSeconds >= maxTime - 13 && catTimeInSeconds < maxTime - 0){
+                        /*val blockingScreenView=LayoutInflater.from(context).inflate(R.layout.blocking_screen,null)
+                        blockingScreenView.i_understand.setOnClickListener {
+                            wm.removeView(blockingScreenView) }
+                        blockingScreenView.text.text="sdfgd"
+                        wm.addView(blockingScreenView, blockingScreenParams)*/
                     }
                 }
 

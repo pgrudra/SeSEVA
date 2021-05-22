@@ -47,8 +47,6 @@ class AppUsageFragment : Fragment() {
         binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_left)
         binding.toolbar.setNavigationOnClickListener {
             activity?.onBackPressed()
-//findNavController().navigate(AppUsageFragmentDirections.actionAppUsageFragmentToCategoryUsageFragment(viewModel.catNameForAppScreen.value!!))
-                //v -> (activity as DrawerLocker?)!!.openCloseNavigationDrawer(v)
         }
         drawerLocker!!.setDrawerEnabled(true)
         drawerLocker.displayBottomNavigation(true)

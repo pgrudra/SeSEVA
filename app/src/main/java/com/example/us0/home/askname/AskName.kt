@@ -16,6 +16,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.example.us0.R
 import com.example.us0.data.AllDatabase
 import com.example.us0.databinding.FragmentAskNameBinding
+import com.example.us0.home.DrawerLocker
 import com.example.us0.ui.login.NoInternetDialogFragment
 
 
@@ -36,6 +37,10 @@ class AskName : Fragment(),NoInternetDialogFragment.NoInternetDialogListener {
         viewModel = ViewModelProvider(this, viewModelFactory).get(AskNameViewModel::class.java)
         binding.askNameViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        val drawerLocker=(activity as DrawerLocker?)
+        drawerLocker!!.setDrawerEnabled(false)
+        drawerLocker.displayBottomNavigation(false)
+        //nav drawer disable
         viewModel.nameInsertDone.observe(viewLifecycleOwner, Observer<Boolean> { nameInserted ->
             if (nameInserted) {
                 val userName = binding.editTextTextPersonName.text.toString()

@@ -6,5 +6,217 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/common_background">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/subtitle_1"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/common_background"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
+            app:title="Settings"
+            app:titleTextColor="@color/primary_text" />
+            <TextView
+                android:id="@+id/permissions_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Permissions"
+                android:layout_marginTop="24dp"
+                android:textColor="@color/disabled_text"
+                style="@style/caption"
+                android:layout_marginStart="16dp"/>
+            <TextView
+                android:id="@+id/grant_usage_access_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Grant usage access"
+                android:textColor="@color/primary_text"
+                style="@style/body_2"
+                app:layout_constraintTop_toBottomOf="@id/permissions_text"
+                app:layout_constraintStart_toStartOf="@id/permissions_text"
+                android:layout_marginTop="6dp"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/grant_usage_access_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintTop_toTopOf="@+id/grant_usage_access_text"
+            app:srcCompat="@drawable/ic_check_icon" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/dooa_c_l"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/grant_usage_access_text"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:id="@+id/textView38"
+                style="@style/body_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Draw over other apps"
+                android:textColor="@color/primary_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView38"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView38"
+                app:srcCompat="@drawable/ic_arrow_right"
+                android:layout_marginEnd="32dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+            android:id="@+id/v12"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:layout_constraintTop_toBottomOf="@id/dooa_c_l"
+            android:background="@color/selected_group_card_background"
+            android:layout_marginTop="16dp"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/manage_profile_c_l"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/v12">
+
+            <TextView
+                android:id="@+id/textView39"
+                style="@style/body_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:text="Manage profile"
+                android:textColor="@color/primary_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="32dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView39"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView39"
+                app:srcCompat="@drawable/ic_edit_icon" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+            android:id="@+id/v23"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:layout_constraintTop_toBottomOf="@id/manage_profile_c_l"
+            android:background="@color/selected_group_card_background" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clear_usage_history_c_l"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/v23">
+
+            <TextView
+                android:id="@+id/textView40"
+                style="@style/body_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:text="Clear usage history"
+                android:textColor="@color/primary_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="32dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView40"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView40"
+                app:srcCompat="@drawable/ic_clear_history_icon" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+            android:id="@+id/v34"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:layout_constraintTop_toBottomOf="@id/clear_usage_history_c_l"
+            android:background="@color/selected_group_card_background" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/sign_out_c_l"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/v34">
+
+            <TextView
+                android:id="@+id/textView41"
+                style="@style/body_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:text="Sign out"
+                android:textColor="@color/primary_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="32dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView41"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView41"
+                app:srcCompat="@drawable/ic_clear_history_icon" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/v45"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:layout_constraintTop_toBottomOf="@id/sign_out_c_l"
+            android:background="@color/selected_group_card_background" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/delete_account_c_l"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/v45">
+
+            <TextView
+                android:id="@+id/textView42"
+                style="@style/body_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:text="Delete account"
+                android:textColor="@color/primary_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="32dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView42"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView42"
+                app:srcCompat="@drawable/ic_delete_account_icon" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

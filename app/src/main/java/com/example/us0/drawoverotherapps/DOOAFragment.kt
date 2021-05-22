@@ -17,12 +17,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.us0.R
 import com.example.us0.databinding.FragmentDOOABinding
+import com.example.us0.home.DrawerLocker
 
 
 class DOOAFragment : Fragment() {
     private lateinit var binding: FragmentDOOABinding
-    private lateinit var viewModel: DOOAViewModel
-    private lateinit var viewModelFactory: DOOAViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,32 +42,28 @@ class DOOAFragment : Fragment() {
             false
         )
         val application = requireNotNull(this.activity).application
-        viewModelFactory = DOOAViewModelFactory(application)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(DOOAViewModel::class.java)
         binding.lifecycleOwner = this
-        binding.dooaViewModel = viewModel
+        val drawerLocker=(activity as DrawerLocker?)
+        drawerLocker!!.setDrawerEnabled(false)
+        drawerLocker.displayBottomNavigation(false)
 
-        viewModel.grantPermission.observe(viewLifecycleOwner, Observer<Boolean> { grantPermission ->
-            if (grantPermission) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (!Settings.canDrawOverlays(context)) {
-                        // permission not granted...
-                        val intent = Intent(
-                            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                            Uri.parse("package:" + context?.packageName)
-                        )
-                        startActivityForResult(
-                            intent,
-                            REQUEST_OVERLAY_PERMISSION
-                        )
-                    }
-                    viewModel.onGrantPermissionComplete()
-                } else {
-                    Log.i("DOOAF", "should never occur")
+        binding.allow.setOnClickListener {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (!Settings.canDrawOverlays(context)) {
+                    // permission not granted...
+                    val intent = Intent(
+                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + context?.packageName)
+                    )
+                    startActivityForResult(
+                        intent,
+                        REQUEST_OVERLAY_PERMISSION
+                    )
                 }
-
+            } else {
+                Log.i("DOOAF", "should never occur")
             }
-        })
+        }
 
 
         return binding.root

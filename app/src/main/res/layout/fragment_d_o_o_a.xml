@@ -3,11 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="DOOAViewModel"
-            type="com.example.us0.drawoverotherapps.DOOAViewModel" />
-    </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,7 +22,6 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="12dp"
                 android:background="@drawable/login_change_email"
-                android:onClick="@{() ->DOOAViewModel.onGrantPermission()}"
                 android:text="@string/allow"
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintBottom_toTopOf="@+id/ask_me_later"
@@ -102,7 +96,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="284dp"
-            android:onClick="@{()->DOOAViewModel.usageDisclosureGone()}"
             android:background="@color/skrim"
             android:visibility="gone" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

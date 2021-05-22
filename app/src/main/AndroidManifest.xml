@@ -25,14 +25,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".signoutpackage.SignOutActivity" />
-        <activity android:name=".home.HomeActivity" />
+        <activity android:name=".home.HomeActivity"
+            android:screenOrientation="userPortrait"/>
 
         <service android:name=".foregroundnnotifications.TestService" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:noHistory="true"
+            android:screenOrientation="userPortrait"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

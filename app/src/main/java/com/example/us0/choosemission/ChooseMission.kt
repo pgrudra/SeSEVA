@@ -1,5 +1,6 @@
 package com.example.us0.choosemission
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
@@ -33,6 +34,8 @@ class ChooseMission : Fragment() {
             container,
             false
         )
+        val appContext = context?.applicationContext ?: return binding.root
+        val sharedPref = appContext.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
         val application = requireNotNull(this.activity).application
         val datasource = AllDatabase.getInstance(application).MissionsDatabaseDao
         viewModelFactory = ChooseMissionViewModelFactory(datasource, application)
@@ -52,7 +55,7 @@ class ChooseMission : Fragment() {
             }
         })
         viewModel.drawer.observe(viewLifecycleOwner, Observer<Boolean> { visible ->
-            if (visible) {
+            if (visible &&sharedPref.getInt((R.string.chosen_mission_number).toString(), 0) !=0) {
                 binding.toolbar.setNavigationIcon(R.drawable.ic_navdrawer_icon)
                 binding.toolbar.setNavigationOnClickListener { v -> (activity as DrawerLocker?)!!.openCloseNavigationDrawer(v) }
                 (activity as DrawerLocker?)!!.setDrawerEnabled(true)

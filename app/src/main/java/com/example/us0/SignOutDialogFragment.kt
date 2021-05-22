@@ -8,14 +8,14 @@ import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.delete_things_dialog.view.*
 
-class DeleteStatsHistoryDialogFragment:DialogFragment() {
+class SignOutDialogFragment: DialogFragment() {
 
-    interface DeleteStatsHistoryListener{
-        fun deleteStatsHistory()
+    interface SignOutListener {
+        fun signOut()
     }
     private fun sendBackResult() {
-        val listener = parentFragment as DeleteStatsHistoryListener
-        listener.deleteStatsHistory()
+        val listener = parentFragment as SignOutDialogFragment.SignOutListener
+        listener.signOut()
         dismiss()
     }
     override fun onCreateView(
@@ -32,15 +32,16 @@ class DeleteStatsHistoryDialogFragment:DialogFragment() {
         dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
     private fun setUpClickListeners(view: View){
-        view.delete.setOnClickListener { sendBackResult() }
+        view.delete_delete_account_sign_out.setOnClickListener { sendBackResult() }
         view.cancel.setOnClickListener { dismiss() }
     }
     private fun setUpBody(view: View){
-        view.body_text.text="Clearing data removes all previous usage stats permanently."
+        view.body_text.text="Signing out will erase all locally stored data permanently."
+        view.delete_delete_account_sign_out.text="SIGN OUT"
     }
     companion object {
-        fun newInstance(): DeleteStatsHistoryDialogFragment {
-            return DeleteStatsHistoryDialogFragment()
+        fun newInstance(): SignOutDialogFragment {
+            return SignOutDialogFragment()
         }
     }
 }

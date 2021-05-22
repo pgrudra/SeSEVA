@@ -8,14 +8,14 @@ import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.delete_things_dialog.view.*
 
-class DeleteAccountDialogFragment:DialogFragment() {
+class ClearUsageStatsHistoryDialogFragment: DialogFragment() {
 
-    interface DeleteAccountListener {
-        fun deleteAccount()
+    interface ClearHistoryListener {
+        fun clearHistory()
     }
     private fun sendBackResult() {
-        val listener = parentFragment as DeleteAccountListener
-        listener.deleteAccount()
+        val listener = parentFragment as ClearUsageStatsHistoryDialogFragment.ClearHistoryListener
+        listener.clearHistory()
         dismiss()
     }
     override fun onCreateView(
@@ -36,13 +36,12 @@ class DeleteAccountDialogFragment:DialogFragment() {
         view.cancel.setOnClickListener { dismiss() }
     }
     private fun setUpBody(view: View){
-        view.body_text.text="Deleting your account will erase your data permanently."
-        view.delete_delete_account_sign_out.text="DELETE ACCOUNT"
+        view.body_text.text="Clearing data removes all previous usage statistics permanently."
+        view.delete_delete_account_sign_out.text="DELETE"
     }
     companion object {
-        fun newInstance(): DeleteAccountDialogFragment {
-            return DeleteAccountDialogFragment()
+        fun newInstance(): ClearUsageStatsHistoryDialogFragment {
+            return ClearUsageStatsHistoryDialogFragment()
         }
     }
 }
-

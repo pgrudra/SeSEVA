@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.us0.R
 import com.example.us0.data.missions.Mission
 import com.example.us0.data.missions.MissionsDatabaseDao
@@ -54,9 +55,12 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
 
     fun saveEverywhere(userName: String){
         if(checkInternetConnectivity()){
-            insertIntoCloudDatabase(userName)
-            Log.i("fg","p")
+            viewModelScope.launch {
+                Log.i("ANVM","p")
+                insertIntoCloudDatabase(userName) }
+
             _nameInsertDone.value=false
+            _goToNextFragment.value=true
         }
         else{
             _noInternet.value=true
@@ -67,7 +71,7 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
     private fun insertIntoCloudDatabase(userName: String){
         val userId=user!!.uid
         cloudDatabase.child("users").child(userId).child("username").setValue(userName)
-            .addOnSuccessListener{Log.i("IOIO","PASS")
+            .addOnSuccessListener{Log.i("ANVM","PASS")
                 insertUsernameIntoFirebase(userName)}
             .addOnFailureListener {
             }
@@ -79,7 +83,7 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
         user!!.updateProfile(profileUpdates)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Log.i("LL",userName)
+                    Log.i("ANVM",userName)
                     insertIntoSharedPref((userName))
                 }
             }
@@ -91,7 +95,7 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
             this?.putString((R.string.user_name).toString(), userName)
             this?.apply()
         }
-        _goToNextFragment.value=true
+        Log.i("ANVM","ohy")
     }
 
     fun goToNextFragmentComplete(){
