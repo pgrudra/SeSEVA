@@ -64,7 +64,7 @@ class DOOAFragment : Fragment() {
                 Log.i("DOOAF", "should never occur")
             }
         }
-
+        binding.askMeLater.setOnClickListener { findNavController().navigate(DOOAFragmentDirections.actionDOOAFragmentToHomeFragment()) }
 
         return binding.root
     }
@@ -75,7 +75,7 @@ class DOOAFragment : Fragment() {
         if (requestCode == REQUEST_OVERLAY_PERMISSION) {
             if (!Settings.canDrawOverlays(context)) {
                 // You don't have permission
-                checkPermission()
+                //checkPermission()
             } else {
                 findNavController().navigate(DOOAFragmentDirections.actionDOOAFragmentToHomeFragment())
             }

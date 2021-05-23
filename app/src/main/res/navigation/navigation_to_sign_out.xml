@@ -16,7 +16,9 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_permissionFragment_to_DOOAFragment"
-            app:destination="@id/DOOAFragment" />
+            app:destination="@id/DOOAFragment"
+            app:popUpTo="@id/permissionFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/usageOverViewFragment"
@@ -230,7 +232,14 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.us0.home.navscreens.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="SettingsFragment" >
+        <action
+            android:id="@+id/action_settingsFragment_to_permissionFragment"
+            app:destination="@id/permissionFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_DOOAFragment"
+            app:destination="@id/DOOAFragment" />
+    </fragment>
     <fragment
         android:id="@+id/aboutFragment"
         android:name="com.example.us0.home.navscreens.AboutFragment"

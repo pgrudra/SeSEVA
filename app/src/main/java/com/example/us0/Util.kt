@@ -3,11 +3,16 @@ package com.example.us0
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Resources
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.LifecycleService
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.util.Log
 import androidx.room.ColumnInfo
 import com.github.mikephil.charting.charts.BarLineChartBase
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.database.DatabaseReference
 import java.util.*
 
 enum class Actions{
@@ -174,3 +179,24 @@ data class PieChartLegendItem(
     val label:String
 )
 val Int.px: Int get() = (this * Resources.getSystem().displayMetrics.density).toInt()
+
+fun checkInternetConnectivity(context:Context): Boolean {
+    val connectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+    if (connectivityManager != null) {
+        val capabilities =
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            } else {
+                null
+            }
+        return if (capabilities != null) {
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+        } else {
+            false
+        }
+    }
+    else return false
+}

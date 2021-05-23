@@ -2,30 +2,20 @@ package com.example.us0.home.askname
 
 import android.app.Application
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.us0.R
-import com.example.us0.data.missions.Mission
+import com.example.us0.checkInternetConnectivity
 import com.example.us0.data.missions.MissionsDatabaseDao
-import com.example.us0.data.missions.NetworkMission
-import com.example.us0.ui.login.NoInternetDialogFragment
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.*
 
 class AskNameViewModel(private val database: MissionsDatabaseDao, application: Application) : AndroidViewModel(application)  {
     private val context = getApplication<Application>().applicationContext
@@ -54,7 +44,7 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
     }
 
     fun saveEverywhere(userName: String){
-        if(checkInternetConnectivity()){
+        if(checkInternetConnectivity(context)){
             viewModelScope.launch {
                 Log.i("ANVM","p")
                 insertIntoCloudDatabase(userName) }
@@ -68,34 +58,36 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
         }
 
     }
-    private fun insertIntoCloudDatabase(userName: String){
-        val userId=user!!.uid
+    private fun insertIntoCloudDatabase(userName: String ){
+        val userId= user!!.uid
         cloudDatabase.child("users").child(userId).child("username").setValue(userName)
-            .addOnSuccessListener{Log.i("ANVM","PASS")
-                insertUsernameIntoFirebase(userName)}
+            .addOnSuccessListener{
+                insertUsernameIntoFirebase(userName)
+            }
             .addOnFailureListener {
             }
     }
-    private fun insertUsernameIntoFirebase(userName:String){
+    private fun insertUsernameIntoFirebase(userName: String){
         val profileUpdates = userProfileChangeRequest {
             displayName = userName
         }
         user!!.updateProfile(profileUpdates)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Log.i("ANVM",userName)
-                    insertIntoSharedPref((userName))
+                    insertIntoSharedPref(userName)
                 }
             }
     }
-
     private fun insertIntoSharedPref(userName: String){
         val sharedPref = context.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
         with (sharedPref?.edit()) {
-            this?.putString((R.string.user_name).toString(), userName)
+            this?.putString((com.example.us0.R.string.user_name).toString(), userName)
             this?.apply()
         }
-        Log.i("ANVM","ohy")
+        /*val view=
+            view?.let {
+                Snackbar.make(it, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
+            }*/
     }
 
     fun goToNextFragmentComplete(){
@@ -117,26 +109,5 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
     }
     init{
         checkUserName()
-    }
-
-    private fun checkInternetConnectivity(): Boolean {
-        val connectivityManager =
-            context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-        if (connectivityManager != null) {
-            val capabilities =
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                    connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-                } else {
-                    null
-                }
-            return if (capabilities != null) {
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
-                        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
-                        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
-            } else {
-                false
-            }
-        }
-        else return false
     }
 }
