@@ -186,9 +186,8 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                                                                 missionToBeSaved.sponsorDescription= mission?.sponsorDescription ?: ""
                                                                 missionToBeSaved.missionDescription= mission?.missionDescription ?: ""
                                                                 missionToBeSaved.missionCategory= mission?.category ?: ""
-                                                                missionToBeSaved.sponsorSite= mission?.sponsorSite ?: ""
                                                                 missionToBeSaved.goal=mission?.goal ?:""
-
+                                                                missionToBeSaved.sponsorNumber=mission?.sponsorNumber ?:0
                                                                 val reference4 = cloudReference.child("Users Active")
                                                                     .child(lastMissionNumber.toString())
                                                                 reference4.addListenerForSingleValueEvent(object :
@@ -367,14 +366,14 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
         }
             _goToHome.value = true
     }
-    private fun checkIfRulesShown():Boolean {
+    /*private fun checkIfRulesShown():Boolean {
         val rulesShown = sharedPref?.getBoolean((R.string.rules_shown).toString(), false)
         return if(rulesShown!=true){
             _goToRules.value=true
             false
         } else true
 
-    }
+    }*/
 
 
     companion object {

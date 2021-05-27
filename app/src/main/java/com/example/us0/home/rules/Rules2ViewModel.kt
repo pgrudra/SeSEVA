@@ -366,10 +366,12 @@ class Rules2ViewModel(
                 this?.putInt((R.string.saved_rules_number).toString(), rulesNumber)
                 this?.apply()
             }
-            if(serviceRestart){
-                actionOnService(Actions.STOP)
-                actionOnService(Actions.START)
-                Log.i("RVM","serviceRestarted")
+            if(sharedPref.getBoolean((R.string.onboarding_done).toString(),false)) {
+                if (serviceRestart) {
+                    actionOnService(Actions.STOP)
+                    actionOnService(Actions.START)
+                    Log.i("RVM", "serviceRestarted")
+                }
             }
             Log.i("RVM","rulesNumber=$rulesNumber")
         }

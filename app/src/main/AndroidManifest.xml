@@ -31,7 +31,6 @@
         <service android:name=".foregroundnnotifications.TestService" />
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
             android:noHistory="true"
             android:screenOrientation="portrait"
             >

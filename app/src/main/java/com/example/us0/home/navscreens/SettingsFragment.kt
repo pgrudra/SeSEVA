@@ -15,12 +15,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.work.WorkManager
 import com.example.us0.*
 import com.example.us0.data.AllDatabase
 import com.example.us0.databinding.FragmentSettingsBinding
+import com.example.us0.foregroundnnotifications.TestService
 import com.example.us0.home.DrawerLocker
 import com.example.us0.ui.login.NoInternetDialogFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -43,8 +43,30 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
     private lateinit var appContext: Context
     private lateinit var auth: FirebaseAuth
     private lateinit var sharedPref:SharedPreferences
-    private lateinit var intentToLoginScreen: Intent
     private val cloudReference = Firebase.database.reference.child("users")
+    override fun onPause() {
+        Log.i("SF9","paused")
+        super.onPause()
+    }
+
+    override fun onDetach() {
+        Log.i("SF9","detach")
+        super.onDetach()
+    }
+
+    override fun onStop() {
+        Log.i("SF9","stop")
+        super.onStop()
+    }
+
+    override fun onDestroyView() {
+        Log.i("SF9","viewDestroy")
+        super.onDestroyView()
+    }
+    override fun onDestroy() {
+        Log.i("SF9","destroy")
+        super.onDestroy()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -68,7 +90,7 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
             .requestIdToken(com.example.us0.R.string.default_web_client_id.toString())
             .requestEmail()
             .build()
-        intentToLoginScreen = Intent(activity, MainActivity::class.java)
+
         auth= Firebase.auth
         googleSignInClient = GoogleSignIn.getClient(appContext, gso)
 
@@ -150,8 +172,12 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
         //set loading symbol
         setLoadingSymbol()
         val user = auth.currentUser
-        //remove dbs
 
+        //stop service
+        stopService()
+
+
+        //remove dbs
         val db=AllDatabase.getInstance(appContext)
         viewLifecycleOwner.lifecycleScope.launch {
             db.AppDatabaseDao.clear()
@@ -164,15 +190,19 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
             try {
                 user?.delete()?.addOnSuccessListener {
                     try {
+                        onDeleteAccountComplete(user.uid)
+                        Log.i("SF", "try")
                         googleSignInClient.revokeAccess().addOnSuccessListener {
                             Log.i("SF", "revokeAccess")
                         }
                         googleSignInClient.signOut().addOnCompleteListener {
-                            startActivity(intentToLoginScreen)
+                            Log.i("SF", "gsignout")
                         }
+                        toLoginScreen()
                     }
                     catch (e: kotlin.Exception){
                         Log.i("Delete", "qqq")
+                        toLoginScreen()
                     }
                 }
                     ?.addOnFailureListener {
@@ -208,15 +238,18 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
                                             user.delete().addOnSuccessListener {
                                                 Log.i("SF", "account deleted.")
                                                 try {
+                                                    onDeleteAccountComplete(user.uid)
                                                     googleSignInClient.revokeAccess().addOnSuccessListener {
                                                         Log.i("SF", "revokeAccess")
                                                     }
                                                     googleSignInClient.signOut().addOnCompleteListener {
-                                                        onDeleteAccountComplete(user.uid)
+
                                                     }
+                                                    toLoginScreen()
                                                 }
                                                 catch (e: kotlin.Exception){
                                                     Log.i("Delete", "qqq")
+                                                    toLoginScreen()
                                                 }
                                             }
                                         }
@@ -238,6 +271,19 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
 
     }
 
+    private fun stopService() {
+        if(getServiceState(appContext)!=ServiceState.STOPPED){
+            Intent(appContext, TestService::class.java).also {
+                it.action = Actions.STOP.name
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    appContext.startForegroundService(it)
+                } else {
+                    appContext.startService(it)
+                }
+            }
+        }
+    }
+
     private fun setLoadingSymbol() {
 
     }
@@ -252,26 +298,34 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
         cloudReference.child(uid).child("chosenMission").removeValue()
         cloudReference.child(uid).child("username").removeValue()
         Log.i("SF", "userName n mission removed")
-        startActivity(intentToLoginScreen)
+
     }
 
     override fun signOut() {
         setLoadingSymbol()
+        stopService()
         val db=AllDatabase.getInstance(appContext)
         viewLifecycleOwner.lifecycleScope.launch {
             db.AppDatabaseDao.clear()
             db.CategoryStatDatabaseDao.clear()
             db.MissionsDatabaseDao.clear()
             db.StatDataBaseDao.clear()
+        }.invokeOnCompletion {
+            sharedPref.edit()?.clear()?.apply()
+            // Firebase sign out
+            auth.signOut()
+            WorkManager.getInstance(appContext).cancelAllWork()
+            // Google sign out
+            googleSignInClient.signOut().addOnCompleteListener {
+                toLoginScreen()
+            }
         }
-        sharedPref.edit()?.clear()?.apply()
-        // Firebase sign out
-        auth.signOut()
 
-        // Google sign out
-        googleSignInClient.signOut().addOnCompleteListener {
-            startActivity(intentToLoginScreen)
-        }
+    }
+    private fun toLoginScreen(){
+        val intentToLoginScreen = Intent(activity, MainActivity::class.java)
+        intentToLoginScreen.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intentToLoginScreen)
     }
     override fun clearHistory() {
         val db=AllDatabase.getInstance(appContext)

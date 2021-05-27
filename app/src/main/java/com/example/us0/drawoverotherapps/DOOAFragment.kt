@@ -25,9 +25,7 @@ class DOOAFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context)){
-            findNavController().navigate(DOOAFragmentDirections.actionDOOAFragmentToHomeFragment())
-        }
+
 
     }
     override fun onCreateView(
@@ -35,6 +33,9 @@ class DOOAFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context)){
+            findNavController().navigate(DOOAFragmentDirections.actionDOOAFragmentToHomeFragment())
+        }
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_d_o_o_a,

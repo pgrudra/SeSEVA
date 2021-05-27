@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.example.us0.*
 import com.example.us0.data.AllDatabase
@@ -33,10 +34,9 @@ class TestService : Service() {
     private val ONE_MINUTE_IN_SECONDS = 60
     private var isServiceStarted = false
     var gS:Job?=null
-
     private val pkgAndCat =
-        Transformations.map(AllDatabase.getInstance(this).AppDatabaseDao.getEntireList()) { it ->
-            it.map { it.packageName to it.appCategory }.toMap()
+            Transformations.map(AllDatabase.getInstance(this).AppDatabaseDao.getEntireList()) { it ->
+            it?.map { it.packageName to it.appCategory }?.toMap() ?: emptyMap<String,String>()
         }
     private val timeRules: HashMap<String, Int> = HashMap<String, Int>()
     private val launchRules: HashMap<String, Int> = HashMap<String, Int>()
@@ -138,7 +138,6 @@ class TestService : Service() {
     }
 
     private fun startService() {
-
         if (isServiceStarted) return
         isServiceStarted = true
         setServiceState(this, com.example.us0.ServiceState.STARTED)
@@ -174,43 +173,43 @@ class TestService : Service() {
         launchRules["OTHERS"] = sharedPref.getInt((R.string.others_max_launches).toString(), 0)
         launchRules["MSNBS"] = sharedPref.getInt((R.string.msnbs_max_launches).toString(), 0)
         launchRules["VIDEO"] = sharedPref.getInt((R.string.video_max_launches).toString(), 0)
-pkgAndCat.observeForever {
+        pkgAndCat.observeForever {
 
-        if(gS?.isActive == true){
-            gS?.cancel()
-        }
+                if(gS?.isActive == true){
+                    gS?.cancel()
+                }
 
-    gS=GlobalScope.launch(Dispatchers.IO) {
-        val main = Intent(Intent.ACTION_MAIN, null)
-        main.addCategory(Intent.CATEGORY_LAUNCHER)
-        val pm = requireNotNull(applicationContext.packageManager)
-        val launchables = pm.queryIntentActivities(main, 0)
-        val appPackageListR = ArrayList<String>()
-        for (item in launchables) {
-            try {
-                val nameOfPackage: String = item.activityInfo.packageName
-                appPackageListR.add(nameOfPackage)
-            } catch (e: Exception) {
+            gS=GlobalScope.launch(Dispatchers.IO) {
+                val main = Intent(Intent.ACTION_MAIN, null)
+                main.addCategory(Intent.CATEGORY_LAUNCHER)
+                val pm = requireNotNull(applicationContext.packageManager)
+                val launchables = pm.queryIntentActivities(main, 0)
+                val appPackageListR = ArrayList<String>()
+                for (item in launchables) {
+                    try {
+                        val nameOfPackage: String = item.activityInfo.packageName
+                        appPackageListR.add(nameOfPackage)
+                    } catch (e: Exception) {
+                    }
+                }
+                val sortedEvents = mutableMapOf<String, MutableList<UsageEvents.Event>>()
+                val appPackageList = appPackageListR.distinct()
+                for (l in appPackageList) {
+                    sortedEvents[l] = mutableListOf()
+                }
+
+                while (isServiceStarted) {
+                    delay(10000)
+                    launch(Dispatchers.IO) {
+                        getStats(applicationContext, sortedEvents)
+                    }
+
+
+                    Log.i("TSC", "POPO")
+                }
+
             }
         }
-        val sortedEvents = mutableMapOf<String, MutableList<UsageEvents.Event>>()
-        val appPackageList = appPackageListR.distinct()
-        for (l in appPackageList) {
-            sortedEvents[l] = mutableListOf()
-        }
-
-        while (isServiceStarted) {
-            delay(10000)
-            launch(Dispatchers.IO) {
-                getStats(applicationContext, sortedEvents)
-            }
-
-
-            Log.i("TSC", "POPO")
-        }
-
-    }
-}
     }
 
     private fun stopService() {
@@ -335,35 +334,38 @@ pkgAndCat.observeForever {
                             Toast.makeText(context, "Rule Broken!!", Toast.LENGTH_LONG).show()
                         }
                     }*/
-                    val handler = Handler(Looper.getMainLooper())
-                    handler.post {
+                    if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
+                        val handler = Handler(Looper.getMainLooper())
+                        handler.post {
 
-                        val blockingScreenParams: WindowManager.LayoutParams? =
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                                WindowManager.LayoutParams(
-                                    WindowManager.LayoutParams.MATCH_PARENT,
-                                    WindowManager.LayoutParams.MATCH_PARENT,
-                                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                                    WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
-                                    PixelFormat.TRANSLUCENT
-                                )
-                            } else {
+                            val blockingScreenParams: WindowManager.LayoutParams? =
+                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                    WindowManager.LayoutParams(
+                                        WindowManager.LayoutParams.MATCH_PARENT,
+                                        WindowManager.LayoutParams.MATCH_PARENT,
+                                        WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                                        WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+                                        PixelFormat.TRANSLUCENT
+                                    )
+                                } else {
+                                    null
+                                }
+                            val wm = this.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+
+                            val blockingScreenView = LayoutInflater.from(context).inflate(
+                                R.layout.blocking_screen,
                                 null
+                            )
+
+                            blockingScreenView.i_understand.setOnClickListener {
+                                wm.removeView(blockingScreenView)
                             }
-                        val wm = this.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-
-                        val blockingScreenView = LayoutInflater.from(context).inflate(
-                            R.layout.blocking_screen,
-                            null
-                        )
-
-                         blockingScreenView.i_understand.setOnClickListener {
-                            wm.removeView(blockingScreenView) }
-                        blockingScreenView.text.text="sdfgd"
-                        if (blockingScreenParams != null) {
-                            Log.i("TS87", "qqw")
-                            wm.addView(blockingScreenView, blockingScreenParams)
-                            Log.i("TS87", "dvfsd")
+                            blockingScreenView.text.text = "sdfgd"
+                            if (blockingScreenParams != null) {
+                                Log.i("TS87", "qqw")
+                                wm.addView(blockingScreenView, blockingScreenParams)
+                                Log.i("TS87", "dvfsd")
+                            }
                         }
                     }
                 } else {

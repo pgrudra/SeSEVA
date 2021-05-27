@@ -42,11 +42,12 @@ data class Mission(
     @ColumnInfo(name="total_money_raised")
     var totalMoneyRaised:Int=0,
 
-    @ColumnInfo(name="sponsor_site")
-    var sponsorSite:String="",
 
     @ColumnInfo(name = "contribution")
     var contribution: Int = 0,
+
+    @ColumnInfo(name = "sponsor_number")
+    var sponsorNumber:Int=0,
 
     @ColumnInfo(name="goal")
     var goal:String="",
@@ -62,11 +63,11 @@ fun List<Mission>.asActiveDomainModel(): List<DomainActiveMission> {
             usersActive = it.usersActive,
             rulesNumber = it.rulesNumber,
             sponsorName = it.sponsorName,
+            sponsorNumber = it.sponsorNumber,
             sponsorDescription = it.sponsorDescription,
             missionDescription = it.missionDescription,
             totalMoneyRaised = it.totalMoneyRaised,
             category=it.missionCategory,
-            sponsorSite = it.sponsorSite,
             contribution = it.contribution,
             goal = it.goal
         )
@@ -80,11 +81,11 @@ fun Mission.asActiveDomainModel(): DomainActiveMission {
             usersActive = usersActive,
             rulesNumber = rulesNumber,
             sponsorName = sponsorName,
+            sponsorNumber = sponsorNumber,
             sponsorDescription = sponsorDescription,
             missionDescription = missionDescription,
             totalMoneyRaised = totalMoneyRaised,
             category=missionCategory,
-            sponsorSite = sponsorSite,
             contribution = contribution,
             goal=goal
         )
@@ -98,11 +99,11 @@ fun Mission.asClosedDomainModel():DomainClosedMission{
             usersActive = usersActive,
             rulesNumber=rulesNumber,
             sponsorName = sponsorName,
+            sponsorNumber = sponsorNumber,
             sponsorDescription = sponsorDescription,
             missionDescription = missionDescription,
             totalMoneyRaised = totalMoneyRaised,
             category=missionCategory,
-            sponsorSite = sponsorSite,
             contribution = contribution,
             goal=goal
         )

@@ -107,11 +107,20 @@
         android:background="@drawable/login_email_edit_box_inactive"
         android:hint="Enter new username"
         android:paddingStart="8dp"
+        android:maxLength="25"
         android:textColor="@color/primary_text"
         android:textColorHint="@color/disabled_text"
         android:textCursorDrawable="@drawable/text_cursor"
         android:inputType="textPersonName"
         android:importantForAutofill="no" />
+    <View
+        android:id="@+id/underline"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@drawable/underline"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_box"
+        app:layout_constraintEnd_toEndOf="@+id/edit_box"
+        app:layout_constraintStart_toStartOf="@+id/edit_box" />
     <TextView
         android:id="@+id/errorMessage"
         style="@style/caption"

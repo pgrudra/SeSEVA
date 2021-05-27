@@ -11,11 +11,11 @@ data class DomainClosedMission(
     val usersActive: Int,
     val rulesNumber: Int,
     val sponsorName: String,
+    val sponsorNumber:Int,
     val sponsorDescription: String,
     val missionDescription: String,
     val totalMoneyRaised: Int,
     val category:String,
-    val sponsorSite:String,
     val contribution:Int,
     val goal:String
 ): Parcelable {

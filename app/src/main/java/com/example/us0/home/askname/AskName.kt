@@ -1,5 +1,6 @@
 package com.example.us0.home.askname
 
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -7,6 +8,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
+import android.view.inputmethod.InputMethodManager.HIDE_IMPLICIT_ONLY
+import android.view.inputmethod.InputMethodManager.SHOW_FORCED
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -18,6 +23,7 @@ import com.example.us0.data.AllDatabase
 import com.example.us0.databinding.FragmentAskNameBinding
 import com.example.us0.home.DrawerLocker
 import com.example.us0.ui.login.NoInternetDialogFragment
+import kotlinx.android.synthetic.main.manage_profile_dialog.view.*
 
 
 class AskName : Fragment(),NoInternetDialogFragment.NoInternetDialogListener {
@@ -54,6 +60,8 @@ class AskName : Fragment(),NoInternetDialogFragment.NoInternetDialogListener {
         })
         viewModel.goToNextFragment.observe(viewLifecycleOwner, Observer<Boolean> { go ->
             if (go) {
+                binding.editTextTextPersonName.hideKeyboard()
+                Log.i("AN5","$go")
                 NavHostFragment.findNavController(this)
                     .navigate(AskNameDirections.actionAskNameToIntroToApp3())
                 viewModel.goToNextFragmentComplete()
@@ -72,10 +80,20 @@ class AskName : Fragment(),NoInternetDialogFragment.NoInternetDialogListener {
                 }
             }
 
-
         return binding.root
     }
-
+    fun View.focus() {
+        requestFocus()
+        showKeyboard()
+    }
+    fun View.showKeyboard() { // Or View.showKeyboard()
+        val inputMethodManager = context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.toggleSoftInput(SHOW_FORCED, HIDE_IMPLICIT_ONLY)
+    }
+    fun View.hideKeyboard() {
+        val inputMethodManager = context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
+    }
     private fun makeErrorBackground() {
         binding.editTextTextPersonName.setBackgroundResource(R.drawable.login_email_edit_box_error)
         binding.usernameButton.setBackgroundResource(R.drawable.login_other_sign_in_error_button)
@@ -96,6 +114,7 @@ class AskName : Fragment(),NoInternetDialogFragment.NoInternetDialogListener {
 
     override fun onResume() {
         super.onResume()
+        binding.editTextTextPersonName.focus()
     }
 
     override fun onPause() {

@@ -45,43 +45,12 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
         val application = requireNotNull(this.activity).application
         val sharedPref = activity?.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
         val mission:DomainActiveMission = DetailMissionArgs.fromBundle(requireArguments()).selectedMission
-        val showImage=DetailMissionArgs.fromBundle(requireArguments()).showImage
+        val showDifferentMissionButton=DetailMissionArgs.fromBundle(requireArguments()).showDifferentMissionButton
         viewModelFactory = DetailMissionViewModelFactory(mission, application)
         viewModel = ViewModelProvider(this, viewModelFactory).get(DetailMissionViewModel::class.java)
-
         binding.selectedMissionViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        val chosenMission=sharedPref?.getInt((R.string.chosen_mission_number).toString(),0)?:0
-        if(chosenMission==mission.missionNumber){
-            binding.youAreOn.visibility=View.VISIBLE
-            binding.missionName2.visibility=View.VISIBLE
-            binding.toolbar.title=getString(R.string.charity_details_title)
-            binding.chooseThisMission.visibility=View.GONE
-        }
-        else{
-            binding.missionName2.visibility=View.GONE
-            binding.youAreOn.visibility=View.GONE
-            binding.toolbar.title = mission.missionName
-        }
         val contribution=mission.contribution
-        Log.i("DMF","contri=$contribution")
-        if(showImage){
-            val reference =
-                cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionImages/mission${mission.missionNumber}Image.jpg")
-            Glide.with(this)
-                .load(reference)
-                .apply(
-                    RequestOptions()
-                        .placeholder(R.drawable.ic_launcher_background)
-                        .error(R.drawable.ic_launcher_foreground)
-                )
-                .into(binding.missionImage)
-            binding.missionImage.visibility=View.VISIBLE
-            binding.chooseThisMission.visibility=View.GONE
-            binding.textView22.visibility=View.GONE
-        }
-        else{
-            binding.missionImage.visibility=View.GONE
             val color= context?.let { ContextCompat.getColor(it,R.color.colorPrimary) }
             if(color!=null){
                 if(contribution!=0){
@@ -91,38 +60,32 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
                     binding.textView2.setTextColor(color)
                 }
             }
-        }
-
         if(contribution==0){
             binding.textView22.visibility=View.GONE
         }
-        if(showImage || contribution!=0){
-            val color= context?.let { ContextCompat.getColor(it,R.color.colorSecondary) }
-            if(color!=null){
-                binding.missionClosesIn.setTextColor(color)
-                binding.days.setTextColor(color)
-            }
-
+        if(!showDifferentMissionButton){
+            binding.chooseADifferentMission.visibility=View.GONE
         }
-        viewModel.makeTriggerText(showImage,contribution)
+        viewModel.makeTriggerText(contribution)
         binding.category.text = mission.category
+        binding.missionName.text=mission.missionName
         val misDesLength = mission.missionDescription.length
         if (misDesLength < 151) {
-            Log.i("jji", "klop")
             binding.expandOrContract.visibility = View.GONE
             binding.missionDescription.text = mission.missionDescription
         }
         viewModel.drawer.observe(viewLifecycleOwner, Observer<Boolean> { visible ->
-            val drawerLoker=(activity as DrawerLocker?)
-            if (visible) {
-                binding.toolbar.setNavigationIcon(R.drawable.ic_navdrawer_icon)
-                binding.toolbar.setNavigationOnClickListener { v -> (activity as DrawerLocker?)!!.openCloseNavigationDrawer(v) }
-                drawerLoker!!.setDrawerEnabled(true)
-                drawerLoker.displayBottomNavigation(true)
-                Log.i("RF","$visible")
+            val drawerLocker=(activity as DrawerLocker?)
+            if (visible && sharedPref?.getInt((R.string.chosen_mission_number).toString(), 0)?:0 !=0) {
+                binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_left)
+                binding.toolbar.setNavigationOnClickListener {
+                    activity?.onBackPressed()
+                }
+                drawerLocker!!.setDrawerEnabled(true)
+                drawerLocker.displayBottomNavigation(true)
             } else {
-                drawerLoker!!.setDrawerEnabled(false)
-                drawerLoker.displayBottomNavigation(false)
+                drawerLocker!!.setDrawerEnabled(false)
+                drawerLocker.displayBottomNavigation(false)
             }
         })
         viewModel.showDetailMissionDescription.observe(
@@ -147,7 +110,7 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
         binding.sponsorName.text = mission.sponsorName
         binding.goal.text=mission.goal
         val reference =
-            cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/sponsorLogos/mission${mission.missionNumber}SponsorLogo.png")
+            cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/sponsorLogos/sponsor${mission.sponsorNumber}Logo.png")
         Glide.with(this)
             .load(reference)
             .apply(
@@ -156,13 +119,11 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
                     .error(R.drawable.ic_launcher_foreground)
             )
             .into(binding.sponsorLogo)
-        binding.sponsorDescription.text = mission.sponsorDescription
-        viewModel.knowMore.observe(viewLifecycleOwner, Observer<Boolean> { knowMore ->
-            if (knowMore) {
-                val i = Intent(Intent.ACTION_VIEW)
-                i.data = Uri.parse(mission.sponsorSite)
-                startActivity(i)
-                viewModel.toSponsorWebsiteComplete()
+        viewModel.goToSponsorScreen.observe(viewLifecycleOwner, Observer<Boolean> { go ->
+            if (go) {
+                Log.i("SDF56","${mission.sponsorNumber}")
+                findNavController().navigate(DetailMissionDirections.actionDetailMissionToSponsorDetailsFragment(mission.sponsorNumber))
+                viewModel.toSponsorScreenComplete()
             }
 
         })
@@ -181,6 +142,7 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
         })
         viewModel.toHomeFragment.observe(viewLifecycleOwner, Observer<Boolean> { goto ->
                 if (goto) {
+                    Log.i("DM5","jgpu")
                     findNavController().navigate(DetailMissionDirections.actionDetailMissionToHomeFragment())
                     viewModel.thisMissionChosenComplete()
                 }

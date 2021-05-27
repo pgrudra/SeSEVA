@@ -18,13 +18,15 @@ import androidx.lifecycle.MutableLiveData
 import com.example.us0.R
 import com.example.us0.data.missions.DomainActiveMission
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.*
 
 class DetailMissionViewModel(mission:DomainActiveMission, application: Application):AndroidViewModel(application) {
     private val context = getApplication<Application>().applicationContext
-
     private val sharedPref = context.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
     private val cloudReference = Firebase.database.reference
     private val user = Firebase.auth.currentUser
@@ -43,9 +45,12 @@ class DetailMissionViewModel(mission:DomainActiveMission, application: Applicati
     private val _daysLeft=MutableLiveData<String>()
     val daysLeft:LiveData<String>
         get()=_daysLeft
-    private val _knowMore=MutableLiveData<Boolean>()
-    val knowMore:LiveData<Boolean>
-        get()=_knowMore
+    private val _chooseMissionButtonText=MutableLiveData<String>()
+    val chooseMissionButtonText:LiveData<String>
+        get()=_chooseMissionButtonText
+    private val _goToSponsorScreen=MutableLiveData<Boolean>()
+    val goToSponsorScreen:LiveData<Boolean>
+        get()=_goToSponsorScreen
     private val _noInternet=MutableLiveData<Boolean>()
     val noInternet:LiveData<Boolean>
         get()=_noInternet
@@ -68,7 +73,19 @@ class DetailMissionViewModel(mission:DomainActiveMission, application: Applicati
     _selectedMission.value=mission
     _showDetailMissionDescription.value=false
     checkUsageAccessPermission()
+        setChooseMissionButtonText()
 }
+
+    private fun setChooseMissionButtonText() {
+        if(sharedPref?.getInt((R.string.chosen_mission_number).toString(), 0)?:0 != 0){
+            _chooseMissionButtonText.value=context.getString(R.string.switch_to_this_mission)
+
+        }
+        else{
+            _chooseMissionButtonText.value=context.getString(R.string.choose_this_mission)
+        }
+    }
+
     private fun checkUsageAccessPermission() {
         val appOps = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
         val mode = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
@@ -89,7 +106,7 @@ class DetailMissionViewModel(mission:DomainActiveMission, application: Applicati
         _drawer.value = mode == AppOpsManager.MODE_ALLOWED
     }
 
-  fun makeTriggerText(showImage: Boolean, contribution: Int) {
+  fun makeTriggerText( contribution: Int) {
       val now= Calendar.getInstance().timeInMillis
       val intDaysLeft=((_selectedMission.value!!.deadline-now+ ONE_DAY)/ Companion.ONE_DAY)+1
       if(intDaysLeft<10){
@@ -98,43 +115,65 @@ class DetailMissionViewModel(mission:DomainActiveMission, application: Applicati
       else{
           _daysLeft.value= intDaysLeft.toString()
       }
-      if(!showImage){
-          val possibleMoney=intDaysLeft*6
-          //recalculate
-          Log.i("DMVM","NO Image")
-          if(contribution==0){
-              val spannable=SpannableString("Your chance to add\nRs $possibleMoney more\nbefore mission closes !!")
-              spannable.setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.primary_text)),19,27+possibleMoney.toString().length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-              _trigger.value= spannable
-              Log.i("DMVM","contri=0")
-          }
-          else{
-              Log.i("DMVM","contri=$contribution")
-              val spannable2=SpannableString("You raised\nRs $contribution")
-              spannable2.setSpan(RelativeSizeSpan(2f),10,14+contribution.toString().length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-              spannable2.setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.secondary_text)),0,10,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-              _trigger.value=spannable2
-              val spannable=SpannableString("Your chance to add Rs $possibleMoney more\nbefore mission closes !!")
-              spannable.setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.primary_text)),19,27+possibleMoney.toString().length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-              _trigger2.value=spannable
-          }
-      }
-      else{
-          Log.i("DMVM","ImagePresent")
-          val spannable2=SpannableString("You raised\nRs $contribution")
-          spannable2.setSpan(RelativeSizeSpan(2f),10,14+contribution.toString().length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-          spannable2.setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.secondary_text)),0,10,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-          _trigger.value=spannable2
-      }
+      var possibleMoney=0
+          cloudReference.child("rules").child(_selectedMission.value!!.rulesNumber.toString())
+              .child("dailyReward").addListenerForSingleValueEvent(object :
+              ValueEventListener {
+              override fun onDataChange(snapshot: DataSnapshot) {
+                  val dailyReward = snapshot.value.toString().toInt()
+                  cloudReference.child("rules")
+                      .child(_selectedMission.value!!.rulesNumber.toString()).child("weeklyReward")
+                      .addListenerForSingleValueEvent(object :
+                          ValueEventListener {
+                          override fun onDataChange(snapshot: DataSnapshot) {
+                              val weeklyReward = snapshot.value.toString().toInt()
+                              possibleMoney =
+                                  (dailyReward * intDaysLeft + weeklyReward * (intDaysLeft / 7)).toInt()
+                              furtherTriggerText(contribution,possibleMoney)
+                          }
 
+                          override fun onCancelled(error: DatabaseError) {
+                              if(!checkInternetConnectivity()){
+                                  _noInternet.value=true
+                              }
+                          }
+                      })
+              }
+
+              override fun onCancelled(error: DatabaseError) {
+                  if(!checkInternetConnectivity()){
+                      _noInternet.value=true
+                  }
+              }
+          })
+
+
+
+    }
+
+    private fun furtherTriggerText(contribution: Int, possibleMoney: Int) {
+        if(contribution==0){
+            val spannable=SpannableString("Your chance to add\nRs $possibleMoney more\nbefore mission closes")
+            spannable.setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.primary_text)),19,27+possibleMoney.toString().length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            _trigger.value= spannable
+        }
+        else{
+            val spannable=SpannableString("You raised\nRs $contribution")
+            spannable.setSpan(RelativeSizeSpan(2f),10,14+contribution.toString().length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            spannable.setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.secondary_text)),0,10,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            _trigger.value=spannable
+            val spannable2=SpannableString("Your chance to add Rs $possibleMoney more\nbefore mission closes")
+            spannable2.setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.primary_text)),19,27+possibleMoney.toString().length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            _trigger2.value=spannable2
+        }
 //18,26+possibleMoney.toString().length
     }
 
-fun toSponsorWebsite(){
-    _knowMore.value=true
+    fun toSponsorScreen(){
+    _goToSponsorScreen.value=true
 }
-    fun toSponsorWebsiteComplete(){
-        _knowMore.value=false
+    fun toSponsorScreenComplete(){
+        _goToSponsorScreen.value=false
     }
     fun thisMissionChosen(){
         if(!checkInternetConnectivity()){

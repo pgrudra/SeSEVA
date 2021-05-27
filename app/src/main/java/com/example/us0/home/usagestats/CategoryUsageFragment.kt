@@ -76,7 +76,13 @@ class CategoryUsageFragment : Fragment() {
                 binding.i.visibility=View.VISIBLE
             }
         })
+        val manager2 = GridLayoutManager(activity, 2, GridLayoutManager.HORIZONTAL, false)
+        val manager1 = GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false)
         viewModel.appsInCatList.observe(viewLifecycleOwner, Observer {
+            if(it.size<7)
+                binding.appRecyclerView.layoutManager=manager1
+            else
+                binding.appRecyclerView.layoutManager=manager2
             it?.let { adapter.submitList(it) }
         })
         binding.appRecyclerView.adapter=adapter
@@ -85,8 +91,6 @@ class CategoryUsageFragment : Fragment() {
             it?.let {
                 popUpClass.showPopupWindow(it) }
         }
-        val manager = GridLayoutManager(activity, 2, GridLayoutManager.HORIZONTAL, false)
-        binding.appRecyclerView.layoutManager=manager
         val drawerLocker=(activity as DrawerLocker?)
         binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_left)
         binding.toolbar.setNavigationOnClickListener {
@@ -150,72 +154,119 @@ class CategoryUsageFragment : Fragment() {
         context?.let {
             timePieChart.setHoleColor(ContextCompat.getColor(it,R.color.rules_card))
             launchesPieChart.setHoleColor(ContextCompat.getColor(it,R.color.rules_card)) }
+        viewModel.processingDataForPieChartDone.observe(viewLifecycleOwner, Observer { done ->
+            if (done) {
+                val catTimePieChartEntries: ArrayList<PieEntry> = ArrayList()
+                val catLaunchesPieChartEntries: ArrayList<PieEntry> = ArrayList()
+                val stats = viewModel.appsInCatList.value
+                if (stats != null && stats.isNotEmpty()) {
+                    if (stats.size > 6) {
+                        for (i in 0..4) {
+                            stats[i].timeSpent?.let {
+                                catTimePieChartEntries.add(
+                                    PieEntry(
+                                        it.toFloat(),
+                                        stats[i].appName
+                                    )
+                                )
+                            }
+                            stats[i].appLaunches?.let {
+                                catLaunchesPieChartEntries.add(
+                                    PieEntry(
+                                        it.toFloat(),
+                                        stats[i].appName
+                                    )
+                                )
+                            }
+                        }
+                        var othersTime = 0
+                        var othersLaunches = 0
+                        for (i in 5..stats.lastIndex) {
+                            othersTime += stats[i].timeSpent ?: 0
+                            othersLaunches += stats[i].appLaunches ?: 0
+                        }
+                        if (othersTime != 0)
+                            catTimePieChartEntries.add(PieEntry(othersTime.toFloat(), "Others"))
+                        if (othersLaunches != 0)
+                            catLaunchesPieChartEntries.add(
+                                PieEntry(
+                                    othersLaunches.toFloat(),
+                                    "Others"
+                                )
+                            )
+                    } else {
+                        for (stat in stats) {
+                            stat.timeSpent?.let {
+                                catTimePieChartEntries.add(
+                                    PieEntry(
+                                        it.toFloat(),
+                                        stat.appName
+                                    )
+                                )
+                            }
+                            stat.appLaunches?.let {
+                                catLaunchesPieChartEntries.add(
+                                    PieEntry(
+                                        it.toFloat(),
+                                        stat.appName
+                                    )
+                                )
+                            }
+                        }
+                    }
+                    val colorsList: MutableList<Int> = mutableListOf()
+                    for (c in ColorTemplate.MATERIAL_COLORS) {
+                        colorsList.add(c)
+                    }
+                    for (c in ColorTemplate.COLORFUL_COLORS) {
+                        colorsList.add(c)
+                    }
+                    val catTimePieDataSet = PieDataSet(catTimePieChartEntries, "")
+                    catTimePieDataSet.colors = colorsList
+                    val catTimePieData = PieData(catTimePieDataSet)
+                    timePieChart.data = catTimePieData
+                    val timeLegendManager =
+                        GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
+                    val timeEntries = timeLegend.entries
+                    val timeLegendList: MutableList<PieChartLegendItem> = mutableListOf()
+                    for (i in timeEntries.indices) {
+                        timeLegendList.add(
+                            PieChartLegendItem(
+                                timeEntries[i].formColor,
+                                timeEntries[i].label
+                            )
+                        )
+                    }
+                    val timePieChartAdapter = PieChartLegendAdapter()
+                    timePieChartAdapter.submitList(timeLegendList)
+                    binding.timePieChartLegend.adapter = timePieChartAdapter
+                    binding.timePieChartLegend.layoutManager = timeLegendManager
+                    timePieChart.invalidate()
 
-        val catTimePieChartEntries: ArrayList<PieEntry> = ArrayList()
-        val catLaunchesPieChartEntries: ArrayList<PieEntry> = ArrayList()
-        val stats=viewModel.appsInCatList.value
-        if(stats!= null && stats.isNotEmpty()){
-            if(stats.size>6){
-                for(i in 0..4){
-                    stats[i].timeSpent?.let {catTimePieChartEntries.add(PieEntry(it.toFloat(),stats[i].appName))  }
-                    stats[i].appLaunches?.let {catLaunchesPieChartEntries.add(PieEntry(it.toFloat(),stats[i].appName))  }
-                }
-                var othersTime=0
-                var othersLaunches=0
-                for(i in 5..stats.lastIndex){
-                    othersTime+=stats[i].timeSpent?:0
-                    othersLaunches+=stats[i].appLaunches?:0
-                }
-                if(othersTime!=0)
-                    catTimePieChartEntries.add(PieEntry(othersTime.toFloat(),"Others"))
-                if(othersLaunches!=0)
-                    catLaunchesPieChartEntries.add(PieEntry(othersLaunches.toFloat(),"Others"))
-            }
-            else{
-                for(stat in stats){
-                    stat.timeSpent?.let {catTimePieChartEntries.add(PieEntry(it.toFloat(),stat.appName))  }
-                    stat.appLaunches?.let {catLaunchesPieChartEntries.add(PieEntry(it.toFloat(),stat.appName))  }
+                    val catLaunchesPieDataSet = PieDataSet(catLaunchesPieChartEntries, "")
+                    catLaunchesPieDataSet.colors = colorsList
+                    val catLaunchesPieData = PieData(catLaunchesPieDataSet)
+                    launchesPieChart.data = catLaunchesPieData
+                    val launchesLegendManager =
+                        GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
+                    val launchesEntries = launchesLegend.entries
+                    val launchesLegendList: MutableList<PieChartLegendItem> = mutableListOf()
+                    for (i in launchesEntries.indices) {
+                        launchesLegendList.add(
+                            PieChartLegendItem(
+                                launchesEntries[i].formColor,
+                                launchesEntries[i].label
+                            )
+                        )
+                    }
+                    val launchesPieChartAdapter = PieChartLegendAdapter()
+                    launchesPieChartAdapter.submitList(launchesLegendList)
+                    binding.launchesPieChartLegend.adapter = launchesPieChartAdapter
+                    binding.launchesPieChartLegend.layoutManager = launchesLegendManager
+                    launchesPieChart.invalidate()
                 }
             }
-            val colorsList:MutableList<Int> = mutableListOf()
-            for (c in ColorTemplate.MATERIAL_COLORS){
-                colorsList.add(c)
-            }
-            for(c in ColorTemplate.COLORFUL_COLORS){
-                colorsList.add(c)
-            }
-            val catTimePieDataSet= PieDataSet(catTimePieChartEntries, "")
-            catTimePieDataSet.colors = colorsList
-            val catTimePieData= PieData(catTimePieDataSet)
-            timePieChart.data=catTimePieData
-            val timeLegendManager=GridLayoutManager(activity,2,GridLayoutManager.VERTICAL,false)
-            val timeEntries = timeLegend.entries
-            val timeLegendList:MutableList<PieChartLegendItem> = mutableListOf()
-            for (i in timeEntries.indices){
-                timeLegendList.add(PieChartLegendItem(timeEntries[i].formColor,timeEntries[i].label))
-            }
-            val timePieChartAdapter= PieChartLegendAdapter()
-            timePieChartAdapter.submitList(timeLegendList)
-            binding.timePieChartLegend.adapter=timePieChartAdapter
-            binding.timePieChartLegend.layoutManager=timeLegendManager
-            timePieChart.invalidate()
-
-            val catLaunchesPieDataSet= PieDataSet(catLaunchesPieChartEntries, "")
-            catLaunchesPieDataSet.colors=colorsList
-            val catLaunchesPieData= PieData(catLaunchesPieDataSet)
-            launchesPieChart.data=catLaunchesPieData
-            val launchesLegendManager=GridLayoutManager(activity,2,GridLayoutManager.VERTICAL,false)
-            val launchesEntries = launchesLegend.entries
-            val launchesLegendList:MutableList<PieChartLegendItem> = mutableListOf()
-            for (i in launchesEntries.indices){
-                launchesLegendList.add(PieChartLegendItem(timeEntries[i].formColor,timeEntries[i].label))
-            }
-            val launchesPieChartAdapter=PieChartLegendAdapter()
-            launchesPieChartAdapter.submitList(launchesLegendList)
-            binding.launchesPieChartLegend.adapter=launchesPieChartAdapter
-            binding.launchesPieChartLegend.layoutManager=launchesLegendManager
-            launchesPieChart.invalidate()
-        }
+        })
 
         for(key in viewModel.categoryTimes.keys){
             if(key!="TOTAL"){

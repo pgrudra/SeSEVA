@@ -49,12 +49,36 @@ class LoginFragment : Fragment(), View.OnClickListener,NoInternetDialogFragment.
     private lateinit var auth: FirebaseAuth
     private lateinit var mgoogleSignInClient: GoogleSignInClient
     private lateinit var binding: FragmentLoginBinding
+    override fun onDestroy() {
+        Log.i("LF9","destroy")
+        super.onDestroy()
+    }
 
+    override fun onDetach() {
+        Log.i("LF9","detach")
+        super.onDetach()
+    }
+
+    override fun onPause() {
+        Log.i("LF9","paused")
+        super.onPause()
+    }
+
+    override fun onStop() {
+        Log.i("LF9","stop")
+        super.onStop()
+    }
+
+    override fun onResume() {
+        Log.i("LF9","resume")
+        super.onResume()
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.i("LF9","vewCreate")
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -118,9 +142,9 @@ class LoginFragment : Fragment(), View.OnClickListener,NoInternetDialogFragment.
                 (R.string.shared_pref).toString(),
                 Context.MODE_PRIVATE
             )
-        val repeatEmail =
-            sharedPref?.getString((R.string.email_address).toString(), "") ?: ""
-
+        Log.i("LF5","$sharedPref")
+        val repeatEmail = sharedPref?.getString((R.string.email_address).toString(), "") ?: ""
+        Log.i("LF5","$repeatEmail")
         viewModel.putEmailAddress(repeatEmail)
     }
 
@@ -366,22 +390,27 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     val user = auth.currentUser
-                    val userId=user!!.uid
                     Log.d(TAG, "signInWithCredential:success")
                     val result = task.result
+                    val sharedPref =  activity?.getSharedPreferences(
+                        (R.string.shared_pref).toString(),
+                        Context.MODE_PRIVATE
+                    )
+                    with (sharedPref?.edit()) {
+                        this?.putString((com.example.us0.R.string.email_address).toString(),user?.email)
+                        this?.apply()
+                    }
                     if (result?.additionalUserInfo?.isNewUser!!) {
                         Log.i("MN", "kj")
                         goToHomeFragment()
                     } else {
                         Log.i("MN", "UI")
-                        val sharedPref =  activity?.getSharedPreferences(
-                            (R.string.shared_pref).toString(),
-                            Context.MODE_PRIVATE
-                        )
+
                         with(sharedPref?.edit()) {
                             this?.putBoolean((com.example.us0.R.string.load_data).toString(), true)
                             this?.apply()
                         }
+
                         goToHomeFragment()
 
                     }

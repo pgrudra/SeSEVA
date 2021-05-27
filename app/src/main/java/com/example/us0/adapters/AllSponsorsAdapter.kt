@@ -26,7 +26,7 @@ class AllSponsorsAdapter(private val onCLickListener: AllSponsorsAdapter.OnClick
     ){private val cloudImagesReference= Firebase.storage
 
         fun bind(item: SponsorCardContents){
-            val reference=cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/sponsorLogos/mission${item.sponsoredMissionNumbers[0]}SponsorLogo.png")
+            val reference=cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/sponsorLogos/sponsor${item.sponsoredMissionNumbers[0]}Logo.png")
             Glide.with(binding.sponsorLogo.context)
                 .load(reference)
                 .apply(

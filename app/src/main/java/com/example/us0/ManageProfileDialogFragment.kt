@@ -1,5 +1,6 @@
 package com.example.us0
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -7,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.manage_profile_dialog.view.*
@@ -30,9 +32,21 @@ class ManageProfileDialogFragment: DialogFragment() {
     }
     override fun onViewCreated(view: View, @Nullable savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUpTexts(view)
         setUpClickListeners(view)
+        view.edit_box.requestFocus()
+        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
+
+    private fun setUpTexts(view: View) {
+        val sharedPref = view.context.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
+        val email=sharedPref.getString((R.string.email_address).toString(),"not available")
+        val currentUsername=sharedPref.getString((R.string.user_name).toString(),"not available")
+        view.email.text=email
+        view.current_username.text=currentUsername
+    }
+
     private fun setUpClickListeners(view: View){
         view.done_button.setOnClickListener{
             val userName = view.edit_box.text.toString()

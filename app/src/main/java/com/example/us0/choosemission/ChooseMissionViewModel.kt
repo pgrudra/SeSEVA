@@ -34,7 +34,7 @@ class ChooseMissionViewModel(
     val drawer: LiveData<Boolean>
         get() = _drawer
     private val nowMinusOneDay= Calendar.getInstance().timeInMillis-24*60*60*1000
-    val activeMissions:LiveData<List<DomainActiveMission>> = Transformations.map(database.getAllActiveMissions(nowMinusOneDay,-1)){it.asActiveDomainModel()}
+    val activeMissions:LiveData<List<DomainActiveMission>> = Transformations.map(database.getAllActiveMissions(nowMinusOneDay,-1)){it -> it.asActiveDomainModel()}
     fun toDetailMission(mission:DomainActiveMission){
        _navigateToSelectedMission.value=mission
     }

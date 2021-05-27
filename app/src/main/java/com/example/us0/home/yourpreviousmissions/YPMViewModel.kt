@@ -21,7 +21,7 @@ class YPMViewModel(private val database: MissionsDatabaseDao) : ViewModel()  {
     val listDescriptionText: LiveData<String>
         get() = _listDescriptionText
     init{
-        _listDescriptionText.value="Tap on the mission card to view how much more you can contribute to it"
+        _listDescriptionText.value="Tap on a mission card to know more"
     }
 
     private val nowMinusOneDay= Calendar.getInstance().timeInMillis-24*60*60*1000
@@ -36,7 +36,7 @@ class YPMViewModel(private val database: MissionsDatabaseDao) : ViewModel()  {
     fun onAccomplishedMissionsButtonClick(){
         _accomplishedMissionsSelected.value=true
         _activeMissionsSelected.value=false
-        _listDescriptionText.value="Tap on a mission card to download it's complete report"
+        _listDescriptionText.value="Tap on a mission card  to know more"
     }
 
 

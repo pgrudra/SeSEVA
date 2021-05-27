@@ -193,7 +193,7 @@ class UsageOverviewFragment : Fragment() {
                 val launchesEntries = launchesLegend.entries
                 val launchesLegendList:MutableList<PieChartLegendItem> = mutableListOf()
                 for (i in launchesEntries.indices){
-                    launchesLegendList.add(PieChartLegendItem(timeEntries[i].formColor,timeEntries[i].label))
+                    launchesLegendList.add(PieChartLegendItem(launchesEntries[i].formColor,launchesEntries[i].label))
                 }
                 val launchesPieChartAdapter=PieChartLegendAdapter()
                 launchesPieChartAdapter.submitList(launchesLegendList)

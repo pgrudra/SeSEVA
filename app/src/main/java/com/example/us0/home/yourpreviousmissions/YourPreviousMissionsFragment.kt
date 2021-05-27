@@ -41,7 +41,7 @@ class YourPreviousMissionsFragment : Fragment() {
         val drawerLocker=(activity as DrawerLocker?)
         binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_left)
         binding.toolbar.setNavigationOnClickListener {
-            findNavController().navigate(YourPreviousMissionsFragmentDirections.actionYourPreviousMissionsFragmentToProfileFragment())
+            activity?.onBackPressed()
         }
         viewModel.accomplishedMissionsSelected.observe(viewLifecycleOwner, Observer { accomplishedSelected->
             if(accomplishedSelected){
@@ -64,10 +64,10 @@ class YourPreviousMissionsFragment : Fragment() {
             }
         })
         val activeMissionsAdapter=PlainMissionsCardAdapter(PlainMissionsCardAdapter.OnClickListener{
-                findNavController().navigate(YourPreviousMissionsFragmentDirections.actionYourPreviousMissionsFragmentToDetailMission(it,true))
+                //findNavController().navigate(YourPreviousMissionsFragmentDirections.actionYourPreviousMissionsFragmentToDetailMission(it))
             })
         val accomplishedMissionsAdapter=PlainMissionsCardAdapter(PlainMissionsCardAdapter.OnClickListener{
-            findNavController().navigate(YourPreviousMissionsFragmentDirections.actionYourPreviousMissionsFragmentToDetailMission(it,true))
+            //findNavController().navigate(YourPreviousMissionsFragmentDirections.actionYourPreviousMissionsFragmentToDetailMission(it))
         })
         viewModel.activeMissionsToDisplay.observe(viewLifecycleOwner, Observer {
             val list = it.filter { mission -> mission != currentMission }

@@ -34,15 +34,15 @@ interface MissionsDatabaseDao{
     suspend fun getDownloadedMissions(): List<Int>?
 
     @Query("SELECT COUNT(*) FROM list_of_missions WHERE contribution>:n")
-    fun getMissionsCount(n:Int):LiveData<Int>
+    fun getMissionsCount(n:Int):LiveData<Int?>
 
     @Query("SELECT COUNT(*) FROM list_of_missions WHERE deadline>:now")
-    fun getActiveMissionsCount(now:Long):LiveData<Int>
+    fun getActiveMissionsCount(now:Long):LiveData<Int?>
 
     @Query("SELECT SUM(total_money_raised) FROM list_of_missions")
-    fun getTotalMoneyRaised():LiveData<Int>
+    fun getTotalMoneyRaised():LiveData<Int?>
 
     @Query("SELECT SUM(contribution) FROM list_of_missions")
-    fun getTotalContribution():LiveData<Int>
+    fun getTotalContribution():LiveData<Int?>
 
 }

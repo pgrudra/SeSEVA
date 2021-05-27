@@ -183,7 +183,7 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
                 binding.dailyRulesButton.setBackgroundResource(R.drawable.all_corner_rounded_16dp_primary)
                 binding.weeklyRulesButton.setBackgroundResource(R.drawable.all_corner_rounded_16dp_disabled)
                 context?.let{binding.dailyRulesButton.setTextColor(ContextCompat.getColor(it,R.color.primary_text))}
-                context?.let{binding.dailyRulesButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text))}
+                context?.let{binding.weeklyRulesButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text))}
                 binding.dailyLinearLayout.visibility = View.VISIBLE
                 binding.weeklyLinearLayout.visibility = View.GONE
             }

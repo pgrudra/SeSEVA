@@ -62,9 +62,9 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     val moneyRaised: LiveData<String>
         get() = _moneyRaised
     private val nowMinusOneDay= Calendar.getInstance().timeInMillis-24*60*60*1000
-    val activeMissions=Transformations.map(database.getActiveMissionsCount(nowMinusOneDay)){it.toString()}
-    val totalMoneyRaised=Transformations.map(database.getTotalMoneyRaised()){it.toString()}
-    val totalMissions=Transformations.map(database.getMissionsCount(-1)){it.toString()}
+    val activeMissions=Transformations.map(database.getActiveMissionsCount(nowMinusOneDay)){ it?.toString() ?: "0" }
+    val totalMoneyRaised=Transformations.map(database.getTotalMoneyRaised()){it?.toString() ?: "0"}
+    val totalMissions=Transformations.map(database.getMissionsCount(-1)){it?.toString() ?: "0"}
     private val _levelName = MutableLiveData<String>()
     val levelName: LiveData<String>
         get() = _levelName
@@ -414,6 +414,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     }
 
     private fun startService() {
+        Log.i("DM5","refreshApp")
         Intent(context, TestService::class.java).also{
             it.action= Actions.START.name
             if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
@@ -587,7 +588,10 @@ val mission=database.notifyIfClosed(true)
             )
         }
         if(mode == AppOpsManager.MODE_ALLOWED) {
-
+            with(sharedPref?.edit()) {
+                this?.putBoolean((R.string.onboarding_done).toString(), true)
+                this?.apply()
+            }
             val constraintNet= Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build()

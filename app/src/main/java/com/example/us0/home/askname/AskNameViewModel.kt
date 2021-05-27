@@ -45,6 +45,7 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
 
     fun saveEverywhere(userName: String){
         if(checkInternetConnectivity(context)){
+            insertIntoSharedPref(userName)
             viewModelScope.launch {
                 Log.i("ANVM","p")
                 insertIntoCloudDatabase(userName) }
@@ -72,10 +73,9 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
             displayName = userName
         }
         user!!.updateProfile(profileUpdates)
-            .addOnCompleteListener { task ->
+            .addOnCompleteListener {/* task ->
                 if (task.isSuccessful) {
-                    insertIntoSharedPref(userName)
-                }
+                }*/
             }
     }
     private fun insertIntoSharedPref(userName: String){
@@ -93,7 +93,7 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
     fun goToNextFragmentComplete(){
         _goToNextFragment.value=false
     }
-    private fun checkUserName() {
+    /*private fun checkUserName() {
         //remove multiple providers and make this right
         user?.let {
             for (profile in it.providerData) {
@@ -109,5 +109,5 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
     }
     init{
         checkUserName()
-    }
+    }*/
 }

@@ -44,27 +44,34 @@ class ChooseMission : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         viewModel.navigateToSelectedMission.observe(viewLifecycleOwner, Observer {
             if(null!=it) {
+                Log.i("SDF45","$it")
                 findNavController().navigate(ChooseMissionDirections.actionChooseMissionFragmentToDetailMission(it))
                 viewModel.toDetailMissionComplete()
             }
         })
+        val chosenMissionNumber=sharedPref?.getInt((R.string.chosen_mission_number).toString(), 0)?:0
         val adapter=ActiveMissionsAdapter(ActiveMissionsAdapter.OnClickListener{viewModel.toDetailMission(it)})
         viewModel.activeMissions.observe(viewLifecycleOwner, Observer {
-            it?.let {
+            val list = it.filter { mission -> mission.missionNumber!= chosenMissionNumber}
+            if(list.isNotEmpty()){
                 adapter.submitList(it)
             }
         })
+        val drawerLocker=(activity as DrawerLocker?)
         viewModel.drawer.observe(viewLifecycleOwner, Observer<Boolean> { visible ->
-            if (visible &&sharedPref.getInt((R.string.chosen_mission_number).toString(), 0) !=0) {
-                binding.toolbar.setNavigationIcon(R.drawable.ic_navdrawer_icon)
-                binding.toolbar.setNavigationOnClickListener { v -> (activity as DrawerLocker?)!!.openCloseNavigationDrawer(v) }
-                (activity as DrawerLocker?)!!.setDrawerEnabled(true)
+            if (visible && chosenMissionNumber !=0) {
+                binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_left)
+                binding.toolbar.setNavigationOnClickListener {
+                    activity?.onBackPressed()
+                }
+                drawerLocker!!.setDrawerEnabled(true)
+                drawerLocker.displayBottomNavigation(true)
                 val r=activity?.resources
                 val px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36F,r?.displayMetrics)
                 binding.toolbar.titleMarginStart=0
-                Log.i("RF","$visible")
             } else {
                 (activity as DrawerLocker?)!!.setDrawerEnabled(false)
+                drawerLocker!!.displayBottomNavigation(false)
             }
         })
         binding.toolbar.title=getString(R.string.titlebar_choose_your_mission)

@@ -155,9 +155,12 @@
             android:id="@+id/action_detailMission_to_rulesFragment2"
             app:destination="@id/rulesFragment2" />
         <argument
-            android:name="showImage"
+            android:name="showDifferentMissionButton"
             app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="true" />
+        <action
+            android:id="@+id/action_detailMission_to_sponsorDetailsFragment"
+            app:destination="@id/sponsorDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/rulesFragment2"
@@ -165,7 +168,9 @@
         android:label="RulesFragment2" >
         <action
             android:id="@+id/action_rulesFragment2_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/navigation_to_sign_out"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
@@ -253,8 +258,8 @@
         android:name="com.example.us0.home.feats.FeatsFragment"
         android:label="FeatsFragment" >
         <action
-            android:id="@+id/action_featsFragment_to_detailMission"
-            app:destination="@id/detailMission" />
+            android:id="@+id/action_featsFragment_to_sponsorDetailsFragment"
+            app:destination="@id/sponsorDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/categoryUsageFragment"
@@ -317,6 +322,18 @@
         android:label="DOOAFragment" >
         <action
             android:id="@+id/action_DOOAFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/navigation_to_sign_out"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/sponsorDetailsFragment"
+        android:name="com.example.us0.choosemission.SponsorDetailsFragment"
+        android:label="SponsorDetailsFragment" >
+
+        <argument
+            android:name="sponsorNumber"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 </navigation>
