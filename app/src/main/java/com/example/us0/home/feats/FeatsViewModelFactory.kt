@@ -5,12 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.us0.choosemission.ChooseMissionViewModel
 import com.example.us0.data.missions.MissionsDatabaseDao
+import com.example.us0.data.sponsors.SponsorDatabaseDao
 
-class FeatsViewModelFactory(private val dataBaseDAO: MissionsDatabaseDao, private val application: Application): ViewModelProvider.Factory {
+class FeatsViewModelFactory(private val missionsDataBaseDAO: MissionsDatabaseDao,private val sponsorsDataBaseDAO:SponsorDatabaseDao, private val application: Application): ViewModelProvider.Factory {
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(FeatsViewModel::class.java)) {
-            return FeatsViewModel(dataBaseDAO,application) as T
+            return FeatsViewModel(missionsDataBaseDAO,sponsorsDataBaseDAO,application) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

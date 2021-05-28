@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -32,8 +34,8 @@ import kotlinx.coroutines.launch
 
 class SponsorDetailsFragment : Fragment() {
     private lateinit var binding: FragmentSponsorDetailsBinding
-    private val cloudImagesReference = Firebase.storage
-    private val cloudReference = Firebase.database.reference.child("sponsors")
+    private lateinit var viewModel: SponsorDetailsViewModel
+    private lateinit var viewModelFactory: SponsorDetailsViewModelFactory
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,115 +47,64 @@ class SponsorDetailsFragment : Fragment() {
             container,
             false
         )
-        val sponsorNumber=SponsorDetailsFragmentArgs.fromBundle(requireArguments()).sponsorNumber
+        val sponsorNumber = SponsorDetailsFragmentArgs.fromBundle(requireArguments()).sponsorNumber
         binding.lifecycleOwner = viewLifecycleOwner
         val application = requireNotNull(this.activity).application
-        val sponsorDao= AllDatabase.getInstance(application).SponsorDatabaseDao
-        val drawerLocker=(activity as DrawerLocker?)
+        val sponsorDao = AllDatabase.getInstance(application).SponsorDatabaseDao
+        val drawerLocker = (activity as DrawerLocker?)
         binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_left)
         binding.toolbar.setNavigationOnClickListener {
             activity?.onBackPressed()
         }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            val sponsor:Sponsor?=sponsorDao.doesSponsorExist(sponsorNumber)
-            if(sponsor==null){
-                Log.i("SDF3","$sponsorNumber")
-                cloudReference.child(sponsorNumber.toString())
-                    .addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            Log.i("SDF1", "${snapshot.child("sponsorName").value.toString()}")
-                            Log.i(
-                                "SDF2",
-                                "${snapshot.child("sponsoredAmount").value.toString().toInt()}"
-                            )
-                            val mSponsor = Sponsor(
-                                sponsorNumber = sponsorNumber,
-                                sponsorName = snapshot.child("sponsorName").value.toString(),
-                                sponsorDescription = snapshot.child("sponsorDescription").value.toString(),
-                                sponsorAddress = snapshot.child("sponsorAddress").value.toString(),
-                                sponsorSite = snapshot.child("sponsorSite").value.toString(),
-                                missionsSupported = snapshot.child("missionsSupported").value.toString(),
-                                sponsoredAmount = snapshot.child("sponsoredAmount").value.toString()
-                                    .toInt()
-                            )
-                            binding.sponsorName.text = mSponsor.sponsorName
-                            binding.sponsorDescription.text = mSponsor.sponsorDescription
-                            val reference =
-                                cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/sponsorLogos/sponsor${mSponsor.sponsorNumber}Logo.png")
-                            Glide.with(this@SponsorDetailsFragment)
-                                .load(reference)
-                                .apply(
-                                    RequestOptions()
-                                        .placeholder(R.drawable.ic_launcher_background)
-                                        .error(R.drawable.ic_launcher_foreground)
-                                )
-                                .into(binding.sponsorLogo)
-                            if (mSponsor.sponsorSite != null) {
-                                binding.toSponsorSite.setOnClickListener {
-                                    val i = Intent(Intent.ACTION_VIEW)
-                                    i.data = Uri.parse(mSponsor.sponsorSite)
-                                    startActivity(i)
-                                }
-                                binding.toSponsorSite.visibility = View.VISIBLE
-
-                            }
-                            mSponsor.sponsorAddress?.let { binding.address.text = it }
-                            val list = mSponsor.missionsSupported.split(",").map { it.trim() }
-                            val adapter =
-                                SponsoredMissionsAdapter(SponsoredMissionsAdapter.OnClickListener {
-                                    //download report
-                                })
-                            adapter.submitList(list)
-                            binding.list.adapter = adapter
-                            viewLifecycleOwner.lifecycleScope.launch {
-                                sponsorDao.insert(mSponsor)
-                            }
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            if (!checkInternetConnectivity(context!!)) {
-                                val dialog = NoInternetDialogFragment()
-                                val fragmentManager = childFragmentManager
-                                dialog.show(fragmentManager, "No Internet Connection")
-                            }
-                        }
-                    })
+        viewModelFactory = SponsorDetailsViewModelFactory(sponsorNumber,sponsorDao, application)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(SponsorDetailsViewModel::class.java)
+        binding.sponsorDetailsViewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+        viewModel.showEntireMissionsList.observe(viewLifecycleOwner, Observer<Boolean> { show ->
+            if (show) {
+                binding.expandOrContract.setImageResource(R.drawable.ic_collapse_vector)
+                viewModel.displayEntireList()
+            } else {
+                binding.expandOrContract.setImageResource(R.drawable.ic_expand_vector)
+                viewModel.displayShortList()
+            }
+                }
+        )
+        viewModel.expandContractVisibility.observe(viewLifecycleOwner,{visible ->
+            if(visible){
+                binding.expandOrContract.visibility=View.VISIBLE
             }
             else{
-                binding.sponsorName.text=sponsor.sponsorName
-                binding.sponsorDescription.text = sponsor.sponsorDescription
-                val reference =
-                    cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/sponsorLogos/sponsor${sponsor.sponsorNumber}Logo.png")
-                Glide.with(this@SponsorDetailsFragment)
-                    .load(reference)
-                    .apply(
-                        RequestOptions()
-                            .placeholder(R.drawable.ic_launcher_background)
-                            .error(R.drawable.ic_launcher_foreground)
-                    )
-                    .into(binding.sponsorLogo)
-                if (sponsor.sponsorSite != null) {
-                    binding.toSponsorSite.setOnClickListener {
-                        val i = Intent(Intent.ACTION_VIEW)
-                        i.data = Uri.parse(sponsor?.sponsorSite)
-                        startActivity(i)
-                    }
-                    binding.toSponsorSite.visibility = View.VISIBLE
-
-                }
-                sponsor.sponsorAddress?.let { binding.address.text=it }
-                val list=sponsor.missionsSupported.split(",").map{it.trim() }
-                Log.i("SDF8","$list")
-                val adapter=SponsoredMissionsAdapter(SponsoredMissionsAdapter.OnClickListener{
-                    //download report
-                })
-                adapter.submitList(list)
-                binding.list.adapter=adapter
+                binding.expandOrContract.visibility=View.GONE
             }
-            Log.i("SDF","5")
-
+        })
+        viewModel.showNoInternetDialog.observe(viewLifecycleOwner,{show ->
+            if(show){
+                val dialog = NoInternetDialogFragment()
+                val fragmentManager = childFragmentManager
+                dialog.show(fragmentManager, "No Internet Connection")
+            }
+        })
+        viewModel.logoReference.observe(viewLifecycleOwner,{it ->
+            Glide.with(this)
+                .load(it)
+                .apply(
+                    RequestOptions()
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .error(R.drawable.ic_launcher_foreground)
+                )
+                .into(binding.sponsorLogo)
+        })
+        binding.toSponsorSite.setOnClickListener {
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(viewModel.sponsorSite.value)
+            startActivity(i)
         }
+        viewModel.sponsorSite.observe(viewLifecycleOwner,{it ->
+            if(it!=null){
+                binding.toSponsorSite.visibility=View.VISIBLE
+            }
+        })
         drawerLocker!!.setDrawerEnabled(false)
         drawerLocker.displayBottomNavigation(false)
         return binding.root

@@ -32,8 +32,9 @@ class FeatsFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_feats, container, false)
         val application = requireNotNull(this.activity).application
-        val dataBaseDAO = AllDatabase.getInstance(application).MissionsDatabaseDao
-        viewModelFactory= FeatsViewModelFactory(dataBaseDAO, application)
+        val missionsDatabaseDAO = AllDatabase.getInstance(application).MissionsDatabaseDao
+        val sponsorsDatabaseDAO = AllDatabase.getInstance(application).SponsorDatabaseDao
+        viewModelFactory= FeatsViewModelFactory(missionsDatabaseDAO,sponsorsDatabaseDAO, application)
         viewModel=ViewModelProvider(this, viewModelFactory).get(FeatsViewModel::class.java)
         binding.featsViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -136,13 +137,13 @@ class FeatsFragment : Fragment() {
         binding.missionsList.adapter=missionsAdapter
         viewModel.navigateToSelectedSponsorPage.observe(viewLifecycleOwner, Observer {
             if (null != it) {
-                //goToSponsorPage
+                findNavController().navigate(FeatsFragmentDirections.actionFeatsFragmentToSponsorDetailsFragment(it))
                 viewModel.toSponsorPageComplete()
             }
         })
         val sponsorsAdapter= AllSponsorsAdapter(AllSponsorsAdapter.OnClickListener {
             viewModel.toSponsorPage(
-                it
+                it.sponsorNumber
             )
         })
         viewModel.sponsors.observe(viewLifecycleOwner, Observer {

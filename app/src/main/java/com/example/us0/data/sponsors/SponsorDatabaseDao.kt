@@ -10,7 +10,7 @@ interface SponsorDatabaseDao {
     suspend fun insert(sponsor: Sponsor)
 
     @Update
-    suspend fun update(sponsor: Sponsor)
+    suspend fun update(partialSponsor:PartialSponsor)
 
     @Query("SELECT * FROM list_of_sponsors WHERE sponsorNumber=:key")
     suspend fun doesSponsorExist(key:Int): Sponsor?
@@ -18,6 +18,10 @@ interface SponsorDatabaseDao {
     @Query("SELECT * FROM list_of_sponsors")
     fun getAllSponsors(): LiveData<List<Sponsor>>
 
+    @Query("SELECT sponsorNumber FROM list_of_sponsors")
+    suspend fun getDownloadedSponsors(): List<Int>?
+
     @Query("DELETE FROM list_of_sponsors")
     suspend fun clear()
 }
+

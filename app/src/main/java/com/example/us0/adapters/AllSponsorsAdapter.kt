@@ -4,6 +4,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -13,20 +14,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.us0.R
-import com.example.us0.data.SponsorCardContents
+import com.example.us0.data.sponsors.Sponsor
 import com.example.us0.databinding.AllSponsorsItemViewBinding
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
-class AllSponsorsAdapter(private val onCLickListener: AllSponsorsAdapter.OnClickListener): ListAdapter<SponsorCardContents, AllSponsorsAdapter.ViewHolder>(
-    SponsorCardContentsDiffCallback()
+class AllSponsorsAdapter(private val onCLickListener: AllSponsorsAdapter.OnClickListener): ListAdapter<Sponsor, AllSponsorsAdapter.ViewHolder>(
+    SponsorDiffCallback()
 ) {
     class ViewHolder private constructor(val binding: AllSponsorsItemViewBinding) : RecyclerView.ViewHolder(
         binding.root
     ){private val cloudImagesReference= Firebase.storage
 
-        fun bind(item: SponsorCardContents){
-            val reference=cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/sponsorLogos/sponsor${item.sponsoredMissionNumbers[0]}Logo.png")
+        fun bind(item: Sponsor){
+            val reference=cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/sponsorLogos/sponsor${item.sponsorNumber}Logo.png")
             Glide.with(binding.sponsorLogo.context)
                 .load(reference)
                 .apply(
@@ -34,16 +35,7 @@ class AllSponsorsAdapter(private val onCLickListener: AllSponsorsAdapter.OnClick
                         .placeholder(R.drawable.ic_launcher_background)
                         .error(R.drawable.ic_launcher_foreground))
                 .into(binding.sponsorLogo)
-            var sponsoredMissionsText="Sponsored Rs ${item.totalMoneySponsored} for\n"
-            for(i in item.sponsoredMissions){
-                sponsoredMissionsText+="$i\n"
-            }
-            val money_text_length=item.totalMoneySponsored.toString().length
-            val spannable= SpannableString(sponsoredMissionsText)
-            spannable.setSpan(ForegroundColorSpan(ContextCompat.getColor(binding.sponsorName.context,R.color.primary_text)),10,13+money_text_length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            spannable.setSpan(RelativeSizeSpan(1.3f),10,13+money_text_length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-            binding.sponsoredMoneyAndMissions.text=spannable
+            binding.sponsoredAmount.text= binding.sponsoredAmount.context.getString(R.string.rs,item.sponsoredAmount)
             binding.sponsorName.text=item.sponsorName
         }
 
@@ -65,21 +57,21 @@ class AllSponsorsAdapter(private val onCLickListener: AllSponsorsAdapter.OnClick
         holder.itemView.setOnClickListener { onCLickListener.onCLick(item) }
         holder.bind(item)
     }
-    class OnClickListener(val clickListener:(sponsor: SponsorCardContents)->Unit){
-        fun onCLick(sponsor: SponsorCardContents)=clickListener(sponsor)
+    class OnClickListener(val clickListener:(sponsor: Sponsor)->Unit){
+        fun onCLick(sponsor: Sponsor)=clickListener(sponsor)
     }
 }
-class SponsorCardContentsDiffCallback(): DiffUtil.ItemCallback<SponsorCardContents>() {
+class SponsorDiffCallback(): DiffUtil.ItemCallback<Sponsor>() {
     override fun areItemsTheSame(
-        oldItem: SponsorCardContents,
-        newItem: SponsorCardContents
+        oldItem: Sponsor,
+        newItem: Sponsor
     ): Boolean {
-        return oldItem.sponsorName== newItem.sponsorName
+        return oldItem.sponsorNumber== newItem.sponsorNumber
     }
 
     override fun areContentsTheSame(
-        oldItem: SponsorCardContents,
-        newItem: SponsorCardContents
+        oldItem: Sponsor,
+        newItem: Sponsor
     ): Boolean {
         return oldItem == newItem
     }

@@ -21,10 +21,26 @@ data class Sponsor(
     @ColumnInfo(name="sponsor_site")
     var sponsorSite:String?=null,
 
-    @ColumnInfo(name="missions_supported")
-    var missionsSupported:String="",
+    @ColumnInfo(name="missions_sponsored")
+    var missionsSponsored:String="",
+
+    @ColumnInfo(name="mission_amounts")
+    var missionAmounts:String="",
 
     @ColumnInfo(name="sponsored_amount")
     var sponsoredAmount:Int=0
 
+)
+@Entity
+data class PartialSponsor(
+    @PrimaryKey
+    val sponsorNumber:Int,
+    @ColumnInfo(name="missions_sponsored")
+    var missionsSponsored:String="",
+
+    @ColumnInfo(name="mission_amounts")
+    var missionAmounts:String="",
+
+    @ColumnInfo(name="sponsored_amount")
+    var sponsoredAmount:Int=0
 )
