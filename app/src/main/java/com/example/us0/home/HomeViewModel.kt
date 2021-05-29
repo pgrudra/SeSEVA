@@ -94,7 +94,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     private fun notifyAndServiceAndRefreshAppsDatabase() {
         viewModelScope.launch {
             startService()
-            notifyMissionClosedIfAny()
+            //notifyMissionClosedIfAny()
             displayThings()
             refreshAppsDatabase()
         }
@@ -559,7 +559,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
         else return false
     }
 
-    private suspend fun notifyMissionClosedIfAny() {
+    /*private suspend fun notifyMissionClosedIfAny() {
 val mission=database.notifyIfClosed(true)
         if(mission!=null){
             mission.missionCompleteNotification=false
@@ -572,7 +572,7 @@ val mission=database.notifyIfClosed(true)
 
             //checkIfServiceActive()
         }
-    }
+    }*/
     private fun checkPermission(){
         val appOps = context
             .getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager

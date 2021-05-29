@@ -100,7 +100,8 @@
     <string name="choose_this_mission">CHOOSE THIS MISSION</string>
     <string name="continue_this_mission">CONTINUE THIS MISSION</string>
     <string name="see_report">See Report</string>
-    <string name="sponsor">SPONSORED BY</string>
+    <string name="sponsor">SPONSOR</string>
+    <string name="sponsored_by_sponsor_name">sponsored by %1$s</string>
     <string name="contributors">Contributors</string>
     <string name="active">Active</string>
     <string name="amount_raised">Amount Raised</string>
@@ -108,6 +109,7 @@
     <string name="dots">%1$s…</string>
     <string name="rs">Rs %1$d</string>
     <string name="min">%1$d min</string>
+    <string name="mission_is_accomplished">%1$s is accomplished.</string>
     <string name="mission_closes_in">Mission closes in</string>
     <string name="days">days</string>
     <string name="know_more">KNOW MORE</string>

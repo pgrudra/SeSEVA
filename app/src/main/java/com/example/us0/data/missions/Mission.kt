@@ -21,8 +21,11 @@ data class Mission(
     @ColumnInfo(name="rules_number")
     var rulesNumber:Int=0,
 
-    @ColumnInfo(name="mission_complete_notification")
-    var missionCompleteNotification:Boolean=false,
+    @ColumnInfo(name="on_accomplish_data_updated")
+    var onAccomplishDataUpdated:Boolean=false,
+
+    @ColumnInfo(name="report_available")
+    var reportAvailable:Boolean=false,
 
     @ColumnInfo(name="sponsor_name")
     var sponsorName:String="",
@@ -69,7 +72,9 @@ fun List<Mission>.asActiveDomainModel(): List<DomainActiveMission> {
             totalMoneyRaised = it.totalMoneyRaised,
             category=it.missionCategory,
             contribution = it.contribution,
-            goal = it.goal
+            goal = it.goal,
+            reportAvailable = it.reportAvailable,
+            onAccomplishDataUpdated = it.onAccomplishDataUpdated
         )
     }
 }
@@ -87,7 +92,9 @@ fun Mission.asActiveDomainModel(): DomainActiveMission {
             totalMoneyRaised = totalMoneyRaised,
             category=missionCategory,
             contribution = contribution,
-            goal=goal
+            goal=goal,
+            reportAvailable = reportAvailable,
+            onAccomplishDataUpdated = onAccomplishDataUpdated
         )
 
 }
@@ -109,3 +116,18 @@ fun Mission.asClosedDomainModel():DomainClosedMission{
         )
 
 }
+
+@Entity
+data class PartialMission(
+    @PrimaryKey
+    val missionNumber:Int,
+
+    @ColumnInfo(name="mission_description")
+    val missionDescription:String,
+
+    @ColumnInfo(name="on_accomplish_data_updated")
+    val onAccomplishDataUpdated:Boolean,
+
+    @ColumnInfo(name="report_available")
+    val reportAvailable:Boolean,
+)

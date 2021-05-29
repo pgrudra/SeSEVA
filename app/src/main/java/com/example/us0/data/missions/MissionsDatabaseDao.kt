@@ -2,6 +2,7 @@ package com.example.us0.data.missions
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.us0.MissionNumberUpdateReport
 
 
 @Dao
@@ -11,6 +12,9 @@ interface MissionsDatabaseDao{
 
     @Update
     suspend fun update(mission:Mission)
+
+    @Update
+    suspend fun partialUpdate(partialMission:PartialMission)
 
     @Query("SELECT * FROM list_of_missions WHERE missionNumber=:key")
     suspend fun doesMissionExist(key:Int): Mission?
@@ -27,8 +31,10 @@ interface MissionsDatabaseDao{
     @Query("SELECT * FROM list_of_missions WHERE deadline<:now AND contribution>:contribution")
     fun getAllAccomplishedMissions(now:Long,contribution:Int): LiveData<List<Mission>>
 
-    @Query("SELECT * FROM list_of_missions WHERE mission_complete_notification=:t")
-    suspend fun notifyIfClosed(t:Boolean):Mission?
+    /*@Query("SELECT * FROM list_of_missions WHERE mission_complete_notification=:t")
+    suspend fun notifyIfClosed(t:Boolean):Mission?*/
+    @Query("SELECT missionNumber,on_accomplish_data_updated,report_available FROM list_of_missions where deadline<:now AND report_available=:key")
+    suspend fun getMissionNumbersForReport(now:Long,key:Boolean):List<MissionNumberUpdateReport>?
 
     @Query("SELECT missionNumber FROM list_of_missions")
     suspend fun getDownloadedMissions(): List<Int>?

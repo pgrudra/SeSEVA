@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.us0.data.AllDatabase
+import com.example.us0.data.missions.PartialMission
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
@@ -13,6 +14,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 
 class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParameters): CoroutineWorker(appContext, workerParams) {
     override suspend fun doWork(): Result {
@@ -22,6 +24,7 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                 val sharedPref = applicationContext.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
                 val cloudReference = Firebase.database.reference
                 val user = Firebase.auth.currentUser
+                val dao = AllDatabase.getInstance(applicationContext).MissionsDatabaseDao
                 val chosenMission=sharedPref.getInt((R.string.chosen_mission_number).toString(), 0)
                 Log.i("CDUWT","$chosenMission")
                 if(chosenMission!=0){
@@ -110,7 +113,7 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                                                     }
                                                     //update mission Contribution Database
                                                     launch (Dispatchers.IO) {
-                                                        val dao = AllDatabase.getInstance(applicationContext).MissionsDatabaseDao
+
                                                         val mC = dao.doesMissionExist(chosenMission)
                                                         if(mC!=null){
                                                             mC.contribution=missionContribution
@@ -132,12 +135,61 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
 
                     }
                 }
-                Result.success()
+                val nowMinusOneDay= Calendar.getInstance().timeInMillis-24*60*60*1000
+                val list=dao.getMissionNumbersForReport(nowMinusOneDay,false)
+                list?.forEach { i ->
+                    run {
+                        var missionDescription:String?=null
+                        if (!i.onAccomplishDataUpdated) {
+                            cloudReference.child("accomplishedMissions").child("${i.missionNumber}")
+                                .child("missionDescription")
+                                .addListenerForSingleValueEvent(object : ValueEventListener {
+                                    override fun onDataChange(snapshot: DataSnapshot) {
+                                        missionDescription = snapshot.value.toString()
+                                    }
+
+                                    override fun onCancelled(error: DatabaseError) {
+                                        TODO("Not yet implemented")
+                                    }
+                                })
+                        }
+                        cloudReference.child("accomplishedMissions").child("${i.missionNumber}")
+                            .child("reportAvailable")
+                            .addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    val reportAvailable=snapshot.getValue<Boolean>()?:false
+                                    missionDescription?.let {
+                                        launch(Dispatchers.IO) {
+                                            dao.partialUpdate(PartialMission(i.missionNumber, missionDescription!!,true,reportAvailable))
+                                        }
+                                        }
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    TODO("Not yet implemented")
+                                }
+                            })
+                    }
+                }
+                //call accomplished missions with reportAvailable=false
+                //{if(!onAccomplishDataUpdated)
+                //{update mission}
+                //check if reportAvailable
+                // update(mission)}
+                try{
+
+                    Result.success()
+                }catch (e: Exception){
+                    Result.failure()
+                }
+
             } catch (e: Exception) {
 
                 Log.i("CDUWT","failed")
                 Result.failure()
             }
+
+
         }
     }
 }

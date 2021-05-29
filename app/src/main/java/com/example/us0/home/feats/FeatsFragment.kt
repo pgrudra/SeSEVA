@@ -77,7 +77,7 @@ class FeatsFragment : Fragment() {
             sponsorsButton.setBackgroundResource(R.drawable.login_resend_inactive)
             missionList.visibility=View.VISIBLE
             sponsorsList.visibility=View.GONE
-            binding.listDescriptionText.text="List of missions hosted on SeSeva"
+            binding.listDescriptionText.visibility=View.GONE
             binding.activeMissionLegendConstraintLayout.visibility=View.VISIBLE
             context?.let{missionsButton.setTextColor(
                 ContextCompat.getColor(
@@ -97,7 +97,7 @@ class FeatsFragment : Fragment() {
             sponsorsButton.setBackgroundResource(R.drawable.login_resend_active)
             missionList.visibility=View.GONE
             sponsorsList.visibility=View.VISIBLE
-            binding.listDescriptionText.text="List of companies that have fulfilled their pledges towards missions hosted on SeSeva"
+            binding.listDescriptionText.visibility=View.VISIBLE
             binding.activeMissionLegendConstraintLayout.visibility=View.GONE
             context?.let{missionsButton.setTextColor(
                 ContextCompat.getColor(
@@ -118,8 +118,10 @@ class FeatsFragment : Fragment() {
                 val nowMinusOneDay = Calendar.getInstance().timeInMillis - 24 * 60 * 60 * 1000
                 if (it.deadline < nowMinusOneDay) {
                     //accomplished
+                    findNavController().navigate(FeatsFragmentDirections.actionFeatsFragmentToAccomplishedMissionDetails(it))
                 } else {
                     //active
+                    findNavController().navigate(FeatsFragmentDirections.actionFeatsFragmentToDetailMission(it))
                 }
                 viewModel.toDetailMissionComplete()
             }

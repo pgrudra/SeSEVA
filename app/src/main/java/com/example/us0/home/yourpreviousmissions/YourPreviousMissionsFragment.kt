@@ -1,7 +1,6 @@
 package com.example.us0.home.yourpreviousmissions
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.us0.R
-import com.example.us0.adapters.PlainMissionsCardAdapter
+import com.example.us0.adapters.AccomplishedMissionsAdapter
+import com.example.us0.adapters.ActiveMissions2Adapter
 import com.example.us0.data.AllDatabase
 import com.example.us0.data.missions.DomainActiveMission
 import com.example.us0.databinding.FragmentYourPreviousMissionsBinding
@@ -63,11 +63,12 @@ class YourPreviousMissionsFragment : Fragment() {
                 context?.let{binding.accomplishedMissionsButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text))}
             }
         })
-        val activeMissionsAdapter=PlainMissionsCardAdapter(PlainMissionsCardAdapter.OnClickListener{
-                //findNavController().navigate(YourPreviousMissionsFragmentDirections.actionYourPreviousMissionsFragmentToDetailMission(it))
+        val activeMissionsAdapter=ActiveMissions2Adapter(ActiveMissions2Adapter.OnClickListener{
+                findNavController().navigate(YourPreviousMissionsFragmentDirections.actionYourPreviousMissionsFragmentToDetailMission(it))
             })
-        val accomplishedMissionsAdapter=PlainMissionsCardAdapter(PlainMissionsCardAdapter.OnClickListener{
-            //findNavController().navigate(YourPreviousMissionsFragmentDirections.actionYourPreviousMissionsFragmentToDetailMission(it))
+        val accomplishedMissionsAdapter=AccomplishedMissionsAdapter(AccomplishedMissionsAdapter.OnClickListener{
+            //add argument
+            findNavController().navigate(YourPreviousMissionsFragmentDirections.actionYourPreviousMissionsFragmentToAccomplishedMissionDetails(it))
         })
         viewModel.activeMissionsToDisplay.observe(viewLifecycleOwner, Observer {
             val list = it.filter { mission -> mission != currentMission }

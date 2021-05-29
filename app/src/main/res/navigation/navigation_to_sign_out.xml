@@ -96,12 +96,15 @@
             app:destination="@id/passageFragment" />
     </fragment>
     <fragment
-        android:id="@+id/closedMissionsFragment"
-        android:name="com.example.us0.home.closedmissions.ClosedMissionsFragment"
+        android:id="@+id/accomplishedMissionDetails"
+        android:name="com.example.us0.home.closedmissions.AccomplishedMissionDetails"
         android:label="ClosedMissionsFragment" >
+        <argument
+            android:name="selectedMission"
+            app:argType="com.example.us0.data.missions.DomainActiveMission" />
         <action
-            android:id="@+id/action_closedMissionsFragment_to_detailClosedMissionFragment"
-            app:destination="@id/detailClosedMissionFragment" />
+            android:id="@+id/action_accomplishedMissionDetails_to_sponsorDetailsFragment"
+            app:destination="@id/sponsorDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/lastMissionFragment"
@@ -182,9 +185,6 @@
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_homeFragment_to_closedMissionsFragment"
-            app:destination="@id/closedMissionsFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_detailClosedMissionFragment"
             app:destination="@id/detailClosedMissionFragment" />
         <action
@@ -260,6 +260,12 @@
         <action
             android:id="@+id/action_featsFragment_to_sponsorDetailsFragment"
             app:destination="@id/sponsorDetailsFragment" />
+        <action
+            android:id="@+id/action_featsFragment_to_detailMission"
+            app:destination="@id/detailMission" />
+        <action
+            android:id="@+id/action_featsFragment_to_accomplishedMissionDetails"
+            app:destination="@id/accomplishedMissionDetails" />
     </fragment>
     <fragment
         android:id="@+id/categoryUsageFragment"
@@ -315,6 +321,9 @@
         <action
             android:id="@+id/action_yourPreviousMissionsFragment_to_detailMission"
             app:destination="@id/detailMission" />
+        <action
+            android:id="@+id/action_yourPreviousMissionsFragment_to_accomplishedMissionDetails"
+            app:destination="@id/accomplishedMissionDetails" />
     </fragment>
     <fragment
         android:id="@+id/DOOAFragment"

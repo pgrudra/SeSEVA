@@ -62,20 +62,56 @@
             app:layout_constraintEnd_toStartOf="@+id/active_missions_button"
             app:layout_constraintTop_toTopOf="@id/active_missions_button" />
 
-        <TextView
-            android:id="@+id/list_description_text"
-            style="@style/tertiary_text"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/legends_c_l"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@{YPMViewModel.listDescriptionText}"
-            android:textColor="@color/disabled_text"
             app:layout_constraintTop_toBottomOf="@id/active_missions_button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            tools:text="Tap on the mission card to view how much more you can contribute to it"/>
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/legend_1"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                app:srcCompat="@drawable/ic_report_available"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+            <TextView
+                android:id="@+id/legend_1_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/legend_1"
+                android:text="Report available"
+                android:textColor="@color/disabled_text"
+                android:fontFamily="@font/montserrat_used"
+                android:textSize="10sp"
+                android:layout_marginStart="4dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/legend_2"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginStart="16dp"
+                app:srcCompat="@drawable/ic_report_in_progress"
+                app:layout_constraintStart_toEndOf="@id/legend_1_text"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/legend_2"
+                android:text="Report in progress"
+                android:textColor="@color/disabled_text"
+                android:fontFamily="@font/montserrat_used"
+                android:textSize="10sp"
+                android:layout_marginStart="4dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/active_missions_list"
             android:layout_width="match_parent"
@@ -90,25 +126,25 @@
             android:id="@+id/accomplished_missions_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="32dp"
             android:scrollbars="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/list_description_text" />
+            app:layout_constraintTop_toBottomOf="@+id/legends_c_l" />
 
         <TextView
             android:id="@+id/noCardsText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
             android:visibility="gone"
             android:text="No Missions to display"
             android:textColor="@color/primary_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/list_description_text"
+            app:layout_constraintTop_toBottomOf="@id/legends_c_l"
             tools:text="No Missions to display" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -10,7 +10,7 @@
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="208dp"
+        android:layout_height="228dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="12dp"
@@ -32,7 +32,7 @@
         <ImageView
             android:id="@+id/mission_image"
             android:layout_width="160dp"
-            android:layout_height="80dp"
+            android:layout_height="100dp"
             android:layout_marginTop="8dp"
             android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="@id/mission_category"
@@ -72,7 +72,7 @@
             style="@style/caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:textColor="@color/colorPrimary"
             app:layout_constraintStart_toStartOf="@+id/mission_category"
             app:layout_constraintTop_toBottomOf="@id/mission_image"
@@ -83,17 +83,17 @@
             style="@style/tertiary_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
             android:textColor="@color/disabled_text"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/mission_category"
+            app:layout_constraintTop_toBottomOf="@+id/mission_name"
             tools:text="Sponsored by Abcd Pvt. Ltd" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/rupee_symbol_1"
             android:layout_width="wrap_content"
             android:layout_height="16dp"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="32dp"
             app:layout_constraintBottom_toBottomOf="@+id/contribution"
             app:layout_constraintStart_toEndOf="@id/mission_image"
             app:layout_constraintTop_toTopOf="@+id/contribution"
@@ -102,11 +102,11 @@
         <TextView
             android:id="@+id/contribution"
             style="@style/caption"
-            android:textColor="@color/primary_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="6dp"
             android:layout_marginTop="16dp"
+            android:textColor="@color/primary_text"
             app:layout_constraintStart_toEndOf="@id/rupee_symbol_1"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="1000" />
@@ -116,32 +116,29 @@
             style="@style/caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
             android:text="You raised"
             android:textColor="@color/secondary_text"
-            app:layout_constraintStart_toEndOf="@id/rupee_symbol_1"
+            app:layout_constraintStart_toStartOf="@+id/contribution"
             app:layout_constraintTop_toBottomOf="@id/contribution" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/rupee_symbol_2"
             android:layout_width="wrap_content"
-            android:layout_height="16dp"
-            android:layout_marginStart="24dp"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/total_money_raised"
-            app:layout_constraintStart_toEndOf="@id/mission_image"
             app:layout_constraintTop_toTopOf="@+id/total_money_raised"
+            app:layout_constraintStart_toStartOf="@id/rupee_symbol_1"
             app:srcCompat="@drawable/rupee_symbol" />
 
         <TextView
             android:id="@+id/total_money_raised"
             style="@style/caption"
-            android:textColor="@color/primary_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toEndOf="@id/rupee_symbol_2"
-            app:layout_constraintTop_toBottomOf="@id/you_raised_text"
+            android:layout_marginTop="22dp"
+            android:textColor="@color/primary_text"
+            app:layout_constraintStart_toStartOf="@+id/contribution"
+            app:layout_constraintTop_toBottomOf="@+id/potential_contribution_text"
             tools:text="10000" />
 
         <TextView
@@ -149,42 +146,40 @@
             style="@style/caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
             android:text="Total raised"
             android:textColor="@color/secondary_text"
-            app:layout_constraintStart_toEndOf="@id/rupee_symbol_2"
+            app:layout_constraintStart_toStartOf="@+id/contribution"
             app:layout_constraintTop_toBottomOf="@id/total_money_raised" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/contributors_symbol"
+            android:id="@+id/rupee_symbol_3"
             android:layout_width="wrap_content"
             android:layout_height="16dp"
-            android:layout_marginStart="24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/contributors"
-            app:layout_constraintStart_toEndOf="@id/mission_image"
-            app:layout_constraintTop_toTopOf="@+id/contributors"
-            app:srcCompat="@drawable/users_symbol" />
+            app:layout_constraintBottom_toBottomOf="@+id/potential_contribution"
+            app:layout_constraintStart_toStartOf="@id/rupee_symbol_1"
+            app:layout_constraintTop_toTopOf="@+id/potential_contribution"
+            app:srcCompat="@drawable/rupee_symbol" />
 
         <TextView
-            android:id="@+id/contributors"
+            android:id="@+id/potential_contribution"
             style="@style/caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="22dp"
             android:textColor="@color/primary_text"
-            app:layout_constraintStart_toStartOf="@+id/total_money_raised"
-            app:layout_constraintTop_toBottomOf="@id/total_raised_text"
+            app:layout_constraintStart_toStartOf="@+id/contribution"
+            app:layout_constraintTop_toBottomOf="@+id/you_raised_text"
             tools:text="760" />
 
         <TextView
-            android:id="@+id/contributors_text"
+            android:id="@+id/potential_contribution_text"
             style="@style/caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Contributors"
+            android:text="potential to raise"
             android:textColor="@color/secondary_text"
-            app:layout_constraintStart_toStartOf="@+id/total_raised_text"
-            app:layout_constraintTop_toBottomOf="@id/contributors" />
+            app:layout_constraintStart_toStartOf="@+id/contribution"
+            app:layout_constraintTop_toBottomOf="@id/potential_contribution" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

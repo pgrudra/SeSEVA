@@ -7,6 +7,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
 import androidx.room.ColumnInfo
+import androidx.room.PrimaryKey
 import com.github.mikephil.charting.charts.BarLineChartBase
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.android.material.snackbar.Snackbar
@@ -108,6 +109,12 @@ data class TimeLaunchesDate(
     @ColumnInfo(name="time_spent") val time: Int?,
     @ColumnInfo(name="app_launches") val launches: Int?,
     @ColumnInfo(name="date") val date: Long?
+)
+
+data class MissionNumberUpdateReport(
+    @PrimaryKey val missionNumber: Int,
+    @ColumnInfo(name="on_accomplish_data_updated") val onAccomplishDataUpdated: Boolean,
+    @ColumnInfo(name="report_available") val reportAvailable: Long?
 )
 
 fun getDay(i: Int): String {
