@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.us0.R
@@ -74,6 +75,9 @@ class AccomplishedMissionDetails : Fragment() {
         binding.accomplishedOn.text=mission.deadlineAsDateShort
         binding.contribution.text=getString(R.string.rs,mission.contribution)
         binding.sponsorName.text=mission.sponsorName
+        binding.toSponsor.setOnClickListener {
+            findNavController().navigate(AccomplishedMissionDetailsDirections.actionAccomplishedMissionDetailsToSponsorDetailsFragment(mission.sponsorNumber))
+        }
         val reference = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/sponsorLogos/sponsor${mission.sponsorNumber}Logo.png")
         Glide.with(this)
             .load(reference)

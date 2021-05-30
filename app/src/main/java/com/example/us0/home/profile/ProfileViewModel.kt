@@ -71,6 +71,9 @@ class ProfileViewModel(
     private val _category = MutableLiveData<String>()
     val category: LiveData<String>
         get() = _category
+    private val _sponsorNumber = MutableLiveData<Int>()
+    val sponsorNumber: LiveData<Int>
+        get() = _sponsorNumber
     //private val _missionDescription=MutableLiveData<String>()
     var missionDescription=""
     private lateinit var currentMission: Mission
@@ -102,9 +105,6 @@ class ProfileViewModel(
     fun toYourPreviousMissionsComplete(){
         _goToYourPreviousMissions.value=false
     }
-    fun knowMoreAboutSponsor(){
-
-    }
 
     fun getCurrentMission(): DomainActiveMission {
         return currentMission.asActiveDomainModel()
@@ -122,9 +122,10 @@ class ProfileViewModel(
         viewModelScope.launch {
             currentMission= dataBaseDAO.doesMissionExist(currentMissionNumber)!!
             _currentMissionNumber.value=currentMission.missionNumber
+            _sponsorNumber.value=currentMission.sponsorNumber
             _currentMissionName.value=currentMission.missionName
             missionDescription=currentMission.missionDescription
-            if(missionDescription.length<150){
+            if(missionDescription.length<151){
                 _currentMissionDescription.value=missionDescription
             }
             else{
@@ -138,7 +139,6 @@ class ProfileViewModel(
                 _currentMissionDescription.value=k
             }
             _currentMissionSponsorName.value=currentMission.sponsorName
-            _currentMissionSponsorDescription.value=currentMission.sponsorDescription
             _goal.value=currentMission.goal
             _amountRaised.value=currentMission.totalMoneyRaised.toString()
             _contributors.value=currentMission.usersActive.toString()

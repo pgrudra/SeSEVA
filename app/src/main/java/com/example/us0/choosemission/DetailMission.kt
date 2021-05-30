@@ -121,7 +121,6 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
             .into(binding.sponsorLogo)
         viewModel.goToSponsorScreen.observe(viewLifecycleOwner, Observer<Boolean> { go ->
             if (go) {
-                Log.i("SDF56","${mission.sponsorNumber}")
                 findNavController().navigate(DetailMissionDirections.actionDetailMissionToSponsorDetailsFragment(mission.sponsorNumber))
                 viewModel.toSponsorScreenComplete()
             }

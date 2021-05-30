@@ -305,6 +305,9 @@
         <action
             android:id="@+id/action_profileFragment_to_yourPreviousMissionsFragment"
             app:destination="@id/yourPreviousMissionsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_sponsorDetailsFragment"
+            app:destination="@id/sponsorDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/yourPreviousMissionsFragment"

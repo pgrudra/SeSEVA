@@ -15,8 +15,6 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.us0.R
-import com.example.us0.adapters.SponsoredMissionsAdapter
-import com.example.us0.checkInternetConnectivity
 import com.example.us0.data.AllDatabase
 import com.example.us0.data.sponsors.Sponsor
 import com.example.us0.databinding.FragmentSponsorDetailsBinding

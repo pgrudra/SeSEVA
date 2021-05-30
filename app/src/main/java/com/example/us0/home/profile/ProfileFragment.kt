@@ -42,6 +42,11 @@ class ProfileFragment : Fragment() {
         val drawerLoker=(activity as DrawerLocker?)
         binding.toolbar.setNavigationIcon(R.drawable.ic_navdrawer_icon)
         binding.toolbar.setNavigationOnClickListener { v -> (activity as DrawerLocker?)!!.openCloseNavigationDrawer(v) }
+        binding.toSponsor.setOnClickListener {
+                viewModel.sponsorNumber.value?.let{
+                    findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToSponsorDetailsFragment(it))
+                }
+        }
         drawerLoker!!.setDrawerEnabled(true)
         drawerLoker.displayBottomNavigation(true)
         viewModel.currentMissionNumber.observe(viewLifecycleOwner, Observer {
