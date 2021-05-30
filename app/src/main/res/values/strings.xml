@@ -1,13 +1,157 @@
 <resources>
-    <string name="app_name">US0</string>
+    <string name="app_name">SeSeva</string>
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
+
+    <string name="shared_pref">com.example.us0.SHARED_PREF</string>
+    <string name="email_link">com.example.us0.EMAIL_LINK</string>
+    <string name="email_address">com.example.us0.EMAIL_ADDRESS</string>
+    <string name="user_name">com.example.us0.USER_NAME</string>
+    <string name="load_data">com.example.us0.LOAD_DATA</string>
+    <string name="missions_updated_today">com.example.us0.MISSIONS_UPDATED_TODAY</string>
+    <string name="chosen_mission_number">com.example.us0.CHOSEN_MISSION_NUMBER</string>
+    <string name="rules_shown">com.example.us0.RULES_SHOWN</string>
+    <string name="saved_rules_number">com.example.us0.SAVED_RULES_NUMBER</string>
+    <string name="service_state">com.example.us0.SERVICE_STATE</string>
+    <string name="days_after_installation">com.example.us0.DAYS_AFTER_INSTALLATION</string>
+    <string name="entertainment_time">com.example.us0.ENTERTAINMENT_TIME</string>
+    <string name="entertainment_launches">com.example.us0.ENTERTAINMENT_LAUNCHES</string>
+    <string name="money_to_be_updated">com.example.us0.MONEY_TO_BE_UPDATED</string>
+    <string name="daily_reward">com.example.us0.DAILY_REWARD</string>
+    <string name="weekly_reward">com.example.us0.WEEKLY_REWARD</string>
+    <string name="update_contributions_cloud">com.example.us0.UPDATE_CONTRI_CLOUD</string>
+    <string name="rules_number">com.example.us0.RULES_NUMBER</string>
+    <string name="social_max_time">com.example.us0.SOCIAL_MAX_TIME</string>
+    <string name="social_max_launches">com.example.us0.SOCIAL_MAX_LAUNCHES</string>
+    <string name="social_penalty">com.example.us0.SOCIAL_PENALTY</string>
+    <string name="communication_max_time">com.example.us0.COMMUNICATION_MAX_TIME</string>
+    <string name="communication_max_launches">com.example.us0.COMMUNICATION_MAX_LAUNCHES</string>
+    <string name="communication_penalty">com.example.us0.COMMUNICATION_PENALTY</string>
+    <string name="games_max_time">com.example.us0.GAMES_MAX_TIME</string>
+    <string name="games_max_launches">com.example.us0.GAMES_MAX_LAUNCHES</string>
+    <string name="games_penalty">com.example.us0.GAMES_PENALTY</string>
+    <string name="video_max_time">com.example.us0.VIDEO_MAX_TIME</string>
+    <string name="video_max_launches">com.example.us0.VIDEO_MAX_LAUNCHES</string>
+    <string name="video_penalty">com.example.us0.VIDEO_PENALTY</string>
+    <string name="msnbs_max_time">com.example.us0.MSNBS_MAX_TIME</string>
+    <string name="msnbs_max_launches">com.example.us0.MSNBS_MAX_LAUNCHES</string>
+    <string name="msnbs_penalty">com.example.us0.MSNBS_PENALTY</string>
+    <string name="entertainment_max_time">com.example.us0.ENTERTAINMENT_MAX_TIME</string>
+    <string name="entertainment_max_launches">com.example.us0.ENTERTAINMENT_MAX_LAUNCHES</string>
+    <string name="entertainment_penalty">com.example.us0.ENTERTAINMENT_PENALTY</string>
+    <string name="others_max_time">com.example.us0.OTHERS_MAX_TIME</string>
+    <string name="others_max_launches">com.example.us0.OTHERS_MAX_LAUNCHES</string>
+    <string name="others_penalty">com.example.us0.OTHERS_PENALTY</string>
+    <string name="user_level">com.example.us0.USER_LEVEL</string>
+    <string name="onboarding_done">com.example.us0.ONBOARDING_DONE</string>
+
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome!"</string>
+    <string name="welcome_back">Welcome back</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="title_activity_list_installed_apps_and_sign_out">ListInstalledAppsAndSignOut</string>
 
+    <string name="foreground_service_notification_channel_id" translatable="false">foreground_channel</string>
+    <string name="foreground_service_notification_channel_name" translatable="true">Foreground</string>
+    <string name="notification_title">UnSlave</string>
+
+    <string name="usage_alert_notification_channel_id" translatable="false">usage_alert_channel</string>
+    <string name="usage_alert_notification_channel_name" translatable="false">UsageAlert</string>
+    <string name="usage_alert_title">Title</string>
+    <string name="usage_alert_notification_channel_description">ChannelDescription</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+    <string name="sign_out">Sign Out</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="go_to_sign_out">Go To Sign Out</string>
+
+    <string name="installed_apps_list"><![CDATA[<h3>APPS INSTALLED ON YOUR DEVICE</h3>]]></string>
+    <string name="installed_app_name"><![CDATA[<b>App Name:</b>]]></string>
+    <string name="installed_app_package_name"><![CDATA[<b>Package Name:</b>]]></string>
+    <string name="go_to_foreground_service_fragment">Go To Foreground Service Fragment</string>
+    <string name="start_service">Start Service</string>
+    <string name="stop_service">stop Service</string>
+    <string name="proceed">Proceed</string>
+    <string name="grant_permission">Grant Permission</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="done">Done</string>
+
+    <string name="hi_there_i_">Hi there,\nI am Spandy</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="by_signing">By signing up you are agreeing to the \nTerms of Use and Privacy Policy</string>
+    <string name="or">OR</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="invalid_address_message">Please enter a valid email address &amp; try again!</string>
+    <string name="no_internet_message">Make sure that Wi-Fi or your mobile data is turned on, and then try again.</string>
+    <string name="no_internet_title">No Internet Connection</string>
+    <string name="ok">OK</string>
+    <string name="link_verification_title">Verify your Email</string>
+    <string name="link_verification_message">Check your email and click the link to \nactivate your account</string>
+    <string name="choose_a_different_mission">CHOOSE A DIFFERENT MISSION</string>
+    <string name="choose_new_mission">CHOOSE NEW MISSION</string>
+    <string name="choose_this_mission">CHOOSE THIS MISSION</string>
+    <string name="continue_this_mission">CONTINUE THIS MISSION</string>
+    <string name="see_report">See Report</string>
+    <string name="sponsor">SPONSOR</string>
+    <string name="sponsored_by_sponsor_name">sponsored by %1$s</string>
+    <string name="contributors">Contributors</string>
+    <string name="active">Active</string>
+    <string name="amount_raised">Amount Raised</string>
+    <string name="titlebar_choose_your_mission">Choose your mission</string>
+    <string name="dots">%1$s…</string>
+    <string name="rs">Rs %1$d</string>
+    <string name="min">%1$d min</string>
+    <string name="mission_is_accomplished">%1$s is accomplished.</string>
+    <string name="mission_closes_in">Mission closes in</string>
+    <string name="days">days</string>
+    <string name="know_more">KNOW MORE</string>
+    <string name="continue_text">CONTINUE</string>
+    <string name="you_are_on">You are on</string>
+    <string name="you_raised">You raised</string>
+    <string name="great_work">Great work!!</string>
+    <string name="this_mission_has">This mission has</string>
+    <string name="sponsored_by">Sponsored by</string>
+    <string name="hurrah">Hurrah !!</string>
+    <string name="total_amount_raised">Total amount raised</string>
+    <string name="view_report">VIEW REPORT</string>
+    <string name="let_s_choose_a_new_mission">LET\'S CHOOSE A NEW MISSION</string>
+    <string name="allow">ALLOW</string>
+    <string name="data_collection_and_usage_disclosure">Data collection and usage disclosure</string>
+    <string name="grant_usage_access">Grant usage access</string>
+    <string name="usage_access">Usage access</string>
+    <string name="reason_usage_access">SeSEVA requires this permission to provide you your apps\' usage statistics and detect when you are about to break a SeSEVA rule</string>
+    <string name="reason_d_o_o_a">SeSEVA requires this permission to diaplay a blocking screen that will warn you when you are about to break a SeSEVA Rule</string>
+    <string name="disclosure_brief">We value your privacy. Information regarding your apps\' usage statistics will only be stored on your local device. Only the amount raised by you for Optox Missions will be collected at our cloud servers.</string>
+    <string name="help">help</string>
+    <string name="i_understand_the_rules">I UNDERSTAND THE RULES</string>
+    <string name="no_limit_no_penalty">No limit… No penalty !!</string>
+    <string name="categoriy_social">Weather, Travel, Sports, Productivity, Photography, Pdde, Parenting, Medical, Navigation, Health, Finance</string>
+    <string name="category_refresh">categoryRefresh</string>
+    <string name="loading">Loading</string>
+    <string name="faqs">FAQs</string>
+    <string name="charity_details_title">Charity details</string>
+    <string name="home">Home</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+    <string name="help_report_bug">Help/Report Bug</string>
+    <string name="charity">Charity</string>
+    <string name="rules">Rules</string>
+    <string name="usage">Usage</string>
+    <string name="feats">Feats</string>
+    <string name="today_s_statistics">Today\'s statistics</string>
+    <string name="meaningOfThisWeeK">since last sunday, the day to started using SeSeva</string>
+    <string name="profile">Profile</string>
+    <string name="permissions">Permissions</string>
+    <string name="display_over_other_apps">Display over other apps</string>
+    <string name="switch_to_this_mission">SWITCH TO THIS MISSION</string>
+    <string name="sponsored_mission_name">%1$d. %2$s</string>
+    <string name="address_contact_number"><![CDATA[Address & Contact number]]></string>
 </resources>

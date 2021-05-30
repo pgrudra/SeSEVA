@@ -9,5 +9,17 @@
         android:id="@+id/loginFragment"
         android:name="com.example.us0.ui.login.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_linkVerificationFragment"
+            app:destination="@id/linkVerificationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/linkVerificationFragment"
+        android:name="com.example.us0.ui.login.LinkVerificationFragment"
+        android:label="LinkVerificationFragment" >
+        <action
+            android:id="@+id/action_linkVerificationFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 </navigation>

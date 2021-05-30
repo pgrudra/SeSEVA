@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<data>
+    <variable
+        name="LoginViewModel"
+        type="com.example.us0.ui.login.LoginViewModel" />
+</data>
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_background"
+    tools:context=".ui.login.LinkVerificationFragment">
+
+    <TextView
+        android:id="@+id/headline"
+        style="@style/subtitle_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:gravity="center_vertical"
+        android:text="@string/link_verification_title"
+        android:textColor="@color/primary_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/message"
+        style="@style/subtitle_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="@string/link_verification_message"
+        android:textAlignment="center"
+        android:textColor="@color/secondary_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headline" />
+
+    <Button
+        android:id="@+id/change_email"
+        style="@style/button"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="56dp"
+        android:text="CHANGE EMAIL"
+        android:textColor="@color/colorPrimary"
+        android:background="@drawable/login_change_email"
+        android:onClick="@{()->LoginViewModel.changeEmail()}"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/resend"
+        style="@style/button"
+        android:textColor="@color/disabled_text"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/login_resend_inactive"
+        android:enabled="false"
+        android:onClick="@{()->LoginViewModel.resend()}"
+        android:text="RESEND"
+        app:layout_constraintBottom_toTopOf="@+id/change_email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="RESEND" />
+
+    <TextView
+        android:id="@+id/timer_text"
+        style="@style/caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:text="@{LoginViewModel.currentTimeString}"
+        android:textColor="@color/secondary_text"
+        android:gravity="right|center_vertical"
+        app:layout_constraintBottom_toTopOf="@+id/resend"
+        app:layout_constraintStart_toStartOf="@+id/resend"
+        tools:text="0:00"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

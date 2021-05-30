@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/homeFragment"
+        android:title="@string/home"
+        />
+    <item
+        android:id="@+id/inviteFriends"
+        android:title="Invite Friends"
+        />
+    <item
+        android:id="@+id/settingsFragment"
+        android:title="@string/settings"/>
+    <item
+        android:id="@+id/rateUs"
+        android:title="Rate Us"
+        />
+
+    <item
+        android:id="@+id/reportBugFragment"
+        android:title="@string/help_report_bug"/>
+    <item
+        android:id="@+id/FAQFragment"
+        android:title="@string/faqs" />
+    <item
+        android:id="@+id/aboutFragment"
+        android:title="@string/about"/>
+
+
+</menu>

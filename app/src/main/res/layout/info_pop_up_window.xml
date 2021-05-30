@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="232dp"
+    android:layout_height="wrap_content"
+        android:background="@drawable/ic_info_popup_background"
+    android:paddingTop="32dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="16dp"
+        android:elevation="15dp">
+<TextView
+    android:id="@+id/categories"
+    style="@style/tertiary_text"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:textColor="@color/secondary_text"
+    tools:text="Weather, Travel, Sports, Productivity, Photography, Pdde, Parenting, Medical, Navigation, Health, Finance"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

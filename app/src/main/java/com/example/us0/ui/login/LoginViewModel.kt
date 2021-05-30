@@ -1,54 +1,109 @@
 package com.example.us0.ui.login
 
-import android.util.Patterns
+import android.content.Context
+import android.os.CountDownTimer
+import android.text.format.DateUtils
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.us0.R
-import com.example.us0.data.LoginRepository
-import com.example.us0.data.Result
 
-class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 
-    private val _loginForm = MutableLiveData<LoginFormState>()
-    val loginFormState: LiveData<LoginFormState> = _loginForm
+class LoginViewModel() : ViewModel() {
+    private val timer: CountDownTimer
+    companion object {
 
-    private val _loginResult = MutableLiveData<LoginResult>()
-    val loginResult: LiveData<LoginResult> = _loginResult
+        // Time when the game is over
+        private const val DONE = 0L
 
-    fun login(username: String, password: String) {
-        // can be launched in a separate asynchronous job
-        val result = loginRepository.login(username, password)
+        // Countdown time interval
+        private const val ONE_SECOND = 1000L
 
-        if (result is Result.Success) {
-            _loginResult.value =
-                LoginResult(success = LoggedInUserView(displayName = result.data.displayName))
-        } else {
-            _loginResult.value = LoginResult(error = R.string.login_failed)
+        // Total time for the game
+        private const val COUNTDOWN_TIME = 30000L
+
+    }
+    private val _backToLoginScreen= MutableLiveData<Boolean>()
+    val backToLoginScreen: LiveData<Boolean>
+        get() = _backToLoginScreen
+
+    private val _enableResendButton= MutableLiveData<Boolean>()
+    val enableResendButton: LiveData<Boolean>
+        get() = _enableResendButton
+
+    private val _resendEmail= MutableLiveData<Boolean>()
+    val resendEmail: LiveData<Boolean>
+        get() = _resendEmail
+
+    private val _emailAddress =MutableLiveData<String?>()
+    val emailAddress: LiveData<String?>
+        get()=_emailAddress
+
+    private val _currentTime = MutableLiveData<Long>()
+    val currentTime: LiveData<Long>
+        get() = _currentTime
+    val currentTimeString = Transformations.map(currentTime) { time ->
+       if(time.toInt()!=0) {"Didn't get an email? You can resend in ${time}s"}
+        else ""
+    }
+
+    fun changeEmail(){
+    _backToLoginScreen.value=true
+}
+    fun backToLoginScreenComplete(){
+        _backToLoginScreen.value=false
+    }
+
+    fun resend(){
+        Log.i("io","kl")
+        _resendEmail.value=true
+        _backToLoginScreen.value=true
+    }
+fun resendComplete(){
+    _resendEmail.value=false
+    _backToLoginScreen.value=false
+}
+    fun putEmailAddress(email:String){
+        if(email==""){
+            _emailAddress.value=null
+        }
+        else{
+            _emailAddress.value=email
         }
     }
+    fun onTimeUp(){
+        _enableResendButton.value=true
+    }
+    fun disableResendButton(){
+        _enableResendButton.value=false
 
-    fun loginDataChanged(username: String, password: String) {
-        if (!isUserNameValid(username)) {
-            _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
-        } else if (!isPasswordValid(password)) {
-            _loginForm.value = LoginFormState(passwordError = R.string.invalid_password)
-        } else {
-            _loginForm.value = LoginFormState(isDataValid = true)
+        timer.start()
+    }
+    init {
+
+        timer = object : CountDownTimer(COUNTDOWN_TIME, ONE_SECOND) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                _currentTime.value = (millisUntilFinished/ONE_SECOND)
+                Log.i("klj","$currentTimeString")
+
+            }
+
+            override fun onFinish() {
+                _currentTime.value = DONE
+onTimeUp()
+            }
         }
+
+
     }
 
-    // A placeholder username validation check
-    private fun isUserNameValid(username: String): Boolean {
-        return if (username.contains("@")) {
-            Patterns.EMAIL_ADDRESS.matcher(username).matches()
-        } else {
-            username.isNotBlank()
-        }
+    override fun onCleared() {
+        super.onCleared()
+        // Cancel the timer
+        timer.cancel()
     }
 
-    // A placeholder password validation check
-    private fun isPasswordValid(password: String): Boolean {
-        return password.length > 5
-    }
 }

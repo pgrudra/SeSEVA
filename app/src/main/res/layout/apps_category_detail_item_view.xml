@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="appsCategory"
+            type="com.example.us0.data.appcategories.AppsCategory" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:paddingBottom="16dp"
+        android:background="@drawable/all_corner_rounded_4dp"
+        android:elevation="3dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="18dp"
+            android:src="@drawable/ic_launcher_foreground"
+            app:layout_constraintEnd_toStartOf="@+id/category_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/expand_or_contract"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:background="@null"
+            android:src="@drawable/ic_expand_vector"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/i"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@null"
+            android:src="@drawable/ic_info"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/expand_or_contract"
+            app:layout_constraintEnd_toStartOf="@+id/expand_or_contract"
+            app:layout_constraintTop_toTopOf="@+id/expand_or_contract" />
+
+        <TextView
+            android:id="@+id/category_text"
+            style="@style/subtitle_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="72dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/colorSecondary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/time_limit_text"
+            style="@style/caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Time limit: "
+            android:textColor="@color/secondary_text"
+            app:layout_constraintStart_toStartOf="@id/category_text"
+            app:layout_constraintTop_toBottomOf="@id/category_text" />
+
+
+        <TextView
+            android:id="@+id/app_launch_limit_text"
+            style="@style/caption"
+            android:textColor="@color/secondary_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="App Launch limit: "
+            app:layout_constraintStart_toStartOf="@id/category_text"
+            app:layout_constraintTop_toBottomOf="@+id/time_limit_text" />
+
+        <TextView
+            android:id="@+id/penalty_text"
+            style="@style/caption"
+            android:textColor="@color/secondary_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Penalty: "
+            app:layout_constraintStart_toStartOf="@id/category_text"
+            app:layout_constraintTop_toBottomOf="@+id/app_launch_limit_text" />
+
+        <TextView
+            android:id="@+id/penalty"
+            style="@style/subtitle_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorError"
+            app:layout_constraintBottom_toBottomOf="@id/penalty_text"
+            app:layout_constraintStart_toEndOf="@id/penalty_text"
+            app:layout_constraintTop_toTopOf="@id/penalty_text" />
+
+        <TextView
+            android:id="@+id/time_limit"
+            style="@style/subtitle_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary_text"
+            app:layout_constraintBottom_toBottomOf="@id/time_limit_text"
+            app:layout_constraintStart_toEndOf="@id/time_limit_text"
+            app:layout_constraintTop_toTopOf="@id/time_limit_text" />
+
+        <TextView
+            android:id="@+id/app_launch_limit"
+            style="@style/subtitle_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary_text"
+            app:layout_constraintBottom_toBottomOf="@id/app_launch_limit_text"
+            app:layout_constraintStart_toEndOf="@id/app_launch_limit_text"
+            app:layout_constraintTop_toTopOf="@id/app_launch_limit_text" />
+        <TextView
+            android:id="@+id/no_penalty"
+            style="@style/caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            android:text="@string/no_limit_no_penalty"
+            android:textColor="@color/primary_text"
+            app:layout_constraintStart_toStartOf="@id/category_text"
+            app:layout_constraintTop_toBottomOf="@id/category_text" />
+
+        <TextView
+            android:id="@+id/no_penalty_statement"
+            style="@style/caption"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            android:visibility="gone"
+            android:text="You can use these as per your needs"
+            android:textColor="@color/secondary_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/category_text"
+            app:layout_constraintTop_toBottomOf="@id/no_penalty" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/apps_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:elevation="3dp"
+            android:orientation="horizontal"
+            android:scrollbars="horizontal"
+            android:scrollbarStyle="outsideInset"
+            android:scrollbarThumbHorizontal="@drawable/scrollbar_thumb"
+            app:layout_constraintTop_toBottomOf="@id/penalty_text" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
