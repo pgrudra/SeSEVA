@@ -116,7 +116,7 @@ class DetailMissionViewModel(mission: DomainActiveMission, application: Applicat
     fun makeTriggerText(contribution: Int) {
         val now = Calendar.getInstance().timeInMillis
         val intDaysLeft =
-            ((_selectedMission.value!!.deadline - now + ONE_DAY) / Companion.ONE_DAY) + 1
+            ((_selectedMission.value!!.deadline - now + ONE_DAY) / Companion.ONE_DAY).toInt() + 1
         if (intDaysLeft < 10) {
             _daysLeft.value = "0$intDaysLeft"
         } else {

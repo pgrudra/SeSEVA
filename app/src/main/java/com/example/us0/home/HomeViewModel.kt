@@ -414,7 +414,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     }
 
     private fun startService() {
-        Log.i("DM5","refreshApp")
+
         Intent(context, TestService::class.java).also{
             it.action= Actions.START.name
             if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){

@@ -62,7 +62,7 @@ class ProfileFragment : Fragment() {
                     )
                     .into(binding.missionImage)
                 val reference2 =
-                    cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/sponsorLogos/mission${it}SponsorLogo.png")
+                    cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/sponsorLogos/sponsor${viewModel.sponsorNumber.value}Logo.png")
                 Glide.with(this)
                     .load(reference2)
                     .transition(DrawableTransitionOptions.withCrossFade())

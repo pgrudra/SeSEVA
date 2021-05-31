@@ -28,16 +28,17 @@ import java.util.*
 
 
 class TestService : Service() {
-    private val NOTIFICATION_ID = 1
-    private val REQUEST_CODE = 0
-    private val FLAGS = 0
-    private val ONE_MINUTE_IN_SECONDS = 60
+    private val notificationId = 1
+    private val requestCode = 0
+    private val flagS = 0
+    private val oneMinuteInSeconds = 60
     private var isServiceStarted = false
     var gS:Job?=null
-    private val pkgAndCat =
+    private lateinit var pkgAndCat:LiveData<Map<String,String>>
+    /*private val pkgAndCat =
             Transformations.map(AllDatabase.getInstance(this).AppDatabaseDao.getEntireList()) { it ->
             it?.map { it.packageName to it.appCategory }?.toMap() ?: emptyMap<String,String>()
-        }
+        }*/
     private val timeRules: HashMap<String, Int> = HashMap<String, Int>()
     private val launchRules: HashMap<String, Int> = HashMap<String, Int>()
 
@@ -46,7 +47,7 @@ class TestService : Service() {
         super.onCreate()
         val notification = createNotification()
         createUsageAlertChannel()
-        startForeground(NOTIFICATION_ID, notification)
+        startForeground(notificationId, notification)
     }
 
     private fun createUsageAlertChannel() {
@@ -56,7 +57,6 @@ class TestService : Service() {
                 getString(R.string.usage_alert_notification_channel_name),
                 NotificationManager.IMPORTANCE_HIGH
             )
-
             usageAlertNotificationChannel.enableVibration(true)
             usageAlertNotificationChannel.description =
                 getString(R.string.usage_alert_notification_channel_description)
@@ -75,7 +75,6 @@ class TestService : Service() {
                 // TODO: Step 2.4 change importance
                 NotificationManager.IMPORTANCE_DEFAULT
             )
-
             val notificationManager = getSystemService(
                 NotificationManager::class.java
             )
@@ -83,7 +82,7 @@ class TestService : Service() {
         }
         val pendingIntent: PendingIntent =
             Intent(this, HomeActivity::class.java).let { notificationIntent ->
-                PendingIntent.getActivity(this, REQUEST_CODE, notificationIntent, FLAGS)
+                PendingIntent.getActivity(this, requestCode, notificationIntent, flagS)
             }
         val notification = NotificationCompat.Builder(
             this,
@@ -106,6 +105,9 @@ class TestService : Service() {
                 else -> Timber.i("never_happens")
             }
         }
+        else{//check if allowed
+            startService()
+        }
         return START_STICKY
     }
 
@@ -119,14 +121,15 @@ class TestService : Service() {
             restartServiceIntent,
             PendingIntent.FLAG_ONE_SHOT
         )
-        applicationContext.getSystemService(Context.ALARM_SERVICE)
+        //applicationContext.getSystemService(Context.ALARM_SERVICE)
         val alarmService: AlarmManager =
             applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmService.set(
             AlarmManager.ELAPSED_REALTIME,
-            SystemClock.elapsedRealtime() + 1000,
+            Calendar.getInstance().timeInMillis + 1000,
             restartServicePendingIntent
         )
+
     }
 
     override fun onDestroy() {
@@ -141,29 +144,32 @@ class TestService : Service() {
         if (isServiceStarted) return
         isServiceStarted = true
         setServiceState(this, com.example.us0.ServiceState.STARTED)
+        pkgAndCat=Transformations.map(AllDatabase.getInstance(this).AppDatabaseDao.getEntireList()) { it ->
+            it?.map { it.packageName to it.appCategory }?.toMap() ?: emptyMap<String,String>()
+        }
         //Try CoroutineScope instead of GlobalScope
         val sharedPref = applicationContext.getSharedPreferences(
             (R.string.shared_pref).toString(),
             Context.MODE_PRIVATE
         )
         timeRules["SOCIAL"] =
-            sharedPref.getInt((R.string.social_max_time).toString(), 0) * ONE_MINUTE_IN_SECONDS
+            sharedPref.getInt((R.string.social_max_time).toString(), 0) * oneMinuteInSeconds
         timeRules["COMMUNICATION"] = sharedPref.getInt(
             (R.string.communication_max_time).toString(),
             0
-        ) * ONE_MINUTE_IN_SECONDS
+        ) * oneMinuteInSeconds
         timeRules["GAMES"] =
-            sharedPref.getInt((R.string.games_max_time).toString(), 0) * ONE_MINUTE_IN_SECONDS
+            sharedPref.getInt((R.string.games_max_time).toString(), 0) * oneMinuteInSeconds
         timeRules["ENTERTAINMENT"] = sharedPref.getInt(
             (R.string.entertainment_max_time).toString(),
             0
-        ) * ONE_MINUTE_IN_SECONDS
+        ) * oneMinuteInSeconds
         timeRules["OTHERS"] =
-            sharedPref.getInt((R.string.others_max_time).toString(), 0) * ONE_MINUTE_IN_SECONDS
+            sharedPref.getInt((R.string.others_max_time).toString(), 0) * oneMinuteInSeconds
         timeRules["MSNBS"] =
-            sharedPref.getInt((R.string.msnbs_max_time).toString(), 0) * ONE_MINUTE_IN_SECONDS
+            sharedPref.getInt((R.string.msnbs_max_time).toString(), 0) * oneMinuteInSeconds
         timeRules["VIDEO"] =
-            sharedPref.getInt((R.string.video_max_time).toString(), 0) * ONE_MINUTE_IN_SECONDS
+            sharedPref.getInt((R.string.video_max_time).toString(), 0) * oneMinuteInSeconds
         launchRules["SOCIAL"] = sharedPref.getInt((R.string.social_max_launches).toString(), 0)
         launchRules["COMMUNICATION"] =
             sharedPref.getInt((R.string.communication_max_launches).toString(), 0)
@@ -173,14 +179,14 @@ class TestService : Service() {
         launchRules["OTHERS"] = sharedPref.getInt((R.string.others_max_launches).toString(), 0)
         launchRules["MSNBS"] = sharedPref.getInt((R.string.msnbs_max_launches).toString(), 0)
         launchRules["VIDEO"] = sharedPref.getInt((R.string.video_max_launches).toString(), 0)
+
         pkgAndCat.observeForever {
 
                 if(gS?.isActive == true){
                     gS?.cancel()
                 }
-
             gS=GlobalScope.launch(Dispatchers.IO) {
-                val main = Intent(Intent.ACTION_MAIN, null)
+               /* val main = Intent(Intent.ACTION_MAIN, null)
                 main.addCategory(Intent.CATEGORY_LAUNCHER)
                 val pm = requireNotNull(applicationContext.packageManager)
                 val launchables = pm.queryIntentActivities(main, 0)
@@ -192,22 +198,17 @@ class TestService : Service() {
                     } catch (e: Exception) {
                     }
                 }
+                val appPackageList = appPackageListR.distinct()*/
                 val sortedEvents = mutableMapOf<String, MutableList<UsageEvents.Event>>()
-                val appPackageList = appPackageListR.distinct()
-                for (l in appPackageList) {
+                for (l in it.keys) {
                     sortedEvents[l] = mutableListOf()
                 }
-
                 while (isServiceStarted) {
                     delay(10000)
                     launch(Dispatchers.IO) {
                         getStats(applicationContext, sortedEvents)
                     }
-
-
-                    Log.i("TSC", "POPO")
                 }
-
             }
         }
     }
@@ -229,16 +230,14 @@ class TestService : Service() {
         sortedEvents: Map<String, MutableList<UsageEvents.Event>>,
     ) {
 
-        sortedEvents.forEach { (packageName, events) -> events.clear() }
+        sortedEvents.forEach { (_, events) -> events.clear() }
         val usm = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         val now = Calendar.getInstance()
-        Log.i("JK", Timestamp(now.timeInMillis).toString())
         val begin: Calendar = Calendar.getInstance()
         begin.set(Calendar.HOUR_OF_DAY, 0)
         begin.set(Calendar.MINUTE, 0)
         begin.set(Calendar.SECOND, 0)
         begin.set(Calendar.MILLISECOND, 0)
-        Log.i("JK", Timestamp(begin.timeInMillis).toString())
 
         val systemEvents: UsageEvents = usm.queryEvents(
             begin.timeInMillis,
@@ -296,11 +295,6 @@ class TestService : Service() {
                         }
                         if (it.eventType == UsageEvents.Event.ACTIVITY_RESUMED || it.eventType == UsageEvents.Event.ACTIVITY_PAUSED) {
 
-                            Log.i(
-                                "DWN",
-                                it.eventType.toString() + " " + Timestamp(it.timeStamp)
-                            )
-
                         }
                         if (startTime == 0L && endTime != 0L) {
                             startTime = begin.timeInMillis
@@ -316,7 +310,6 @@ class TestService : Service() {
                     if (startTime != 0L && endTime == 0L) {
                         totalTime += now.timeInMillis - startTime
                     }
-                    Log.i("DWN", "${totalTime / 60000}")
                     catTime += totalTime
                     catLaunches += launches
                 }
@@ -325,7 +318,6 @@ class TestService : Service() {
             val maxLaunches = launchRules[cat] ?: -1
             val catTimeInSeconds = (catTime / 1000).toInt()
 
-            Log.i("MXT", "$catLaunches")
             if (maxTime > 0) {
                 if (catTimeInSeconds >= maxTime || catLaunches > maxLaunches) {
                     /*if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
@@ -362,14 +354,11 @@ class TestService : Service() {
                             }
                             blockingScreenView.text.text = "sdfgd"
                             if (blockingScreenParams != null) {
-                                Log.i("TS87", "qqw")
                                 wm.addView(blockingScreenView, blockingScreenParams)
-                                Log.i("TS87", "dvfsd")
                             }
                         }
                     }
                 } else {
-                    Log.i("TS", "sww")
                     if (catTimeInSeconds >= maxTime - 25 && catTimeInSeconds < maxTime - 13) {
 
                         val notificationManager = ContextCompat.getSystemService(

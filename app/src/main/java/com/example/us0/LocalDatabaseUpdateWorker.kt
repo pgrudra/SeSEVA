@@ -54,8 +54,6 @@ class LocalDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                 twelveOne.set(Calendar.HOUR_OF_DAY, 0)
                 twelveOne.set(Calendar.MINUTE, minute)
                 twelveOne.add(Calendar.DATE, 1)
-                Log.i("LDUWT", Timestamp(twelveOne.timeInMillis).toString())
-                Log.i("LDUWT", Timestamp(currentTime.timeInMillis).toString())
                 val timeDiff = twelveOne.timeInMillis - currentTime.timeInMillis
                 val updateStatsLocalRequest= OneTimeWorkRequestBuilder<LocalDatabaseUpdateWorker>()
                     .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
@@ -92,8 +90,6 @@ class LocalDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
         begin.set(Calendar.SECOND, 0)
         begin.set(Calendar.MILLISECOND, 0)
         begin.add(Calendar.DATE,-1)
-        Log.i("LDUWT", "beginTime="+Timestamp(begin.timeInMillis).toString())
-        Log.i("LDUWT", "EndTime= "+Timestamp(end.timeInMillis).toString())
         val systemEvents: UsageEvents = usm.queryEvents(
             begin.timeInMillis,
             end.timeInMillis
