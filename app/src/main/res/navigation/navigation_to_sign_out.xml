@@ -208,9 +208,9 @@
     </fragment>
     <fragment
         android:id="@+id/detailClosedMissionFragment"
-        android:name="com.example.us0.home.closedmissions.DetailClosedMissionFragment"
+        android:name="com.example.us0.home.closedmissions.MissionAccomplishedDialog"
         android:label="fragment_deatil_closed_mission"
-        tools:layout="@layout/fragment_deatil_closed_mission">
+        tools:layout="@layout/mission_accomplished_dialog">
         <argument
             android:name="selectedMission"
             app:argType="com.example.us0.data.missions.DomainClosedMission"/>

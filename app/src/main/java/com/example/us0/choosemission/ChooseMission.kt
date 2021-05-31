@@ -52,9 +52,12 @@ class ChooseMission : Fragment() {
         val chosenMissionNumber=sharedPref?.getInt((R.string.chosen_mission_number).toString(), 0)?:0
         val adapter=ActiveMissionsAdapter(ActiveMissionsAdapter.OnClickListener{viewModel.toDetailMission(it)})
         viewModel.activeMissions.observe(viewLifecycleOwner, Observer {
+            Log.i("CM","a$it")
             val list = it.filter { mission -> mission.missionNumber!= chosenMissionNumber}
             if(list.isNotEmpty()){
-                adapter.submitList(it)
+                Log.i("CM","b$list")
+                Log.i("CM","$chosenMissionNumber")
+                adapter.submitList(list)
             }
         })
         val drawerLocker=(activity as DrawerLocker?)

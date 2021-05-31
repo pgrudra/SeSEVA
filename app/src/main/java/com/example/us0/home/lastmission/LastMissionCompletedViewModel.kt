@@ -31,7 +31,9 @@ class LastMissionCompletedViewModel(private val database: MissionsDatabaseDao, a
     private val sharedPref = context.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
     private val userId = Firebase.auth.currentUser?.uid
     private val cloudReference = Firebase.database.reference
-
+    private val _enableButton = MutableLiveData<Boolean>()
+    val enableButton: LiveData<Boolean>
+        get() = _enableButton
     private val _goToHome = MutableLiveData<Boolean>()
     val goToHome: LiveData<Boolean>
         get() = _goToHome
@@ -116,6 +118,7 @@ init {
                     Log.i("nji", "loadPost:onCancelled", databaseError.toException())
                 }
             })
+        _enableButton.value=true
     }
 
     fun onGoToHomeComplete() {

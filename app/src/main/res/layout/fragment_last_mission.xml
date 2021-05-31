@@ -13,7 +13,6 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:background="@color/common_background">
-
         <Button
             android:id="@+id/choose_this_mission"
             style="@style/button"
@@ -38,6 +37,7 @@
             android:onClick="@{()->LastMissionViewModel.chooseOtherMission()}"
             android:text="@string/choose_a_different_mission"
             android:textColor="@color/colorPrimary"
+            android:enabled="false"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:layout_editor_absoluteX="16dp" />
 
@@ -139,7 +139,7 @@
             android:id="@+id/appCompatImageView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
+            android:layout_marginStart="40dp"
             app:layout_constraintBottom_toBottomOf="@+id/textView16"
             app:layout_constraintStart_toEndOf="@+id/textView15"
             app:layout_constraintTop_toTopOf="@+id/textView16"
@@ -169,11 +169,11 @@
             style="@style/subtitle_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="6dp"
             android:layout_marginTop="8dp"
             android:text="@{LastMissionViewModel.totalMoneyRaised}"
             android:textColor="@color/primary_text"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/appCompatImageView7"
             app:layout_constraintTop_toBottomOf="@+id/this_mission_has"
             tools:text="10000" />
 
@@ -190,14 +190,14 @@
         <TextView
             android:id="@+id/textView16"
             style="@style/subtitle_1"
-            android:textColor="@color/primary_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="68dp"
+            android:layout_marginStart="6dp"
             android:text="@{LastMissionViewModel.contributors}"
-            app:layout_constraintStart_toEndOf="@+id/textView15"
+            android:textColor="@color/primary_text"
+            app:layout_constraintStart_toEndOf="@+id/appCompatImageView6"
             app:layout_constraintTop_toTopOf="@+id/textView14"
-            tools:text="150"/>
+            tools:text="150" />
 
         <TextView
             android:id="@+id/textView17"
@@ -250,5 +250,28 @@
             app:layout_constraintTop_toTopOf="@+id/textView"
             tools:text="Sponsor name" />
 
+        <View
+            android:id="@+id/skrim"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/skrim" />
+        <View
+            android:id="@+id/skrim_dark"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/nav_color" />
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="#03DAC5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

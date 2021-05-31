@@ -94,7 +94,7 @@
             android:id="@+id/textView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="6dp"
             android:layout_marginTop="24dp"
             android:fontFamily="@font/montserrat_used"
             android:text="@{LastMissionCompletedViewModel.totalMoneyRaised}"
@@ -160,8 +160,25 @@
             android:onClick="@{()->LastMissionCompletedViewModel.onGoToHome()}"
             android:text="@string/let_s_choose_a_new_mission"
             android:textColor="@color/nav_color"
+            android:enabled="false"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:layout_editor_absoluteX="16dp" />
+        <View
+            android:id="@+id/skrim"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/skrim" />
 
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="#03DAC5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

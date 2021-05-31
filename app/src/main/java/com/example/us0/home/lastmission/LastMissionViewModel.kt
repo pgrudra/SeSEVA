@@ -41,7 +41,9 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
     private val _viContribution = MutableLiveData<Int>()
     val viContribution: LiveData<Int>
         get() = _viContribution
-
+    private val _enableDifferentMissionButton= MutableLiveData<Boolean>()
+    val enableDifferentMissionButton: LiveData<Boolean>
+        get() = _enableDifferentMissionButton
     private val _enableChooseThisMissionButton= MutableLiveData<Boolean>()
     val enableChooseThisMissionButton: LiveData<Boolean>
         get() = _enableChooseThisMissionButton
@@ -54,6 +56,9 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
     private val _goToRules = MutableLiveData<Boolean>()
     val goToRules: LiveData<Boolean>
         get() = _goToRules
+    private val _showProgress = MutableLiveData<Boolean>()
+    val showProgress: LiveData<Boolean>
+        get() = _showProgress
     private val _goToLastMissionCompleted = MutableLiveData<Int>()
     val goToLastMissionCompleted: LiveData<Int>
         get() = _goToLastMissionCompleted
@@ -135,11 +140,8 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                                     if (deadlineInMillis < now) {
                                         _goToLastMissionCompleted.value = lastMissionNumber
                                     }
-                                    else{
-
-                                            Log.i("LMVM","1")
+                                    else{_enableDifferentMissionButton.value=true
                                             viewModelScope.launch {
-                                                Log.i("LMVM","2")
                                                 val missionToBeSaved = Mission()
                                                 missionToBeSaved.missionNumber= lastMissionNumber as Int
                                                 missionToBeSaved.deadline=deadlineLong
@@ -152,7 +154,6 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                                                         val m = dataSnapshot.getValue<Int>()
                                                         if (m != null) {
                                                             missionToBeSaved.contribution=m
-                                                            Log.i("LMVM","contri=${missionToBeSaved.contribution}")
                                                             when {
                                                                 m < 50 -> {
                                                                     _personalContribution.value = "Rs $m"
@@ -345,6 +346,7 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
     }
 
     fun chooseThisMission(){
+        _showProgress.value=true
             with (sharedPref.edit()) {
                 lastMissionNumber?.let {
                     this?.putInt((R.string.chosen_mission_number).toString(),

@@ -136,10 +136,10 @@
             style="@style/subtitle_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="34dp"
+            android:layout_marginStart="6dp"
             android:textColor="@color/primary_text"
             app:layout_constraintBottom_toTopOf="@+id/amountRaised"
-            app:layout_constraintStart_toStartOf="@+id/appCompatImageView2"
+            app:layout_constraintStart_toEndOf="@+id/appCompatImageView7"
             tools:text="100000000" />
 
         <TextView

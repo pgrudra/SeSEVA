@@ -151,6 +151,12 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
                 showNoInternetConnectionDialog()
             }
         })
+        viewModel.progressVisibility.observe(viewLifecycleOwner, Observer<Boolean> { visible ->
+            if (visible) {
+                binding.progressBar1.visibility=View.VISIBLE
+                binding.skrim.visibility=View.VISIBLE
+            }
+        })
         return binding.root
     }
 

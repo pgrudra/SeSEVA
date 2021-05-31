@@ -73,7 +73,7 @@ class YourPreviousMissionsFragment : Fragment() {
         viewModel.activeMissionsToDisplay.observe(viewLifecycleOwner, Observer {
             val list = it.filter { mission -> mission != currentMission }
             if (list.isNotEmpty()) {
-                activeMissionsAdapter.submitList(it)
+                activeMissionsAdapter.submitList(list)
                 binding.activeMissionsList.visibility=View.VISIBLE
                 binding.noCardsText.visibility = View.GONE
             } else {
@@ -84,7 +84,7 @@ class YourPreviousMissionsFragment : Fragment() {
         viewModel.accomplishedMissionsToDisplay.observe(viewLifecycleOwner, Observer {
             val list = it.filter { mission -> mission != currentMission }
             if (list.isNotEmpty()) {
-                accomplishedMissionsAdapter.submitList(it)
+                accomplishedMissionsAdapter.submitList(list)
                 binding.accomplishedMissionsList.visibility=View.VISIBLE
                 binding.noCardsText.visibility = View.GONE
             } else {

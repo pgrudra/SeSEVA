@@ -16,8 +16,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.us0.R
 import com.example.us0.data.AllDatabase
 import com.example.us0.databinding.FragmentHomeBinding
+import com.example.us0.home.closedmissions.MissionAccomplishedDialog
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(),MissionAccomplishedDialog.MissionAccomplishedDialogListener {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var viewModel: HomeViewModel
@@ -44,19 +45,25 @@ class HomeFragment : Fragment() {
         binding.homeViewModel=viewModel
         //context?.let { binding.usageStatistics.paint.shader=LinearGradient(0,0,0,20,ContextCompat.getColor(it,R.color.t1),null,Shader.TileMode.CLAMP) }
         (activity as DrawerLocker?)!!.displayBottomNavigation(false)
-        viewModel.notifyClosedMission.observe(viewLifecycleOwner, Observer {
-            if(null!=it){
-                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailClosedMissionFragment(it))
-                viewModel.notifyClosedMissionComplete()
-            }
-        })
+
         viewModel.goToPermissionScreen.observe(viewLifecycleOwner,Observer<Boolean>{goto->
             if(goto){
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPermissionFragment())
                 viewModel.onGoToPermissionScreenComplete()
             }
         })
-
+        viewModel.accomplishedMissionYouRaised.observe(viewLifecycleOwner,Observer<Int>{contribution->
+            if(contribution!=null){
+                val totalRaised=viewModel.accomplishedMissionTotalRaised.value?:0
+                val dialog= MissionAccomplishedDialog()
+                val args=Bundle()
+                args.putInt("you_raised",contribution)
+                args.putInt("total_raised",totalRaised)
+                dialog.arguments=args
+                val fraManager=childFragmentManager
+                dialog.show(fraManager, "accomplished_mission_dialog ")
+            }
+        })
         viewModel.goToMissionsScreen.observe(viewLifecycleOwner, Observer {go->
             if(go) {
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToFeatsFragment())
@@ -87,6 +94,10 @@ class HomeFragment : Fragment() {
         binding.toolbar.setNavigationOnClickListener { v-> (activity as HomeActivity).openCloseNavigationDrawer(v)}
         //binding.toolbar.na
         return binding.root
+    }
+
+    override fun chooseNewMission() {
+        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToChooseMissionFragment())
     }
 
 }

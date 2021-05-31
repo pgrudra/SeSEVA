@@ -1,6 +1,7 @@
 package com.example.us0.home.lastmission
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -32,6 +33,8 @@ class LastMissionFragment : Fragment() {
         viewModel = ViewModelProvider(this, viewModelFactory).get(LastMissionViewModel::class.java)
         binding.lastMissionViewModel=viewModel
         binding.lifecycleOwner=viewLifecycleOwner
+        binding.progressBar1.visibility=View.VISIBLE
+        binding.skrim.visibility=View.VISIBLE
         (activity as DrawerLocker?)!!.displayBottomNavigation(false)
 viewModel.goToHome.observe(viewLifecycleOwner, Observer<Boolean> { goto->
     if(goto){
@@ -39,8 +42,16 @@ viewModel.goToHome.observe(viewLifecycleOwner, Observer<Boolean> { goto->
         viewModel.goToHomeComplete()
     }
 })
+        viewModel.showProgress.observe(viewLifecycleOwner, Observer<Boolean> { show->
+            if(show){
+                binding.skrim.visibility=View.VISIBLE
+                binding.progressBar1.visibility=View.VISIBLE
+            }
+        })
         viewModel.goToChooseMission.observe(viewLifecycleOwner, Observer<Boolean> { goto->
             if(goto){
+                binding.skrim.visibility=View.VISIBLE
+                binding.progressBar1.visibility=View.VISIBLE
                 findNavController().navigate(LastMissionFragmentDirections.actionLastMissionFragmentToChooseMissionFragment())
                 viewModel.chooseOtherMissionComplete()
             }
@@ -48,14 +59,23 @@ viewModel.goToHome.observe(viewLifecycleOwner, Observer<Boolean> { goto->
         viewModel.enableChooseThisMissionButton.observe(viewLifecycleOwner, Observer<Boolean> { enable->
             if(enable){
                 binding.chooseThisMission.isEnabled=true
+                binding.progressBar1.visibility=View.GONE
+                binding.skrim.visibility=View.GONE
             }
         })
-        viewModel.goToRules.observe(viewLifecycleOwner, Observer<Boolean> { goto->
+        viewModel.enableDifferentMissionButton.observe(viewLifecycleOwner, Observer<Boolean> { enable->
+            binding.chooseADifferentMission.isEnabled = enable
+            binding.skrimDark.visibility=View.GONE
+        })
+        /*viewModel.goToRules.observe(viewLifecycleOwner, Observer<Boolean> { goto->
             if(goto){
+                binding.skrim.visibility=View.VISIBLE
+                binding.progressBar1.visibility=View.VISIBLE
+                Log.i("LMF","fkg")
                 findNavController().navigate(LastMissionFragmentDirections.actionLastMissionFragmentToRulesFragment2())
                 viewModel.goToRulesComplete()
             }
-        })
+        })*/
         viewModel.goToLastMissionCompleted.observe(viewLifecycleOwner, Observer<Int> { number->
                 findNavController().navigate(LastMissionFragmentDirections.actionLastMissionFragmentToLastMissionCompletedFragment(number))
         })

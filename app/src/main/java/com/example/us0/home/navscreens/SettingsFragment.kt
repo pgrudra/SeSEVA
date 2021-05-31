@@ -285,7 +285,8 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
     }
 
     private fun setLoadingSymbol() {
-
+        binding.progressBar1.visibility=View.VISIBLE
+        binding.skrim.visibility=View.VISIBLE
     }
     private fun onDeleteAccountComplete(uid: String) {
         //remove sharedPref

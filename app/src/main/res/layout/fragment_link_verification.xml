@@ -88,5 +88,23 @@
         app:layout_constraintBottom_toTopOf="@+id/resend"
         app:layout_constraintStart_toStartOf="@+id/resend"
         tools:text="0:00"/>
+    <View
+        android:id="@+id/skrim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/skrim"
+        android:visibility="gone" />
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="#03DAC5"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

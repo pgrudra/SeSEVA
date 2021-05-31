@@ -147,10 +147,10 @@
                         style="@style/subtitle_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="6dp"
                         android:layout_marginTop="24dp"
                         android:textColor="@color/primary_text"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/appCompatImageView7"
                         app:layout_constraintTop_toBottomOf="@+id/goal"
                         tools:text="10000000" />
 
@@ -212,7 +212,7 @@
                         style="@style/body_2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="35dp"
+                        android:layout_marginTop="24dp"
                         android:background="@drawable/all_corner_rounded_4dp"
                         android:elevation="15dp"
                         android:gravity="center"
@@ -221,7 +221,7 @@
                         android:paddingBottom="15dp"
                         android:text="@{selectedMissionViewModel.trigger2}"
                         android:textColor="@color/colorPrimary"
-                        app:layout_constraintTop_toBottomOf="@+id/textView2"
+                        app:layout_constraintTop_toBottomOf="@+id/textView4"
                         tools:layout_editor_absoluteX="16dp"
                         tools:text="Your chance to add Rs %1$d more\nbefore mission closes!!" />
 
@@ -340,7 +340,23 @@
             app:titleTextColor="@color/primary_text"
             app:layout_constraintTop_toTopOf="parent">
         </androidx.appcompat.widget.Toolbar>
-
-
+        <View
+            android:id="@+id/skrim"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/skrim"
+            android:visibility="gone" />
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="#03DAC5"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

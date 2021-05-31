@@ -92,10 +92,10 @@
         <TextView
             android:id="@+id/you_raised"
             style="@style/caption"
-            android:textColor="@color/primary_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="6dp"
+            android:textColor="@color/primary_text"
             app:layout_constraintStart_toEndOf="@id/rupee_symbol"
             app:layout_constraintTop_toTopOf="@id/mission_image"
             tools:text="10000" />
@@ -124,7 +124,7 @@
             style="@style/caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="16dp"
             android:textColor="@color/primary_text"
             app:layout_constraintStart_toStartOf="@+id/you_raised"
             app:layout_constraintTop_toBottomOf="@id/you_raised_text"
@@ -137,7 +137,7 @@
             android:layout_height="wrap_content"
             android:text="Total raised"
             android:textColor="@color/secondary_text"
-            app:layout_constraintStart_toStartOf="@+id/you_raised_text"
+            app:layout_constraintStart_toStartOf="@+id/you_raised"
             app:layout_constraintTop_toBottomOf="@id/total_raised" />
 
         <androidx.appcompat.widget.AppCompatImageView
