@@ -41,6 +41,13 @@ class LastMissionCompletedFragment : Fragment() {
                 viewModel.onGoToHomeComplete()
             }
         })
+        viewModel.enableButton.observe(viewLifecycleOwner, Observer<Boolean> { enable->
+            if(enable){
+                binding.progressBar1.visibility=View.GONE
+                binding.skrim.visibility=View.GONE
+                binding.button4.isEnabled=true
+            }
+        })
         return binding.root
     }
 

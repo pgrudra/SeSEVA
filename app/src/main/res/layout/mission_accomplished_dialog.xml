@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:paddingBottom="4dp"
+    android:layout_height="wrap_content"
+    android:background="#383838">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/congratulations_text"
+        android:layout_marginTop="28dp"
+        style="@style/subtitle_1"
+        android:textColor="@color/colorAccent"
+        android:text="Congratulations!!"
+        android:layout_marginStart="16dp"/>
+    <TextView
+        android:id="@+id/body_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/primary_text"
+        style="@style/caption"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/congratulations_text"
+        tools:text="Your Mission name mission is accomplished."/>
+    <TextView
+        android:id="@+id/report_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/disabled_text"
+        style="@style/tertiary_text"
+        android:text="Report will be available soon"
+        app:layout_constraintTop_toBottomOf="@id/body_text"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="16dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/you_raised_constraint_layout"
+        android:layout_width="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="2dp"
+        android:paddingBottom="4dp"
+        android:background="@drawable/all_corner_rounded_4dp_common"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/total_raised_constraint_layout"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/report_text">
+
+        <TextView
+            android:id="@+id/you_raised_text"
+            style="@style/caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="You raised"
+            android:textColor="@color/disabled_text"
+            app:layout_constraintEnd_toEndOf="@+id/you_raised"
+            app:layout_constraintStart_toStartOf="@id/you_raised"
+            app:layout_constraintTop_toBottomOf="@id/you_raised" />
+
+        <TextView
+            android:id="@+id/you_raised"
+            style="@style/subtitle_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/primary_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Rs 234" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/total_raised_constraint_layout"
+        android:layout_width="0dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="16dp"
+        android:paddingBottom="4dp"
+        android:background="@drawable/all_corner_rounded_4dp_common"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/you_raised_constraint_layout"
+        app:layout_constraintTop_toBottomOf="@id/report_text">
+
+        <TextView
+            android:id="@+id/total_raised_text"
+            style="@style/caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Total raised"
+            android:textColor="@color/disabled_text"
+            app:layout_constraintEnd_toEndOf="@+id/total_raised"
+            app:layout_constraintStart_toStartOf="@id/total_raised"
+            app:layout_constraintTop_toBottomOf="@id/total_raised" />
+
+        <TextView
+            android:id="@+id/total_raised"
+            style="@style/subtitle_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/primary_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Rs 998" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/choose_mission_request_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@id/you_raised_constraint_layout"
+        android:text="Please choose a new mission to keep contributing"
+        android:gravity="center"
+        android:layout_marginTop="24dp"
+        android:textColor="@color/primary_text"
+        style="@style/subtitle_1"/>
+    <Button
+        android:id="@+id/choose_a_new_mission"
+        style="@style/button"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/login_resend_active"
+        android:text="choose a new mission"
+        android:textColor="@color/nav_color"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintTop_toBottomOf="@id/choose_mission_request_text"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

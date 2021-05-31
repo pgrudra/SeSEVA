@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.example.us0.R
 import com.example.us0.data.AllDatabase
@@ -61,13 +62,15 @@ class ProfileFragment : Fragment() {
                     )
                     .into(binding.missionImage)
                 val reference2 =
-                    cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/sponsorLogos/mission${it}SponsorLogo.png")
+                    cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/sponsorLogos/sponsor${viewModel.sponsorNumber.value}Logo.png")
                 Glide.with(this)
                     .load(reference2)
+                    .transition(DrawableTransitionOptions.withCrossFade())
                     .apply(
                         RequestOptions()
                             .placeholder(R.drawable.ic_launcher_background)
                             .error(R.drawable.ic_launcher_foreground)
+                            .fallback(R.drawable.ic_launcher_foreground)
                     )
                     .into(binding.sponsorLogo)
                 binding.previousMissionsButton.isEnabled=true

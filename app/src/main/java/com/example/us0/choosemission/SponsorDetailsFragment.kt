@@ -16,18 +16,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.us0.R
 import com.example.us0.data.AllDatabase
-import com.example.us0.data.sponsors.Sponsor
 import com.example.us0.databinding.FragmentSponsorDetailsBinding
 import com.example.us0.home.DrawerLocker
 import com.example.us0.ui.login.NoInternetDialogFragment
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
-import kotlinx.coroutines.launch
 
 
 class SponsorDetailsFragment : Fragment() {
@@ -92,6 +83,12 @@ class SponsorDetailsFragment : Fragment() {
                         .error(R.drawable.ic_launcher_foreground)
                 )
                 .into(binding.sponsorLogo)
+        })
+        viewModel.hideProgress.observe(viewLifecycleOwner,{hide ->
+            if(hide){
+                binding.progressBar1.visibility=View.GONE
+                binding.skrim.visibility=View.GONE
+            }
         })
         binding.toSponsorSite.setOnClickListener {
             val i = Intent(Intent.ACTION_VIEW)

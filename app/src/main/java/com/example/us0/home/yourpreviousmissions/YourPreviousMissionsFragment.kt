@@ -24,6 +24,8 @@ class YourPreviousMissionsFragment : Fragment() {
     private lateinit var binding: FragmentYourPreviousMissionsBinding
     private lateinit var viewModel: YPMViewModel
     private lateinit var viewModelFactory: YPMViewModelFactory
+    private var zeroAvailableCards=true
+    private var zeroAccomplishedCards=true
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,7 +50,14 @@ class YourPreviousMissionsFragment : Fragment() {
                 binding.accomplishedMissionsButton.setBackgroundResource(R.drawable.login_resend_active)
                 binding.activeMissionsButton.setBackgroundResource(R.drawable.login_resend_inactive)
                 binding.activeMissionsList.visibility=View.GONE
+                if(zeroAccomplishedCards){
+                    binding.noCardsText.visibility = View.VISIBLE
+                }
+                else{
+                    binding.noCardsText.visibility = View.GONE
+                }
                 binding.accomplishedMissionsList.visibility=View.VISIBLE
+                binding.legendsCL.visibility=View.VISIBLE
                 context?.let{binding.accomplishedMissionsButton.setTextColor(ContextCompat.getColor(it,R.color.primary_text))}
                 context?.let{binding.activeMissionsButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text))}
             }
@@ -57,8 +66,15 @@ class YourPreviousMissionsFragment : Fragment() {
             if(activeSelected){
                 binding.activeMissionsButton.setBackgroundResource(R.drawable.login_resend_active)
                 binding.accomplishedMissionsButton.setBackgroundResource(R.drawable.login_resend_inactive)
+                if(zeroAvailableCards){
+                    binding.noCardsText.visibility = View.VISIBLE
+                }
+                else{
+                    binding.noCardsText.visibility = View.GONE
+                }
                 binding.activeMissionsList.visibility=View.VISIBLE
                 binding.accomplishedMissionsList.visibility=View.GONE
+                binding.legendsCL.visibility=View.GONE
                 context?.let{binding.activeMissionsButton.setTextColor(ContextCompat.getColor(it,R.color.primary_text))}
                 context?.let{binding.accomplishedMissionsButton.setTextColor(ContextCompat.getColor(it,R.color.secondary_text))}
             }
@@ -72,24 +88,23 @@ class YourPreviousMissionsFragment : Fragment() {
         })
         viewModel.activeMissionsToDisplay.observe(viewLifecycleOwner, Observer {
             val list = it.filter { mission -> mission != currentMission }
-            if (list.isNotEmpty()) {
-                activeMissionsAdapter.submitList(it)
-                binding.activeMissionsList.visibility=View.VISIBLE
-                binding.noCardsText.visibility = View.GONE
-            } else {
-                binding.activeMissionsList.visibility=View.GONE
-                binding.noCardsText.visibility = View.VISIBLE
+            zeroAvailableCards = if (list.isNotEmpty()) {
+                activeMissionsAdapter.submitList(list)
+                false
+            } else{
+                true
             }
         })
         viewModel.accomplishedMissionsToDisplay.observe(viewLifecycleOwner, Observer {
             val list = it.filter { mission -> mission != currentMission }
             if (list.isNotEmpty()) {
-                accomplishedMissionsAdapter.submitList(it)
-                binding.accomplishedMissionsList.visibility=View.VISIBLE
+                accomplishedMissionsAdapter.submitList(list)
                 binding.noCardsText.visibility = View.GONE
+                zeroAccomplishedCards=false
             } else {
                 binding.accomplishedMissionsList.visibility=View.GONE
                 binding.noCardsText.visibility = View.VISIBLE
+                zeroAccomplishedCards=true
             }
         })
         binding.activeMissionsList.adapter=activeMissionsAdapter

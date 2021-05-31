@@ -151,8 +151,9 @@ class LoginFragment : Fragment(), View.OnClickListener,NoInternetDialogFragment.
     private fun otherEmailSignIn() {
         val emailId = binding.editTextEmailAddress.text.toString()
         if (emailId != "") {
-binding.progressBar1.visibility=View.VISIBLE
+            binding.progressBar1.visibility=View.VISIBLE
             binding.skrim.visibility=View.VISIBLE
+
             val sharedPref =
                 activity?.getSharedPreferences(
                     (R.string.shared_pref).toString(),
@@ -190,8 +191,8 @@ binding.progressBar1.visibility=View.VISIBLE
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.i("OPOP", "Email sent.")
-                    binding.progressBar1.visibility=View.GONE
-                    binding.skrim.visibility=View.GONE
+                    //binding.progressBar1.visibility=View.GONE
+                    //binding.skrim.visibility=View.GONE
                     showLinkVerificationScreen()
 
                 } else {
@@ -269,8 +270,8 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
                         val result = task.result
                         val user = auth.currentUser
                         val userId=user!!.uid
-                        binding.progressBar1.visibility=View.GONE
-                        binding.skrim.visibility=View.GONE
+                        //binding.progressBar1.visibility=View.GONE
+                        //binding.skrim.visibility=View.GONE
                         if (result?.additionalUserInfo?.isNewUser!!) {
                             Log.i("MN", "kj")
                            goToHomeFragment()
@@ -366,9 +367,7 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
                 // Google Sign In failed, update UI appropriately
                 binding.progressBar1.visibility=View.GONE
                 binding.skrim.visibility=View.GONE
-                Log.w(TAG, "Google sign in failed", e)
                 if(checkInternetConnectivity()) {
-                    Log.i("zxc", "true")
                     view?.let {
                         Snackbar.make(it, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
                     }
@@ -401,11 +400,8 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
                         this?.apply()
                     }
                     if (result?.additionalUserInfo?.isNewUser!!) {
-                        Log.i("MN", "kj")
                         goToHomeFragment()
                     } else {
-                        Log.i("MN", "UI")
-
                         with(sharedPref?.edit()) {
                             this?.putBoolean((com.example.us0.R.string.load_data).toString(), true)
                             this?.apply()
@@ -414,9 +410,8 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
                         goToHomeFragment()
 
                     }
-                    binding.progressBar1.visibility=View.GONE
-                    binding.skrim.visibility=View.GONE
-                    Log.i("sdfa", "6")
+                    //binding.progressBar1.visibility=View.GONE
+                    //binding.skrim.visibility=View.GONE
                 } else {
                     // If sign in fails, display a message to the user.
                     if(checkInternetConnectivity()) {

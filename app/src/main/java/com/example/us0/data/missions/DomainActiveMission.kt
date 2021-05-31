@@ -25,6 +25,5 @@ data class DomainActiveMission(
     val deadlineAsDate:String
         get()="Available till "+SimpleDateFormat("dd/MM/yyyy").format(deadline)
     val deadlineAsDateShort:String
-        //get()=SimpleDateFormat("dd/MM/yyyy").format(deadline)
-        get()= getDateInstance(deadline.toInt()).toString()
+        get()= SimpleDateFormat("dd/MM/yyyy").format(deadline)
 }

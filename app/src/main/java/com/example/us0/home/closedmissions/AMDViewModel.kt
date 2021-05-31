@@ -10,5 +10,10 @@ class AMDViewModel(private val database: MissionsDatabaseDao, application: Appli
     private val _showDetailMissionDescription=MutableLiveData<Boolean>()
     val showDetailMissionDescription:LiveData<Boolean>
         get()=_showDetailMissionDescription
-
+    init {
+        _showDetailMissionDescription.value = false
+    }
+    fun expandOrContract() {
+        _showDetailMissionDescription.value = _showDetailMissionDescription.value != true
+    }
 }

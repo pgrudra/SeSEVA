@@ -36,6 +36,9 @@ class SponsorDetailsViewModel(sponsorNumber:Int,sponsorDatabaseDao: SponsorDatab
     private val _expandContractVisibility= MutableLiveData<Boolean>()
     val expandContractVisibility: LiveData<Boolean>
         get()=_expandContractVisibility
+    private val _hideProgress= MutableLiveData<Boolean>()
+    val hideProgress: LiveData<Boolean>
+        get()=_hideProgress
     private val _sponsorName=MutableLiveData<String>()
     val sponsorName:LiveData<String>
         get()=_sponsorName
@@ -119,8 +122,6 @@ class SponsorDetailsViewModel(sponsorNumber:Int,sponsorDatabaseDao: SponsorDatab
                 sponsor.sponsorAddress?.let { _sponsorAddress.value = it }
                 val missionNamesList = sponsor.missionsSponsored.split(",").map { it.trim() }
                 val missionAmountsList = sponsor.missionAmounts.split(",").map { it.trim().toInt() }
-                Log.i("SDVM","a$missionAmountsList")
-                Log.i("SDVM","a$missionNamesList")
                 display(missionNamesList, missionAmountsList)
                 /*val adapter=SponsoredMissionsAdapter(SponsoredMissionsAdapter.OnClickListener{
                     //download report
@@ -151,6 +152,7 @@ class SponsorDetailsViewModel(sponsorNumber:Int,sponsorDatabaseDao: SponsorDatab
             _displayList.value=_shortList.value
             _expandContractVisibility.value=true
         }
+        _hideProgress.value=true
     }
 
     fun displayEntireList() {

@@ -116,12 +116,12 @@
             android:id="@+id/active_missions_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="24dp"
             android:scrollbars="vertical"
             android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/list_description_text" />
+            app:layout_constraintTop_toBottomOf="@+id/active_missions_button" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/accomplished_missions_list"
             android:layout_width="match_parent"
@@ -133,7 +133,7 @@
             app:layout_constraintTop_toBottomOf="@+id/legends_c_l" />
 
         <TextView
-            android:id="@+id/noCardsText"
+            android:id="@+id/no_cards_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

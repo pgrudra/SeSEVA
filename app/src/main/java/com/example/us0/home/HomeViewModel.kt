@@ -40,9 +40,6 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     private val sharedPref = context.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
     private val userId = Firebase.auth.currentUser?.uid
     private val cloudReference = Firebase.database.reference
-    private val _notifyClosedMission = MutableLiveData<DomainClosedMission?>()
-    val notifyClosedMission : LiveData<DomainClosedMission?>
-         get() = _notifyClosedMission
     private val _goToPermissionScreen = MutableLiveData<Boolean>()
     val goToPermissionScreen:LiveData<Boolean>
         get()=_goToPermissionScreen
@@ -55,6 +52,12 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     private val _goToProfile = MutableLiveData<Boolean>()
     val goToProfile: LiveData<Boolean>
         get() = _goToProfile
+    private val _accomplishedMissionYouRaised = MutableLiveData<Int>()
+    val accomplishedMissionYouRaised: LiveData<Int>
+        get() = _accomplishedMissionYouRaised
+    private val _accomplishedMissionTotalRaised = MutableLiveData<Int>()
+    val accomplishedMissionTotalRaised: LiveData<Int>
+        get() = _accomplishedMissionTotalRaised
     private val _missionName = MutableLiveData<String>()
     val missionName: LiveData<String>
         get() = _missionName
@@ -87,14 +90,11 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     init{
         checkPermission()
     }
-    fun notifyClosedMissionComplete(){
-        _notifyClosedMission.value=null
-    }
 
     private fun notifyAndServiceAndRefreshAppsDatabase() {
         viewModelScope.launch {
             startService()
-            //notifyMissionClosedIfAny()
+            notifyMissionAccomplished()
             displayThings()
             refreshAppsDatabase()
         }
@@ -414,7 +414,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     }
 
     private fun startService() {
-        Log.i("DM5","refreshApp")
+
         Intent(context, TestService::class.java).also{
             it.action= Actions.START.name
             if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
@@ -427,7 +427,6 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     }
 
     private suspend fun refreshAppsDatabase() {
-        Log.i("HVM","refreshApp")
         val main = Intent(Intent.ACTION_MAIN, null)
         main.addCategory(Intent.CATEGORY_LAUNCHER)
         val launchables = pm.queryIntentActivities(main, 0)
@@ -436,7 +435,6 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
         if(checkInternet()){
             withContext(Dispatchers.IO) {
                 val otherCategory:List<AppAndCategory>? =appDatabase.getCatApps("OTHERS")
-                Log.i("HVM","$otherCategory")
                 if(otherCategory!=null){
                     for(i in otherCategory){
                         val nameOfPackage: String =i.packageName
@@ -559,20 +557,18 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
         else return false
     }
 
-    /*private suspend fun notifyMissionClosedIfAny() {
-val mission=database.notifyIfClosed(true)
-        if(mission!=null){
-            mission.missionCompleteNotification=false
-            database.update(mission)
-            _notifyClosedMission.value= mission.asClosedDomainModel()
-
+    private suspend fun notifyMissionAccomplished() {
+        val chosenMissionNumber=sharedPref?.getInt((R.string.chosen_mission_number).toString(), 0) ?: 0
+        val chosenMission=database.doesMissionExist(chosenMissionNumber)
+        chosenMission?.let {
+            if(it.deadline<nowMinusOneDay){
+                sharedPref?.edit()?.remove((R.string.chosen_mission_number).toString())?.apply()
+                Log.i("HVM","${sharedPref?.getInt((R.string.chosen_mission_number).toString(), 0) ?: 0}")
+                _accomplishedMissionTotalRaised.value=chosenMission.totalMoneyRaised
+                _accomplishedMissionYouRaised.value=chosenMission.contribution
+            }
         }
-        else{
-
-
-            //checkIfServiceActive()
-        }
-    }*/
+    }
     private fun checkPermission(){
         val appOps = context
             .getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
@@ -609,8 +605,6 @@ val minute:Int=(0..2).random()
             twelveOne.set(Calendar.HOUR_OF_DAY,0)
             twelveOne.set(Calendar.MINUTE,minute)
             twelveOne.add(Calendar.DATE,1)
-            Log.i("LODR", Timestamp(twelveOne.timeInMillis).toString())
-            Log.i("LODP", Timestamp(currentTime.timeInMillis).toString())
             val timeDiff=twelveOne.timeInMillis-currentTime.timeInMillis
             val updateStatsLocalRequest= OneTimeWorkRequestBuilder<LocalDatabaseUpdateWorker>()
                 .setInitialDelay(timeDiff,TimeUnit.MILLISECONDS)
@@ -621,7 +615,6 @@ val minute:Int=(0..2).random()
                 .addTag("cloudDateBase")
                 .build()
             WorkManager.getInstance(context).beginUniqueWork("databaseUpdate",ExistingWorkPolicy.KEEP,updateStatsLocalRequest).then(updateStatsCloudRequest).enqueue()
-        Log.i("HVM","here")
             notifyAndServiceAndRefreshAppsDatabase()
         }
         else {

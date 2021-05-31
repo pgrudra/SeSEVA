@@ -121,8 +121,8 @@ class ProfileViewModel(
         val currentMissionNumber=sharedPref.getInt((R.string.chosen_mission_number).toString(),0)
         viewModelScope.launch {
             currentMission= dataBaseDAO.doesMissionExist(currentMissionNumber)!!
-            _currentMissionNumber.value=currentMission.missionNumber
             _sponsorNumber.value=currentMission.sponsorNumber
+            _currentMissionNumber.value=currentMission.missionNumber
             _currentMissionName.value=currentMission.missionName
             missionDescription=currentMission.missionDescription
             if(missionDescription.length<151){
@@ -145,7 +145,7 @@ class ProfileViewModel(
             _contribution.value="Rs " + currentMission.contribution.toString()
             _category.value=currentMission.missionCategory
             val now= Calendar.getInstance().timeInMillis
-            val intDaysLeft=((currentMission.deadline-now+ ONE_DAY)/ ONE_DAY)+1
+            val intDaysLeft=((currentMission.deadline-now+ ONE_DAY)/ ONE_DAY).toInt()+1
             if(intDaysLeft<10){
                 _daysLeft.value= "0$intDaysLeft"
             }

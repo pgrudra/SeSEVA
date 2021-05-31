@@ -57,6 +57,7 @@
                         android:layout_gravity="bottom|end"
                         android:background="@null"
                         android:src="@drawable/ic_expand_vector"
+                        android:onClick="@{()->AMDViewModel.expandOrContract()}"
                         app:layout_constraintEnd_toEndOf="@+id/accomplished_mission_description" />
 
                     <TextView
