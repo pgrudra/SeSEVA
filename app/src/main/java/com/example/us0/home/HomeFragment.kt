@@ -17,6 +17,9 @@ import com.example.us0.R
 import com.example.us0.data.AllDatabase
 import com.example.us0.databinding.FragmentHomeBinding
 import com.example.us0.home.closedmissions.MissionAccomplishedDialog
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 
 class HomeFragment : Fragment(),MissionAccomplishedDialog.MissionAccomplishedDialogListener {
 
@@ -70,7 +73,12 @@ class HomeFragment : Fragment(),MissionAccomplishedDialog.MissionAccomplishedDia
                 viewModel.onGoToMissionsScreenComplete()
             }
         })
+        /*viewModel.checkForUpdate.observe(viewLifecycleOwner, Observer {t->
+            if(t) {
 
+                viewModel.onGoToMissionsScreenComplete()
+            }
+        })*/
         viewModel.goToRules.observe(viewLifecycleOwner, Observer<Boolean>{ goToRules ->
             if (goToRules) {
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToRulesFragment2())

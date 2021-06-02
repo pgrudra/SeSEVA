@@ -126,6 +126,7 @@
             android:text="@string/view_report"
             android:textColor="@color/colorSecondary"
             app:layout_constraintEnd_toEndOf="parent"
+            android:enabled="false"
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
         <TextView
@@ -145,13 +146,13 @@
             android:layout_width="254dp"
             android:layout_height="175dp"
             android:layout_marginBottom="2dp"
-            app:layout_constraintBottom_toTopOf="@+id/choose_this_mission"
+            app:layout_constraintBottom_toTopOf="@+id/choose_new_mission"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/ic_screen_10_dolphin" />
 
         <Button
-            android:id="@+id/choose_this_mission"
+            android:id="@+id/choose_new_mission"
             style="@style/button"
             android:layout_width="match_parent"
             android:layout_height="42dp"

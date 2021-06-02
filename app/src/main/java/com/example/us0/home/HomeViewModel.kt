@@ -49,6 +49,9 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     private val _goToRules = MutableLiveData<Boolean>()
     val goToRules: LiveData<Boolean>
         get() = _goToRules
+    private val _checkForUpdate = MutableLiveData<Boolean>()
+    val checkForUpdate: LiveData<Boolean>
+        get() = _checkForUpdate
     private val _goToProfile = MutableLiveData<Boolean>()
     val goToProfile: LiveData<Boolean>
         get() = _goToProfile
@@ -94,7 +97,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     private fun notifyAndServiceAndRefreshAppsDatabase() {
         viewModelScope.launch {
             startService()
-            notifyMissionAccomplished()
+            notifyMissionAccomplishedOrAppUpdate()
             displayThings()
             refreshAppsDatabase()
         }
@@ -557,15 +560,18 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
         else return false
     }
 
-    private suspend fun notifyMissionAccomplished() {
+    private suspend fun notifyMissionAccomplishedOrAppUpdate() {
         val chosenMissionNumber=sharedPref?.getInt((R.string.chosen_mission_number).toString(), 0) ?: 0
         val chosenMission=database.doesMissionExist(chosenMissionNumber)
         chosenMission?.let {
             if(it.deadline<nowMinusOneDay){
                 sharedPref?.edit()?.remove((R.string.chosen_mission_number).toString())?.apply()
-                Log.i("HVM","${sharedPref?.getInt((R.string.chosen_mission_number).toString(), 0) ?: 0}")
                 _accomplishedMissionTotalRaised.value=chosenMission.totalMoneyRaised
                 _accomplishedMissionYouRaised.value=chosenMission.contribution
+            }
+            else{
+                //check for app update
+                _checkForUpdate.value=true
             }
         }
     }

@@ -81,7 +81,6 @@ init {
                     _personalContribution.value = spannable
                 }
                 override fun onCancelled(databaseError: DatabaseError) {
-                    Log.i("nji", "loadPost:onCancelled", databaseError.toException())
                 }
             })
             val reference3 = cloudReference.child("Missions").child((missionNumber.toString()))
@@ -98,13 +97,11 @@ init {
                         }
 
                         override fun onCancelled(databaseError: DatabaseError) {
-                            Log.i("nji", "loadPost:onCancelled", databaseError.toException())
                         }
                     })
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
-                    Log.i("nji", "loadPost:onCancelled", databaseError.toException())
                 }
             })
             val reference5 =
@@ -115,7 +112,6 @@ init {
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
-                    Log.i("nji", "loadPost:onCancelled", databaseError.toException())
                 }
             })
         _enableButton.value=true
