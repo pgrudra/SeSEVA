@@ -11,9 +11,11 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.us0.EventResponse
 import com.example.us0.R
 import com.example.us0.data.missions.MissionsDatabaseDao
 import com.example.us0.data.missions.NetworkMission
+import com.example.us0.singleValueEvent
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -37,18 +39,15 @@ class LastMissionCompletedViewModel(private val database: MissionsDatabaseDao, a
     private val _goToHome = MutableLiveData<Boolean>()
     val goToHome: LiveData<Boolean>
         get() = _goToHome
+    private val _reportAvailable = MutableLiveData<Boolean>()
+    val reportAvailable: LiveData<Boolean>
+        get() = _reportAvailable
     private val _lastMissionName = MutableLiveData<String>()
     val lastMissionName: LiveData<String>
         get() = _lastMissionName
-
-    private val _lastMissionSponsorName = MutableLiveData<String>()
-    val lastMissionSponsorName: LiveData<String>
-        get() = _lastMissionSponsorName
-
     private val _personalContribution = MutableLiveData<SpannableString>()
     val personalContribution: LiveData<SpannableString>
         get() = _personalContribution
-
     private val _totalMoneyRaised = MutableLiveData<String>()
     val totalMoneyRaised: LiveData<String>
         get() = _totalMoneyRaised
@@ -63,7 +62,7 @@ init {
 }
 
     private fun loadUserName() {
-        _userName.value =" "+ sharedPref?.getString((R.string.user_name).toString(), "")
+        _userName.value =context.getString(R.string.welcome_back,sharedPref?.getString((R.string.user_name).toString(), "")?:"")
     }
 
     fun loadMission(missionNumber: Int) {
@@ -74,48 +73,38 @@ init {
             reference2?.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val personalContri=dataSnapshot.value.toString()
-                    val spannable= SpannableString("You raised \nRs $personalContri \nfor this charity")
+                    val spannable= SpannableString("You raised Rs $personalContri for this mission")
                     spannable.setSpan(
-                        ForegroundColorSpan(ContextCompat.getColor(context,R.color.primary_text)),11,15+personalContri.length,
+                        ForegroundColorSpan(ContextCompat.getColor(context,R.color.colorAccent)),10,14+personalContri.length,
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                     _personalContribution.value = spannable
                 }
                 override fun onCancelled(databaseError: DatabaseError) {
-                    Log.i("nji", "loadPost:onCancelled", databaseError.toException())
                 }
             })
-            val reference3 = cloudReference.child("Missions").child((missionNumber.toString()))
-            reference3.addListenerForSingleValueEvent(object : ValueEventListener {
+            cloudReference.child("accomplishedMissions").child((missionNumber.toString())).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val mission = dataSnapshot.getValue<NetworkMission>()
-                    _lastMissionName.value = mission?.missionName+"met it's goal"
-                    _lastMissionSponsorName.value=mission?.sponsorName
-                    val reference4 =
-                        cloudReference.child("Users Active").child(missionNumber.toString())
-                    reference4.addListenerForSingleValueEvent(object : ValueEventListener {
+                    val missionName=dataSnapshot.child("missionName").value.toString()
+                    val deadline=dataSnapshot.child("deadline").value.toString().replace("-"," " )
+                    _reportAvailable.value=dataSnapshot.child("reportAvailable").getValue<Boolean>()
+                    _lastMissionName.value=context.getString(R.string.mission_n_deadline,missionName,deadline)
+                    cloudReference.child("Users Active").child(missionNumber.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            _contributors.value = dataSnapshot.value.toString()+" total contributors"
+                            _contributors.value = dataSnapshot.value.toString()
                         }
 
                         override fun onCancelled(databaseError: DatabaseError) {
-                            Log.i("nji", "loadPost:onCancelled", databaseError.toException())
                         }
                     })
                 }
-
                 override fun onCancelled(databaseError: DatabaseError) {
-                    Log.i("nji", "loadPost:onCancelled", databaseError.toException())
                 }
             })
-            val reference5 =
-                cloudReference.child("Money Raised").child(missionNumber.toString())
-            reference5.addListenerForSingleValueEvent(object : ValueEventListener {
+                cloudReference.child("Money Raised").child(missionNumber.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    _totalMoneyRaised.value = dataSnapshot.value.toString()
+                    _totalMoneyRaised.value = context.getString(R.string.rs,dataSnapshot.getValue<Int>())
                 }
-
                 override fun onCancelled(databaseError: DatabaseError) {
-                    Log.i("nji", "loadPost:onCancelled", databaseError.toException())
                 }
             })
         _enableButton.value=true

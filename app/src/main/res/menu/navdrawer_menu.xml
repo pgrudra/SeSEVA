@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+
     <item
-        android:id="@+id/homeFragment"
-        android:title="@string/home"
+        android:id="@+id/becomeSponsor"
+        android:title="Become a sponsor"
         />
     <item
         android:id="@+id/inviteFriends"
@@ -19,7 +20,7 @@
 
     <item
         android:id="@+id/reportBugFragment"
-        android:title="@string/help_report_bug"/>
+        android:title="@string/report_bug"/>
     <item
         android:id="@+id/FAQFragment"
         android:title="@string/faqs" />

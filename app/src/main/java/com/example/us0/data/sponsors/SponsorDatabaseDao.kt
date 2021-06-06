@@ -9,7 +9,7 @@ interface SponsorDatabaseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(sponsor: Sponsor)
 
-    @Update
+    @Update(entity = Sponsor::class)
     suspend fun update(partialSponsor:PartialSponsor)
 
     @Query("SELECT * FROM list_of_sponsors WHERE sponsorNumber=:key")

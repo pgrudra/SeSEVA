@@ -4,6 +4,7 @@ import android.app.AppOpsManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Process
@@ -20,6 +21,7 @@ import androidx.work.WorkManager
 import com.example.us0.*
 import com.example.us0.data.AllDatabase
 import com.example.us0.databinding.FragmentSettingsBinding
+import com.example.us0.drawoverotherapps.DOOAFragment
 import com.example.us0.foregroundnnotifications.TestService
 import com.example.us0.home.DrawerLocker
 import com.example.us0.ui.login.NoInternetDialogFragment
@@ -37,7 +39,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
 
-class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountListener,SignOutDialogFragment.SignOutListener,ClearUsageStatsHistoryDialogFragment.ClearHistoryListener,ManageProfileDialogFragment.ManageProfileListener {
+class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountListener,SignOutDialogFragment.SignOutListener,ClearUsageStatsHistoryDialogFragment.ClearHistoryListener,ManageProfileDialogFragment.ManageProfileListener,GrantDOOADialog.GrantDOOAListener {
     private lateinit var binding:FragmentSettingsBinding
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var appContext: Context
@@ -99,6 +101,96 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
         binding.clearUsageHistoryCL.setOnClickListener { showClearUsageHistoryConfirmationDialog() }
         binding.manageProfileCL.setOnClickListener { showManageProfileDialog()  }
         binding.dooaCL.setOnClickListener { findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToDOOAFragment()) }
+        binding.lightCL.setOnClickListener {
+            //stopService()
+            with (sharedPref.edit()) {
+                this?.putBoolean((com.example.us0.R.string.mode_changed).toString(), true)
+                this?.apply()
+            }
+            binding.lightRadio.setImageResource(R.drawable.ic_radio_on)
+            binding.mediumRadio.setImageResource(R.drawable.ic_radio_off)
+            binding.strictRadio.setImageResource(R.drawable.ic_radio_off)
+            binding.lightCL.isEnabled=false
+            binding.mediumRadio.isEnabled=true
+            binding.strictRadio.isEnabled=true
+            //show snackbar
+            with (sharedPref.edit()) {
+                this?.putInt((com.example.us0.R.string.service_mode).toString(), 1)
+                this?.apply()
+            }
+            startService()
+            view?.let {
+                Snackbar.make(it, "Light mode enabled successfully", Snackbar.LENGTH_SHORT).show()
+            }
+        }
+        binding.mediumCL.setOnClickListener {
+            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context)) {
+                //stopService()
+                //show snackbar
+                with (sharedPref.edit()) {
+                    this?.putBoolean((com.example.us0.R.string.mode_changed).toString(), true)
+                    this?.apply()
+                }
+                binding.lightRadio.setImageResource(R.drawable.ic_radio_off)
+                binding.mediumRadio.setImageResource(R.drawable.ic_radio_on)
+                binding.strictRadio.setImageResource(R.drawable.ic_radio_off)
+                binding.lightCL.isEnabled=true
+                binding.mediumRadio.isEnabled=false
+                binding.strictRadio.isEnabled=true
+                with (sharedPref.edit()) {
+                    this?.putInt((com.example.us0.R.string.service_mode).toString(), 2)
+                    this?.apply()
+                }
+                startService()
+                view?.let {
+                    Snackbar.make(it, "Medium mode enabled successfully", Snackbar.LENGTH_SHORT).show()
+                }
+            }
+            else{
+                val dialog = GrantDOOADialog()
+                val args = Bundle()
+                args.putInt("serviceMode", 2)
+                dialog.arguments = args
+                val fragmentManager=childFragmentManager
+                dialog.show(fragmentManager,"Grant Permission")
+                //ask DOOA permission
+                //on clicking grant permission on dialog,set sharedPref
+            }
+        }
+        binding.strictCL.setOnClickListener {
+            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context)) {
+                //stopService()
+                //show snackbar
+                with (sharedPref.edit()) {
+                    this?.putBoolean((com.example.us0.R.string.mode_changed).toString(), true)
+                    this?.apply()
+                }
+                binding.lightRadio.setImageResource(R.drawable.ic_radio_off)
+                binding.mediumRadio.setImageResource(R.drawable.ic_radio_off)
+                binding.strictRadio.setImageResource(R.drawable.ic_radio_on)
+                binding.lightCL.isEnabled=true
+                binding.mediumRadio.isEnabled=true
+                binding.strictRadio.isEnabled=false
+                with (sharedPref.edit()) {
+                    this?.putInt((com.example.us0.R.string.service_mode).toString(), 3)
+                    this?.apply()
+                }
+                startService()
+                view?.let {
+                    Snackbar.make(it, "Strict mode enabled successfully", Snackbar.LENGTH_SHORT).show()
+                }
+            }
+            else{
+                //ask DOOA permission
+                val dialog = GrantDOOADialog()
+                val args = Bundle()
+                args.putInt("serviceMode", 3)
+                dialog.arguments = args
+                val fragmentManager=childFragmentManager
+                dialog.show(fragmentManager,"Grant Permission")
+                //on clicking grant permission on dialog,set sharedPref
+            }
+        }
         return binding.root
     }
 
@@ -110,24 +202,112 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
 
     override fun onResume() {
         super.onResume()
+
+    }
+
+    override fun onStart() {
+        super.onStart()
         checkPermissions()
     }
     private fun checkPermissions() {
-        if(checkUsageAccessPermission())
-            checkDOOAPermission()
+        if(checkUsageAccessPermission()){
+            checkDOOAPermissionAndService()
+        }
         else {
             findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToPermissionFragment())}
 
     }
 
-    private fun checkDOOAPermission() {
+    private fun checkDOOAPermissionAndService() {
+        var serviceMode=sharedPref.getInt((R.string.service_mode).toString(),0) ?:0
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context)){
+            if(serviceMode==0){
+                //stopService()
+                //mode changed
+                with (sharedPref.edit()) {
+                    this?.putBoolean((com.example.us0.R.string.mode_changed).toString(), true)
+                    this?.apply()
+                }
+                with (sharedPref.edit()) {
+                    this?.putInt((com.example.us0.R.string.service_mode).toString(), 2)
+                    this?.apply()
+                }
+                startService()
+                //start service
+                serviceMode=2
+            }
             binding.dooaIcon.setImageResource(R.drawable.ic_check_icon)
             binding.dooaCL.isClickable=false
         }
         else{
+            /*if(serviceMode==0){
+                //stopService()
+                //mode changed
+                with (sharedPref.edit()) {
+                    this?.putInt((com.example.us0.R.string.service_mode).toString(), 1)
+                    this?.apply()
+                }
+                startService()
+                serviceMode=1
+            }
+            else */
+                if (serviceMode!=1){
+                //stopService()
+                //mode changed
+                with (sharedPref.edit()) {
+                    this?.putBoolean((com.example.us0.R.string.mode_changed).toString(), true)
+                    this?.apply()
+                }
+                with (sharedPref.edit()) {
+                    this?.putInt((com.example.us0.R.string.service_mode).toString(), 1)
+                    this?.apply()
+                }
+                startService()
+                //start service
+                serviceMode=1
+                //start service with 1
+                //serviceMode=1
+            }
             binding.dooaIcon.setImageResource(R.drawable.ic_arrow_right)
             binding.dooaCL.isClickable=true
+        }
+        when (serviceMode) {
+            1 -> {
+                binding.lightRadio.setImageResource(R.drawable.ic_radio_on)
+                binding.mediumRadio.setImageResource(R.drawable.ic_radio_off)
+                binding.strictRadio.setImageResource(R.drawable.ic_radio_off)
+                binding.lightCL.isEnabled=false
+                binding.mediumRadio.isEnabled=true
+                binding.strictRadio.isEnabled=true
+            }
+            2 -> {
+                binding.lightRadio.setImageResource(R.drawable.ic_radio_off)
+                binding.mediumRadio.setImageResource(R.drawable.ic_radio_on)
+                binding.strictRadio.setImageResource(R.drawable.ic_radio_off)
+                binding.lightCL.isEnabled=true
+                binding.mediumRadio.isEnabled=false
+                binding.strictRadio.isEnabled=true
+            }
+            3 -> {
+                binding.lightRadio.setImageResource(R.drawable.ic_radio_off)
+                binding.mediumRadio.setImageResource(R.drawable.ic_radio_off)
+                binding.strictRadio.setImageResource(R.drawable.ic_radio_on)
+                binding.lightCL.isEnabled=true
+                binding.mediumRadio.isEnabled=true
+                binding.strictRadio.isEnabled=false
+            }
+        }
+    }
+
+    private fun startService(){
+        Intent(context, TestService::class.java).also{
+            it.action= Actions.START.name
+            if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
+                context?.startForegroundService(it)
+            }
+            else{
+                context?.startService(it)
+            }
         }
     }
 
@@ -383,6 +563,24 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
         val dialog = NoInternetDialogFragment()
         val fragmentManager=childFragmentManager
         dialog.show(fragmentManager,"No Internet Connection")
+    }
+
+    override fun toDOOAPermission(mode: Int?) {
+        mode?.let {
+            with (sharedPref.edit()) {
+                this?.putInt((com.example.us0.R.string.service_mode).toString(), it)
+                this?.apply()
+            }
+        }
+        toDOOAPermissionScreen()
+    }
+
+    private fun toDOOAPermissionScreen() {
+        val intent = Intent(
+            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+            Uri.parse("package:" + context?.packageName)
+        )
+        startActivity(intent)
     }
 
 

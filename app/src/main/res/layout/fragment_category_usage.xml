@@ -24,7 +24,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
             app:title="Category level stats"
-            app:titleTextColor="@color/primary_text" />
+            app:titleTextColor="@color/disabled_text" />
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -42,30 +42,34 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:text="Category: "
-                    android:textColor="@color/primary_text"
+                    style="@style/subtitle_1"
+                    android:textColor="@color/disabled_text"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/category"
+                    style="@style/subtitle_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{UsageOverViewViewModel.catNameForCatScreen}"
                     android:textColor="@color/primary_text"
                     app:layout_constraintBottom_toBottomOf="@+id/category_text"
                     app:layout_constraintStart_toEndOf="@+id/category_text"
+                    app:layout_constraintTop_toTopOf="@+id/category_text"
                     tools:text="OTHERS" />
+
                 <TextView
                     android:id="@+id/today_s_statistics"
+                    style="@style/subtitle_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="Today's statistics"
+                    android:layout_marginTop="16dp"
                     android:text="@{UsageOverViewViewModel.screenHeading}"
                     android:textColor="@color/secondary_text"
-                    style="@style/subtitle_1"
-                    app:layout_constraintTop_toBottomOf="@id/category_text"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="24dp"/>
+                    app:layout_constraintTop_toBottomOf="@+id/category_text"
+                    tools:text="Today's statistics" />
 
                 <ImageButton
                     android:id="@+id/i"
@@ -78,7 +82,97 @@
                     app:layout_constraintStart_toEndOf="@id/today_s_statistics"
                     app:layout_constraintTop_toTopOf="@+id/today_s_statistics" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/today_s_statistics"
+                    android:layout_marginTop="24dp"
+                    android:text="There is no rule for apps under this category. You can use these apps as per your need"
+                    android:id="@+id/whitelisted_description"
+                    android:visibility="gone"/>
+                <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/heads_up_c_l"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toBottomOf="@id/today_s_statistics"
+    android:layout_marginTop="24dp">
 
+
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/heads_up_text"
+    tools:text="Head's up!!"
+    app:layout_constraintTop_toTopOf="parent"
+    style="@style/subtitle_1"
+    app:layout_constraintStart_toStartOf="parent"/>
+                <TextView
+                    android:id="@+id/sub_heads_up_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/heads_up_text"
+                    tools:text="you will break a SeSEVA rule it you break the following limit"
+                    style="@style/tertiary_text"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/disabled_text"/>
+                <TextView
+                    android:layout_width="126dp"
+                    android:layout_height="52dp"
+                    tools:text="04:00"
+                    android:text="@{UsageOverViewViewModel.exceededTime}"
+                    android:id="@+id/time_countdown"
+                    android:gravity="center"
+                    android:fontFamily="@font/share_tech_mono"
+                    android:textSize="24sp"
+                    android:background="@drawable/ic_countdown_red"
+                    app:layout_constraintTop_toBottomOf="@id/sub_heads_up_text"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="18dp"
+                    android:elevation="4dp"
+                    android:layout_marginStart="3dp"/>
+                <TextView
+                    android:layout_width="126dp"
+                    android:layout_height="52dp"
+                    tools:text="45"
+                    android:text="@{UsageOverViewViewModel.exceededLaunches}"
+                    android:background="@drawable/ic_counts_countdown_red"
+                    android:gravity="center"
+                    android:id="@+id/launches_countdown"
+                    android:fontFamily="@font/share_tech_mono"
+                    android:textSize="24sp"
+                    app:layout_constraintTop_toBottomOf="@id/sub_heads_up_text"
+                    app:layout_constraintStart_toEndOf="@id/time_countdown"
+                    android:layout_marginTop="18dp"
+                    android:elevation="4dp"
+                    android:layout_marginStart="32dp"/>
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:text="Exceeded time"
+    android:text="@{UsageOverViewViewModel.exceededTimeText}"
+    style="@style/caption"
+    android:id="@+id/exceded_time_text"
+    android:textColor="@color/disabled_text"
+    app:layout_constraintTop_toBottomOf="@id/time_countdown"
+    app:layout_constraintStart_toStartOf="@id/time_countdown"
+    app:layout_constraintEnd_toEndOf="@id/time_countdown"
+    android:layout_marginTop="4dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Exceeded launches"
+                    android:text="@{UsageOverViewViewModel.exceededLaunchesText}"
+                    style="@style/caption"
+                    android:id="@+id/exceded_app_lanches_text"
+                    android:textColor="@color/disabled_text"
+                    app:layout_constraintTop_toBottomOf="@id/launches_countdown"
+                    app:layout_constraintStart_toStartOf="@id/launches_countdown"
+                    app:layout_constraintEnd_toEndOf="@id/launches_countdown"
+                    android:layout_marginTop="4dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/total_time_spent"
                     android:layout_width="match_parent"
@@ -86,8 +180,8 @@
                     android:paddingBottom="12dp"
                     android:onClick="@{()->UsageOverViewViewModel.catTimeSpentConstraintLayoutClicked()}"
                     android:background="@drawable/all_corner_rounded_4dp_1e"
-                    app:layout_constraintTop_toBottomOf="@id/today_s_statistics"
-                    android:layout_marginTop="16dp">
+                    app:layout_constraintTop_toBottomOf="@id/heads_up_c_l"
+                    android:layout_marginTop="32dp">
 
                     <TextView
                         android:id="@+id/total_time_spent_text"
@@ -105,11 +199,11 @@
                         style="@style/subtitle_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
+                        android:layout_marginStart="13dp"
                         android:text="@{UsageOverViewViewModel.totalTimeSpentCatwise}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="8dp"
                         android:textColor="@color/primary_text"
                         tools:text="2 hrs 30 mins" />
                     <androidx.appcompat.widget.AppCompatImageView
@@ -168,8 +262,8 @@
                         style="@style/subtitle_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginStart="13dp"
+                        android:layout_marginTop="8dp"
                         android:text="@{UsageOverViewViewModel.totalAppLaunchesCatwise}"
                         android:textColor="@color/primary_text"
                         app:layout_constraintStart_toStartOf="parent"
@@ -209,8 +303,8 @@
                     app:layout_constraintEnd_toStartOf="@+id/most_launched_app"
                     android:layout_marginEnd="2dp"
                     android:layout_marginTop="4dp"
-                    android:paddingBottom="12dp"
-                    android:paddingTop="12dp"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
                     android:onClick="@{()->UsageOverViewViewModel.goToMaxUsedAppCatwiseUsageFragment()}"
                     android:background="@drawable/all_corner_rounded_4dp_1e"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -233,7 +327,7 @@
                         style="@style/subtitle_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
+                        android:layout_marginStart="13dp"
                         android:text="@{UsageOverViewViewModel.mostUsedAppCatwiseName}"
                         android:textColor="@color/primary_text"
                         app:layout_constraintStart_toStartOf="parent"
@@ -247,8 +341,8 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginStart="2dp"
-                    android:paddingBottom="12dp"
-                    android:paddingTop="12dp"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
                     android:layout_marginTop="4dp"
                     android:onClick="@{()->UsageOverViewViewModel.goToMaxLaunchedAppCatwiseUsageFragment()}"
                     android:background="@drawable/all_corner_rounded_4dp_1e"
@@ -271,7 +365,7 @@
                         style="@style/subtitle_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
+                        android:layout_marginStart="13dp"
                         android:text="@{UsageOverViewViewModel.mostLaunchedAppCatwiseName}"
                         android:textColor="@color/primary_text"
                         app:layout_constraintStart_toStartOf="parent"
@@ -280,16 +374,16 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
+                    android:id="@+id/applications_text"
                     style="@style/subtitle_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:text="@{UsageOverViewViewModel.appsListEmptyOrApplications}"
-                    android:id="@+id/applications_text"
-                    android:textColor="@color/primary_text"
+                    android:textColor="@color/secondary_text"
                     app:layout_constraintStart_toStartOf="parent"
-                    tools:text="Applications"
-                    app:layout_constraintTop_toBottomOf="@id/most_used_app" />
+                    app:layout_constraintTop_toBottomOf="@id/most_used_app"
+                    tools:text="Applications" />
 
                 <TextView
                     style="@style/tertiary_text"
@@ -299,6 +393,7 @@
                     android:text="Tap on an app to view it's detailed usage"
                     android:textColor="@color/disabled_text"
                     app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="3dp"
                     app:layout_constraintTop_toBottomOf="@id/applications_text" />
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/app_recycler_view"
@@ -309,6 +404,7 @@
                     android:background="@drawable/all_corner_rounded_4dp_1e"
                     android:scrollbarStyle="outsideInset"
                     android:scrollbarThumbHorizontal="@drawable/scrollbar_thumb"
+                    android:layout_marginTop="15dp"
                     app:layout_constraintTop_toBottomOf="@id/tap_to_know_text"/>
                 <!--<LinearLayout
                     android:id="@+id/linear_layout"
@@ -354,6 +450,7 @@
                     <TextView
                         android:id="@+id/comparative_ana_text"
                         style="@style/subtitle_2"
+                        android:padding="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
@@ -372,12 +469,13 @@
                         style="@style/caption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
                         android:background="@drawable/all_corner_rounded_4dp_2e"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
-                        android:text="This year"
-                        android:layout_marginStart="3dp"
+                        android:paddingStart="9dp"
+                        android:paddingEnd="9dp"
+                        android:text="Past year"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="8dp"
                         android:textColor="@color/secondary_text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -391,10 +489,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:background="@drawable/primary_60p_rounded_corner_4"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
-                        android:text="This week"
-                        android:layout_marginEnd="3dp"
+                        android:paddingStart="9dp"
+                        android:paddingEnd="9dp"
+                        android:text="Past week"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="4dp"
                         android:textColor="@color/primary_text"
                         app:layout_constraintEnd_toStartOf="@+id/this_month_button"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -409,11 +508,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:background="@drawable/all_corner_rounded_4dp_2e"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
-                        android:text="This month"
-                        android:layout_marginStart="3dp"
-                        android:layout_marginEnd="3dp"
+                        android:paddingStart="9dp"
+                        android:paddingEnd="9dp"
+                        android:text="Past month"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
                         android:textColor="@color/secondary_text"
                         app:layout_constraintEnd_toStartOf="@+id/this_year_button"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -433,8 +532,9 @@
                             android:gravity="center"
                             android:textColor="@color/secondary_text"
                             app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginTop="32dp"
                             tools:layout_editor_absoluteX="0dp"
-                            tools:text="Total Screentime" />
+                            tools:text="Screen Time" />
 
                         <com.github.mikephil.charting.charts.BarChart
                             android:id="@+id/time_spent_bar_chart"
@@ -449,20 +549,23 @@
                             android:gravity="center"
                             android:textColor="@color/secondary_text"
                             app:layout_constraintTop_toBottomOf="@+id/time_spent_bar_chart"
+                            android:layout_marginTop="32dp"
                             tools:layout_editor_absoluteX="0dp"
-                            tools:text="Total App Launches" />
+                            tools:text="App Launches" />
                         <com.github.mikephil.charting.charts.BarChart
                             android:id="@+id/app_launches_bar_chart"
                             android:layout_width="match_parent"
                             android:layout_height="198dp"
                             app:layout_constraintBottom_toTopOf="@id/time_spent_week_aggregate_constraint_layout"
-                            app:layout_constraintTop_toBottomOf="@+id/graph_app_launches_text"/>
+                            app:layout_constraintTop_toBottomOf="@+id/graph_app_launches_text"
+                            android:layout_marginBottom="24dp"/>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/time_spent_week_aggregate_constraint_layout"
                             android:layout_width="0dp"
                             android:layout_marginStart="4dp"
                             android:layout_marginEnd="2dp"
+                            android:padding="8dp"
                             android:background="@drawable/all_corner_rounded_4dp_common"
                             android:layout_height="wrap_content"
                             app:layout_constraintEnd_toStartOf="@+id/app_launches_week_aggregate_constraint_layout"
@@ -476,7 +579,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:text="Total time spent"
+                                android:text="Total screen time"
                                 android:textColor="@color/disabled_text"
                                 app:layout_constraintEnd_toEndOf="@+id/time_spent_week_aggregate"
                                 app:layout_constraintStart_toStartOf="@id/time_spent_week_aggregate"
@@ -487,7 +590,6 @@
                                 style="@style/subtitle_2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
                                 android:textColor="@color/primary_text"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -500,6 +602,7 @@
                             android:layout_width="0dp"
                             android:layout_marginStart="2dp"
                             android:layout_marginEnd="4dp"
+                            android:padding="8dp"
                             android:background="@drawable/all_corner_rounded_4dp_common"
                             android:layout_height="wrap_content"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -524,7 +627,6 @@
                                 style="@style/subtitle_2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
                                 android:textColor="@color/primary_text"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -548,8 +650,9 @@
                             android:gravity="center"
                             android:textColor="@color/secondary_text"
                             app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginTop="32dp"
                             tools:layout_editor_absoluteX="0dp"
-                            tools:text="Total Screentime" />
+                            tools:text="Screen Time" />
 
                         <com.github.mikephil.charting.charts.LineChart
                             android:id="@+id/time_spent_month_line_chart"
@@ -565,11 +668,13 @@
                             android:textColor="@color/secondary_text"
                             app:layout_constraintTop_toBottomOf="@+id/time_spent_month_line_chart"
                             tools:layout_editor_absoluteX="0dp"
-                            tools:text="Total App Launches" />
+                            android:layout_marginTop="32dp"
+                            tools:text="App Launches" />
                         <com.github.mikephil.charting.charts.LineChart
                             android:id="@+id/app_launches_month_line_chart"
                             android:layout_width="match_parent"
                             android:layout_height="198dp"
+                            android:layout_marginBottom="24dp"
                             app:layout_constraintBottom_toTopOf="@id/time_spent_month_aggregate_constraint_layout"
                             app:layout_constraintTop_toBottomOf="@+id/graph_app_launches_month_text"/>
 
@@ -578,6 +683,7 @@
                             android:layout_width="0dp"
                             android:layout_marginStart="4dp"
                             android:layout_marginEnd="2dp"
+                            android:padding="8dp"
                             android:background="@drawable/all_corner_rounded_4dp_common"
                             android:layout_height="wrap_content"
                             app:layout_constraintEnd_toStartOf="@+id/app_launches_month_aggregate_constraint_layout"
@@ -591,7 +697,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:text="Total time spent"
+                                android:text="Total screen time"
                                 android:textColor="@color/disabled_text"
                                 app:layout_constraintEnd_toEndOf="@+id/time_spent_month_aggregate"
                                 app:layout_constraintStart_toStartOf="@id/time_spent_month_aggregate"
@@ -602,7 +708,6 @@
                                 style="@style/subtitle_2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
                                 android:textColor="@color/primary_text"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -615,6 +720,7 @@
                             android:layout_width="0dp"
                             android:layout_marginStart="2dp"
                             android:layout_marginEnd="4dp"
+                            android:padding="8dp"
                             android:background="@drawable/all_corner_rounded_4dp_common"
                             android:layout_height="wrap_content"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -639,7 +745,6 @@
                                 style="@style/subtitle_2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
                                 android:textColor="@color/primary_text"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -664,8 +769,9 @@
                             android:gravity="center"
                             android:textColor="@color/secondary_text"
                             app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginTop="32dp"
                             tools:layout_editor_absoluteX="0dp"
-                            tools:text="Total Screentime" />
+                            tools:text="Screen Time" />
 
                         <com.github.mikephil.charting.charts.LineChart
                             android:id="@+id/time_spent_year_line_chart"
@@ -679,13 +785,15 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:textColor="@color/secondary_text"
+                            android:layout_marginTop="32dp"
                             app:layout_constraintTop_toBottomOf="@+id/time_spent_year_line_chart"
                             tools:layout_editor_absoluteX="0dp"
-                            tools:text="Total App Launches" />
+                            tools:text="App Launches" />
                         <com.github.mikephil.charting.charts.LineChart
                             android:id="@+id/app_launches_year_line_chart"
                             android:layout_width="match_parent"
                             android:layout_height="198dp"
+                            android:layout_marginBottom="24dp"
                             app:layout_constraintBottom_toTopOf="@id/time_spent_year_aggregate_constraint_layout"
                             app:layout_constraintTop_toBottomOf="@+id/graph_app_launches_year_text"/>
 
@@ -694,6 +802,7 @@
                             android:layout_width="0dp"
                             android:layout_marginStart="4dp"
                             android:layout_marginEnd="2dp"
+                            android:padding="8dp"
                             android:background="@drawable/all_corner_rounded_4dp_common"
                             android:layout_height="wrap_content"
                             app:layout_constraintEnd_toStartOf="@+id/app_launches_year_aggregate_constraint_layout"
@@ -707,7 +816,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:text="Total time spent"
+                                android:text="Total screen time"
                                 android:textColor="@color/disabled_text"
                                 app:layout_constraintEnd_toEndOf="@+id/time_spent_year_aggregate"
                                 app:layout_constraintStart_toStartOf="@id/time_spent_year_aggregate"
@@ -718,7 +827,6 @@
                                 style="@style/subtitle_2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
                                 android:textColor="@color/primary_text"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -731,6 +839,7 @@
                             android:layout_width="0dp"
                             android:layout_marginStart="2dp"
                             android:layout_marginEnd="4dp"
+                            android:padding="8dp"
                             android:background="@drawable/all_corner_rounded_4dp_common"
                             android:layout_height="wrap_content"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -755,7 +864,6 @@
                                 style="@style/subtitle_2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
                                 android:textColor="@color/primary_text"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"

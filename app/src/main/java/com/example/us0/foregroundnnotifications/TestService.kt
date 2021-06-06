@@ -31,6 +31,8 @@ class TestService : Service() {
     private val notificationId = 1
     private val requestCode = 0
     private val flagS = 0
+    private val tenSeconds:Long=10000
+    private val threeSeconds:Long=3000
     private val oneMinuteInSeconds = 60
     private var isServiceStarted = false
     var gS:Job?=null
@@ -48,6 +50,7 @@ class TestService : Service() {
         val notification = createNotification()
         createUsageAlertChannel()
         startForeground(notificationId, notification)
+        Log.i("TSS","4")
     }
 
     private fun createUsageAlertChannel() {
@@ -98,14 +101,16 @@ class TestService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
+        Log.i("TS","2")
         if (intent != null) {
             when (intent.action) {
                 Actions.START.name -> startService()
                 Actions.STOP.name -> stopService()
-                else -> Timber.i("never_happens")
+                else -> startService()
             }
         }
         else{//check if allowed
+            Log.i("TS","1")
             startService()
         }
         return START_STICKY
@@ -115,6 +120,7 @@ class TestService : Service() {
         val restartServiceIntent = Intent(applicationContext, TestService::class.java).also {
             it.setPackage(packageName)
         }
+        Log.i("TS","3")
         val restartServicePendingIntent: PendingIntent = PendingIntent.getService(
             this,
             1,
@@ -126,7 +132,7 @@ class TestService : Service() {
             applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmService.set(
             AlarmManager.ELAPSED_REALTIME,
-            Calendar.getInstance().timeInMillis + 1000,
+            SystemClock.elapsedRealtime() + 1000,
             restartServicePendingIntent
         )
 
@@ -134,6 +140,7 @@ class TestService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.i("TSS","destroyed")
     }
 
     override fun onBind(p0: Intent?): IBinder? {
@@ -141,17 +148,26 @@ class TestService : Service() {
     }
 
     private fun startService() {
-        if (isServiceStarted) return
+        Log.i("TSS","21")
+        val sharedPref = applicationContext.getSharedPreferences(
+            (R.string.shared_pref).toString(),
+            Context.MODE_PRIVATE
+        )
+        val modeChanged=sharedPref.getBoolean((R.string.mode_changed).toString(), true)
+        if (isServiceStarted && !modeChanged) return
+        with (sharedPref.edit()) {
+            this?.putBoolean((com.example.us0.R.string.mode_changed).toString(), false)
+            this?.apply()
+        }
         isServiceStarted = true
+        Log.i("TSS","22")
         setServiceState(this, com.example.us0.ServiceState.STARTED)
         pkgAndCat=Transformations.map(AllDatabase.getInstance(this).AppDatabaseDao.getEntireList()) { it ->
             it?.map { it.packageName to it.appCategory }?.toMap() ?: emptyMap<String,String>()
         }
         //Try CoroutineScope instead of GlobalScope
-        val sharedPref = applicationContext.getSharedPreferences(
-            (R.string.shared_pref).toString(),
-            Context.MODE_PRIVATE
-        )
+
+        val serviceMode= sharedPref.getInt((R.string.service_mode).toString(), 1)
         timeRules["SOCIAL"] =
             sharedPref.getInt((R.string.social_max_time).toString(), 0) * oneMinuteInSeconds
         timeRules["COMMUNICATION"] = sharedPref.getInt(
@@ -182,6 +198,7 @@ class TestService : Service() {
 
         pkgAndCat.observeForever {
 
+            Log.i("TS","24")
                 if(gS?.isActive == true){
                     gS?.cancel()
                 }
@@ -199,16 +216,42 @@ class TestService : Service() {
                     }
                 }
                 val appPackageList = appPackageListR.distinct()*/
+
+                Log.i("TS78","25")
                 val sortedEvents = mutableMapOf<String, MutableList<UsageEvents.Event>>()
                 for (l in it.keys) {
                     sortedEvents[l] = mutableListOf()
                 }
-                while (isServiceStarted) {
-                    delay(10000)
-                    launch(Dispatchers.IO) {
-                        getStats(applicationContext, sortedEvents)
+                when (serviceMode) {
+                    3 -> {
+                        Log.i("TS78","3")
+                        while (isServiceStarted) {
+                            delay(threeSeconds)
+                            launch(Dispatchers.IO) {
+                                getStatsStrict(applicationContext, sortedEvents)
+                            }
+                        }
+                    }
+                    2 -> {
+                        Log.i("TS78","2")
+                        while (isServiceStarted) {
+                            delay(tenSeconds)
+                            launch(Dispatchers.IO) {
+                                getStatsMedium(applicationContext, sortedEvents)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.i("TS78","else")
+                        while (isServiceStarted) {
+                            delay(tenSeconds)
+                            launch(Dispatchers.IO) {
+                                getStatsLight(applicationContext, sortedEvents)
+                            }
+                        }
                     }
                 }
+
             }
         }
     }
@@ -225,11 +268,11 @@ class TestService : Service() {
         setServiceState(this, com.example.us0.ServiceState.STOPPED)
     }
 
-    private fun getStats(
+    private fun getStatsLight(
         context: Context,
         sortedEvents: Map<String, MutableList<UsageEvents.Event>>,
     ) {
-
+        Log.i("TS","27")
         sortedEvents.forEach { (_, events) -> events.clear() }
         val usm = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         val now = Calendar.getInstance()
@@ -264,6 +307,7 @@ class TestService : Service() {
             }
         }
         if (eval) {
+            Log.i("TS","28")
             var catTime = 0L
             var catLaunches = 0
             val cat = pkgAndCat.value?.get(pkg) ?: ""
@@ -276,6 +320,7 @@ class TestService : Service() {
                     var launches = 0
                     var totalTime = 0L
                     var transt = 0L
+                    Log.i("TS","29")
                     events.forEach {
                         if (it.eventType == UsageEvents.Event.ACTIVITY_RESUMED) {
                             // App was moved to the foreground: set the start time
@@ -319,6 +364,7 @@ class TestService : Service() {
             val catTimeInSeconds = (catTime / 1000).toInt()
 
             if (maxTime > 0) {
+                Log.i("TS","30")
                 if (catTimeInSeconds >= maxTime || catLaunches > maxLaunches) {
                     /*if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
                         val handler = Handler(Looper.getMainLooper())
@@ -428,6 +474,420 @@ class TestService : Service() {
         }
 
 }
+
+    private fun getStatsMedium(
+        context: Context,
+        sortedEvents: Map<String, MutableList<UsageEvents.Event>>,
+    ) {
+        Log.i("TS","27")
+        sortedEvents.forEach { (_, events) -> events.clear() }
+        val usm = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+        val now = Calendar.getInstance()
+        val begin: Calendar = Calendar.getInstance()
+        begin.set(Calendar.HOUR_OF_DAY, 0)
+        begin.set(Calendar.MINUTE, 0)
+        begin.set(Calendar.SECOND, 0)
+        begin.set(Calendar.MILLISECOND, 0)
+
+        val systemEvents: UsageEvents = usm.queryEvents(
+            begin.timeInMillis,
+            now.timeInMillis
+        )
+        var eval = true
+        var pkg: String? = null
+        var lastResumeTimeStamp: Long = 0L
+        while (systemEvents.hasNextEvent()) {
+            val event = UsageEvents.Event()
+            systemEvents.getNextEvent(event)
+            val type = event.eventType
+            if (type == UsageEvents.Event.ACTIVITY_RESUMED || type == UsageEvents.Event.ACTIVITY_PAUSED) {
+                if (sortedEvents[event.packageName] != null) {
+                    if (type == UsageEvents.Event.ACTIVITY_PAUSED) {
+                        eval = false
+                    } else {
+                        eval = true
+                        pkg = event.packageName
+                        lastResumeTimeStamp = event.timeStamp
+                    }
+                }
+                sortedEvents[event.packageName]?.add(event)
+            }
+        }
+        if (eval) {
+            Log.i("TS","28")
+            var catTime = 0L
+            var catLaunches = 0
+            val cat = pkgAndCat.value?.get(pkg) ?: ""
+            sortedEvents.forEach { (packageName, events) ->
+                // Keep track of the current start and end times
+                val cat1 = pkgAndCat.value?.get(packageName) ?: "."
+                if (cat1 == cat) {
+                    var startTime = 0L
+                    var endTime = 0L
+                    var launches = 0
+                    var totalTime = 0L
+                    var transt = 0L
+                    Log.i("TS","29")
+                    events.forEach {
+                        if (it.eventType == UsageEvents.Event.ACTIVITY_RESUMED) {
+                            // App was moved to the foreground: set the start time
+                            startTime = it.timeStamp
+                            launches += 1
+
+
+                        } else if (it.eventType == UsageEvents.Event.ACTIVITY_PAUSED) {
+                            if (startTime != 0L || totalTime == 0L) {
+                                endTime = it.timeStamp
+                                transt = it.timeStamp
+                            }
+                        }
+                        if (startTime != 0L && transt != 0L && startTime > transt && (startTime - transt) < 50) {
+                            launches -= 1
+                            transt = 0L
+                        }
+                        if (it.eventType == UsageEvents.Event.ACTIVITY_RESUMED || it.eventType == UsageEvents.Event.ACTIVITY_PAUSED) {
+
+                        }
+                        if (startTime == 0L && endTime != 0L) {
+                            startTime = begin.timeInMillis
+                        }
+                        if (startTime != 0L && endTime != 0L) {
+                            // Add the session time to the total time
+                            totalTime += endTime - startTime
+                            // Reset the start/end times to 0
+                            startTime = 0L
+                            endTime = 0L
+                        }
+                    }
+                    if (startTime != 0L && endTime == 0L) {
+                        totalTime += now.timeInMillis - startTime
+                    }
+                    catTime += totalTime
+                    catLaunches += launches
+                }
+            }
+            val maxTime = timeRules[cat] ?: -1
+            val maxLaunches = launchRules[cat] ?: -1
+            val catTimeInSeconds = (catTime / 1000).toInt()
+
+            if (maxTime > 0) {
+                Log.i("TS","30")
+                if (catTimeInSeconds >= maxTime || catLaunches > maxLaunches) {
+                    /*if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
+                        val handler = Handler(Looper.getMainLooper())
+                        handler.post {
+                            Toast.makeText(context, "Rule Broken!!", Toast.LENGTH_LONG).show()
+                        }
+                    }*/
+                    if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
+                        val handler = Handler(Looper.getMainLooper())
+                        handler.post {
+
+                            val blockingScreenParams: WindowManager.LayoutParams? =
+                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                    WindowManager.LayoutParams(
+                                        WindowManager.LayoutParams.MATCH_PARENT,
+                                        WindowManager.LayoutParams.MATCH_PARENT,
+                                        WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                                        WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+                                        PixelFormat.TRANSLUCENT
+                                    )
+                                } else {
+                                    null
+                                }
+                            val wm = this.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+
+                            val blockingScreenView = LayoutInflater.from(context).inflate(
+                                R.layout.blocking_screen,
+                                null
+                            )
+
+                            blockingScreenView.i_understand.setOnClickListener {
+                                wm.removeView(blockingScreenView)
+                            }
+                            blockingScreenView.text.text = "sdfgd"
+                            if (blockingScreenParams != null) {
+                                wm.addView(blockingScreenView, blockingScreenParams)
+                            }
+                        }
+                    }
+                } else {
+                    if (catTimeInSeconds >= maxTime - 25 && catTimeInSeconds < maxTime - 13) {
+
+                        val notificationManager = ContextCompat.getSystemService(
+                            context,
+                            NotificationManager::class.java
+                        ) as NotificationManager
+                        notificationManager.cancelNotifications()
+                        notificationManager.sendNotification(
+                            "Less than 20 seconds remaining",
+                            context
+                        )
+                    } else if (catLaunches == maxLaunches) {
+                        if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
+                            val notificationManager = ContextCompat.getSystemService(
+                                context,
+                                NotificationManager::class.java
+                            ) as NotificationManager
+                            notificationManager.cancelNotifications()
+                            notificationManager.sendNotification(
+                                "Only 1 more launch remaining",
+                                context
+                            )
+                        }
+                    } else if (catTimeInSeconds >= maxTime - 60 && catTimeInSeconds < maxTime - 48) {
+                        val notificationManager = ContextCompat.getSystemService(
+                            context,
+                            NotificationManager::class.java
+                        ) as NotificationManager
+                        notificationManager.cancelNotifications()
+                        notificationManager.sendNotification("Less than a min remaining", context)
+                    } else if (catLaunches == maxLaunches - 1) {
+                        if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
+                            val notificationManager = ContextCompat.getSystemService(
+                                context,
+                                NotificationManager::class.java
+                            ) as NotificationManager
+                            notificationManager.cancelNotifications()
+                            notificationManager.sendNotification(
+                                "Only 2 more launch remaining",
+                                context
+                            )
+                        }
+                    } else if (catTimeInSeconds >= maxTime / 2 && catTimeInSeconds < (maxTime / 2) + 12) {
+                        val handler = Handler(Looper.getMainLooper())
+                        handler.post {
+                            Toast.makeText(context, "Half time up", Toast.LENGTH_SHORT).show()
+                        }
+
+                    }
+                    else if(catTimeInSeconds >= maxTime - 13 && catTimeInSeconds < maxTime - 0){
+                        /*val blockingScreenView=LayoutInflater.from(context).inflate(R.layout.blocking_screen,null)
+                        blockingScreenView.i_understand.setOnClickListener {
+                            wm.removeView(blockingScreenView) }
+                        blockingScreenView.text.text="sdfgd"
+                        wm.addView(blockingScreenView, blockingScreenParams)*/
+                    }
+                }
+
+            }
+
+        } else {
+            val notificationManager = ContextCompat.getSystemService(
+                context,
+                NotificationManager::class.java
+            ) as NotificationManager
+            notificationManager.cancelNotifications()
+        }
+
+    }
+
+    private fun getStatsStrict(
+        context: Context,
+        sortedEvents: Map<String, MutableList<UsageEvents.Event>>,
+    ) {
+        Log.i("TS","27")
+        sortedEvents.forEach { (_, events) -> events.clear() }
+        val usm = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+        val now = Calendar.getInstance()
+        val begin: Calendar = Calendar.getInstance()
+        begin.set(Calendar.HOUR_OF_DAY, 0)
+        begin.set(Calendar.MINUTE, 0)
+        begin.set(Calendar.SECOND, 0)
+        begin.set(Calendar.MILLISECOND, 0)
+
+        val systemEvents: UsageEvents = usm.queryEvents(
+            begin.timeInMillis,
+            now.timeInMillis
+        )
+        var eval = true
+        var pkg: String? = null
+        var lastResumeTimeStamp: Long = 0L
+        while (systemEvents.hasNextEvent()) {
+            val event = UsageEvents.Event()
+            systemEvents.getNextEvent(event)
+            val type = event.eventType
+            if (type == UsageEvents.Event.ACTIVITY_RESUMED || type == UsageEvents.Event.ACTIVITY_PAUSED) {
+                if (sortedEvents[event.packageName] != null) {
+                    if (type == UsageEvents.Event.ACTIVITY_PAUSED) {
+                        eval = false
+                    } else {
+                        eval = true
+                        pkg = event.packageName
+                        lastResumeTimeStamp = event.timeStamp
+                    }
+                }
+                sortedEvents[event.packageName]?.add(event)
+            }
+        }
+        if (eval) {
+            Log.i("TS","28")
+            var catTime = 0L
+            var catLaunches = 0
+            val cat = pkgAndCat.value?.get(pkg) ?: ""
+            sortedEvents.forEach { (packageName, events) ->
+                // Keep track of the current start and end times
+                val cat1 = pkgAndCat.value?.get(packageName) ?: "."
+                if (cat1 == cat) {
+                    var startTime = 0L
+                    var endTime = 0L
+                    var launches = 0
+                    var totalTime = 0L
+                    var transt = 0L
+                    Log.i("TS","29")
+                    events.forEach {
+                        if (it.eventType == UsageEvents.Event.ACTIVITY_RESUMED) {
+                            // App was moved to the foreground: set the start time
+                            startTime = it.timeStamp
+                            launches += 1
+
+
+                        } else if (it.eventType == UsageEvents.Event.ACTIVITY_PAUSED) {
+                            if (startTime != 0L || totalTime == 0L) {
+                                endTime = it.timeStamp
+                                transt = it.timeStamp
+                            }
+                        }
+                        if (startTime != 0L && transt != 0L && startTime > transt && (startTime - transt) < 50) {
+                            launches -= 1
+                            transt = 0L
+                        }
+                        if (it.eventType == UsageEvents.Event.ACTIVITY_RESUMED || it.eventType == UsageEvents.Event.ACTIVITY_PAUSED) {
+
+                        }
+                        if (startTime == 0L && endTime != 0L) {
+                            startTime = begin.timeInMillis
+                        }
+                        if (startTime != 0L && endTime != 0L) {
+                            // Add the session time to the total time
+                            totalTime += endTime - startTime
+                            // Reset the start/end times to 0
+                            startTime = 0L
+                            endTime = 0L
+                        }
+                    }
+                    if (startTime != 0L && endTime == 0L) {
+                        totalTime += now.timeInMillis - startTime
+                    }
+                    catTime += totalTime
+                    catLaunches += launches
+                }
+            }
+            val maxTime = timeRules[cat] ?: -1
+            val maxLaunches = launchRules[cat] ?: -1
+            val catTimeInSeconds = (catTime / 1000).toInt()
+
+            if (maxTime > 0) {
+                Log.i("TS","30")
+                if (catTimeInSeconds >= maxTime || catLaunches > maxLaunches) {
+                    /*if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
+                        val handler = Handler(Looper.getMainLooper())
+                        handler.post {
+                            Toast.makeText(context, "Rule Broken!!", Toast.LENGTH_LONG).show()
+                        }
+                    }*/
+                    if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
+                        val handler = Handler(Looper.getMainLooper())
+                        handler.post {
+
+                            val blockingScreenParams: WindowManager.LayoutParams? =
+                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                    WindowManager.LayoutParams(
+                                        WindowManager.LayoutParams.MATCH_PARENT,
+                                        WindowManager.LayoutParams.MATCH_PARENT,
+                                        WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                                        WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+                                        PixelFormat.TRANSLUCENT
+                                    )
+                                } else {
+                                    null
+                                }
+                            val wm = this.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+
+                            val blockingScreenView = LayoutInflater.from(context).inflate(
+                                R.layout.blocking_screen,
+                                null
+                            )
+
+                            blockingScreenView.i_understand.setOnClickListener {
+                                wm.removeView(blockingScreenView)
+                            }
+                            blockingScreenView.text.text = "sdfgd"
+                            if (blockingScreenParams != null) {
+                                wm.addView(blockingScreenView, blockingScreenParams)
+                            }
+                        }
+                    }
+                } else {
+                    if (catTimeInSeconds >= maxTime - 25 && catTimeInSeconds < maxTime - 13) {
+
+                        val notificationManager = ContextCompat.getSystemService(
+                            context,
+                            NotificationManager::class.java
+                        ) as NotificationManager
+                        notificationManager.cancelNotifications()
+                        notificationManager.sendNotification(
+                            "Less than 20 seconds remaining",
+                            context
+                        )
+                    } else if (catLaunches == maxLaunches) {
+                        if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
+                            val notificationManager = ContextCompat.getSystemService(
+                                context,
+                                NotificationManager::class.java
+                            ) as NotificationManager
+                            notificationManager.cancelNotifications()
+                            notificationManager.sendNotification(
+                                "Only 1 more launch remaining",
+                                context
+                            )
+                        }
+                    } else if (catTimeInSeconds >= maxTime - 60 && catTimeInSeconds < maxTime - 48) {
+                        val notificationManager = ContextCompat.getSystemService(
+                            context,
+                            NotificationManager::class.java
+                        ) as NotificationManager
+                        notificationManager.cancelNotifications()
+                        notificationManager.sendNotification("Less than a min remaining", context)
+                    } else if (catLaunches == maxLaunches - 1) {
+                        if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
+                            val notificationManager = ContextCompat.getSystemService(
+                                context,
+                                NotificationManager::class.java
+                            ) as NotificationManager
+                            notificationManager.cancelNotifications()
+                            notificationManager.sendNotification(
+                                "Only 2 more launch remaining",
+                                context
+                            )
+                        }
+                    } else if (catTimeInSeconds >= maxTime / 2 && catTimeInSeconds < (maxTime / 2) + 12) {
+                        val handler = Handler(Looper.getMainLooper())
+                        handler.post {
+                            Toast.makeText(context, "Half time up", Toast.LENGTH_SHORT).show()
+                        }
+
+                    }
+                    else if(catTimeInSeconds >= maxTime - 13 && catTimeInSeconds < maxTime - 0){
+                        /*val blockingScreenView=LayoutInflater.from(context).inflate(R.layout.blocking_screen,null)
+                        blockingScreenView.i_understand.setOnClickListener {
+                            wm.removeView(blockingScreenView) }
+                        blockingScreenView.text.text="sdfgd"
+                        wm.addView(blockingScreenView, blockingScreenParams)*/
+                    }
+                }
+
+            }
+
+        } else {
+            val notificationManager = ContextCompat.getSystemService(
+                context,
+                NotificationManager::class.java
+            ) as NotificationManager
+            notificationManager.cancelNotifications()
+        }
+
+    }
 
 }
 

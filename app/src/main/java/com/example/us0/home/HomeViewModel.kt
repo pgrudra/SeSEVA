@@ -11,6 +11,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Process
+import android.provider.Settings
 import android.util.Log
 import androidx.lifecycle.*
 import androidx.work.*
@@ -49,6 +50,9 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     private val _goToRules = MutableLiveData<Boolean>()
     val goToRules: LiveData<Boolean>
         get() = _goToRules
+    private val _checkForUpdate = MutableLiveData<Boolean>()
+    val checkForUpdate: LiveData<Boolean>
+        get() = _checkForUpdate
     private val _goToProfile = MutableLiveData<Boolean>()
     val goToProfile: LiveData<Boolean>
         get() = _goToProfile
@@ -93,8 +97,9 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
 
     private fun notifyAndServiceAndRefreshAppsDatabase() {
         viewModelScope.launch {
-            startService()
-            notifyMissionAccomplished()
+            val m=database.doesMissionExist(1)
+            restartService()
+            notifyMissionAccomplishedOrAppUpdate()
             displayThings()
             refreshAppsDatabase()
         }
@@ -413,8 +418,62 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
 
     }
 
-    private fun startService() {
-
+    private fun restartService() {
+        val serviceMode=sharedPref.getInt((R.string.service_mode).toString(),0) ?:0
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context)) {
+            if (serviceMode == 0) {
+                //stopService()
+                    //mode changed
+                with(sharedPref?.edit()) {
+                    this?.putInt((R.string.service_mode).toString(), 2)
+                    this?.apply()
+                }
+            }
+        }
+        else{
+            //ask DOOA through banner
+            /*if(serviceMode==0){
+                //stopService()
+                //mode changed
+                with (sharedPref.edit()) {
+                    this?.putBoolean((com.example.us0.R.string.mode_changed).toString(), true)
+                    this?.apply()
+                }
+                with(sharedPref?.edit()) {
+                    this?.putInt((R.string.service_mode).toString(), 1)
+                    this?.apply()
+                }
+            }
+            else */
+                if(serviceMode!=1){
+                //mode changed
+                with (sharedPref.edit()) {
+                    this?.putBoolean((com.example.us0.R.string.mode_changed).toString(), true)
+                    this?.apply()
+                }
+                with(sharedPref?.edit()) {
+                    this?.putInt((R.string.service_mode).toString(), 1)
+                    this?.apply()
+                }
+                //put service to light mode
+            }
+        }
+        startService()
+    }
+    private fun stopService() {
+        if(getServiceState(context)!=ServiceState.STOPPED){
+            Intent(context, TestService::class.java).also {
+                it.action = Actions.STOP.name
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    context.startForegroundService(it)
+                } else {
+                    context.startService(it)
+                }
+            }
+        }
+    }
+    //on clicking grant per on banner, take to DOOA per, on returning, show dialog for medium or strict mode
+    private fun startService(){
         Intent(context, TestService::class.java).also{
             it.action= Actions.START.name
             if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
@@ -557,15 +616,18 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
         else return false
     }
 
-    private suspend fun notifyMissionAccomplished() {
+    private suspend fun notifyMissionAccomplishedOrAppUpdate() {
         val chosenMissionNumber=sharedPref?.getInt((R.string.chosen_mission_number).toString(), 0) ?: 0
         val chosenMission=database.doesMissionExist(chosenMissionNumber)
         chosenMission?.let {
             if(it.deadline<nowMinusOneDay){
                 sharedPref?.edit()?.remove((R.string.chosen_mission_number).toString())?.apply()
-                Log.i("HVM","${sharedPref?.getInt((R.string.chosen_mission_number).toString(), 0) ?: 0}")
                 _accomplishedMissionTotalRaised.value=chosenMission.totalMoneyRaised
                 _accomplishedMissionYouRaised.value=chosenMission.contribution
+            }
+            else{
+                //check for app update
+                _checkForUpdate.value=true
             }
         }
     }

@@ -1,45 +1,68 @@
 package com.example.us0.home
 
-import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.NavArgument
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.us0.R
-import com.example.us0.data.AllDatabase
-import com.example.us0.data.missions.Mission
-import com.example.us0.data.missions.asActiveDomainModel
 import com.example.us0.databinding.ActivityHomeBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.InstallState
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
 import kotlinx.android.synthetic.main.nav_header.view.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-class HomeActivity :AppCompatActivity(), DrawerLocker,
-    BottomNavigationView.OnNavigationItemSelectedListener {
+
+class HomeActivity :AppCompatActivity(),DrawerLocker,
+    BottomNavigationView.OnNavigationItemSelectedListener,
+    NavigationView.OnNavigationItemSelectedListener {
     lateinit var binding: ActivityHomeBinding
     private lateinit var drawerLayout:DrawerLayout
+    private val appUpdateManager: AppUpdateManager by lazy { AppUpdateManagerFactory.create(this) }
+    private val installStateUpdatedListener: InstallStateUpdatedListener by lazy {
+        object : InstallStateUpdatedListener {
+            override fun onStateUpdate(state: InstallState) {
+                if (state.installStatus() == InstallStatus.DOWNLOADED) {
+                    //CHECK THIS if AppUpdateType.FLEXIBLE, otherwise you can skip
+                    popupSnackbarForCompleteUpdate()
+                } else if (state.installStatus() == InstallStatus.INSTALLED) {
+                    appUpdateManager.unregisterListener(this)
+                }
+            }
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //val toolbar=findViewById<Toolbar>(R.id.toolbar)
         //setSupportActionBar(toolbar)
+        checkForUpdate()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         drawerLayout=binding.drawerLayout
 val navHostFragment=supportFragmentManager.findFragmentById(R.id.myNavHostFragmentToSignOut) as NavHostFragment
         val navController=navHostFragment.navController
         NavigationUI.setupWithNavController(binding.navView, navController)
-        NavigationUI.setupWithNavController(binding.bottomNavView,navController)
+        binding.navView.setNavigationItemSelectedListener(this)
+        NavigationUI.setupWithNavController(binding.bottomNavView, navController)
+        //binding.bottomNavView.selectedItemId=R.id.homeFragment
+        //binding.bottomNavView.menu.getItem(0).isChecked = true
 binding.bottomNavView.setOnNavigationItemSelectedListener(this)
+
+
         //navController.graph.findNode(R.id.detailMission)?.addArgument("selectedMission",NavArgument.Builder().setDefaultValue().build())
        /* navController.addOnDestinationChangedListener { controller, destination, arguments ->
 
@@ -84,6 +107,58 @@ binding.bottomNavView.setOnNavigationItemSelectedListener(this)
         //NavigationUI.setupActionBarWithNavController(this,navController,drawerLayout)
         //NavigationUI.setupWithNavController()
     }
+
+    private fun checkForUpdate() {
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+                && (appUpdateInfo.clientVersionStalenessDays() ?: -1) >=DAYS_FOR_FLEXIBLE_UPDATE
+            ) {
+                appUpdateManager.registerListener(installStateUpdatedListener)
+                // Request the update.
+                appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    AppUpdateType.FLEXIBLE,
+                    this,
+                    // Include a request code to later monitor this update request.
+                    MY_REQUEST_CODE
+                )
+
+                // Displays the snackbar notification and call to action.
+            }
+        }
+    }
+
+    private fun popupSnackbarForCompleteUpdate() {
+        Snackbar.make(
+            binding.root,
+            "An update has just been downloaded.",
+            Snackbar.LENGTH_INDEFINITE
+        ).apply {
+            setAction("RESTART") { appUpdateManager.completeUpdate() }
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                setActionTextColor(getColor(R.color.colorPrimary))
+            }
+            show()
+        }
+    }
+
+    override fun onStop() {
+        appUpdateManager.unregisterListener(installStateUpdatedListener)
+        super.onStop()
+    }
+    override fun onResume() {
+        super.onResume()
+        appUpdateManager
+            .appUpdateInfo
+            .addOnSuccessListener { appUpdateInfo ->
+                if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                    popupSnackbarForCompleteUpdate()
+                }
+            }
+
+    }
     /*override fun onOptionsItemSelected(item: MenuItem): Boolean {
         Log.i("HAttu","1")
         if(item.itemId==R.id.detailMission){
@@ -104,14 +179,8 @@ binding.bottomNavView.setOnNavigationItemSelectedListener(this)
         }
         else{return super.onOptionsItemSelected(item)}
     }*/
-    override fun openCloseNavigationDrawer(view: View){
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
-            drawerLayout.closeDrawer(GravityCompat.START)
-        }
-        else{
-            drawerLayout.openDrawer(GravityCompat.START)
-        }
-    }
+
+
 
     /*override fun displayUserName(userName: String) {
         val header=binding.navView.getHeaderView(0)
@@ -127,13 +196,20 @@ binding.bottomNavView.setOnNavigationItemSelectedListener(this)
         }
     }*/
 
+    override fun openCloseNavigationDrawer(view: View){
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
+        else{
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+    }
     override fun displayBottomNavigation(display: Boolean) {
         if(display)
             binding.bottomNavView.visibility=View.VISIBLE
         else
             binding.bottomNavView.visibility=View.GONE
     }
-
     override fun setDrawerEnabled(enabled: Boolean){
         val lockMode=if(enabled){
             DrawerLayout.LOCK_MODE_UNLOCKED
@@ -167,9 +243,40 @@ binding.bottomNavView.setOnNavigationItemSelectedListener(this)
                 }
             }.invokeOnCompletion { this@HomeActivity.findNavController(R.id.myNavHostFragmentToSignOut).navigate(item.itemId,args) }
         }*/
-            this@HomeActivity.findNavController(R.id.myNavHostFragmentToSignOut).navigate(item.itemId)
+        when(item.itemId){
+            R.id.reportBugFragment ->{
+                val intent= Intent(Intent.ACTION_SENDTO).apply {
+                    data = Uri.parse("mailto:")
+                    putExtra(Intent.EXTRA_EMAIL, arrayOf("pgr19990109@gmail.com"))
+                    putExtra(Intent.EXTRA_SUBJECT, getString(R.string.report_bug_in,getString(R.string.app_version)))
+                }
+                if (intent.resolveActivity(packageManager) != null) {
+                    startActivity(intent)
+                }
+            }
+            R.id.becomeSponsor ->{
+                val intent= Intent(Intent.ACTION_SENDTO).apply {
+                    data = Uri.parse("mailto:")
+                    putExtra(Intent.EXTRA_EMAIL, arrayOf("pgr19990109@gmail.com"))
+                    putExtra(Intent.EXTRA_SUBJECT, getString(R.string.interest_become_sponsor))
+                }
+                if (intent.resolveActivity(packageManager) != null) {
+                    startActivity(intent)
+                }
+            }
+            R.id.inviteFriends->{}
+            R.id.rateUs->{}
+            R.id.FAQFragment->{}
+            else ->this@HomeActivity.findNavController(R.id.myNavHostFragmentToSignOut).navigate(item.itemId)
+        }
 
+        drawerLayout.closeDrawer(GravityCompat.START)
         return false
+    }
+
+    companion object {
+        const val DAYS_FOR_FLEXIBLE_UPDATE=4
+        const val MY_REQUEST_CODE=22
     }
 
 }
@@ -180,5 +287,5 @@ interface DrawerLocker {
     fun openCloseNavigationDrawer(view: View)
     //fun displayUserName(userName:String)
     //fun displayLevel(level:Int)
-    fun displayBottomNavigation(display:Boolean)
+    fun displayBottomNavigation(display: Boolean)
 }

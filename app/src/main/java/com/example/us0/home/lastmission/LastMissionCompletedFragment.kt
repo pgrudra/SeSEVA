@@ -2,6 +2,7 @@ package com.example.us0.home.lastmission
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -46,6 +47,13 @@ class LastMissionCompletedFragment : Fragment() {
                 binding.progressBar1.visibility=View.GONE
                 binding.skrim.visibility=View.GONE
                 binding.button4.isEnabled=true
+                binding.chooseNewMission.isEnabled=true
+            }
+        })
+        viewModel.reportAvailable.observe(viewLifecycleOwner, Observer<Boolean> { reportAvailable->
+            if(reportAvailable){
+                binding.button4.visibility=View.VISIBLE
+                binding.reportPendingText.visibility=View.GONE
             }
         })
         return binding.root

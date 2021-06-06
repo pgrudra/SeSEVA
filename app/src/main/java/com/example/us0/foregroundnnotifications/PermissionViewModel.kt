@@ -68,7 +68,7 @@ class PermissionViewModel(application: Application): AndroidViewModel(applicatio
             }
         }
         if (mode == AppOpsManager.MODE_ALLOWED) {
-            Intent(context, TestService::class.java).also{
+            /*Intent(context, TestService::class.java).also{
                 it.action= Actions.START.name
                 if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
                     context.startForegroundService(it)
@@ -76,7 +76,7 @@ class PermissionViewModel(application: Application): AndroidViewModel(applicatio
                 else{
                     context.startService(it)
                 }
-            }
+            }*/
             _toDOOA.value=true
         }
     }
