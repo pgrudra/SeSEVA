@@ -26,9 +26,16 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".home.HomeActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.SENDTO" />
+                <data android:scheme="mailto" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
-        <service android:name=".foregroundnnotifications.TestService" />
+        <service android:name=".foregroundnnotifications.TestService"
+            android:stopWithTask="false"/>
         <activity
             android:name=".MainActivity"
             android:noHistory="true"

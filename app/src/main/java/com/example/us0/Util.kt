@@ -13,8 +13,14 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.*
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 enum class Actions{
     START,
@@ -114,7 +120,7 @@ data class TimeLaunchesDate(
 data class MissionNumberUpdateReport(
     @PrimaryKey val missionNumber: Int,
     @ColumnInfo(name="on_accomplish_data_updated") val onAccomplishDataUpdated: Boolean,
-    @ColumnInfo(name="report_available") val reportAvailable: Long?
+    @ColumnInfo(name="report_available") val reportAvailable: Boolean
 )
 
 fun getDay(i: Int): String {
@@ -206,4 +212,28 @@ fun checkInternetConnectivity(context:Context): Boolean {
         }
     }
     else return false
+}
+
+sealed class EventResponse {
+    data class Changed(val snapshot: DataSnapshot): EventResponse()
+    data class Cancelled(val error: DatabaseError): EventResponse()
+}
+
+suspend fun DatabaseReference.singleValueEvent(): EventResponse = suspendCoroutine { continuation ->
+    val valueEventListener = object: ValueEventListener {
+        override fun onCancelled(error: DatabaseError) {
+            continuation.resume(EventResponse.Cancelled(error))
+        }
+
+        override fun onDataChange(snapshot: DataSnapshot) {
+            continuation.resume(EventResponse.Changed(snapshot))
+        }
+    }
+    addListenerForSingleValueEvent(valueEventListener) // Subscribe to the event
+}
+
+enum class CountdownColor{
+    GREEN,
+    YELLOW,
+    RED
 }

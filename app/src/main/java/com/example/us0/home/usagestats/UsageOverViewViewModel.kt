@@ -14,6 +14,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.us0.AppsCategoryType
 import com.example.us0.CategoryRuleStatus
+import com.example.us0.CountdownColor
 import com.example.us0.R
 import com.example.us0.data.AllDatabase
 import com.example.us0.data.appcategories.AppsCategory
@@ -43,6 +44,21 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
     private val _screenHeading = MutableLiveData<String>()
     val screenHeading: LiveData<String>
         get() = _screenHeading
+    private val _exceededTime = MutableLiveData<String>()
+    val exceededTime: LiveData<String>
+        get() = _exceededTime
+    private val _exceededLaunches = MutableLiveData<String>()
+    val exceededLaunches: LiveData<String>
+        get() = _exceededLaunches
+    private val _exceededTimeText = MutableLiveData<String>()
+    val exceededTimeText: LiveData<String>
+        get() = _exceededTimeText
+    private val _exceededLaunchesText = MutableLiveData<String>()
+    val exceededLaunchesText: LiveData<String>
+        get() = _exceededLaunchesText
+    private val _countdownColor=MutableLiveData<CategoryRuleStatus>()
+    val countdownColor: LiveData<CategoryRuleStatus>
+        get()=_countdownColor
     private val _totalTimeSpent = MutableLiveData<String>()
     val totalTimeSpent: LiveData<String>
         get() = _totalTimeSpent
@@ -103,6 +119,9 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
     private val _catAppLaunchesPieChartVisible=MutableLiveData<Boolean>()
     val catAppLaunchesPieChartVisible:LiveData<Boolean>
         get()=_catAppLaunchesPieChartVisible
+    private val _headsUpDisappear=MutableLiveData<Boolean>()
+    val headsUpDisappear:LiveData<Boolean>
+        get()=_headsUpDisappear
 
     private val _processingDataForPieChartDone=MutableLiveData<Boolean>()
     val processingDataForPieChartDone:LiveData<Boolean>
@@ -118,11 +137,34 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
     private val appStats:MutableList<Stat> = arrayListOf()
     fun toCatUsageScreen(appsCategory: AppsCategory) {
         val cat=appsCategory.categoryName
-        if(cat=="ENTERTAINMENT"){
+        if(appsCategory.categoryType==AppsCategoryType.WEEKLY){
             _screenHeading.value="This week's statistics"
         }
         else{
             _screenHeading.value="Today's statistics"
+        }
+        if(cat=="WHITELISTED"){
+            _headsUpDisappear.value =true
+        }
+        else{
+            _headsUpDisappear.value=false
+            _countdownColor.value=appsCategory.ruleBroken
+            if(categoryTimes[cat]!! > timeRules[cat]!!){
+                _exceededTimeText.value="Exceeded time"
+                _exceededTime.value=inHrsMins2(categoryTimes[cat]!!- timeRules[cat]!!)
+            }
+            else{
+                _exceededTimeText.value="Time left"
+                _exceededTime.value=inHrsMins2(timeRules[cat]!!-categoryTimes[cat]!!)
+            }
+            if(categoryLaunches[cat]!! > launchRules[cat]!!){
+                _exceededLaunchesText.value="Exceeded launches"
+                _exceededLaunches.value=getCounts(categoryLaunches[cat]!!- launchRules[cat]!!)
+            }
+            else{
+                _exceededLaunchesText.value="Launches left"
+                _exceededLaunches.value=getCounts(launchRules[cat]!!-categoryLaunches[cat]!!)
+            }
         }
         _catNameForCatScreen.value=cat
         val list=appStats.filter { it.appCategory==cat }
@@ -150,8 +192,54 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
         _appTimeSpent.value=inHrsMins(stat.timeSpent!!)
         _appLaunches.value=stat.appLaunches.toString()
         _appPackageNameForAppScreen.value=stat.packageName!!
+        setHeadsUp(stat)
         _navigateToSelectedApp.value=true
     }
+
+    private fun setHeadsUp(stat: Stat) {
+        val cat = stat.appCategory
+        if (cat == "WHITELISTED") {
+            _headsUpDisappear.value = true
+        } else {
+            _headsUpDisappear.value = false
+            if (categoryTimes[cat]!! > timeRules[cat]!!) {
+                _exceededTimeText.value = "Exceeded time"
+                _exceededTime.value = inHrsMins2(categoryTimes[cat]!! - timeRules[cat]!!)
+                _countdownColor.value =CategoryRuleStatus.BROKEN
+            } else {
+                _exceededTimeText.value = "Time left"
+                _exceededTime.value = inHrsMins2(timeRules[cat]!! - categoryTimes[cat]!!)
+                if (categoryTimes[cat]!! > timeRules[cat]!! - 60){
+                    _countdownColor.value=CategoryRuleStatus.WARNING
+                }
+                else{
+                    _countdownColor.value=CategoryRuleStatus.SAFE
+                }
+            }
+            if (categoryLaunches[cat]!! > launchRules[cat]!!) {
+                _exceededLaunchesText.value = "Exceeded launches"
+                _exceededLaunches.value =getCounts(categoryLaunches[cat]!!-launchRules[cat]!!)
+                _countdownColor.value =CategoryRuleStatus.BROKEN
+            } else {
+                _exceededLaunchesText.value = "Launches left"
+                _exceededLaunches.value = getCounts(launchRules[cat]!! - categoryLaunches[cat]!!)
+                if(_countdownColor.value!=CategoryRuleStatus.BROKEN){
+                    if(categoryLaunches[cat]!! > launchRules[cat]!!-2){
+                        _countdownColor.value=CategoryRuleStatus.WARNING
+                    }
+                }
+
+            }
+        }
+    }
+
+    private fun getCounts(i: Int): String {
+        return if(i<10)
+            "0$i"
+        else
+            i.toString()
+    }
+
     fun goToMaxUsedAppUsageFragment(){
         val stat=appStats.maxByOrNull { it.timeSpent!! }
         _appNameForAppScreen.value=stat?.appName!!
@@ -159,6 +247,7 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
         _appTimeSpent.value=inHrsMins(stat.timeSpent!!)
         _appLaunches.value=stat.appLaunches.toString()
         _appPackageNameForAppScreen.value=stat.packageName!!
+        setHeadsUp(stat)
         _navigateToSelectedApp.value=true
     }
     fun goToMaxLaunchedAppUsageFragment(){
@@ -168,6 +257,7 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
         _appTimeSpent.value=inHrsMins(stat.timeSpent!!)
         _appLaunches.value=stat.appLaunches.toString()
         _appPackageNameForAppScreen.value=stat.packageName!!
+        setHeadsUp(stat)
         _navigateToSelectedApp.value=true
     }
     fun goToMaxUsedAppCatwiseUsageFragment(){
@@ -177,6 +267,7 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
         _appTimeSpent.value=inHrsMins(stat.timeSpent!!)
         _appLaunches.value=stat.appLaunches.toString()
         _appPackageNameForAppScreen.value=stat.packageName!!
+        setHeadsUp(stat)
         _navigateToSelectedApp.value=true
     }
     fun goToMaxLaunchedAppCatwiseUsageFragment(){
@@ -186,6 +277,7 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
         _appTimeSpent.value=inHrsMins(stat.timeSpent!!)
         _appLaunches.value=stat.appLaunches.toString()
         _appPackageNameForAppScreen.value=stat.packageName!!
+        setHeadsUp(stat)
         _navigateToSelectedApp.value=true
     }
     fun navigateToSelectedAppComplete(){
@@ -294,15 +386,15 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
 
                      if (key != "ENTERTAINMENT" && key!="TOTAL") {
                          if (categoryTimes[key]!! >= timeRules[key]!! || categoryLaunches[key]!! >= launchRules[key]!!) {
-                             val appsCategory=AppsCategory(key,AppsCategoryType.WEEKLY,CategoryRuleStatus.BROKEN)
+                             val appsCategory=AppsCategory(key,AppsCategoryType.DAILY,CategoryRuleStatus.BROKEN)
                              list.add(appsCategory)
                          }
                          else if(categoryTimes[key]!! >= timeRules[key]!!-60 || categoryLaunches[key]!! >= launchRules[key]!!-2){
-                             val appsCategory=AppsCategory(key,AppsCategoryType.WEEKLY,CategoryRuleStatus.WARNING)
+                             val appsCategory=AppsCategory(key,AppsCategoryType.DAILY,CategoryRuleStatus.WARNING)
                              list.add(appsCategory)
                          }
                          else{
-                             val appsCategory=AppsCategory(key,AppsCategoryType.WEEKLY,CategoryRuleStatus.SAFE)
+                             val appsCategory=AppsCategory(key,AppsCategoryType.DAILY,CategoryRuleStatus.SAFE)
                              list.add(appsCategory)
                          }
 
@@ -356,6 +448,24 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
                     "$hrs hrs 1 min"
                 else
                     "$hrs hrs $mins mins"
+            }
+        }
+    }
+    private fun inHrsMins2(i: Int): String {
+        val i2=i+(60-i%60)
+        val hrs:Int=(i2/ ONE_HOUR_IN_SECONDS)
+        val mins:Int=(i2% ONE_HOUR_IN_SECONDS)/60
+        return if (hrs<10){
+            if(mins<10){
+                "0$hrs:0$mins"
+            } else{
+                "0$hrs:$mins"
+            }
+        } else{
+            if(mins<10){
+                "$hrs:0$mins"
+            } else{
+                "$hrs:$mins"
             }
         }
     }

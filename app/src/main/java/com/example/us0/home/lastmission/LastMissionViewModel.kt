@@ -125,8 +125,7 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                 if (lastMissionNumber != null) {
                     var deadlineLong=0L
                         val referenceDeadline = userId?.let {
-                            cloudReference.child("Missions").child((lastMissionNumber.toString()))
-                                .child("deadline")
+                            cloudReference.child("deadlines").child((lastMissionNumber.toString()))
                         }
                         referenceDeadline?.addListenerForSingleValueEvent(object :
                             ValueEventListener {
@@ -140,7 +139,8 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                                     if (deadlineInMillis < now) {
                                         _goToLastMissionCompleted.value = lastMissionNumber
                                     }
-                                    else{_enableDifferentMissionButton.value=true
+                                    else{
+                                        _enableDifferentMissionButton.value=true
                                             viewModelScope.launch {
                                                 val missionToBeSaved = Mission()
                                                 missionToBeSaved.missionNumber= lastMissionNumber as Int

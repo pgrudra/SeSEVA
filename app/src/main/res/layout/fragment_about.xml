@@ -8,11 +8,186 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/common_background">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/subtitle_1"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/common_background"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
+            app:title="About us"
+            app:titleTextColor="@color/disabled_text" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/seseva_symbol"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:layout_marginTop="16dp"
+            app:srcCompat="@drawable/ic_active_mission_symbol" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/seseva_text"
+            android:layout_width="137dp"
+            android:layout_height="45dp"
+            app:layout_constraintTop_toBottomOf="@id/seseva_symbol"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="24dp"
+            app:srcCompat="@drawable/ic_app_name" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/body_2"
+            android:textColor="@color/primary_text"
+            tools:text="Version 1.0.0"
+            android:id="@+id/version_name"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintTop_toBottomOf="@id/seseva_text"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <View
+            android:id="@+id/v12"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:layout_constraintTop_toBottomOf="@id/version_name"
+            android:layout_marginTop="16dp"
+            android:background="@color/selected_group_card_background" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:id="@+id/latest_release_features_c_l"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/v12">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/body_2"
+            android:textColor="@color/primary_text"
+            android:text="Latest release features"
+            android:id="@+id/latest_release_features"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+            <View
+                android:id="@+id/v23"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                app:layout_constraintTop_toBottomOf="@id/latest_release_features"
+                android:layout_marginTop="16dp"
+                android:background="@color/selected_group_card_background" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:id="@+id/terms_of_use_c_l"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/latest_release_features_c_l">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/body_2"
+                android:textColor="@color/primary_text"
+                android:text="Terms of use"
+                android:id="@+id/terms_of_use"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+            <View
+                android:id="@+id/v34"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                app:layout_constraintTop_toBottomOf="@id/terms_of_use"
+                android:layout_marginTop="16dp"
+                android:background="@color/selected_group_card_background" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:id="@+id/privacy_policy_c_l"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/terms_of_use_c_l">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/body_2"
+                android:textColor="@color/primary_text"
+                android:text="Privacy policy"
+                android:id="@+id/privacy_policy"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+            <View
+                android:id="@+id/v45"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                app:layout_constraintTop_toBottomOf="@id/privacy_policy"
+                android:layout_marginTop="16dp"
+                android:background="@color/selected_group_card_background" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/body_2"
+            android:textColor="@color/primary_text"
+            android:text="Connect with us"
+            android:id="@+id/connect_with_us_text"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/privacy_policy_c_l"
+            app:layout_constraintStart_toStartOf="parent"/>
+        <ImageButton
+            android:id="@+id/gmail_icon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:layout_constraintTop_toBottomOf="@id/connect_with_us_text"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="14dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_gmail_icon"/>
+        <ImageButton
+            android:id="@+id/twitter_icon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="@id/gmail_icon"
+            app:layout_constraintStart_toEndOf="@id/gmail_icon"
+            android:src="@drawable/ic_twitter_icon"
+            android:layout_marginStart="24dp"/>
+        <ImageButton
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:layout_constraintStart_toEndOf="@id/twitter_icon"
+            app:layout_constraintTop_toTopOf="@id/gmail_icon"
+            android:layout_marginStart="24dp"
+            android:visibility="invisible"
+            android:src="@drawable/ic_youtube_icon"/>
+
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="@string/app_version"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintStart_toStartOf="parent"/>
+    android:text="Developed by Prajwal Rudrakshi"
+    app:layout_constraintBottom_toTopOf="@id/designer_details"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:textColor="@color/disabled_text"
+    android:layout_marginBottom="8dp"
+    style="@style/caption" />
+        <TextView
+            android:id="@+id/designer_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Designed by Panchami Rudrakshi"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@color/disabled_text"
+            android:layout_marginBottom="38dp"
+            style="@style/caption"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

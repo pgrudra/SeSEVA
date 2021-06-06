@@ -1,9 +1,11 @@
 package com.example.us0.home
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
@@ -14,6 +16,7 @@ import androidx.navigation.ui.NavigationUI
 import com.example.us0.R
 import com.example.us0.databinding.ActivityHomeBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -26,7 +29,8 @@ import kotlinx.android.synthetic.main.nav_header.view.*
 
 
 class HomeActivity :AppCompatActivity(),DrawerLocker,
-    BottomNavigationView.OnNavigationItemSelectedListener {
+    BottomNavigationView.OnNavigationItemSelectedListener,
+    NavigationView.OnNavigationItemSelectedListener {
     lateinit var binding: ActivityHomeBinding
     private lateinit var drawerLayout:DrawerLayout
     private val appUpdateManager: AppUpdateManager by lazy { AppUpdateManagerFactory.create(this) }
@@ -52,7 +56,10 @@ class HomeActivity :AppCompatActivity(),DrawerLocker,
 val navHostFragment=supportFragmentManager.findFragmentById(R.id.myNavHostFragmentToSignOut) as NavHostFragment
         val navController=navHostFragment.navController
         NavigationUI.setupWithNavController(binding.navView, navController)
+        binding.navView.setNavigationItemSelectedListener(this)
         NavigationUI.setupWithNavController(binding.bottomNavView, navController)
+        //binding.bottomNavView.selectedItemId=R.id.homeFragment
+        //binding.bottomNavView.menu.getItem(0).isChecked = true
 binding.bottomNavView.setOnNavigationItemSelectedListener(this)
 
 
@@ -188,7 +195,7 @@ binding.bottomNavView.setOnNavigationItemSelectedListener(this)
             else->{header.level.text="p"}
         }
     }*/
-    
+
     override fun openCloseNavigationDrawer(view: View){
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START)
@@ -236,8 +243,34 @@ binding.bottomNavView.setOnNavigationItemSelectedListener(this)
                 }
             }.invokeOnCompletion { this@HomeActivity.findNavController(R.id.myNavHostFragmentToSignOut).navigate(item.itemId,args) }
         }*/
-            this@HomeActivity.findNavController(R.id.myNavHostFragmentToSignOut).navigate(item.itemId)
+        when(item.itemId){
+            R.id.reportBugFragment ->{
+                val intent= Intent(Intent.ACTION_SENDTO).apply {
+                    data = Uri.parse("mailto:")
+                    putExtra(Intent.EXTRA_EMAIL, arrayOf("pgr19990109@gmail.com"))
+                    putExtra(Intent.EXTRA_SUBJECT, getString(R.string.report_bug_in,getString(R.string.app_version)))
+                }
+                if (intent.resolveActivity(packageManager) != null) {
+                    startActivity(intent)
+                }
+            }
+            R.id.becomeSponsor ->{
+                val intent= Intent(Intent.ACTION_SENDTO).apply {
+                    data = Uri.parse("mailto:")
+                    putExtra(Intent.EXTRA_EMAIL, arrayOf("pgr19990109@gmail.com"))
+                    putExtra(Intent.EXTRA_SUBJECT, getString(R.string.interest_become_sponsor))
+                }
+                if (intent.resolveActivity(packageManager) != null) {
+                    startActivity(intent)
+                }
+            }
+            R.id.inviteFriends->{}
+            R.id.rateUs->{}
+            R.id.FAQFragment->{}
+            else ->this@HomeActivity.findNavController(R.id.myNavHostFragmentToSignOut).navigate(item.itemId)
+        }
 
+        drawerLayout.closeDrawer(GravityCompat.START)
         return false
     }
 

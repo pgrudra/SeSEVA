@@ -50,6 +50,12 @@ class LastMissionCompletedFragment : Fragment() {
                 binding.chooseNewMission.isEnabled=true
             }
         })
+        viewModel.reportAvailable.observe(viewLifecycleOwner, Observer<Boolean> { reportAvailable->
+            if(reportAvailable){
+                binding.button4.visibility=View.VISIBLE
+                binding.reportPendingText.visibility=View.GONE
+            }
+        })
         return binding.root
     }
 

@@ -15,25 +15,13 @@
         android:background="@color/common_background">
 
         <TextView
-            android:id="@+id/textView7"
-            style="@style/subtitle_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{LastMissionCompletedViewModel.userName}"
-            android:textColor="@color/primary_text"
-            app:layout_constraintBottom_toBottomOf="@+id/textView8"
-            app:layout_constraintStart_toEndOf="@+id/textView8"
-            app:layout_constraintTop_toTopOf="@+id/textView8"
-            tools:text="UserName" />
-
-        <TextView
             android:id="@+id/textView8"
             style="@style/subtitle_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
-            android:text="@string/welcome_back"
+            tools:text="Welcome back User"
+            android:text="@{LastMissionCompletedViewModel.userName}"
             android:textColor="@color/primary_text"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -43,103 +31,137 @@
             style="@style/subtitle_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:text="@string/hurrah"
-            android:textColor="#F2C94C"
+            android:textColor="@color/yellow"
             app:layout_constraintStart_toStartOf="@+id/textView8"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
         <TextView
             android:id="@+id/textView10"
-            style="@style/body_1"
-            android:textColor="@color/primary_text"
-            android:layout_width="wrap_content"
+            style="@style/caption"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="@{LastMissionCompletedViewModel.lastMissionName}"
+            android:textColor="@color/primary_text"
             app:layout_constraintStart_toStartOf="@+id/textView8"
             app:layout_constraintTop_toBottomOf="@+id/textView9"
-            tools:text="Mission name met it's goal"/>
+            tools:text="Mission name met it's goal" />
 
         <TextView
             android:id="@+id/textView11"
-            style="@style/subtitle_1"
-            android:layout_width="wrap_content"
+            style="@style/subtitle_2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:text="@{LastMissionCompletedViewModel.personalContribution}"
-            android:textColor="@color/colorPrimary"
-            app:layout_constraintStart_toStartOf="@+id/textView8"
+            android:textColor="@color/primary_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center"
+            android:elevation="15dp"
+            android:padding="21dp"
+            android:background="@drawable/all_corner_rounded_4dp_1e"
             app:layout_constraintTop_toBottomOf="@+id/textView10"
-            tools:text="You raised \nRs1000 \nfor this charity" />
+            tools:text="You raised Rs 1000 for this mission" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/appCompatImageView6"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/textView18"
-            app:layout_constraintStart_toStartOf="@+id/appCompatImageView7"
-            app:layout_constraintTop_toTopOf="@+id/textView18"
-            app:srcCompat="@drawable/users_symbol" />
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/all_corner_rounded_4dp_1e"
+            android:paddingBottom="11dp"
+            app:layout_constraintEnd_toStartOf="@+id/constraintLayout2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView11">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/appCompatImageView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/textView12"
-            app:layout_constraintStart_toStartOf="@+id/textView8"
-            app:layout_constraintTop_toTopOf="@+id/textView12"
-            app:srcCompat="@drawable/rupee_symbol" />
+            <TextView
+                android:id="@+id/amount_raised"
+                style="@style/subtitle_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:textColor="@color/primary_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Rs 10000000" />
 
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginTop="24dp"
-            android:fontFamily="@font/montserrat_used"
-            android:text="@{LastMissionCompletedViewModel.totalMoneyRaised}"
-            android:textColor="@color/colorAccent"
-            android:textFontWeight="500"
-            android:textSize="24sp"
-            app:layout_constraintStart_toEndOf="@+id/appCompatImageView7"
-            app:layout_constraintTop_toBottomOf="@+id/textView11"
-            tools:text="10000" />
+            <TextView
+                android:id="@+id/amount_raised_text"
+                style="@style/caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Amount raised"
+                android:textColor="@color/disabled_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/amount_raised" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/textView13"
-            style="@style/body_2"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="0dp"
+            android:paddingBottom="11dp"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/all_corner_rounded_4dp_1e"
             android:layout_height="wrap_content"
-            android:text="@string/total_amount_raised"
-            android:textColor="@color/secondary_text"
-            app:layout_constraintStart_toStartOf="@+id/textView12"
-            app:layout_constraintTop_toBottomOf="@+id/textView12" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/constraintLayout1"
+            app:layout_constraintTop_toTopOf="@id/constraintLayout1">
+
+            <TextView
+                android:id="@+id/contributors"
+                style="@style/subtitle_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                tools:text="1590"
+                android:textColor="@color/primary_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/contributors_text"
+                style="@style/caption"
+                android:text="Contributors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/disabled_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/contributors" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:id="@+id/button4"
             style="@style/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:background="@null"
             android:paddingStart="8dp"
-            android:text="@string/view_report"
+            android:text="download report"
+            android:visibility="gone"
             android:textColor="@color/colorSecondary"
+            app:layout_constraintBottom_toBottomOf="@+id/textView9"
             app:layout_constraintEnd_toEndOf="parent"
-            android:enabled="false"
-            app:layout_constraintTop_toBottomOf="@+id/textView10" />
-
-        <TextView
-            android:id="@+id/textView18"
-            style="@style/body_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@{LastMissionCompletedViewModel.contributors}"
-            android:textColor="@color/secondary_text"
-            app:layout_constraintStart_toStartOf="@+id/textView12"
-            app:layout_constraintTop_toBottomOf="@+id/textView13"
-            tools:text="150 total contributors" />
+            app:layout_constraintTop_toTopOf="@+id/textView9" />
+<TextView
+    android:id="@+id/report_pending_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Report will be available soon"
+    android:textColor="@color/disabled_text"
+    android:textSize="10sp"
+    app:layout_constraintBottom_toBottomOf="@+id/textView9"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/textView9"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/appCompatImageView8"
@@ -164,11 +186,14 @@
             android:enabled="false"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:layout_editor_absoluteX="16dp" />
+
         <View
             android:id="@+id/skrim"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/skrim" />
+            android:background="@color/skrim"
+            android:visibility="visible"
+            tools:layout_editor_absoluteX="16dp" />
 
         <ProgressBar
             android:id="@+id/progressBar1"
@@ -177,6 +202,7 @@
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:indeterminateTint="#03DAC5"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

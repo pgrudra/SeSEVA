@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -89,6 +90,7 @@ class AccomplishedMissionDetails : Fragment() {
             .into(binding.sponsorLogo)
         if(mission.reportAvailable){
             binding.downloadReportButton.text="DOWNLOAD REPORT"
+            context?.let { binding.downloadReportButton.setTextColor(ContextCompat.getColor(it, R.color.colorPrimary)) }
             binding.downloadReportButton.setBackgroundResource(R.drawable.login_change_email)
         }
         return binding.root

@@ -13,7 +13,7 @@ interface MissionsDatabaseDao{
     @Update
     suspend fun update(mission:Mission)
 
-    @Update
+    @Update(entity = Mission::class)
     suspend fun partialUpdate(partialMission:PartialMission)
 
     @Query("SELECT * FROM list_of_missions WHERE missionNumber=:key")

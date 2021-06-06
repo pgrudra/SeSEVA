@@ -76,6 +76,48 @@ class CategoryUsageFragment : Fragment() {
                 binding.i.visibility=View.VISIBLE
             }
         })
+        viewModel.headsUpDisappear.observe(viewLifecycleOwner, Observer {disappear->
+            if(disappear) {
+                binding.headsUpCL.visibility=View.GONE
+                binding.whitelistedDescription.visibility=View.VISIBLE
+            }
+            else{
+                binding.headsUpCL.visibility=View.VISIBLE
+                binding.whitelistedDescription.visibility=View.GONE
+            }
+        })
+        viewModel.countdownColor.observe(viewLifecycleOwner, Observer {status->
+            when (status) {
+                CategoryRuleStatus.BROKEN -> {
+                    binding.headsUpText.text="Oye!!"
+                    context?.let {
+                        binding.headsUpText.setTextColor(ContextCompat.getColor(it, R.color.colorError))
+                        binding.timeCountdown.setTextColor(ContextCompat.getColor(it, R.color.colorError))
+                        binding.launchesCountdown.setTextColor(ContextCompat.getColor(it, R.color.colorError))}
+                    binding.timeCountdown.setBackgroundResource(R.drawable.ic_countdown_red)
+                    binding.launchesCountdown.setBackgroundResource(R.drawable.ic_counts_countdown_red)
+
+                }
+                CategoryRuleStatus.WARNING -> {
+                    binding.headsUpText.text="Heads Up!"
+                    context?.let {
+                        binding.headsUpText.setTextColor(ContextCompat.getColor(it, R.color.yellow))
+                        binding.timeCountdown.setTextColor(ContextCompat.getColor(it, R.color.yellow))
+                        binding.launchesCountdown.setTextColor(ContextCompat.getColor(it, R.color.yellow))}
+                    binding.timeCountdown.setBackgroundResource(R.drawable.ic_countdown_yellow)
+                    binding.launchesCountdown.setBackgroundResource(R.drawable.ic_counts_countdown_yellow)
+                }
+                else -> {
+                    binding.headsUpText.text="Hey!"
+                    context?.let {
+                        binding.headsUpText.setTextColor(ContextCompat.getColor(it, R.color.colorPrimary))
+                        binding.timeCountdown.setTextColor(ContextCompat.getColor(it, R.color.colorPrimary))
+                        binding.launchesCountdown.setTextColor(ContextCompat.getColor(it, R.color.colorPrimary)) }
+                    binding.timeCountdown.setBackgroundResource(R.drawable.ic_countdown_green)
+                    binding.launchesCountdown.setBackgroundResource(R.drawable.ic_counts_countdown_green)
+                }
+            }
+        })
         val manager2 = GridLayoutManager(activity, 2, GridLayoutManager.HORIZONTAL, false)
         val manager1 = GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false)
         viewModel.appsInCatList.observe(viewLifecycleOwner, Observer {
