@@ -6,7 +6,7 @@
     <data>
         <variable
             name="UsageOverViewViewModel"
-            type="com.example.us0.home.usagestats.UsageOverViewViewModel" />
+            type="com.spandverse.seseva.home.usagestats.UsageOverViewViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

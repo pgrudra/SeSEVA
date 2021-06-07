@@ -5,7 +5,7 @@
     <data>
         <variable
             name="FeatsViewModel"
-            type="com.example.us0.home.feats.FeatsViewModel" />
+            type="com.spandverse.seseva.home.feats.FeatsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

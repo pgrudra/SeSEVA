@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.us0">
+    package="com.spandverse.seseva">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -17,7 +17,7 @@
         </intent>
     </queries>
     <application
-        android:name=".ClickerApplication"
+        android:name="com.spandverse.seseva.ClickerApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -25,7 +25,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".home.HomeActivity"
+        <activity android:name="com.spandverse.seseva.home.HomeActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
@@ -34,10 +34,10 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".foregroundnnotifications.TestService"
+        <service android:name="com.spandverse.seseva.foregroundnnotifications.TestService"
             android:stopWithTask="false"/>
         <activity
-            android:name=".MainActivity"
+            android:name="com.spandverse.seseva.MainActivity"
             android:noHistory="true"
             android:screenOrientation="portrait"
             >
@@ -57,7 +57,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:enabled="true" android:name=".StartServiceOnBoot">
+        <receiver android:enabled="true" android:name="com.spandverse.seseva.StartServiceOnBoot">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>

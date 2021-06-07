@@ -13,7 +13,7 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "com.example.us0"
+        applicationId "com.spandverse.seseva"
         minSdkVersion 21
         targetSdkVersion 30
 

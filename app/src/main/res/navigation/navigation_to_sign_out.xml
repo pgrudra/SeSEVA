@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/permissionFragment"
-        android:name="com.example.us0.foregroundnnotifications.PermissionFragment"
+        android:name="com.spandverse.seseva.foregroundnnotifications.PermissionFragment"
         android:label="PermissionFragment" >
         <action
             android:id="@+id/action_permissionFragment_to_homeFragment"
@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/usageOverViewFragment"
-        android:name="com.example.us0.home.usagestats.UsageOverviewFragment"
+        android:name="com.spandverse.seseva.home.usagestats.UsageOverviewFragment"
         android:label="UsageOverViewFragment" >
         <action
             android:id="@+id/action_usageOverViewFragment_to_categoryUsageFragment"
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/chooseMissionFragment"
-        android:name="com.example.us0.choosemission.ChooseMission"
+        android:name="com.spandverse.seseva.choosemission.ChooseMission"
         android:label="fragment_choose_mission"
         tools:layout="@layout/fragment_choose_mission" >
         <action
@@ -42,7 +42,7 @@
     </fragment>
     <fragment
         android:id="@+id/passageFragment"
-        android:name="com.example.us0.home.PassageFragment"
+        android:name="com.spandverse.seseva.home.PassageFragment"
         android:label="fragment_passage">
         <action
             android:id="@+id/action_passageFragment_to_chooseMissionFragment"
@@ -73,7 +73,7 @@
     </fragment>
     <fragment
         android:id="@+id/askName"
-        android:name="com.example.us0.home.askname.AskName"
+        android:name="com.spandverse.seseva.home.askname.AskName"
         android:label="AskName" >
         <action
             android:id="@+id/action_askName_to_introToApp3"
@@ -81,7 +81,7 @@
     </fragment>
     <fragment
         android:id="@+id/introToApp3"
-        android:name="com.example.us0.home.appintro.IntroToApp"
+        android:name="com.spandverse.seseva.home.appintro.IntroToApp"
         android:label="IntroToApp" >
         <action
             android:id="@+id/action_introToApp3_to_introToApp22"
@@ -89,7 +89,7 @@
     </fragment>
     <fragment
         android:id="@+id/introToApp22"
-        android:name="com.example.us0.home.appintro.IntroToApp2"
+        android:name="com.spandverse.seseva.home.appintro.IntroToApp2"
         android:label="IntroToApp2" >
         <action
             android:id="@+id/action_introToApp22_to_passageFragment"
@@ -97,18 +97,18 @@
     </fragment>
     <fragment
         android:id="@+id/accomplishedMissionDetails"
-        android:name="com.example.us0.home.closedmissions.AccomplishedMissionDetails"
+        android:name="com.spandverse.seseva.home.closedmissions.AccomplishedMissionDetails"
         android:label="ClosedMissionsFragment" >
         <argument
             android:name="selectedMission"
-            app:argType="com.example.us0.data.missions.DomainActiveMission" />
+            app:argType="com.spandverse.seseva.data.missions.DomainActiveMission" />
         <action
             android:id="@+id/action_accomplishedMissionDetails_to_sponsorDetailsFragment"
             app:destination="@id/sponsorDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/lastMissionFragment"
-        android:name="com.example.us0.home.lastmission.LastMissionFragment"
+        android:name="com.spandverse.seseva.home.lastmission.LastMissionFragment"
         android:label="LastMissionFragment" >
         <action
             android:id="@+id/action_lastMissionFragment_to_passageFragment"
@@ -130,7 +130,7 @@
     </fragment>
     <fragment
         android:id="@+id/reportFragment"
-        android:name="com.example.us0.home.report.ReportFragment"
+        android:name="com.spandverse.seseva.home.report.ReportFragment"
         android:label="ReportFragment" >
         <action
             android:id="@+id/action_reportFragment_to_passageFragment"
@@ -142,11 +142,11 @@
     </fragment>
     <fragment
         android:id="@+id/detailMission"
-        android:name="com.example.us0.choosemission.DetailMission"
+        android:name="com.spandverse.seseva.choosemission.DetailMission"
         android:label="DetailMission">
     <argument
         android:name="selectedMission"
-        app:argType="com.example.us0.data.missions.DomainActiveMission" />
+        app:argType="com.spandverse.seseva.data.missions.DomainActiveMission" />
 
         <action
             android:id="@+id/action_detailMission_to_chooseMissionFragment"
@@ -167,7 +167,7 @@
     </fragment>
     <fragment
         android:id="@+id/rulesFragment2"
-        android:name="com.example.us0.home.rules.RulesFragment2"
+        android:name="com.spandverse.seseva.home.rules.RulesFragment2"
         android:label="RulesFragment2" >
         <action
             android:id="@+id/action_rulesFragment2_to_homeFragment"
@@ -177,7 +177,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.us0.home.HomeFragment"
+        android:name="com.spandverse.seseva.home.HomeFragment"
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_permissionFragment"
@@ -208,19 +208,19 @@
     </fragment>
     <fragment
         android:id="@+id/detailClosedMissionFragment"
-        android:name="com.example.us0.home.closedmissions.MissionAccomplishedDialog"
+        android:name="com.spandverse.seseva.home.closedmissions.MissionAccomplishedDialog"
         android:label="fragment_deatil_closed_mission"
         tools:layout="@layout/mission_accomplished_dialog">
         <argument
             android:name="selectedMission"
-            app:argType="com.example.us0.data.missions.DomainClosedMission"/>
+            app:argType="com.spandverse.seseva.data.missions.DomainClosedMission"/>
         <action
             android:id="@+id/action_detailClosedMissionFragment_to_chooseMissionFragment"
             app:destination="@id/chooseMissionFragment" />
     </fragment>
     <fragment
         android:id="@+id/lastMissionCompletedFragment"
-        android:name="com.example.us0.home.lastmission.LastMissionCompletedFragment"
+        android:name="com.spandverse.seseva.home.lastmission.LastMissionCompletedFragment"
         android:label="LastMissionCompletedFragment" >
         <action
             android:id="@+id/action_lastMissionCompletedFragment_to_passageFragment"
@@ -232,11 +232,11 @@
     </fragment>
     <fragment
         android:id="@+id/FAQFragment"
-        android:name="com.example.us0.home.navscreens.FAQFragment"
+        android:name="com.spandverse.seseva.home.navscreens.FAQFragment"
         android:label="FAQFragment" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.us0.home.navscreens.SettingsFragment"
+        android:name="com.spandverse.seseva.home.navscreens.SettingsFragment"
         android:label="SettingsFragment" >
         <action
             android:id="@+id/action_settingsFragment_to_permissionFragment"
@@ -247,15 +247,15 @@
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
-        android:name="com.example.us0.home.navscreens.AboutFragment"
+        android:name="com.spandverse.seseva.home.navscreens.AboutFragment"
         android:label="AboutFragment" />
     <fragment
         android:id="@+id/reportBugFragment"
-        android:name="com.example.us0.home.navscreens.ReportBugFragment"
+        android:name="com.spandverse.seseva.home.navscreens.ReportBugFragment"
         android:label="ReportBugFragment" />
     <fragment
         android:id="@+id/featsFragment"
-        android:name="com.example.us0.home.feats.FeatsFragment"
+        android:name="com.spandverse.seseva.home.feats.FeatsFragment"
         android:label="FeatsFragment" >
         <action
             android:id="@+id/action_featsFragment_to_sponsorDetailsFragment"
@@ -269,7 +269,7 @@
     </fragment>
     <fragment
         android:id="@+id/categoryUsageFragment"
-        android:name="com.example.us0.home.usagestats.CategoryUsageFragment"
+        android:name="com.spandverse.seseva.home.usagestats.CategoryUsageFragment"
         android:label="CategoryUsageFragment" >
         <action
             android:id="@+id/action_categoryUsageFragment_to_appUsageFragment"
@@ -283,7 +283,7 @@
     </fragment>
     <fragment
         android:id="@+id/appUsageFragment"
-        android:name="com.example.us0.home.usagestats.AppUsageFragment"
+        android:name="com.spandverse.seseva.home.usagestats.AppUsageFragment"
         android:label="AppUsageFragment" >
         <argument
             android:name="appPackageName"
@@ -297,7 +297,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.us0.home.profile.ProfileFragment"
+        android:name="com.spandverse.seseva.home.profile.ProfileFragment"
         android:label="ProfileFragment" >
         <action
             android:id="@+id/action_profileFragment_to_chooseMissionFragment"
@@ -311,7 +311,7 @@
     </fragment>
     <fragment
         android:id="@+id/yourPreviousMissionsFragment"
-        android:name="com.example.us0.home.yourpreviousmissions.YourPreviousMissionsFragment"
+        android:name="com.spandverse.seseva.home.yourpreviousmissions.YourPreviousMissionsFragment"
         android:label="YourPreviousMissionsFragment" >
         <action
             android:id="@+id/action_yourPreviousMissionsFragment_to_profileFragment"
@@ -320,7 +320,7 @@
             app:popUpToInclusive="true" />
         <argument
             android:name="currentMission"
-            app:argType="com.example.us0.data.missions.DomainActiveMission" />
+            app:argType="com.spandverse.seseva.data.missions.DomainActiveMission" />
         <action
             android:id="@+id/action_yourPreviousMissionsFragment_to_detailMission"
             app:destination="@id/detailMission" />
@@ -330,7 +330,7 @@
     </fragment>
     <fragment
         android:id="@+id/DOOAFragment"
-        android:name="com.example.us0.drawoverotherapps.DOOAFragment"
+        android:name="com.spandverse.seseva.drawoverotherapps.DOOAFragment"
         android:label="DOOAFragment" >
         <action
             android:id="@+id/action_DOOAFragment_to_homeFragment"
@@ -340,7 +340,7 @@
     </fragment>
     <fragment
         android:id="@+id/sponsorDetailsFragment"
-        android:name="com.example.us0.choosemission.SponsorDetailsFragment"
+        android:name="com.spandverse.seseva.choosemission.SponsorDetailsFragment"
         android:label="SponsorDetailsFragment" >
 
         <argument

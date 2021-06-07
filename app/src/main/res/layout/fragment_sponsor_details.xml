@@ -5,7 +5,7 @@
     <data>
         <variable
             name="sponsorDetailsViewModel"
-            type="com.example.us0.choosemission.SponsorDetailsViewModel" />
+            type="com.spandverse.seseva.choosemission.SponsorDetailsViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="PermissionViewModel"
-            type="com.example.us0.foregroundnnotifications.PermissionViewModel" />
+            type="com.spandverse.seseva.foregroundnnotifications.PermissionViewModel" />
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="LoginViewModel"
-            type="com.example.us0.ui.login.LoginViewModel" />
+            type="com.spandverse.seseva.ui.login.LoginViewModel" />
     </data>
 
 

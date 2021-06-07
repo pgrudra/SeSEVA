@@ -7,7 +7,7 @@
 
         <variable
             name="selectedMissionViewModel"
-            type="com.example.us0.choosemission.DetailMissionViewModel" />
+            type="com.spandverse.seseva.choosemission.DetailMissionViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

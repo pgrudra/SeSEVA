@@ -7,7 +7,7 @@
 
         <variable
             name="Rules2ViewModel"
-            type="com.example.us0.home.rules.Rules2ViewModel" />
+            type="com.spandverse.seseva.home.rules.Rules2ViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

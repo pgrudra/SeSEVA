@@ -5,7 +5,7 @@
     <data>
         <variable
             name="YPMViewModel"
-            type="com.example.us0.home.yourpreviousmissions.YPMViewModel" />
+            type="com.spandverse.seseva.home.yourpreviousmissions.YPMViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

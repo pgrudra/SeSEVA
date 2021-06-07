@@ -6,7 +6,7 @@
     <data>
         <variable
             name="ChooseMissionViewModel"
-            type="com.example.us0.choosemission.ChooseMissionViewModel" />
+            type="com.spandverse.seseva.choosemission.ChooseMissionViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/choose_mission_layout"

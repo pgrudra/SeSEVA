@@ -6,7 +6,7 @@
     <data>
         <variable
             name="ProfileViewModel"
-            type="com.example.us0.home.profile.ProfileViewModel" />
+            type="com.spandverse.seseva.home.profile.ProfileViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

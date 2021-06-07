@@ -5,7 +5,7 @@
     <data>
         <variable
             name="AMDViewModel"
-            type="com.example.us0.home.closedmissions.AMDViewModel" />
+            type="com.spandverse.seseva.home.closedmissions.AMDViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

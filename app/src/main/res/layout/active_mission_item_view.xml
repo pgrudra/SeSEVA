@@ -7,7 +7,7 @@
 
         <variable
             name="activeMission"
-            type="com.example.us0.data.missions.DomainActiveMission" />
+            type="com.spandverse.seseva.data.missions.DomainActiveMission" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
