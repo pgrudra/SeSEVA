@@ -115,7 +115,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
         val loadedList=database.getDownloadedMissions()
         val entireList:MutableList<Int> = arrayListOf()
         val moneyRaisedList:MutableList<Pair<Int,Int>> = arrayListOf()
-        val moneyRaisedReference=cloudReference.child("Money Raised")
+        val moneyRaisedReference=cloudReference.child("moneyRaised")
         moneyRaisedReference.addListenerForSingleValueEvent(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 //_totalMissions.value= snapshot.childrenCount.toString()
@@ -141,6 +141,26 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
             }
         })
 
+        val accomplishedEntireList:MutableList<Int> = arrayListOf()
+        val accomplishedMoneyRaisedResult=cloudReference.child("accomplishedMoneyRaised").singleValueEvent()
+        when(accomplishedMoneyRaisedResult){
+            is EventResponse.Changed->{
+                val dataSnapshot=accomplishedMoneyRaisedResult.snapshot
+                for(i in dataSnapshot.children) {
+                    //totalRaisedMoney += i.getValue<Int>() ?: 0
+                    accomplishedEntireList.add(i.key.toString().toInt())
+                }
+            }
+            is EventResponse.Cancelled->{}
+        }
+        if(loadedList!=null){
+            val toDownloadList=accomplishedEntireList.minus(loadedList)
+            insertAccomplishedMissionsIntoDatabase(toDownloadList)
+        }
+        else{
+            insertAccomplishedMissionsIntoDatabase(accomplishedEntireList)
+        }
+
        /* val deadlinesReference=cloudReference.child("deadlines")
         val now = Calendar.getInstance()
         deadlinesReference.addListenerForSingleValueEvent(object: ValueEventListener{
@@ -160,13 +180,49 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
         })*/
     }
 
+    private suspend fun insertAccomplishedMissionsIntoDatabase(toDownloadList: List<Int>) {
+        val contributionsList:MutableList<Pair<Int,Int>> = arrayListOf()
+        userId?.let {
+            when(val contributionsResult=cloudReference.child("users").child(userId).child("contributions").singleValueEvent()){
+                is EventResponse.Changed->{
+                    for(j in contributionsResult.snapshot.children){
+                        contributionsList.add(Pair(j.getValue<Int>()?:0,j.getValue<Int>()?:0))
+                    }
+                }
+                is EventResponse.Cancelled->{}
+            }
+        }
+        for(i in toDownloadList){
+            val accomplishedMissionResult=cloudReference.child("accomplishedMissions").child("i").singleValueEvent()
+            val mission=Mission()
+            when(accomplishedMissionResult){
+                is EventResponse.Changed-> {
+                    val dataSnapshot=accomplishedMissionResult.snapshot
+                    mission.missionNumber=i
+                    mission.missionName=dataSnapshot.child("missionName").value.toString()
+                    mission.sponsorName=dataSnapshot.child("sponsorName").value.toString()
+                    mission.sponsorNumber=dataSnapshot.child("sponsorNumber").getValue<Int>()?:0
+                    mission.missionDescription=dataSnapshot.child("missionDescription").value.toString()
+                    mission.reportAvailable=dataSnapshot.child("reportAvailable").getValue<Boolean>()?:false
+                    mission.totalMoneyRaised=dataSnapshot.child("moneyRaised").getValue<Int>()?:0
+                    mission.contributors=dataSnapshot.child("contributors").getValue<Int>()?:0
+                    mission.deadline=dataSnapshot.child("deadline").value.toString().deadlineStringToLong()
+                    mission.contribution=contributionsList.find{it.first==i}?.second ?:0
+                }
+                is EventResponse.Cancelled->{}
+            }
+            database.insert(mission)
+
+        }
+    }
+
     private fun insertIntoDatabase(list: List<Int>, loadedList: List<Int>?, moneyRaisedList:MutableList<Pair<Int,Int>>) {
-        val usersList:MutableList<Pair<Int,Int>> = arrayListOf()
-        val usersReference=cloudReference.child("Users Active")
-        usersReference.addListenerForSingleValueEvent(object : ValueEventListener{
+        val contributorsList:MutableList<Pair<Int,Int>> = arrayListOf()
+        val contributorsReference=cloudReference.child("contributors")
+        contributorsReference.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 for(missionSnapShot in snapshot.children ){
-                    usersList.add(Pair(missionSnapShot.key!!.toInt(),missionSnapShot.value.toString().toInt()))
+                    contributorsList.add(Pair(missionSnapShot.key!!.toInt(),missionSnapShot.value.toString().toInt()))
                 }
                 val check=sharedPref.getBoolean((R.string.update_contributions_cloud).toString(),false)
                 if(check){
@@ -190,7 +246,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                                     mission?.totalMoneyRaised= moneyRaisedList.find{it.first==primaryKey}?.second ?:0
                                     val now: Calendar = Calendar.getInstance()
                                     mission?.missionActive=now.timeInMillis<= mission?.deadline!!
-                                    mission.usersActive=usersList.find{it.first==primaryKey}?.second ?:0
+                                    mission.contributors=contributorsList.find{it.first==primaryKey}?.second ?:0
                                     viewModelScope.launch { database.insert(mission) }
                                 }
 
@@ -204,7 +260,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                             viewModelScope.launch {
                                 for (i in loadedList) {
                                     val mission = database.doesMissionExist(i)
-                                    mission?.usersActive=usersList.find{it.first==i}?.second ?:0
+                                    mission?.contributors=contributorsList.find{it.first==i}?.second ?:0
                                     mission?.totalMoneyRaised=moneyRaisedList.find{it.first==i}?.second ?:0
                                     mission?.let { database.update(it) }
                                 }
@@ -224,7 +280,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                                 val now: Calendar = Calendar.getInstance()
                                 //may need to remove this
                                 mission?.missionActive=now.timeInMillis<= mission?.deadline!!
-                                mission.usersActive=usersList.find{it.first==primaryKey}?.second ?:0
+                                mission.contributors=contributorsList.find{it.first==primaryKey}?.second ?:0
                                 viewModelScope.launch { database.insert(mission) }
                             }
 
@@ -238,7 +294,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                         viewModelScope.launch {
                             for (i in loadedList) {
                                 val mission = database.doesMissionExist(i)
-                                mission?.usersActive=usersList.find{it.first==i}?.second ?:0
+                                mission?.contributors=contributorsList.find{it.first==i}?.second ?:0
                                 mission?.totalMoneyRaised=moneyRaisedList.find{it.first==i}?.second ?:0
                                 mission?.let { database.update(it) }
                             }

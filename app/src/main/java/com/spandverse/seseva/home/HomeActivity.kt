@@ -3,6 +3,7 @@ package com.spandverse.seseva.home
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -60,7 +61,7 @@ val navHostFragment=supportFragmentManager.findFragmentById(R.id.myNavHostFragme
         //binding.bottomNavView.selectedItemId=R.id.homeFragment
         //binding.bottomNavView.menu.getItem(0).isChecked = true
 binding.bottomNavView.setOnNavigationItemSelectedListener(this)
-
+        Log.i("PVM","10")
 
         //navController.graph.findNode(R.id.detailMission)?.addArgument("selectedMission",NavArgument.Builder().setDefaultValue().build())
        /* navController.addOnDestinationChangedListener { controller, destination, arguments ->

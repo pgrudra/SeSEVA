@@ -25,7 +25,7 @@ class AllMissionsAdapter(private val onCLickListener: AllMissionsAdapter.OnClick
             binding.missionCategory.text=item.category
             binding.missionName.text=item.missionName
             binding.totalMoneyRaised.text=item.totalMoneyRaised.toString()
-            binding.contributors.text=item.usersActive.toString()
+            binding.contributors.text=item.contributors.toString()
             Glide.with(binding.missionImage.context)
                 .load(reference)
                 .apply(

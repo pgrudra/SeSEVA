@@ -13,6 +13,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -227,8 +229,14 @@ suspend fun DatabaseReference.singleValueEvent(): EventResponse = suspendCorouti
     addListenerForSingleValueEvent(valueEventListener) // Subscribe to the event
 }
 
-enum class CountdownColor{
-    GREEN,
-    YELLOW,
-    RED
+fun String.deadlineStringToLong(): Long {
+    var l:Long=0L
+    val f = SimpleDateFormat("dd-MMM-yyyy")
+    try {
+        val d: Date = f.parse(this)
+        l= d.time
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    }
+    return l
 }

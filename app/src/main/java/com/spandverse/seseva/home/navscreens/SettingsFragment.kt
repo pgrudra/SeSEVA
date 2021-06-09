@@ -506,6 +506,7 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
         val intentToLoginScreen = Intent(activity, MainActivity::class.java)
         intentToLoginScreen.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intentToLoginScreen)
+        activity?.finish()
     }
     override fun clearHistory() {
         val db=AllDatabase.getInstance(appContext)

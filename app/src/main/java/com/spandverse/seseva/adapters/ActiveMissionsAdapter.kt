@@ -33,7 +33,7 @@ class ActiveMissionsAdapter(private val onCLickListener:OnClickListener ): ListA
             binding.sponsorName.text=item.sponsorName
             binding.category.text=item.category
             binding.missionName.text=item.missionName
-            binding.activeContributors.text=item.usersActive.toString()
+            binding.activeContributors.text=item.contributors.toString()
             Glide.with(binding.imageView.context)
                 .load(reference)
                 .apply(

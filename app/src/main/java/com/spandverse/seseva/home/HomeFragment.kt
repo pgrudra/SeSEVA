@@ -1,9 +1,12 @@
 package com.spandverse.seseva.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -21,6 +24,16 @@ class HomeFragment : Fragment(),MissionAccomplishedDialog.MissionAccomplishedDia
     private lateinit var viewModel: HomeViewModel
     private lateinit var viewModelFactory: HomeViewModelFactory
     private lateinit var drawerLayout: DrawerLayout
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val callback=activity?.onBackPressedDispatcher?.addCallback(this,object: OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                activity!!.finish()
+            }
+
+        })
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -85,8 +98,12 @@ class HomeFragment : Fragment(),MissionAccomplishedDialog.MissionAccomplishedDia
         })*/
         viewModel.goToRules.observe(viewLifecycleOwner, Observer<Boolean> { goToRules ->
             if (goToRules) {
+                binding.rulebookBg.isPressed=true
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToRulesFragment2())
                 viewModel.onGoToRulesComplete()
+            }
+            else{
+                binding.rulebookBg.isPressed=false
             }
         })
         viewModel.goToProfile.observe(viewLifecycleOwner, Observer<Boolean> { goToFeats ->

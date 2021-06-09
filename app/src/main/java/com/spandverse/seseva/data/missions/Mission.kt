@@ -16,7 +16,7 @@ data class Mission(
     var deadline:Long=0L,
 
     @ColumnInfo(name="users_active")
-    var usersActive:Int=0,
+    var contributors:Int=0,
 
     @ColumnInfo(name="rules_number")
     var rulesNumber:Int=0,
@@ -63,7 +63,7 @@ fun List<Mission>.asActiveDomainModel(): List<DomainActiveMission> {
             missionNumber = it.missionNumber,
             missionName = it.missionName,
             deadline =it.deadline,
-            usersActive = it.usersActive,
+            contributors = it.contributors,
             rulesNumber = it.rulesNumber,
             sponsorName = it.sponsorName,
             sponsorNumber = it.sponsorNumber,
@@ -83,7 +83,7 @@ fun Mission.asActiveDomainModel(): DomainActiveMission {
             missionNumber = missionNumber,
             missionName = missionName,
             deadline =deadline,
-            usersActive = usersActive,
+            contributors = contributors,
             rulesNumber = rulesNumber,
             sponsorName = sponsorName,
             sponsorNumber = sponsorNumber,
@@ -103,7 +103,7 @@ fun Mission.asClosedDomainModel():DomainClosedMission{
             missionNumber = missionNumber,
             missionName = missionName,
             deadline =deadline,
-            usersActive = usersActive,
+            contributors = contributors,
             rulesNumber=rulesNumber,
             sponsorName = sponsorName,
             sponsorNumber = sponsorNumber,

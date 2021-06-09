@@ -45,20 +45,20 @@ class ChooseMissionViewModel(
         viewModelScope.launch {
             val loadedList=database.getDownloadedMissions()
             val entireList:MutableList<Int> = arrayListOf()
-            val usersActiveList:MutableList<Pair<Int,Int>> = arrayListOf()
-            val reference=cloudReference.child("Users Active")
+            val contributorsList:MutableList<Pair<Int,Int>> = arrayListOf()
+            val reference=cloudReference.child("contributors")
             reference.addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (i in snapshot.children){
                         entireList.add(i.key.toString().toInt())
-                        usersActiveList.add(Pair(i.key.toString().toInt(),i.value.toString().toInt()))
+                        contributorsList.add(Pair(i.key.toString().toInt(),i.value.toString().toInt()))
                     }
                     if(loadedList!=null){
                         val toDownloadList=entireList.minus(loadedList)
-                        insertIntoDatabase(toDownloadList,loadedList,usersActiveList)
+                        insertIntoDatabase(toDownloadList,loadedList,contributorsList)
                     }
                     else{
-                        insertIntoDatabase(entireList,null,usersActiveList)
+                        insertIntoDatabase(entireList,null,contributorsList)
                     }
                 }
 
@@ -69,9 +69,9 @@ class ChooseMissionViewModel(
             })
         }
     }
-    private fun insertIntoDatabase(list: List<Int>,loadedList: List<Int>?,usersActiveList:MutableList<Pair<Int,Int>>){
+    private fun insertIntoDatabase(list: List<Int>,loadedList: List<Int>?,contributorsList:MutableList<Pair<Int,Int>>){
         val moneyRaisedList:MutableList<Pair<Int,Int>> = arrayListOf()
-        val moneyRaisedReference=cloudReference.child("Money Raised")
+        val moneyRaisedReference=cloudReference.child("moneyRaised")
         moneyRaisedReference.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for(missionSnapShot in dataSnapshot.children ){
@@ -91,7 +91,7 @@ class ChooseMissionViewModel(
                                 val mission:Mission? =snapshot.getValue<NetworkMission>()?.asDatabaseModel()
                                 val primaryKey= snapshot.key?.toInt() ?: 0
                                 mission?.missionNumber=primaryKey
-                                mission?.usersActive= usersActiveList.find{it.first==primaryKey}?.second ?:0
+                                mission?.contributors= contributorsList.find{it.first==primaryKey}?.second ?:0
                                 val now: Calendar = Calendar.getInstance()
                                 mission?.missionActive=now.timeInMillis<= mission?.deadline!!
                                 mission.totalMoneyRaised=moneyRaisedList.find{it.first==primaryKey}?.second ?:0
@@ -110,7 +110,7 @@ class ChooseMissionViewModel(
                         viewModelScope.launch {
                             for (i in loadedList) {
                                 val mission = database.doesMissionExist(i)
-                                mission?.usersActive=usersActiveList.find{it.first==i}?.second ?:0
+                                mission?.contributors=contributorsList.find{it.first==i}?.second ?:0
                                 mission?.totalMoneyRaised=moneyRaisedList.find{it.first==i}?.second ?:0
                                 mission?.let { database.update(it) }
                             }

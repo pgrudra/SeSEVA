@@ -39,6 +39,7 @@
         <activity
             android:name="com.spandverse.seseva.MainActivity"
             android:noHistory="true"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             >
             <intent-filter>

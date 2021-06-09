@@ -189,7 +189,7 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                                                                 missionToBeSaved.missionCategory= mission?.category ?: ""
                                                                 missionToBeSaved.goal=mission?.goal ?:""
                                                                 missionToBeSaved.sponsorNumber=mission?.sponsorNumber ?:0
-                                                                val reference4 = cloudReference.child("Users Active")
+                                                                val reference4 = cloudReference.child("contributors")
                                                                     .child(lastMissionNumber.toString())
                                                                 reference4.addListenerForSingleValueEvent(object :
                                                                     ValueEventListener {
@@ -197,11 +197,11 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                                                                         val contri=dataSnapshot.value.toString()
                                                                         _contributors.value = contri
                                                                         if(contri.toIntOrNull()!=null){
-                                                                            missionToBeSaved.usersActive=contri.toInt()
+                                                                            missionToBeSaved.contributors=contri.toInt()
                                                                             Log.i("1LMVM","$contri")
                                                                         }
                                                                         val reference5 =
-                                                                            cloudReference.child("Money Raised")
+                                                                            cloudReference.child("moneyRaised")
                                                                                 .child(lastMissionNumber.toString())
                                                                         reference5.addListenerForSingleValueEvent(object : ValueEventListener {
                                                                             override fun onDataChange(dataSnapshot: DataSnapshot) {

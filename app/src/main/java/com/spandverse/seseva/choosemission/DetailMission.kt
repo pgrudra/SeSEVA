@@ -103,7 +103,7 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
                 }
 
             })
-        binding.activeContributors.text = mission.usersActive.toString()
+        binding.activeContributors.text = mission.contributors.toString()
         binding.money.text = mission.totalMoneyRaised.toString()
         binding.sponsorName.text = mission.sponsorName
         binding.goal.text=mission.goal

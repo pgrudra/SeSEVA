@@ -8,7 +8,7 @@ data class DomainClosedMission(
     val missionNumber: Int,
     val missionName: String,
     val deadline: Long,
-    val usersActive: Int,
+    val contributors: Int,
     val rulesNumber: Int,
     val sponsorName: String,
     val sponsorNumber:Int,

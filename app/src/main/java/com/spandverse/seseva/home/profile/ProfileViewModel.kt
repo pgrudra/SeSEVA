@@ -140,7 +140,7 @@ class ProfileViewModel(
             _currentMissionSponsorName.value=currentMission.sponsorName
             _goal.value=currentMission.goal
             _amountRaised.value=currentMission.totalMoneyRaised.toString()
-            _contributors.value=currentMission.usersActive.toString()
+            _contributors.value=currentMission.contributors.toString()
             _contribution.value="Rs " + currentMission.contribution.toString()
             _category.value=currentMission.missionCategory
             val now= Calendar.getInstance().timeInMillis

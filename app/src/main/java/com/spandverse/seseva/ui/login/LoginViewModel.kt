@@ -19,7 +19,7 @@ class LoginViewModel() : ViewModel() {
         private const val ONE_SECOND = 1000L
 
         // Total time for the game
-        private const val COUNTDOWN_TIME = 30000L
+        private const val COUNTDOWN_TIME = 45000L
 
     }
     private val _backToLoginScreen= MutableLiveData<Boolean>()

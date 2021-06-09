@@ -88,18 +88,19 @@ class PassageViewModel(private val database: MissionsDatabaseDao, application: A
     init{
 
             if(sharedPref?.getBoolean((R.string.load_data).toString(), false) == true){
+                Log.i("PVM","1")
                 with (sharedPref.edit()) {
                     this?.putBoolean((R.string.load_data).toString(),false)
                     this?.apply()
                 }
                 Log.i("hone","load data")
                 toLastMission()
-
+                Log.i("PVM","2")
             }
             else{
-                Log.i("hone","else")
+                Log.i("PVM","3")
                 if(!checkUserNameInSharedPref()){
-                    Log.i("hone","kjui")
+                    Log.i("PVM","4")
                     checkChosenMissionInSharedPref()
                 }
                    }

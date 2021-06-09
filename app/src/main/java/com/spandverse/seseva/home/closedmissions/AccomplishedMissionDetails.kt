@@ -71,7 +71,7 @@ class AccomplishedMissionDetails : Fragment() {
         binding.missionName.text=getString(R.string.mission_is_accomplished,mission.missionName)
         binding.accomplishedMissionDescription.text=mission.missionDescription
         binding.amountRaised.text=getString(R.string.rs,mission.totalMoneyRaised)
-        binding.contributors.text=mission.usersActive.toString()
+        binding.contributors.text=mission.contributors.toString()
         binding.accomplishedOn.text=mission.deadlineAsDateShort
         binding.contribution.text=getString(R.string.rs,mission.contribution)
         binding.sponsorName.text=mission.sponsorName
