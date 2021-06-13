@@ -174,6 +174,10 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
                     this?.putInt((com.spandverse.seseva.R.string.service_mode).toString(), 3)
                     this?.apply()
                 }
+                with (sharedPref.edit()) {
+                    this?.putBoolean((R.string.show_strict_banner).toString(),false)
+                    this?.apply()
+                }
                 startService()
                 view?.let {
                     Snackbar.make(it, "Strict mode enabled successfully", Snackbar.LENGTH_SHORT).show()

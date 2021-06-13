@@ -45,6 +45,8 @@
     <string name="onboarding_done">com.spandverse.seseva.ONBOARDING_DONE</string>
     <string name="service_mode">com.spandverse.seseva.SERVICE_MODE</string>
     <string name="mode_changed">com.spandverse.seseva.MODE_CHANGED</string>
+    <string name="count">com.spandverse.seseva.COUNT</string>
+    <string name="show_strict_banner">com.spandverse.seseva.SHOW_STRICT_B</string>
 
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
@@ -160,4 +162,18 @@
     <string name="switch_to_this_mission">SWITCH TO THIS MISSION</string>
     <string name="sponsored_mission_name">%1$d. %2$s</string>
     <string name="address_contact_number"><![CDATA[Address & Contact number]]></string>
+    <string name="don_t_break_the_rule">please don\'t break the rule</string>
+    <string name="blocking_screen_t3">You will lose your chance of raising Rs %1$d towards the mission you had chosen if you break the rule.</string>
+    <string name="blocking_screen_t3_s">You have lost your opportunity of raising Rs %1$d towards the mission you had chosen</string>
+    <string name="blocking_screen_t21">Less than %1$d seconds remaining for this app.</string>
+    <string name="blocking_screen_t22">No more launches left for this app.</string>
+    <string name="close_app_immediately">Close app immediately</string>
+    <string name="close_app_soon">Close app soon</string>
+    <string name="dont_relaunch_app">Don\'t relaunch the app you are using.</string>
+    <string name="blocking_screen_t41">After tapping OK, ensure that you close the app you were using.</string>
+    <string name="blocking_screen_t42">After tapping OK, you can use the app, but ensure that you don\'t relaunch it again.</string>
+    <string name="blocking_screen_t4_s">Please press home button. Only after that, this blocking screen will disappear.</string>
+    <string name="rule_broken">Rule Broken</string>
+    <string name="close_app_for_your_own_good">Close app for your own good</string>
+    <string name="you_are_using_strict_mode">You are using strict mode</string>
 </resources>

@@ -27,6 +27,7 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
     private val context = getApplication<Application>().applicationContext
     private val sharedPref = context.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
     val usm = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+    val mainHandler= Handler(Looper.getMainLooper())
     private val _navigateToSelectedCategory=MutableLiveData<AppsCategory?>()
     val navigateToSelectedCategory:LiveData<AppsCategory?>
         get()=_navigateToSelectedCategory
@@ -190,7 +191,54 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
         setHeadsUp(stat)
         _navigateToSelectedApp.value=true
     }
-
+    fun refreshAppTimeNLaunches(){
+        val stat=appStats.find { it.packageName==_appPackageNameForAppScreen.value }
+        if(stat!=null){
+            _appTimeSpent.value=inHrsMins(stat.timeSpent?:0)
+            _appLaunches.value=(stat.appLaunches?:0).toString()
+            setHeadsUp(stat)
+        }
+    }
+    fun refreshCatTimeNLaunches(){
+        val cat=_catNameForCatScreen.value
+        val appsCategory=_listOfCats.value?.find { it.categoryName== cat}
+        if(appsCategory!=null){
+            _countdownColor.value=appsCategory.ruleBroken
+            if(categoryTimes[cat]!! > timeRules[cat]!!){
+                _exceededTimeText.value="Exceeded time"
+                _exceededTime.value=inHrsMins2(categoryTimes[cat]!!- timeRules[cat]!!)
+            }
+            else{
+                _exceededTimeText.value="Time left"
+                _exceededTime.value=inHrsMins2(timeRules[cat]!!-categoryTimes[cat]!!)
+            }
+            Log.i("nbvc","${timeRules[cat]},${categoryTimes[cat]}")
+            if(categoryLaunches[cat]!! > launchRules[cat]!!){
+                _exceededLaunchesText.value="Exceeded launches"
+                _exceededLaunches.value=getCounts(categoryLaunches[cat]!!- launchRules[cat]!!)
+            }
+            else{
+                _exceededLaunchesText.value="Launches left"
+                _exceededLaunches.value=getCounts(launchRules[cat]!!-categoryLaunches[cat]!!)
+            }
+            val list=appStats.filter { it.appCategory==cat }
+            if(list.isNotEmpty()){
+                _mostLaunchedAppCatwiseName.value=list.maxByOrNull { it.appLaunches!! }!!.appName!!
+                _appsInCatList.value=list.sortedBy {it.timeSpent }.reversed()
+                _mostUsedAppCatwiseName.value=list.maxByOrNull { it.timeSpent!! }!!.appName!!
+                _totalAppLaunchesCatwise.value=categoryLaunches[cat].toString()
+                _totalTimeSpentCatwise.value=inHrsMins(categoryTimes[cat]!!)
+                _appsListEmptyOrApplications.value="Applications"}
+            else{
+                _mostLaunchedAppCatwiseName.value="---"
+                _appsInCatList.value= emptyList()
+                _mostUsedAppCatwiseName.value="---"
+                _totalAppLaunchesCatwise.value="---"
+                _totalTimeSpentCatwise.value="---"
+                _appsListEmptyOrApplications.value="You have no apps belonging to this category"
+            }
+        }
+    }
     private fun setHeadsUp(stat: Stat) {
         val cat = stat.appCategory
         if (cat == "WHITELISTED") {
@@ -239,7 +287,7 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
         val stat=appStats.maxByOrNull { it.timeSpent!! }
         _appNameForAppScreen.value=stat?.appName!!
         _catNameForAppScreen.value=stat.appCategory!!
-        _appTimeSpent.value=inHrsMins(stat.timeSpent!!)
+        _appTimeSpent.value=inHrsMins(stat.timeSpent?:0)
         _appLaunches.value=stat.appLaunches.toString()
         _appPackageNameForAppScreen.value=stat.packageName!!
         setHeadsUp(stat)
@@ -249,7 +297,7 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
         val stat=appStats.maxByOrNull { it.appLaunches!! }
         _appNameForAppScreen.value=stat?.appName!!
         _catNameForAppScreen.value=stat.appCategory!!
-        _appTimeSpent.value=inHrsMins(stat.timeSpent!!)
+        _appTimeSpent.value=inHrsMins(stat.timeSpent?:0)
         _appLaunches.value=stat.appLaunches.toString()
         _appPackageNameForAppScreen.value=stat.packageName!!
         setHeadsUp(stat)
@@ -259,7 +307,7 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
         val stat=appStats.filter { it.appCategory==_catNameForCatScreen.value }.maxByOrNull { it.timeSpent!! }
         _appNameForAppScreen.value=stat?.appName!!
         _catNameForAppScreen.value=stat.appCategory!!
-        _appTimeSpent.value=inHrsMins(stat.timeSpent!!)
+        _appTimeSpent.value=inHrsMins(stat.timeSpent?:0)
         _appLaunches.value=stat.appLaunches.toString()
         _appPackageNameForAppScreen.value=stat.packageName!!
         setHeadsUp(stat)
@@ -269,7 +317,7 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
         val stat=appStats.filter { it.appCategory==_catNameForCatScreen.value }.maxByOrNull { it.appLaunches!! }
         _appNameForAppScreen.value=stat?.appName!!
         _catNameForAppScreen.value=stat.appCategory!!
-        _appTimeSpent.value=inHrsMins(stat.timeSpent!!)
+        _appTimeSpent.value=inHrsMins(stat.timeSpent?:0)
         _appLaunches.value=stat.appLaunches.toString()
         _appPackageNameForAppScreen.value=stat.packageName!!
         setHeadsUp(stat)
@@ -280,146 +328,150 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
     }
  init {
         _screenHeading.value="Today's statistics"
+     //runHandler()
+    }
 
-     val mainHandler= Handler(Looper.getMainLooper())
-     mainHandler.post(object :Runnable{
-         override fun run() {
-             viewModelScope.launch {
-                 val list:MutableList<AppsCategory> = arrayListOf()
-                 //catStats.add(CategoryStat(categoryName = "SOCIAL",timeSpent = 0,appLaunches = 9,ruleViolated = false,date = 0L))
-                appStats.clear()
-                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                     categoryTimes.replaceAll { _, _ -> 0 }
-                     categoryLaunches.replaceAll { _, _ -> 0 }
-                 }
-                 else{
-                     for(key in categoryTimes.keys){
-                         categoryTimes[key]=0
-                         categoryLaunches[key]=0
-                     }
-                 }
-                 _processingDataForPieChartDone.value=false
-                 val packages=appDatabaseDao.getList()
-                 val mapPkgWithAppNCat:MutableList<Pair<String, AppAndCategory>> = arrayListOf()
-                 val sortedEvents = mutableMapOf<String, MutableList<UsageEvents.Event>>()
-                 if (packages != null) {
-                     for (item in packages){
-                         sortedEvents[item.packageName] = mutableListOf()
-                         mapPkgWithAppNCat.add(Pair(item.packageName,item))
-                     }
-                 }
-                 val now = Calendar.getInstance()
-                 val begin: Calendar = Calendar.getInstance()
-                 begin.set(Calendar.HOUR_OF_DAY, 0)
-                 begin.set(Calendar.MINUTE, 0)
-                 begin.set(Calendar.SECOND, 0)
-                 begin.set(Calendar.MILLISECOND, 0)
-                 val systemEvents: UsageEvents = usm.queryEvents(begin.timeInMillis, now.timeInMillis)
-                 while (systemEvents.hasNextEvent()) {
-                     val event = UsageEvents.Event()
-                     systemEvents.getNextEvent(event)
-                     val type = event.eventType
-                     if (type == UsageEvents.Event.ACTIVITY_RESUMED || type == UsageEvents.Event.ACTIVITY_PAUSED) {
-                         sortedEvents[event.packageName]?.add(event)
-                     }
-                 }
+   fun runHandler() {
+        mainHandler.post(object :Runnable{
+            override fun run() {
+                Log.i("poiu","klj")
+                viewModelScope.launch {
+                    val list:MutableList<AppsCategory> = arrayListOf()
+                    //catStats.add(CategoryStat(categoryName = "SOCIAL",timeSpent = 0,appLaunches = 9,ruleViolated = false,date = 0L))
+                    appStats.clear()
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                        categoryTimes.replaceAll { _, _ -> 0 }
+                        categoryLaunches.replaceAll { _, _ -> 0 }
+                    }
+                    else{
+                        for(key in categoryTimes.keys){
+                            categoryTimes[key]=0
+                            categoryLaunches[key]=0
+                        }
+                    }
+                    _processingDataForPieChartDone.value=false
+                    val packages=appDatabaseDao.getList()
+                    val mapPkgWithAppNCat:MutableList<Pair<String, AppAndCategory>> = arrayListOf()
+                    val sortedEvents = mutableMapOf<String, MutableList<UsageEvents.Event>>()
+                    if (packages != null) {
+                        for (item in packages){
+                            sortedEvents[item.packageName] = mutableListOf()
+                            mapPkgWithAppNCat.add(Pair(item.packageName,item))
+                        }
+                    }
+                    val now = Calendar.getInstance()
+                    val begin: Calendar = Calendar.getInstance()
+                    begin.set(Calendar.HOUR_OF_DAY, 0)
+                    begin.set(Calendar.MINUTE, 0)
+                    begin.set(Calendar.SECOND, 0)
+                    begin.set(Calendar.MILLISECOND, 0)
+                    val systemEvents: UsageEvents = usm.queryEvents(begin.timeInMillis, now.timeInMillis)
+                    while (systemEvents.hasNextEvent()) {
+                        val event = UsageEvents.Event()
+                        systemEvents.getNextEvent(event)
+                        val type = event.eventType
+                        if (type == UsageEvents.Event.ACTIVITY_RESUMED || type == UsageEvents.Event.ACTIVITY_PAUSED) {
+                            sortedEvents[event.packageName]?.add(event)
+                        }
+                    }
 
-                 sortedEvents.forEach { (packageName, events) ->
-                     // Keep track of the current start and end times
-                     var startTime = 0L
-                     var endTime = 0L
-                     var launches = 0
-                     var totalTime = 0L
-                     var transt = 0L
-                     events.forEach {
-                         if (it.eventType == UsageEvents.Event.ACTIVITY_RESUMED) {
-                             // App was moved to the foreground: set the start time
-                             startTime = it.timeStamp
-                             launches += 1
+                    sortedEvents.forEach { (packageName, events) ->
+                        // Keep track of the current start and end times
+                        var startTime = 0L
+                        var endTime = 0L
+                        var launches = 0
+                        var totalTime = 0L
+                        var transt = 0L
+                        events.forEach {
+                            if (it.eventType == UsageEvents.Event.ACTIVITY_RESUMED) {
+                                // App was moved to the foreground: set the start time
+                                startTime = it.timeStamp
+                                launches += 1
 
 
-                         } else if (it.eventType == UsageEvents.Event.ACTIVITY_PAUSED) {
-                             if (startTime != 0L || totalTime == 0L) {
-                                 endTime = it.timeStamp
-                                 transt = it.timeStamp
-                             }
-                         }
-                         if (startTime != 0L && transt != 0L && startTime > transt && (startTime - transt) < 50) {
-                             launches -= 1
-                             transt = 0L
-                         }
-                         if (startTime == 0L && endTime != 0L) {
-                             startTime = begin.timeInMillis
-                         }
-                         if (startTime != 0L && endTime != 0L) {
-                             // Add the session time to the total time
-                             totalTime += endTime - startTime
-                             // Reset the start/end times to 0
-                             startTime = 0L
-                             endTime = 0L
-                         }
-                     }
-                     if (startTime != 0L && endTime == 0L) {
-                         totalTime += now.timeInMillis - startTime
-                     }
-                     val timeInSeconds = (totalTime / 1000).toInt()
+                            } else if (it.eventType == UsageEvents.Event.ACTIVITY_PAUSED) {
+                                if (startTime != 0L || totalTime == 0L) {
+                                    endTime = it.timeStamp
+                                    transt = it.timeStamp
+                                }
+                            }
+                            if (startTime != 0L && transt != 0L && startTime > transt && (startTime - transt) < 50) {
+                                launches -= 1
+                                transt = 0L
+                            }
+                            if (startTime == 0L && endTime != 0L) {
+                                startTime = begin.timeInMillis
+                            }
+                            if (startTime != 0L && endTime != 0L) {
+                                // Add the session time to the total time
+                                totalTime += endTime - startTime
+                                // Reset the start/end times to 0
+                                startTime = 0L
+                                endTime = 0L
+                            }
+                        }
+                        if (startTime != 0L && endTime == 0L) {
+                            totalTime += now.timeInMillis - startTime
+                        }
+                        val timeInSeconds = (totalTime / 1000).toInt()
 
-                     val app=mapPkgWithAppNCat.find{it.first==packageName}?.second!!
-                     appStats.add(Stat(packageName = packageName,appName = app.appName,appCategory = app.appCategory,timeSpent = timeInSeconds,appLaunches = launches,date = now.timeInMillis))
-                     categoryTimes[app.appCategory]=categoryTimes[app.appCategory]!!+timeInSeconds
-                     categoryLaunches[app.appCategory]=categoryLaunches[app.appCategory]!!+launches
-                     categoryTimes["TOTAL"]=categoryTimes["TOTAL"]!!+timeInSeconds
-                     categoryLaunches["TOTAL"]=categoryLaunches["TOTAL"]!!+launches
+                        val app=mapPkgWithAppNCat.find{it.first==packageName}?.second!!
+                        appStats.add(Stat(packageName = packageName,appName = app.appName,appCategory = app.appCategory,timeSpent = timeInSeconds,appLaunches = launches,date = now.timeInMillis))
+                        categoryTimes[app.appCategory]=categoryTimes[app.appCategory]!!+timeInSeconds
+                        categoryLaunches[app.appCategory]=categoryLaunches[app.appCategory]!!+launches
+                        categoryTimes["TOTAL"]=categoryTimes["TOTAL"]!!+timeInSeconds
+                        categoryLaunches["TOTAL"]=categoryLaunches["TOTAL"]!!+launches
 
-                 }
-                 _totalAppLaunches.value=categoryLaunches["TOTAL"].toString()
-                 _totalTimeSpent.value=inHrsMins(categoryTimes["TOTAL"]!!)
-                 _mostLaunchedAppName.value=appStats.maxByOrNull { it->it.appLaunches!! }!!.appName!!
-                 _mostUsedAppName.value=appStats.maxByOrNull { it->it.timeSpent!! }!!.appName!!
+                    }
+                    _totalAppLaunches.value=categoryLaunches["TOTAL"].toString()
+                    _totalTimeSpent.value=inHrsMins(categoryTimes["TOTAL"]!!)
+                    _mostLaunchedAppName.value=appStats.maxByOrNull { it->it.appLaunches!! }!!.appName!!
+                    _mostUsedAppName.value=appStats.maxByOrNull { it->it.timeSpent!! }!!.appName!!
 
-                 for(key in categoryTimes.toSortedMap().keys) {
+                    for(key in categoryTimes.toSortedMap().keys) {
 
-                     if (key != "ENTERTAINMENT" && key!="TOTAL") {
-                         if (categoryTimes[key]!! >= timeRules[key]!! || categoryLaunches[key]!! >= launchRules[key]!!) {
-                             val appsCategory=AppsCategory(key,AppsCategoryType.DAILY,CategoryRuleStatus.BROKEN)
-                             list.add(appsCategory)
-                         }
-                         else if(categoryTimes[key]!! >= timeRules[key]!!-60 || categoryLaunches[key]!! >= launchRules[key]!!-2){
-                             val appsCategory=AppsCategory(key,AppsCategoryType.DAILY,CategoryRuleStatus.WARNING)
-                             list.add(appsCategory)
-                         }
-                         else{
-                             val appsCategory=AppsCategory(key,AppsCategoryType.DAILY,CategoryRuleStatus.SAFE)
-                             list.add(appsCategory)
-                         }
+                        if (key != "ENTERTAINMENT" && key!="TOTAL") {
+                            if (categoryTimes[key]!! >= timeRules[key]!! || categoryLaunches[key]!! >= launchRules[key]!!) {
+                                val appsCategory=AppsCategory(key,AppsCategoryType.DAILY,CategoryRuleStatus.BROKEN)
+                                list.add(appsCategory)
+                            }
+                            else if(categoryTimes[key]!! >= timeRules[key]!!-60 || categoryLaunches[key]!! >= launchRules[key]!!-2){
+                                val appsCategory=AppsCategory(key,AppsCategoryType.DAILY,CategoryRuleStatus.WARNING)
+                                list.add(appsCategory)
+                            }
+                            else{
+                                val appsCategory=AppsCategory(key,AppsCategoryType.DAILY,CategoryRuleStatus.SAFE)
+                                list.add(appsCategory)
+                            }
 
-                     }
-                 }
+                        }
+                    }
 
-                 val entertainmentKey="ENTERTAINMENT"
-                 val eT=entertainmentTime+categoryTimes[entertainmentKey]!!
-                 val eL=entertainmentLaunches+categoryLaunches[entertainmentKey]!!
-                 /*entertainmentTime+=categoryTimes[entertainmentKey]!!
-                 entertainmentLaunches+=categoryLaunches[entertainmentKey]!!*/
-                 if(eT>=timeRules[entertainmentKey]!! || eL>=launchRules[entertainmentKey]!!){
-                     val entertainmentAppsCategory=AppsCategory(entertainmentKey,AppsCategoryType.WEEKLY,CategoryRuleStatus.BROKEN)
-                     list.add(entertainmentAppsCategory)
-                 }
-                 else if(eT>=timeRules[entertainmentKey]!!-60 || eL>=launchRules[entertainmentKey]!!-2){
-                     val entertainmentAppsCategory=AppsCategory(entertainmentKey,AppsCategoryType.WEEKLY,CategoryRuleStatus.WARNING)//statement that today is weekly bonus day, and you have a chance of raising Rs x more if you follow rule till today midnight
-                     list.add(entertainmentAppsCategory)
-                 }
-                 else{
-                     val entertainmentAppsCategory=AppsCategory(entertainmentKey,AppsCategoryType.WEEKLY,CategoryRuleStatus.SAFE)
-                     list.add(entertainmentAppsCategory)
-                 }
-                 _listOfCats.value=list
-                 _processingDataForPieChartDone.value=true
-             }
-             mainHandler.postDelayed(this, HALF_MINUTE_IN_MILLIS)
-         }
-     })
-
+                    val entertainmentKey="ENTERTAINMENT"
+                    val eT=entertainmentTime+categoryTimes[entertainmentKey]!!
+                    val eL=entertainmentLaunches+categoryLaunches[entertainmentKey]!!
+                    /*entertainmentTime+=categoryTimes[entertainmentKey]!!
+                    entertainmentLaunches+=categoryLaunches[entertainmentKey]!!*/
+                    if(eT>=timeRules[entertainmentKey]!! || eL>=launchRules[entertainmentKey]!!){
+                        val entertainmentAppsCategory=AppsCategory(entertainmentKey,AppsCategoryType.WEEKLY,CategoryRuleStatus.BROKEN)
+                        list.add(entertainmentAppsCategory)
+                    }
+                    else if(eT>=timeRules[entertainmentKey]!!-60 || eL>=launchRules[entertainmentKey]!!-2){
+                        val entertainmentAppsCategory=AppsCategory(entertainmentKey,AppsCategoryType.WEEKLY,CategoryRuleStatus.WARNING)//statement that today is weekly bonus day, and you have a chance of raising Rs x more if you follow rule till today midnight
+                        list.add(entertainmentAppsCategory)
+                    }
+                    else{
+                        val entertainmentAppsCategory=AppsCategory(entertainmentKey,AppsCategoryType.WEEKLY,CategoryRuleStatus.SAFE)
+                        list.add(entertainmentAppsCategory)
+                    }
+                    _listOfCats.value=list
+                    _processingDataForPieChartDone.value=true
+                    refreshAppTimeNLaunches()
+                    refreshCatTimeNLaunches()
+                }
+                mainHandler.postDelayed(this, 3000)
+            }
+        })
     }
 
     private fun inHrsMins(i: Int): String {
@@ -447,7 +499,7 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
         }
     }
     private fun inHrsMins2(i: Int): String {
-        val i2=i+(60-i%60)
+        val i2 = if(i%60==0)  i else i+(60-i%60)
         val hrs:Int=(i2/ ONE_HOUR_IN_SECONDS)
         val mins:Int=(i2% ONE_HOUR_IN_SECONDS)/60
         return if (hrs<10){
@@ -478,6 +530,9 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
         _catAppLaunchesPieChartVisible.value = _catAppLaunchesPieChartVisible.value != true
     }
 
+    fun stopHandler() {
+        mainHandler.removeCallbacksAndMessages(null)
+    }
 
 
     /*fun provideSharedPref(sharedPref: SharedPreferences?) {

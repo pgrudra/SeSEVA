@@ -242,8 +242,8 @@ class Rules2ViewModel(
         _othersMaxTime.value=sharedPref.getInt((R.string.others_max_time).toString(),0).toString()+" min"
         _othersMaxLaunches.value=sharedPref.getInt((R.string.others_max_launches).toString(),0).toString()
         _othersPenalty.value="Rs "+sharedPref.getInt((R.string.others_penalty).toString(),0).toString()
-        _entertainmentMaxTime.value=sharedPref.getInt((R.string.entertainment_time).toString(),0).toString()+" min"
-        _entertainmentMaxLaunches.value=sharedPref.getInt((R.string.entertainment_launches).toString(),0).toString()
+        _entertainmentMaxTime.value=sharedPref.getInt((R.string.entertainment_max_time).toString(),0).toString()+" min"
+        _entertainmentMaxLaunches.value=sharedPref.getInt((R.string.entertainment_max_launches).toString(),0).toString()
         _entertainmentPenalty.value="Rs "+sharedPref.getInt((R.string.entertainment_penalty).toString(),0).toString()
         _msnbsMaxTime.value=sharedPref.getInt((R.string.msnbs_max_time).toString(),0).toString()+" min"
         _msnbsMaxLaunches.value=sharedPref.getInt((R.string.msnbs_max_launches).toString(),0).toString()

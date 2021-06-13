@@ -577,5 +577,15 @@ class UsageOverviewFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.stopHandler()
+        viewModel.runHandler()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.stopHandler()
+    }
 
 }

@@ -108,7 +108,24 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     private suspend fun displayThings() {
         displayProfileRelatedThings()
         displayUsageStatsRelatedThings()
+        displayBannerIfApplicable()
         displayMissionsRelatedThings()
+    }
+
+    private fun displayBannerIfApplicable() {
+        val count=sharedPref.getInt((R.string.count).toString(),0)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(context)) {
+            if(count%4==2){
+                //show banner
+            }
+        }
+        else{
+            val showStrictBanner=sharedPref.getBoolean((R.string.show_strict_banner).toString(),true)
+            if(showStrictBanner && count%4==0){
+                //show banner
+                //upon enabling strict mode, put showStrictBanner as false
+            }
+        }
     }
 
     private suspend fun displayMissionsRelatedThings() {

@@ -3,8 +3,14 @@ package com.spandverse.seseva
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Resources
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.Typeface
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.AttributeSet
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
 import com.github.mikephil.charting.charts.BarLineChartBase
@@ -36,23 +42,23 @@ enum class CategoryRuleStatus{
     WARNING,
     SAFE
 }
-fun setServiceState(context: Context, state:ServiceState){
+fun setServiceState(context: Context, state: ServiceState){
     val sharedPref = getPreferences(context)
     with(sharedPref.edit()) {
         this?.putString((R.string.service_state).toString(), state.name)
         this?.apply()}
 }
-fun getServiceState(context:Context):ServiceState{
+fun getServiceState(context: Context):ServiceState{
     val sharedPref = getPreferences(context)
     val value=sharedPref.getString((R.string.service_state).toString(), ServiceState.STOPPED.name)?:ServiceState.STOPPED.name
     return ServiceState.valueOf(value)
 }
 
-private fun getPreferences(context:Context):SharedPreferences{
+private fun getPreferences(context: Context):SharedPreferences{
     return context.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
 }
 
-fun allotGroup(cat:String): String {
+fun allotGroup(cat: String): String {
     return when (cat) {
         "WEATHER" -> "WHITELISTED"
         "BUSINESS" -> "WHITELISTED"
@@ -109,15 +115,15 @@ fun allotGroup(cat:String): String {
 }
 
 data class TimeLaunchesDate(
-    @ColumnInfo(name="time_spent") val time: Int?,
-    @ColumnInfo(name="app_launches") val launches: Int?,
-    @ColumnInfo(name="date") val date: Long?
+    @ColumnInfo(name = "time_spent") val time: Int?,
+    @ColumnInfo(name = "app_launches") val launches: Int?,
+    @ColumnInfo(name = "date") val date: Long?
 )
 
 data class MissionNumberUpdateReport(
     @PrimaryKey val missionNumber: Int,
-    @ColumnInfo(name="on_accomplish_data_updated") val onAccomplishDataUpdated: Boolean,
-    @ColumnInfo(name="report_available") val reportAvailable: Boolean
+    @ColumnInfo(name = "on_accomplish_data_updated") val onAccomplishDataUpdated: Boolean,
+    @ColumnInfo(name = "report_available") val reportAvailable: Boolean
 )
 
 fun getDay(i: Int): String {
@@ -133,34 +139,43 @@ fun getDay(i: Int): String {
 }
 fun getMonth(i: Int): String {
     return when(i){
-        0->"Jan."
-        1->"Feb."
-        2->"Mar."
-        3->"Apr."
-        4->"May"
-        5->"Jun."
-        6->"Jul."
-        7->"Aug."
-        8->"Sept."
-        9->"Oct."
-        10->"Nov."
+        0 -> "Jan."
+        1 -> "Feb."
+        2 -> "Mar."
+        3 -> "Apr."
+        4 -> "May"
+        5 -> "Jun."
+        6 -> "Jul."
+        7 -> "Aug."
+        8 -> "Sept."
+        9 -> "Oct."
+        10 -> "Nov."
         else->"Dec."
     }
 }
 
-class WeekAxisValueFormatter(private val chart: BarLineChartBase<*>, private val labels: ArrayList<String>) : ValueFormatter() {
+class WeekAxisValueFormatter(
+    private val chart: BarLineChartBase<*>,
+    private val labels: ArrayList<String>
+) : ValueFormatter() {
     override fun getFormattedValue(value: Float): String {
         return  if(value==6f){ "YDA" }
         else{labels[value.toInt()]}
     }
 }
-class MonthAxisValueFormatter(private val chart: BarLineChartBase<*>, private val labels: ArrayList<String>) : ValueFormatter() {
+class MonthAxisValueFormatter(
+    private val chart: BarLineChartBase<*>,
+    private val labels: ArrayList<String>
+) : ValueFormatter() {
     override fun getFormattedValue(value: Float): String {
         return  if(value==28f){ "YDA" }
         else{labels[value.toInt()]}
     }
 }
-class YearAxisValueFormatter(private val chart: BarLineChartBase<*>, private val labels: ArrayList<String>) : ValueFormatter() {
+class YearAxisValueFormatter(
+    private val chart: BarLineChartBase<*>,
+    private val labels: ArrayList<String>
+) : ValueFormatter() {
     override fun getFormattedValue(value: Float): String {
         return  if(value==363f){ "YDA" }
         else{labels[value.toInt()]}
@@ -185,12 +200,12 @@ fun checkIfSameDay(lastMonthStart: Calendar, calender: Calendar): Boolean {
     return false
 }
 data class PieChartLegendItem(
-    val formColor:Int,
-    val label:String
+    val formColor: Int,
+    val label: String
 )
 val Int.px: Int get() = (this * Resources.getSystem().displayMetrics.density).toInt()
 
-fun checkInternetConnectivity(context:Context): Boolean {
+fun checkInternetConnectivity(context: Context): Boolean {
     val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
     if (connectivityManager != null) {

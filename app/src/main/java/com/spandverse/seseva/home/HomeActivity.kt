@@ -1,9 +1,9 @@
 package com.spandverse.seseva.home
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -50,7 +50,13 @@ class HomeActivity :AppCompatActivity(),DrawerLocker,
         super.onCreate(savedInstanceState)
         //val toolbar=findViewById<Toolbar>(R.id.toolbar)
         //setSupportActionBar(toolbar)
-        checkForUpdate()
+        val sharedPref=getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
+        val count=sharedPref.getInt((R.string.count).toString(),0)
+        with (sharedPref.edit()) {
+            this?.putInt((R.string.count).toString(),count+1)
+            this?.apply()
+        }
+        checkForUpdate(count+1)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         drawerLayout=binding.drawerLayout
 val navHostFragment=supportFragmentManager.findFragmentById(R.id.myNavHostFragmentToSignOut) as NavHostFragment
@@ -61,7 +67,6 @@ val navHostFragment=supportFragmentManager.findFragmentById(R.id.myNavHostFragme
         //binding.bottomNavView.selectedItemId=R.id.homeFragment
         //binding.bottomNavView.menu.getItem(0).isChecked = true
 binding.bottomNavView.setOnNavigationItemSelectedListener(this)
-        Log.i("PVM","10")
 
         //navController.graph.findNode(R.id.detailMission)?.addArgument("selectedMission",NavArgument.Builder().setDefaultValue().build())
        /* navController.addOnDestinationChangedListener { controller, destination, arguments ->
@@ -108,7 +113,7 @@ binding.bottomNavView.setOnNavigationItemSelectedListener(this)
         //NavigationUI.setupWithNavController()
     }
 
-    private fun checkForUpdate() {
+    private fun checkForUpdate(count: Int) {
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
