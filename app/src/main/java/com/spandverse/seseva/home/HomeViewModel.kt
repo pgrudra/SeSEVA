@@ -15,6 +15,7 @@ import android.provider.Settings
 import android.util.Log
 import androidx.lifecycle.*
 import androidx.work.*
+import com.google.android.material.snackbar.Snackbar
 import com.spandverse.seseva.*
 import com.spandverse.seseva.R
 import com.spandverse.seseva.data.apps.AppAndCategory
@@ -50,6 +51,12 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     private val _goToRules = MutableLiveData<Boolean>()
     val goToRules: LiveData<Boolean>
         get() = _goToRules
+    private val _showOverlayPermissionBanner = MutableLiveData<Boolean>()
+    val showOverlayPermissionBanner: LiveData<Boolean>
+        get() = _showOverlayPermissionBanner
+    private val _showStrictModeBanner = MutableLiveData<Boolean>()
+    val showStrictModeBanner: LiveData<Boolean>
+        get() = _showStrictModeBanner
     private val _checkForUpdate = MutableLiveData<Boolean>()
     val checkForUpdate: LiveData<Boolean>
         get() = _checkForUpdate
@@ -113,16 +120,21 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     }
 
     private fun displayBannerIfApplicable() {
+        Log.i("HVM1","1")
         val count=sharedPref.getInt((R.string.count).toString(),0)
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(context)) {
+            Log.i("HVM1","2")
             if(count%4==2){
                 //show banner
+                Log.i("HVM1","3")
+                _showOverlayPermissionBanner.value=true
             }
         }
         else{
             val showStrictBanner=sharedPref.getBoolean((R.string.show_strict_banner).toString(),true)
             if(showStrictBanner && count%4==0){
                 //show banner
+                Log.i("asxz","c")
                 //upon enabling strict mode, put showStrictBanner as false
             }
         }
@@ -804,6 +816,43 @@ val minute:Int=(0..2).random()
     fun onGoToUsageOverviewComplete(){
         _goToUsageOverview.value=false
     }
+
+    fun enableMediumMode() {
+        with (sharedPref.edit()) {
+            this?.putBoolean((com.spandverse.seseva.R.string.mode_changed).toString(), true)
+            this?.apply()
+        }
+        with (sharedPref.edit()) {
+            this?.putInt((com.spandverse.seseva.R.string.service_mode).toString(), 2)
+            this?.apply()
+        }
+        startService()
+    }
+
+    fun enableStrictMode() {
+        with (sharedPref.edit()) {
+            this?.putBoolean((com.spandverse.seseva.R.string.mode_changed).toString(), true)
+            this?.apply()
+        }
+        with (sharedPref.edit()) {
+            this?.putInt((com.spandverse.seseva.R.string.service_mode).toString(), 3)
+            this?.apply()
+        }
+        with (sharedPref.edit()) {
+            this?.putBoolean((R.string.show_strict_banner).toString(),false)
+            this?.apply()
+        }
+        startService()
+    }
+
+    fun showOverlayPermissionBannerComplete() {
+        _showOverlayPermissionBanner.value=false
+    }
+
+    fun showStrictModeBannerComplete() {
+        _showStrictModeBanner.value=false
+    }
+
     companion object {
         private const val GOOGLE_URL = "https://play.google.com/store/apps/details?id="
         private const val CAT_SIZE = 9

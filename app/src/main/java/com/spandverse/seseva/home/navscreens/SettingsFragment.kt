@@ -1,9 +1,11 @@
 package com.spandverse.seseva.home.navscreens
 
 import android.app.AppOpsManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -35,6 +37,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.spandverse.seseva.modelspecificpermissions.AutostartPermissionFragmentDirections
 import kotlinx.coroutines.launch
 
 
@@ -45,29 +48,7 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
     private lateinit var auth: FirebaseAuth
     private lateinit var sharedPref:SharedPreferences
     private val cloudReference = Firebase.database.reference.child("users")
-    override fun onPause() {
-        Log.i("SF9","paused")
-        super.onPause()
-    }
 
-    override fun onDetach() {
-        Log.i("SF9","detach")
-        super.onDetach()
-    }
-
-    override fun onStop() {
-        Log.i("SF9","stop")
-        super.onStop()
-    }
-
-    override fun onDestroyView() {
-        Log.i("SF9","viewDestroy")
-        super.onDestroyView()
-    }
-    override fun onDestroy() {
-        Log.i("SF9","destroy")
-        super.onDestroy()
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -100,6 +81,35 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
         binding.clearUsageHistoryCL.setOnClickListener { showClearUsageHistoryConfirmationDialog() }
         binding.manageProfileCL.setOnClickListener { showManageProfileDialog()  }
         binding.dooaCL.setOnClickListener { findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToDOOAFragment()) }
+        binding.autostartCL.setOnClickListener {
+            try {
+                val manufacturer=android.os.Build.MANUFACTURER
+                val intent=Intent()
+                if("xiaomi".equals(manufacturer,true)){
+                    intent.component = ComponentName("com.miui.securitycenter","com.miui.permcenter.autostart.AutoStartManagementActivity")
+                }
+                else if("oppo".equals(manufacturer,true)){
+                    intent.component = ComponentName("com.coloros.safecenter","com.coloros.safecenter.permission.startup.StartupAppListActivity")
+                }
+                else if("vivo".equals(manufacturer,true)){
+                    intent.component = ComponentName("com.vivo.permissionmanager","com.vivo.permissionmanager.activity.BgStartupManagerActivity")
+                }
+                else if("Letv".equals(manufacturer,true)){
+                    intent.component = ComponentName("com.letv.android.letvsafe","com.letv.android.letvsafe.AutobootManageActivity")
+                }
+                else if("Honor".equals(manufacturer,true)){
+                    intent.component = ComponentName("com.huawei.systemmanager","com.huawei.systemmanager.optimize.process.ProtectActivity")
+                }
+                val list=context?.packageManager?.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+                list?.let{
+                    if(it.size>0){
+                        startActivity(intent)
+                    }
+                }
+
+            } catch (e:Exception){
+            }
+        }
         binding.lightCL.setOnClickListener {
             //stopService()
             with (sharedPref.edit()) {
@@ -211,7 +221,19 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
     override fun onStart() {
         super.onStart()
         checkPermissions()
+        if(checkIfDeviceSpecificPermissionNeeded())
+            binding.autostartCL.visibility=View.VISIBLE
     }
+
+    private fun checkIfDeviceSpecificPermissionNeeded():Boolean {
+        val manufacturer=android.os.Build.MANUFACTURER
+        return "xiaomi".equals(manufacturer,true) ||
+                "oppo".equals(manufacturer,true) ||
+                "vivo".equals(manufacturer,true) ||
+                "Letv".equals(manufacturer,true) ||
+                "Honor".equals(manufacturer,true)
+    }
+
     private fun checkPermissions() {
         if(checkUsageAccessPermission()){
             checkDOOAPermissionAndService()

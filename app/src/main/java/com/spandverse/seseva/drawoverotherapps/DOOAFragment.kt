@@ -1,12 +1,13 @@
 package com.spandverse.seseva.drawoverotherapps
 
 import android.annotation.TargetApi
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,31 +21,43 @@ import com.spandverse.seseva.home.DrawerLocker
 
 class DOOAFragment : Fragment() {
     private lateinit var binding: FragmentDOOABinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-    }
+    private lateinit var appContext: Context
+    private lateinit var sharedPref: SharedPreferences
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context)){
-            findNavController().navigate(DOOAFragmentDirections.actionDOOAFragmentToHomeFragment())
-        }
+
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_d_o_o_a,
             container,
             false
         )
-        val application = requireNotNull(this.activity).application
         binding.lifecycleOwner = this
         val drawerLocker=(activity as DrawerLocker?)
         drawerLocker!!.setDrawerEnabled(false)
         drawerLocker.displayBottomNavigation(false)
+        appContext = context?.applicationContext ?: return binding.root
+        sharedPref =
+            appContext.getSharedPreferences(
+                (R.string.shared_pref).toString(),
+                Context.MODE_PRIVATE
+            )
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context)){
+            if(checkIfDeviceSpecificPermissionNeeded()){
+                    findNavController().navigate(DOOAFragmentDirections.actionDOOAFragmentToAutostartPermissionFragment())
+            }
+            else{
+                with(sharedPref.edit()) {
+                    this?.putBoolean((com.spandverse.seseva.R.string.autostart_permission_asked).toString(), true)
+                    this?.apply()
+                }
+                findNavController().navigate(DOOAFragmentDirections.actionDOOAFragmentToHomeFragment())
+            }
+
+        }
 
         binding.allow.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -59,13 +72,29 @@ class DOOAFragment : Fragment() {
                         REQUEST_OVERLAY_PERMISSION
                     )
                 }
-            } else {
-                Log.i("DOOAF", "should never occur")
             }
         }
-        binding.askMeLater.setOnClickListener { findNavController().navigate(DOOAFragmentDirections.actionDOOAFragmentToHomeFragment()) }
+        binding.askMeLater.setOnClickListener {
+            if(checkIfDeviceSpecificPermissionNeeded()){
+                findNavController().navigate(DOOAFragmentDirections.actionDOOAFragmentToAutostartPermissionFragment())
+            }
+            else{
+                findNavController().navigate(DOOAFragmentDirections.actionDOOAFragmentToHomeFragment())
+            } }
 
         return binding.root
+    }
+
+    private fun checkIfDeviceSpecificPermissionNeeded(): Boolean {
+        val manufacturer=android.os.Build.MANUFACTURER
+        return if(sharedPref.getBoolean((R.string.autostart_permission_asked).toString(), false))
+            false
+        else "xiaomi".equals(manufacturer,true) ||
+                "oppo".equals(manufacturer,true) ||
+                "vivo".equals(manufacturer,true) ||
+                "Letv".equals(manufacturer,true) ||
+                "Honor".equals(manufacturer,true)
+
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -76,11 +105,16 @@ class DOOAFragment : Fragment() {
                 // You don't have permission
                 //checkPermission()
             } else {
-                findNavController().navigate(DOOAFragmentDirections.actionDOOAFragmentToHomeFragment())
+                if(checkIfDeviceSpecificPermissionNeeded()){
+                    findNavController().navigate(DOOAFragmentDirections.actionDOOAFragmentToAutostartPermissionFragment())
+                }
+                else{
+                    findNavController().navigate(DOOAFragmentDirections.actionDOOAFragmentToHomeFragment())
+                }
             }
         }
     }
-    private fun checkPermission() {
+   /* private fun checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(context)) {
                 val intent = Intent(
@@ -90,7 +124,7 @@ class DOOAFragment : Fragment() {
                 startActivityForResult(intent, REQUEST_OVERLAY_PERMISSION)
             }
         }
-    }
+    }*/
 
 
     companion object {

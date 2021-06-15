@@ -609,10 +609,6 @@ class TestService : Service() {
                                 null
                             }
                             handler.post {
-                                /*val blockingScreenView = LayoutInflater.from(context).inflate(
-                                    R.layout.blocking_screen,
-                                    null
-                                )*/
                                 blockingScreenView.close_app_text.text=context.getString(R.string.close_app_immediately)
                                 blockingScreenView.time_launches_left_text.text=context.getString(R.string.blocking_screen_t21,12)
                                 blockingScreenView.textView18.text=context.getString(R.string.blocking_screen_t3,penalties[cat])
@@ -635,6 +631,9 @@ class TestService : Service() {
                                             .fallback(R.drawable.ic_launcher_foreground)
                                     )
                                     .into(blockingScreenView.image)
+                                if(blockingScreenView.windowToken!=null){
+                                    wm.removeView(blockingScreenView)
+                                }
                                 if (blockingScreenParams != null) {
                                     wm.addView(blockingScreenView, blockingScreenParams)
                                 }
@@ -676,13 +675,60 @@ class TestService : Service() {
                                             .fallback(R.drawable.ic_launcher_foreground)
                                     )
                                     .into(blockingScreenView.image)
+                                if(blockingScreenView.windowToken!=null){
+                                    wm.removeView(blockingScreenView)
+                                }
                                 if (blockingScreenParams != null) {
                                     wm.addView(blockingScreenView, blockingScreenParams)
                                 }
                             }
                     }
+                    else if(catTimeInSeconds > maxTime - 36 && catTimeInSeconds <= 24){
+                        val blockingScreenParams: WindowManager.LayoutParams? =
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                WindowManager.LayoutParams(
+                                    WindowManager.LayoutParams.MATCH_PARENT,
+                                    WindowManager.LayoutParams.MATCH_PARENT,
+                                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                                    WindowManager.LayoutParams.FLAG_LOCAL_FOCUS_MODE,
+                                    PixelFormat.OPAQUE
+                                )
+                            } else {
+                                null
+                            }
+                        handler.post {
+                            blockingScreenView.close_app_text.text=context.getString(R.string.close_app_soon)
+                            blockingScreenView.time_launches_left_text.text=context.getString(R.string.blocking_screen_t21,36)
+                            blockingScreenView.textView18.text=context.getString(R.string.blocking_screen_t3,penalties[cat])
+                            blockingScreenView.textView44.text=context.getString(R.string.blocking_screen_t41)
+                            blockingScreenView.app_time.text=(appTime/60000).toString()
+                            blockingScreenView.app_launches.text=appLaunches.toString()
+                            blockingScreenView.cat_time.text=(catTimeInSeconds/oneMinuteInSeconds).toString()
+                            blockingScreenView.cat_launches.text=catLaunches.toString()
+                            blockingScreenView.ok_button.setOnClickListener {
+                                wm.removeView(blockingScreenView)
+                            }
+                            val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionImages/mission${missionNumber}Image.jpg")
+                            Glide.with(this)
+                                .load(missionImgRef)
+                                .transition(DrawableTransitionOptions.withCrossFade())
+                                .apply(
+                                    RequestOptions()
+                                        .placeholder(R.drawable.ic_launcher_background)
+                                        .error(R.drawable.ic_launcher_foreground)
+                                        .fallback(R.drawable.ic_launcher_foreground)
+                                )
+                                .into(blockingScreenView.image)
+                            if(blockingScreenView.windowToken!=null){
+                                wm.removeView(blockingScreenView)
+                            }
+                            if (blockingScreenParams != null) {
+                                wm.addView(blockingScreenView, blockingScreenParams)
+                            }
+                        }
+                    }
                         else if (catLaunches == maxLaunches) {
-                        if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
+                        if (now.timeInMillis <= lastResumeTimeStamp + 1000) {
                             val blockingScreenParams: WindowManager.LayoutParams? =
                                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                                     WindowManager.LayoutParams(
@@ -719,6 +765,9 @@ class TestService : Service() {
                                             .fallback(R.drawable.ic_launcher_foreground)
                                     )
                                     .into(blockingScreenView.image)
+                                if(blockingScreenView.windowToken!=null){
+                                    wm.removeView(blockingScreenView)
+                                }
                                 if (blockingScreenParams != null) {
                                     wm.addView(blockingScreenView, blockingScreenParams)
                                 }
@@ -902,7 +951,7 @@ class TestService : Service() {
 
                 }
                 else {
-                    if (catTimeInSeconds > maxTime - 10 && catTimeInSeconds <= maxTime-9) {
+                    if (catTimeInSeconds > maxTime - 10 && catTimeInSeconds <= maxTime-8) {
                         if (now.timeInMillis <= lastResumeTimeStamp + 9000){
                             handler.post {
                                 blockingScreenView.close_app_text.text=context.getString(R.string.close_app_immediately)
@@ -927,13 +976,16 @@ class TestService : Service() {
                                             .fallback(R.drawable.ic_launcher_foreground)
                                     )
                                     .into(blockingScreenView.image)
+                                if(blockingScreenView.windowToken!=null){
+                                    wm.removeView(blockingScreenView)
+                                }
                                 if (blockingScreenParams != null) {
                                     wm.addView(blockingScreenView, blockingScreenParams)
                                 }
                             }
                         }
                     }
-                    else if(catTimeInSeconds > maxTime - 20 && catTimeInSeconds <= 19){
+                    else if(catTimeInSeconds > maxTime - 20 && catTimeInSeconds <= 18){
                             handler.post {
                                 blockingScreenView.close_app_text.text=context.getString(R.string.close_app_soon)
                                 blockingScreenView.time_launches_left_text.text=context.getString(R.string.blocking_screen_t21,20)
@@ -957,7 +1009,10 @@ class TestService : Service() {
                                             .fallback(R.drawable.ic_launcher_foreground)
                                     )
                                     .into(blockingScreenView.image)
-                                if (blockingScreenParams != null) {
+                                if(blockingScreenView.windowToken!=null){
+                                    wm.removeView(blockingScreenView)
+                                }
+                                if (blockingScreenParams != null ) {
                                     wm.addView(blockingScreenView, blockingScreenParams)
                                 }
                             }
@@ -988,7 +1043,7 @@ class TestService : Service() {
                                             .fallback(R.drawable.ic_launcher_foreground)
                                     )
                                     .into(blockingScreenView.image)
-                                if (blockingScreenParams != null) {
+                                if (blockingScreenParams != null && blockingScreenView.windowToken==null) {
                                     wm.addView(blockingScreenView, blockingScreenParams)
                                 }
                             }

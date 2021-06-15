@@ -244,10 +244,8 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
                         //binding.progressBar1.visibility=View.GONE
                         //binding.skrim.visibility=View.GONE
                         if (result?.additionalUserInfo?.isNewUser!!) {
-                            Log.i("MN", "kj")
                            goToHomeFragment()
                         } else {
-                            Log.i("Home", "UI")
                             with(sharedPref?.edit()) {
                                 this?.putBoolean((R.string.load_data).toString(), true)
                                 this?.apply()
@@ -282,14 +280,11 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
     override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        Log.i("sdfa", "onstart")
         checkCurrentUser()
     }
 
     private fun checkCurrentUser() {
         val currentUser = auth.currentUser
-        Log.i("sdfa", "3")
-        Log.i("sdfa", "ff${currentUser?.displayName}")
         if(currentUser!=null){
             goToHomeFragment()
         }
@@ -299,6 +294,7 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
     //toHomeFragment
         val intent=Intent(activity, HomeActivity::class.java)
         startActivity(intent)
+        activity?.overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
     //findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToHomeActivity())
     //In home fragment, immediately check user name and active mission and take to respective screens incase not selected.
 

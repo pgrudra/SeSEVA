@@ -1,6 +1,11 @@
 package com.spandverse.seseva.home
 
+import android.annotation.TargetApi
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +18,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.spandverse.seseva.R
 import com.spandverse.seseva.data.AllDatabase
 import com.spandverse.seseva.databinding.FragmentHomeBinding
+import com.spandverse.seseva.drawoverotherapps.DOOAFragment
+import com.spandverse.seseva.drawoverotherapps.DOOAFragmentDirections
 import com.spandverse.seseva.home.closedmissions.MissionAccomplishedDialog
 
 class HomeFragment : Fragment(),MissionAccomplishedDialog.MissionAccomplishedDialogListener {
@@ -61,6 +69,7 @@ class HomeFragment : Fragment(),MissionAccomplishedDialog.MissionAccomplishedDia
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
         binding.lifecycleOwner=viewLifecycleOwner
         binding.homeViewModel=viewModel
+        binding.mainContainer.transitionToStart()
         //context?.let { binding.usageStatistics.paint.shader=LinearGradient(0,0,0,20,ContextCompat.getColor(it,R.color.t1),null,Shader.TileMode.CLAMP) }
         (activity as DrawerLocker?)!!.displayBottomNavigation(false)
 
@@ -120,6 +129,44 @@ class HomeFragment : Fragment(),MissionAccomplishedDialog.MissionAccomplishedDia
                     viewModel.onGoToUsageOverviewComplete()
                 }
             })
+        viewModel.showOverlayPermissionBanner.observe(viewLifecycleOwner, Observer<Boolean> { show ->
+                if (show) {
+                    Log.i("HVM1","4")
+                   binding.bannerBody.text=getString(R.string.overlay_permission_banner_body)
+                    binding.positive.text="GRANT PERMISSION"
+                    binding.positive.setOnClickListener {
+                        val intent = Intent(
+                            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                            Uri.parse("package:" + context?.packageName)
+                        )
+                        startActivityForResult(
+                            intent,
+                            REQUEST_OVERLAY_PERMISSION
+                        )
+                    }
+                    binding.mainContainer.transitionToEnd()
+                    viewModel.showOverlayPermissionBannerComplete()
+                }
+            })
+        viewModel.showStrictModeBanner.observe(viewLifecycleOwner, Observer<Boolean> { show ->
+            if (show) {
+                Log.i("asxz","1")
+                binding.bannerBody.text=getString(R.string.strict_mode_banner_body)
+                binding.positive.text="ENABLE STRICT MODE"
+                binding.positive.setOnClickListener {
+                    binding.mainContainer.transitionToStart()
+                    viewModel.enableStrictMode()
+                    view?.let {
+                        Snackbar.make(it, "Strict mode enabled successfully", Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+                binding.mainContainer.transitionToEnd()
+                viewModel.showStrictModeBannerComplete()
+            }
+        })
+        binding.negative.setOnClickListener{
+            binding.mainContainer.transitionToStart()
+        }
         //binding.toolbar.title=getString(R.string.app_name)
         binding.toolbar.setNavigationIcon(R.drawable.ic_navdrawer_icon)
         binding.toolbar.setNavigationOnClickListener { v-> (activity as HomeActivity).openCloseNavigationDrawer(
@@ -129,8 +176,23 @@ class HomeFragment : Fragment(),MissionAccomplishedDialog.MissionAccomplishedDia
         return binding.root
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_OVERLAY_PERMISSION) {
+            if (Settings.canDrawOverlays(context)){
+                binding.mainContainer.transitionToStart()
+                viewModel.enableMediumMode()
+                view?.let {
+                    Snackbar.make(it, "Medium mode enabled successfully", Snackbar.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
     override fun chooseNewMission() {
         findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToChooseMissionFragment())
     }
-
+    companion object {
+        private const val REQUEST_OVERLAY_PERMISSION = 5469
+    }
 }

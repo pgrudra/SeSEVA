@@ -112,7 +112,6 @@ binding.bottomNavView.setOnNavigationItemSelectedListener(this)
         //NavigationUI.setupActionBarWithNavController(this,navController,drawerLayout)
         //NavigationUI.setupWithNavController()
     }
-
     private fun checkForUpdate(count: Int) {
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->

@@ -244,6 +244,9 @@
         <action
             android:id="@+id/action_settingsFragment_to_DOOAFragment"
             app:destination="@id/DOOAFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_autostartPermissionFragment"
+            app:destination="@id/autostartPermissionFragment" />
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
@@ -337,6 +340,9 @@
             app:destination="@id/homeFragment"
             app:popUpTo="@id/navigation_to_sign_out"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_DOOAFragment_to_autostartPermissionFragment"
+            app:destination="@id/autostartPermissionFragment" />
     </fragment>
     <fragment
         android:id="@+id/sponsorDetailsFragment"
@@ -347,5 +353,13 @@
             android:name="sponsorNumber"
             app:argType="integer"
             android:defaultValue="0" />
+    </fragment>
+    <fragment
+        android:id="@+id/autostartPermissionFragment"
+        android:name="com.spandverse.seseva.modelspecificpermissions.AutostartPermissionFragment"
+        android:label="AutostartPermissionFragment" >
+        <action
+            android:id="@+id/action_autostartPermissionFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>
