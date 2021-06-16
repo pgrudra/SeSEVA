@@ -6,6 +6,9 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.FirebaseApp
+import com.google.firebase.appcheck.FirebaseAppCheck
+import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory
 import com.spandverse.seseva.R
 import com.spandverse.seseva.data.missions.MissionsDatabaseDao
 
@@ -86,21 +89,19 @@ class PassageViewModel(private val database: MissionsDatabaseDao, application: A
     }
 
     init{
-
+        /*context?.let { FirebaseApp.initializeApp(*//*context=*//* it) }
+        val firebaseAppCheck = FirebaseAppCheck.getInstance()
+        firebaseAppCheck.installAppCheckProviderFactory(
+            SafetyNetAppCheckProviderFactory.getInstance())*/
             if(sharedPref?.getBoolean((R.string.load_data).toString(), false) == true){
-                Log.i("PVM","1")
                 with (sharedPref.edit()) {
                     this?.putBoolean((R.string.load_data).toString(),false)
                     this?.apply()
                 }
-                Log.i("hone","load data")
                 toLastMission()
-                Log.i("PVM","2")
             }
             else{
-                Log.i("PVM","3")
                 if(!checkUserNameInSharedPref()){
-                    Log.i("PVM","4")
                     checkChosenMissionInSharedPref()
                 }
                    }

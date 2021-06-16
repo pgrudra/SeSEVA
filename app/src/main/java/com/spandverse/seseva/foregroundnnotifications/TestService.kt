@@ -213,7 +213,7 @@ class TestService : Service() {
             sharedPref.getInt((R.string.others_max_time).toString(), 0) * oneMinuteInSeconds
         timeRules["MSNBS"] =
             sharedPref.getInt((R.string.msnbs_max_time).toString(), 0) * oneMinuteInSeconds
-        timeRules["VIDEO"] =
+        timeRules["VIDEO_PLAYERS_N_COMICS"] =
             sharedPref.getInt((R.string.video_max_time).toString(), 0) * oneMinuteInSeconds
         launchRules["SOCIAL"] = sharedPref.getInt((R.string.social_max_launches).toString(), 0)
         launchRules["COMMUNICATION"] =
@@ -223,7 +223,7 @@ class TestService : Service() {
             sharedPref.getInt((R.string.entertainment_max_launches).toString(), 0)
         launchRules["OTHERS"] = sharedPref.getInt((R.string.others_max_launches).toString(), 0)
         launchRules["MSNBS"] = sharedPref.getInt((R.string.msnbs_max_launches).toString(), 0)
-        launchRules["VIDEO"] = sharedPref.getInt((R.string.video_max_launches).toString(), 0)
+        launchRules["VIDEO_PLAYERS_N_COMICS"] = sharedPref.getInt((R.string.video_max_launches).toString(), 0)
 
 
         penalties["SOCIAL"] = sharedPref.getInt((R.string.social_penalty).toString(), 0)
@@ -234,7 +234,7 @@ class TestService : Service() {
             sharedPref.getInt((R.string.entertainment_penalty).toString(), 0)
         penalties["OTHERS"] = sharedPref.getInt((R.string.others_penalty).toString(), 0)
         penalties["MSNBS"] = sharedPref.getInt((R.string.msnbs_penalty).toString(), 0)
-        penalties["VIDEO"] = sharedPref.getInt((R.string.video_penalty).toString(), 0)
+        penalties["VIDEO_PLAYERS_N_COMICS"] = sharedPref.getInt((R.string.video_penalty).toString(), 0)
         missionNumber=sharedPref.getInt((R.string.chosen_mission_number).toString(), 0)
         pkgAndCat.observeForever {
 
@@ -454,7 +454,7 @@ class TestService : Service() {
                     }
                     else if(now.timeInMillis <= lastResumeTimeStamp + 10000){
                         handler.post {
-                            Toast.makeText(context, "You have spent ${catTimeInSeconds/60} mins on this category", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "You have spent ${catTimeInSeconds/60} mins on $cat apps", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -462,7 +462,6 @@ class TestService : Service() {
             }
 
         }
-
     }
 
     private fun getStatsMedium(
@@ -741,7 +740,6 @@ class TestService : Service() {
                                 } else {
                                     null
                                 }
-                            Log.i("oplk","oiuh")
                             handler.post {
                                 blockingScreenView.close_app_text.text=context.getString(R.string.dont_relaunch_app)
                                 blockingScreenView.time_launches_left_text.text=context.getString(R.string.blocking_screen_t22)
@@ -795,7 +793,7 @@ class TestService : Service() {
                     }
                     else if(now.timeInMillis <= lastResumeTimeStamp + 10000){
                         handler.post {
-                            Toast.makeText(context, "You have spent ${catTimeInSeconds/60} mins on this category", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "You have spent ${catTimeInSeconds/60} mins on on $cat apps", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -1070,7 +1068,7 @@ class TestService : Service() {
                     }
                     else if(now.timeInMillis <= lastResumeTimeStamp + 1000){
                         handler.post {
-                            Toast.makeText(context, "You have spent ${catTimeInSeconds/60} mins on this category", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "You have spent ${catTimeInSeconds/60} mins on on $cat apps", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

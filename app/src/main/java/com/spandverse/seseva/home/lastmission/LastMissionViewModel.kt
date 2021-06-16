@@ -11,6 +11,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.FirebaseApp
+import com.google.firebase.appcheck.FirebaseAppCheck
+import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory
 import com.spandverse.seseva.R
 import com.spandverse.seseva.data.missions.Mission
 import com.spandverse.seseva.data.missions.MissionsDatabaseDao
@@ -86,6 +89,10 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
         get()=_userName
 
     init {
+        /*context?.let { FirebaseApp.initializeApp(*//*context=*//* it) }
+        val firebaseAppCheck = FirebaseAppCheck.getInstance()
+        firebaseAppCheck.installAppCheckProviderFactory(
+            SafetyNetAppCheckProviderFactory.getInstance())*/
         loadUserName()
     }
 

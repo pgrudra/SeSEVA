@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.FirebaseApp
+import com.google.firebase.appcheck.FirebaseAppCheck
+import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory
 import com.spandverse.seseva.R
 import com.spandverse.seseva.data.missions.DomainActiveMission
 import com.spandverse.seseva.databinding.ActiveMissionItemViewBinding
@@ -41,8 +44,6 @@ class ActiveMissionsAdapter(private val onCLickListener:OnClickListener ): ListA
                         .placeholder(R.drawable.ic_launcher_background)
                         .error(R.drawable.ic_launcher_foreground))
                 .into(binding.imageView)
-
-
         }
 
         companion object {

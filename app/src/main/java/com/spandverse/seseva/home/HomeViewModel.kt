@@ -134,7 +134,6 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
             val showStrictBanner=sharedPref.getBoolean((R.string.show_strict_banner).toString(),true)
             if(showStrictBanner && count%4==0){
                 //show banner
-                Log.i("asxz","c")
                 //upon enabling strict mode, put showStrictBanner as false
             }
         }

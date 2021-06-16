@@ -9,6 +9,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.FirebaseApp
+import com.google.firebase.appcheck.FirebaseAppCheck
+import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory
 import com.spandverse.seseva.R
 import com.spandverse.seseva.data.AllDatabase
 import com.spandverse.seseva.databinding.FragmentPassageBinding
@@ -19,6 +22,13 @@ class PassageFragment : Fragment() {
     private lateinit var binding: FragmentPassageBinding
     private lateinit var viewModel: PassageViewModel
     private lateinit var viewModelFactory: PassageViewModelFactory
+    /*override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        context?.let { FirebaseApp.initializeApp(*//*context=*//* it) }
+        val firebaseAppCheck = FirebaseAppCheck.getInstance()
+        firebaseAppCheck.installAppCheckProviderFactory(
+            SafetyNetAppCheckProviderFactory.getInstance())
+    }*/
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

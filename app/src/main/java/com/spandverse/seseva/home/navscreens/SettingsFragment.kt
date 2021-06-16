@@ -52,7 +52,7 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
         binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_left)

@@ -25,6 +25,9 @@ import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.firebase.FirebaseApp
+import com.google.firebase.appcheck.FirebaseAppCheck
+import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory
 import kotlinx.android.synthetic.main.nav_header.view.*
 
 
@@ -50,6 +53,10 @@ class HomeActivity :AppCompatActivity(),DrawerLocker,
         super.onCreate(savedInstanceState)
         //val toolbar=findViewById<Toolbar>(R.id.toolbar)
         //setSupportActionBar(toolbar)
+        FirebaseApp.initializeApp(/*context=*/ this)
+        val firebaseAppCheck = FirebaseAppCheck.getInstance()
+        firebaseAppCheck.installAppCheckProviderFactory(
+            SafetyNetAppCheckProviderFactory.getInstance())
         val sharedPref=getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
         val count=sharedPref.getInt((R.string.count).toString(),0)
         with (sharedPref.edit()) {

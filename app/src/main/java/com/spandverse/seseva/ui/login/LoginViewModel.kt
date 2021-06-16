@@ -84,10 +84,7 @@ fun resendComplete(){
 
             override fun onTick(millisUntilFinished: Long) {
                 _currentTime.value = (millisUntilFinished/ONE_SECOND)
-                Log.i("klj","$currentTimeString")
-
             }
-
             override fun onFinish() {
                 _currentTime.value = DONE
 onTimeUp()
