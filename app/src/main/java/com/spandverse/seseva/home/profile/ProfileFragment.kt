@@ -54,8 +54,8 @@ class ProfileFragment : Fragment() {
                     .load(reference1)
                     .apply(
                         RequestOptions()
-                            .placeholder(R.drawable.ic_launcher_background)
-                            .error(R.drawable.ic_launcher_foreground)
+                            .placeholder(R.drawable.ic_imageplaceholder)
+                            .error(R.drawable.ic_imageplaceholder)
                     )
                     .into(binding.missionImage)
                 val reference2 =
@@ -65,9 +65,9 @@ class ProfileFragment : Fragment() {
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .apply(
                         RequestOptions()
-                            .placeholder(R.drawable.ic_launcher_background)
-                            .error(R.drawable.ic_launcher_foreground)
-                            .fallback(R.drawable.ic_launcher_foreground)
+                            .placeholder(R.drawable.ic_sponsor)
+                            .error(R.drawable.ic_sponsor)
+                            .fallback(R.drawable.ic_sponsor)
                     )
                     .into(binding.sponsorLogo)
                 binding.previousMissionsButton.isEnabled=true

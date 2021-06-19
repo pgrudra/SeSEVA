@@ -225,7 +225,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/sponsor_text"
                     app:layout_constraintVertical_bias="0.24"
-                    tools:srcCompat="@drawable/ic_sponsor_logo" />
+                    tools:srcCompat="@drawable/ic_sponsor" />
                 <TextView
                     android:id="@+id/sponsor_text"
                     android:layout_width="wrap_content"

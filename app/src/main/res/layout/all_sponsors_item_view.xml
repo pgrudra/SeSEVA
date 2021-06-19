@@ -11,13 +11,13 @@
     android:elevation="3dp"
     android:background="@drawable/all_corner_rounded_4dp_1e">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/sponsor_logo"
         android:layout_width="56dp"
         android:layout_height="56dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_sponsor_logo" />
+        tools:srcCompat="@drawable/ic_sponsor" />
 
     <TextView
         android:id="@+id/sponsor_name"

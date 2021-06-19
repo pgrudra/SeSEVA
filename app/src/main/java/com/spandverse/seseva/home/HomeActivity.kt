@@ -70,11 +70,12 @@ val navHostFragment=supportFragmentManager.findFragmentById(R.id.myNavHostFragme
         val navController=navHostFragment.navController
         NavigationUI.setupWithNavController(binding.navView, navController)
         binding.navView.setNavigationItemSelectedListener(this)
+        binding.navView.itemIconTintList=null
         NavigationUI.setupWithNavController(binding.bottomNavView, navController)
         //binding.bottomNavView.selectedItemId=R.id.homeFragment
         //binding.bottomNavView.menu.getItem(0).isChecked = true
 binding.bottomNavView.setOnNavigationItemSelectedListener(this)
-
+binding.bottomNavView.itemIconTintList=null
         //navController.graph.findNode(R.id.detailMission)?.addArgument("selectedMission",NavArgument.Builder().setDefaultValue().build())
        /* navController.addOnDestinationChangedListener { controller, destination, arguments ->
 
@@ -258,7 +259,7 @@ binding.bottomNavView.setOnNavigationItemSelectedListener(this)
             R.id.reportBugFragment ->{
                 val intent= Intent(Intent.ACTION_SENDTO).apply {
                     data = Uri.parse("mailto:")
-                    putExtra(Intent.EXTRA_EMAIL, arrayOf("pgr19990109@gmail.com"))
+                    putExtra(Intent.EXTRA_EMAIL, arrayOf("spandverse@gmail.com"))
                     putExtra(Intent.EXTRA_SUBJECT, getString(R.string.report_bug_in,getString(R.string.app_version)))
                 }
                 if (intent.resolveActivity(packageManager) != null) {
@@ -268,7 +269,7 @@ binding.bottomNavView.setOnNavigationItemSelectedListener(this)
             R.id.becomeSponsor ->{
                 val intent= Intent(Intent.ACTION_SENDTO).apply {
                     data = Uri.parse("mailto:")
-                    putExtra(Intent.EXTRA_EMAIL, arrayOf("pgr19990109@gmail.com"))
+                    putExtra(Intent.EXTRA_EMAIL, arrayOf("spandverse@gmail.com"))
                     putExtra(Intent.EXTRA_SUBJECT, getString(R.string.interest_become_sponsor))
                 }
                 if (intent.resolveActivity(packageManager) != null) {

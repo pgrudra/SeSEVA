@@ -30,8 +30,8 @@ class AllMissionsAdapter(private val onCLickListener: AllMissionsAdapter.OnClick
                 .load(reference)
                 .apply(
                     RequestOptions()
-                        .placeholder(R.drawable.ic_launcher_background)
-                        .error(R.drawable.ic_launcher_foreground))
+                        .placeholder(R.drawable.ic_imageplaceholder)
+                        .error(R.drawable.ic_imageplaceholder))
                 .into(binding.missionImage)
             val nowMinusOneDay= Calendar.getInstance().timeInMillis-24*60*60*1000
             if(item.deadline<nowMinusOneDay) {

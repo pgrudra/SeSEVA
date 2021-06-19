@@ -71,7 +71,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/category_text"
                     tools:text="Today's statistics" />
 
-                <ImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/i"
                     android:layout_width="48dp"
                     android:layout_height="48dp"

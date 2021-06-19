@@ -27,7 +27,7 @@
             android:layout_height="42dp"
             android:layout_marginStart="20dp"
             android:background="@drawable/login_email_edit_box_inactive"
-            android:hint="Enter your name"
+            android:hint="Enter preferred username"
             android:inputType="textPersonName"
             android:paddingStart="8dp"
             android:textColor="@color/primary_text"

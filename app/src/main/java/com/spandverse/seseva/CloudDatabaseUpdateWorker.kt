@@ -3,6 +3,9 @@ package com.spandverse.seseva
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.google.firebase.FirebaseApp
+import com.google.firebase.appcheck.FirebaseAppCheck
+import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory
 import com.spandverse.seseva.data.AllDatabase
 import com.spandverse.seseva.data.missions.PartialMission
 import com.google.firebase.auth.ktx.auth
@@ -37,7 +40,7 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                                 var missionContribution:Int?=missionContributionResult.snapshot.getValue<Int>()
                                 if(missionContribution==null){
                                     missionContribution=moneyToBeUpdated
-                                    val referenceMissionContributors=cloudReference.child("Users Active").child("$chosenMission")
+                                    val referenceMissionContributors=cloudReference.child("contributors").child("$chosenMission")
                                     referenceMissionContributors.runTransaction(object : Transaction.Handler{
                                         override fun doTransaction(currentData: MutableData): Transaction.Result {
                                             var contributors=currentData.getValue<Int>()?: return Transaction.success(currentData)
@@ -64,7 +67,7 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                                 }
                                 missionContributionReference.setValue(missionContribution) .addOnSuccessListener {
 
-                                    val referenceToMissionMoneyRaised=cloudReference.child("Money Raised").child("$chosenMission")
+                                    val referenceToMissionMoneyRaised=cloudReference.child("moneyRaised").child("$chosenMission")
                                     referenceToMissionMoneyRaised.runTransaction(object : Transaction.Handler{
                                         override fun doTransaction(currentData: MutableData): Transaction.Result {
                                             var contribution=currentData.getValue<Int>()?: return Transaction.success(currentData)
@@ -165,7 +168,7 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                             }
 
                             override fun onCancelled(error: DatabaseError) {
-                                TODO("Not yet implemented")
+
                             }
                         })*/
                     }

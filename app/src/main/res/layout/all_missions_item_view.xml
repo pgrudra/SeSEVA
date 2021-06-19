@@ -19,7 +19,7 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     android:layout_marginTop="16dp"/>
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/mission_image"
         android:layout_width="160dp"
         android:layout_height="100dp"

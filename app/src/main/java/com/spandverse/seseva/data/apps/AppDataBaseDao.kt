@@ -27,6 +27,9 @@ interface AppDataBaseDao{
     @Query("SELECT * FROM list_of_installed_apps_and_their_category")
     suspend fun getList(): List<AppAndCategory>?
 
+    @Query("SELECT * FROM list_of_installed_apps_and_their_category WHERE app_category!=:cat")
+    suspend fun getNonWhitelistedList(cat:String): List<AppAndCategory>?
+
     @Query("SELECT * FROM list_of_installed_apps_and_their_category WHERE app_category=:cat")
     suspend fun getCatApps(cat:String): List<AppAndCategory>?
 

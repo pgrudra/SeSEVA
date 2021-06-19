@@ -11,7 +11,7 @@ fun NotificationManager.sendNotification(messageBody:String, applicationContext:
     val builder=NotificationCompat.Builder(
         applicationContext,applicationContext.getString(R.string.usage_alert_notification_channel_id)
     )
-        .setSmallIcon(R.drawable.ic_launcher_foreground)
+        .setSmallIcon(R.drawable.seseva_icon_foreground)
         .setContentTitle(applicationContext.getString(R.string.usage_alert_title))
         .setContentText(messageBody)
         .setDefaults(Notification.DEFAULT_ALL)

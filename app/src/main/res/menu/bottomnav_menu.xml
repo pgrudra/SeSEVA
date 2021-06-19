@@ -3,18 +3,18 @@
 
 <item
     android:id="@+id/featsFragment"
-    android:title="@string/feats"
-    android:icon="@drawable/ic_launcher_foreground" />
+    android:title="@string/missions"
+    android:icon="@drawable/missions_bot_nav" />
     <item
         android:id="@+id/profileFragment"
         android:title="@string/profile"
-        android:icon="@drawable/ic_launcher_foreground"/>
+        android:icon="@drawable/profile_bot_nav"/>
     <item
         android:id="@+id/usageOverViewFragment"
         android:title="@string/usage"
-        android:icon="@drawable/ic_launcher_foreground"/>
+        android:icon="@drawable/usage_bot_nav"/>
     <item
         android:id="@+id/rulesFragment2"
         android:title="@string/rules"
-        android:icon="@drawable/ic_launcher_foreground"/>
+        android:icon="@drawable/rulebook_bot_nav"/>
 </menu>

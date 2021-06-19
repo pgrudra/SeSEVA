@@ -59,11 +59,11 @@
 
     <string name="foreground_service_notification_channel_id" translatable="false">foreground_channel</string>
     <string name="foreground_service_notification_channel_name" translatable="true">Foreground</string>
-    <string name="notification_title">UnSlave</string>
+    <string name="notification_title">Foreground service running</string>
 
     <string name="usage_alert_notification_channel_id" translatable="false">usage_alert_channel</string>
     <string name="usage_alert_notification_channel_name" translatable="false">UsageAlert</string>
-    <string name="usage_alert_title">Title</string>
+    <string name="usage_alert_title">Usage Alert</string>
     <string name="usage_alert_notification_channel_description">ChannelDescription</string>
     <!--
     This string is used for square devices and overridden by hello_world in
@@ -159,20 +159,22 @@
     <string name="meaningOfThisWeeK">since last sunday, the day to started using SeSeva</string>
     <string name="profile">Profile</string>
     <string name="permissions">Permissions</string>
+    <string name="missions">Missions</string>
     <string name="display_over_other_apps">Display over other apps</string>
     <string name="switch_to_this_mission">SWITCH TO THIS MISSION</string>
     <string name="sponsored_mission_name">%1$d. %2$s</string>
     <string name="address_contact_number"><![CDATA[Address & Contact number]]></string>
     <string name="don_t_break_the_rule">please don\'t break the rule</string>
     <string name="blocking_screen_t3">You will lose your chance of raising Rs %1$d towards the mission you had chosen if you break the rule.</string>
+    <string name="blocking_screen_t3_m_b">You have lost your opportunity of raising Rs %1$d towards the mission you had chosen, but you can still help out yourself by spending your time in a better way than wasting it on your smartphone</string>
     <string name="blocking_screen_t3_s">You have lost your opportunity of raising Rs %1$d towards the mission you had chosen</string>
     <string name="blocking_screen_t21">Less than %1$d seconds remaining for this app.</string>
     <string name="blocking_screen_t22">No more launches left for this app.</string>
     <string name="close_app_immediately">Close app immediately</string>
     <string name="close_app_soon">Close app soon</string>
     <string name="dont_relaunch_app">Don\'t relaunch the app you are using.</string>
-    <string name="blocking_screen_t41">After tapping OK, ensure that you close the app you were using\n(use home button to close app immediately) </string>
-    <string name="blocking_screen_t42">After tapping OK, you can use the app, but ensure that you don\'t relaunch it again.</string>
+    <string name="blocking_screen_t41">After tapping I UNDERSTAND, ensure that you close the app you were using\n(use home button to close app immediately) </string>
+    <string name="blocking_screen_t42">After tapping I UNDERSTAND, you can use the app, but ensure that you don\'t relaunch it again.</string>
     <string name="blocking_screen_t4_s">Please press home button. Only after that, this blocking screen will disappear.</string>
     <string name="rule_broken">Rule Broken</string>
     <string name="close_app_for_your_own_good">Close app for your own good</string>
@@ -182,4 +184,7 @@
     <string name="autostart_permission_body">Your phone\'s OS may kill apps\' processes and services few hours after being removed from foreground. Because of this, crucial features of SeSEVA like usage and rule break warnings, updating money raised towards your chosen mission would not work.\nPlease click on Check &amp; Grant Button.</string>
     <string name="autostart_permission_body2">If this permission is found to be necessary for your device, you will be taken to the permission screen in settings, else to SeSEVA home screen.</string>
     <string name="check_grant">check &amp; grant</string>
+    <string name="i_understand">I UNDERSTAND</string>
+    <string name="you_can_still_help">You can still help…</string>
+    <string name="you_can_still_help_yourself">You can still help yourself…</string>
 </resources>

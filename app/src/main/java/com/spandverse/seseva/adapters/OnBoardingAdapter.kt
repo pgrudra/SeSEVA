@@ -13,8 +13,10 @@ class OnBoardingAdapter: RecyclerView.Adapter<OnBoardingAdapter.ViewHolder>() {
         private val imgView:ImageView=onBoardingImageView.findViewById(R.id.imageViewOnBoarding)
         fun bind(position:Int){
             imgView.setImageResource(when(position){
-                0->R.drawable.ic_launcher_foreground
-                else->R.drawable.ic_launcher_background
+                0->R.drawable.ic_onboarding_1
+                2->R.drawable.ic_onboarding_2
+                1->R.drawable.ic_onboarding_3
+                else->R.drawable.seseva_icon_foreground
             })
         }
 

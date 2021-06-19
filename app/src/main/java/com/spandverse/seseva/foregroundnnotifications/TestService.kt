@@ -5,7 +5,6 @@ import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
-import android.graphics.Paint
 import android.graphics.PixelFormat
 import android.os.*
 import android.util.Log
@@ -20,7 +19,6 @@ import androidx.lifecycle.Transformations
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.play.core.internal.al
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.spandverse.seseva.*
@@ -32,7 +30,7 @@ import kotlinx.android.synthetic.main.blocking_screen.view.app_time
 import kotlinx.android.synthetic.main.blocking_screen.view.cat_launches
 import kotlinx.android.synthetic.main.blocking_screen.view.cat_time
 import kotlinx.android.synthetic.main.blocking_screen.view.close_app_text
-import kotlinx.android.synthetic.main.blocking_screen.view.ok_button
+import kotlinx.android.synthetic.main.blocking_screen.view.button
 import kotlinx.android.synthetic.main.blocking_screen.view.textView18
 import kotlinx.android.synthetic.main.blocking_screen.view.textView44
 import kotlinx.android.synthetic.main.blocking_screen_strict_mode.view.*
@@ -69,7 +67,6 @@ class TestService : Service() {
         val notification = createNotification()
         createUsageAlertChannel()
         startForeground(notificationId, notification)
-        Log.i("TSS","4")
     }
 
     private fun createUsageAlertChannel() {
@@ -111,7 +108,7 @@ class TestService : Service() {
             getString(R.string.foreground_service_notification_channel_id)
         )
         return notification
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.seseva_icon_foreground)
             .setContentTitle(getString(R.string.notification_title))
             .setContentIntent(pendingIntent)
             .build()
@@ -120,7 +117,6 @@ class TestService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        Log.i("TS","2")
         if (intent != null) {
             when (intent.action) {
                 Actions.START.name -> startService()
@@ -129,7 +125,6 @@ class TestService : Service() {
             }
         }
         else{//check if allowed
-            Log.i("TS","1")
             startService()
         }
         return START_STICKY
@@ -139,7 +134,6 @@ class TestService : Service() {
         val restartServiceIntent = Intent(applicationContext, TestService::class.java).also {
             it.setPackage(packageName)
         }
-        Log.i("TS","3")
         val restartServicePendingIntent: PendingIntent = PendingIntent.getService(
             this,
             1,
@@ -155,11 +149,6 @@ class TestService : Service() {
             restartServicePendingIntent
         )
 
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.i("TSS","destroyed")
     }
 
     override fun onBind(p0: Intent?): IBinder? {
@@ -182,6 +171,12 @@ class TestService : Service() {
             R.layout.blocking_screen_strict_mode,
             null
         )
+        if(blockingScreenView.windowToken!=null){
+            wm.removeView(blockingScreenView)
+        }
+        if(blockingScreenViewStrict.windowToken!=null){
+            wm.removeView(blockingScreenViewStrict)
+        }
         val modeChanged=sharedPref.getBoolean((R.string.mode_changed).toString(), true)
         if (isServiceStarted && !modeChanged) return
         with (sharedPref.edit()) {
@@ -343,8 +338,10 @@ class TestService : Service() {
                         eval = false
                     } else {
                         eval = true
-                        pkg = event.packageName
-                        lastResumeTimeStamp = event.timeStamp
+                        if(event.packageName!=pkg){
+                            lastResumeTimeStamp = event.timeStamp
+                            pkg = event.packageName
+                        }
                     }
                 }
                 sortedEvents[event.packageName]?.add(event)
@@ -425,14 +422,15 @@ class TestService : Service() {
                 else {
                     if (catTimeInSeconds > maxTime - 12 && catTimeInSeconds <= maxTime) {
                             notificationManager.sendNotification("Less than 12 secs remaining! Quit now, don't loose the opportunity of helping some one in need.", context)
-                    } else if(catTimeInSeconds > maxTime - 24 && catTimeInSeconds <= 12){
+                    } else if(catTimeInSeconds > maxTime - 24 && catTimeInSeconds <= maxTime-12){
                         notificationManager.sendNotification("Less than 25 secs remaining! Quit now, don't loose the opportunity of helping some one in need.", context)
                     }
                     else if (catLaunches == maxLaunches) {
                         if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
                             notificationManager.sendNotification("No more launches for this app, else you will lose opportunity of doing something noble!", context)
                         }
-                    } else if (catTimeInSeconds >= maxTime - 60 && catTimeInSeconds < maxTime - 48) {
+                    }
+                    else if (catTimeInSeconds >= maxTime - 60 && catTimeInSeconds < maxTime - 48) {
                         notificationManager.sendNotification("Less than a min remaining", context)
                     }else if (catTimeInSeconds >= maxTime - 300 && catTimeInSeconds < maxTime - 288) {
                         notificationManager.sendNotification("Less than 5 mins remaining", context)
@@ -454,7 +452,7 @@ class TestService : Service() {
                     }
                     else if(now.timeInMillis <= lastResumeTimeStamp + 10000){
                         handler.post {
-                            Toast.makeText(context, "You have spent ${catTimeInSeconds/60} mins on $cat apps", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "You have spent ${catTimeInSeconds/60} mins on this and other $cat apps", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -468,9 +466,6 @@ class TestService : Service() {
         context: Context,
         sortedEvents: Map<String, MutableList<UsageEvents.Event>>,
     ) {
-        if(blockingScreenView.windowToken!=null){
-            wm.removeView(blockingScreenView)
-        }
         if(blockingScreenViewStrict.windowToken!=null){
             wm.removeView(blockingScreenViewStrict)
         }
@@ -500,8 +495,10 @@ class TestService : Service() {
                         eval = false
                     } else {
                         eval = true
-                        pkg = event.packageName
-                        lastResumeTimeStamp = event.timeStamp
+                        if(event.packageName!=pkg){
+                            lastResumeTimeStamp = event.timeStamp
+                            pkg = event.packageName
+                        }
                     }
                 }
                 sortedEvents[event.packageName]?.add(event)
@@ -586,37 +583,67 @@ class TestService : Service() {
                         null
                     }
                 val wm = this.getSystemService(Context.WINDOW_SERVICE) as WindowManager*/
+                val blockingScreenParams: WindowManager.LayoutParams? =
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        WindowManager.LayoutParams(
+                            WindowManager.LayoutParams.MATCH_PARENT,
+                            WindowManager.LayoutParams.MATCH_PARENT,
+                            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                            WindowManager.LayoutParams.FLAG_LOCAL_FOCUS_MODE,
+                            PixelFormat.OPAQUE
+                        )
+                    } else {
+                        null
+                    }
                 if (catTimeInSeconds > maxTime || catLaunches > maxLaunches) {
                     if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
                         handler.post {
-                            Toast.makeText(context, "Rule Broken!!\nPlease stop for your own good.", Toast.LENGTH_LONG).show()
+                            blockingScreenView.dont_text.text=context.getString(R.string.rule_broken)
+                            blockingScreenView.close_app_text.text =
+                                context.getString(R.string.close_app_for_your_own_good)
+                            blockingScreenView.time_launches_left_text.text=""
+                            blockingScreenView.textView18.text =
+                                context.getString(R.string.blocking_screen_t3_m_b, penalties[cat])
+                            blockingScreenView.textView43.text =context.getString(R.string.you_can_still_help_yourself)
+                            blockingScreenView.textView44.text=""
+                            blockingScreenView.app_time.text = (appTime / 60000).toString()
+                            blockingScreenView.app_launches.text = appLaunches.toString()
+                            blockingScreenView.cat_time.text =
+                                (catTimeInSeconds / oneMinuteInSeconds).toString()
+                            blockingScreenView.cat_launches.text = catLaunches.toString()
+                            blockingScreenView.button.setOnClickListener {
+                                wm.removeView(blockingScreenView)
+                            }
+                            if(blockingScreenView.windowToken!=null){
+                                wm.removeView(blockingScreenView)
+                            }
+                            if (blockingScreenParams != null) {
+                                wm.addView(blockingScreenView, blockingScreenParams)
+                            }
+                        }
+
+                    }
+                    else if((catTimeInSeconds-maxTime)%40 > 30){
+                        handler.post {
+                            Toast.makeText(context, "Rule Broken!!\nPlease stop for your own good.", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
                 else {
                     if (catTimeInSeconds > maxTime - 12 && catTimeInSeconds <= maxTime) {
-                        val blockingScreenParams: WindowManager.LayoutParams? =
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                                WindowManager.LayoutParams(
-                                    WindowManager.LayoutParams.MATCH_PARENT,
-                                    WindowManager.LayoutParams.MATCH_PARENT,
-                                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                                    WindowManager.LayoutParams.FLAG_LOCAL_FOCUS_MODE,
-                                    PixelFormat.OPAQUE
-                                )
-                            } else {
-                                null
-                            }
+
                             handler.post {
+                                blockingScreenView.dont_text.text=context.getString(R.string.don_t_break_the_rule)
                                 blockingScreenView.close_app_text.text=context.getString(R.string.close_app_immediately)
                                 blockingScreenView.time_launches_left_text.text=context.getString(R.string.blocking_screen_t21,12)
                                 blockingScreenView.textView18.text=context.getString(R.string.blocking_screen_t3,penalties[cat])
+                                blockingScreenView.textView43.text =context.getString(R.string.you_can_still_help)
                                 blockingScreenView.textView44.text=context.getString(R.string.blocking_screen_t41)
                                 blockingScreenView.app_time.text=(appTime/60000).toString()
                                 blockingScreenView.app_launches.text=appLaunches.toString()
                                 blockingScreenView.cat_time.text=(catTimeInSeconds/oneMinuteInSeconds).toString()
                                 blockingScreenView.cat_launches.text=catLaunches.toString()
-                                blockingScreenView.ok_button.setOnClickListener {
+                                blockingScreenView.button.setOnClickListener {
                                     wm.removeView(blockingScreenView)
                                 }
                                 val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionImages/mission${missionNumber}Image.jpg")
@@ -625,9 +652,9 @@ class TestService : Service() {
                                     .transition(DrawableTransitionOptions.withCrossFade())
                                     .apply(
                                         RequestOptions()
-                                            .placeholder(R.drawable.ic_launcher_background)
-                                            .error(R.drawable.ic_launcher_foreground)
-                                            .fallback(R.drawable.ic_launcher_foreground)
+                                            .placeholder(R.drawable.ic_imageplaceholder)
+                                            .error(R.drawable.ic_imageplaceholder)
+                                            .fallback(R.drawable.ic_imageplaceholder)
                                     )
                                     .into(blockingScreenView.image)
                                 if(blockingScreenView.windowToken!=null){
@@ -638,29 +665,19 @@ class TestService : Service() {
                                 }
                             }
 
-                    } else if(catTimeInSeconds > maxTime - 24 && catTimeInSeconds <= 12){
-                        val blockingScreenParams: WindowManager.LayoutParams? =
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                                WindowManager.LayoutParams(
-                                    WindowManager.LayoutParams.MATCH_PARENT,
-                                    WindowManager.LayoutParams.MATCH_PARENT,
-                                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                                    WindowManager.LayoutParams.FLAG_LOCAL_FOCUS_MODE,
-                                    PixelFormat.OPAQUE
-                                )
-                            } else {
-                                null
-                            }
+                    } else if(catTimeInSeconds > maxTime - 24 && catTimeInSeconds <= maxTime-12){
                             handler.post {
+                                blockingScreenView.dont_text.text=context.getString(R.string.don_t_break_the_rule)
                                 blockingScreenView.close_app_text.text=context.getString(R.string.close_app_soon)
                                 blockingScreenView.time_launches_left_text.text=context.getString(R.string.blocking_screen_t21,24)
                                 blockingScreenView.textView18.text=context.getString(R.string.blocking_screen_t3,penalties[cat])
+                                blockingScreenView.textView43.text =context.getString(R.string.you_can_still_help)
                                 blockingScreenView.textView44.text=context.getString(R.string.blocking_screen_t41)
                                 blockingScreenView.app_time.text=(appTime/60000).toString()
                                 blockingScreenView.app_launches.text=appLaunches.toString()
                                 blockingScreenView.cat_time.text=(catTimeInSeconds/oneMinuteInSeconds).toString()
                                 blockingScreenView.cat_launches.text=catLaunches.toString()
-                                blockingScreenView.ok_button.setOnClickListener {
+                                blockingScreenView.button.setOnClickListener {
                                     wm.removeView(blockingScreenView)
                                 }
                                 val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionImages/mission${missionNumber}Image.jpg")
@@ -669,9 +686,9 @@ class TestService : Service() {
                                     .transition(DrawableTransitionOptions.withCrossFade())
                                     .apply(
                                         RequestOptions()
-                                            .placeholder(R.drawable.ic_launcher_background)
-                                            .error(R.drawable.ic_launcher_foreground)
-                                            .fallback(R.drawable.ic_launcher_foreground)
+                                            .placeholder(R.drawable.ic_imageplaceholder)
+                                            .error(R.drawable.ic_imageplaceholder)
+                                            .fallback(R.drawable.ic_imageplaceholder)
                                     )
                                     .into(blockingScreenView.image)
                                 if(blockingScreenView.windowToken!=null){
@@ -682,29 +699,19 @@ class TestService : Service() {
                                 }
                             }
                     }
-                    else if(catTimeInSeconds > maxTime - 36 && catTimeInSeconds <= 24){
-                        val blockingScreenParams: WindowManager.LayoutParams? =
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                                WindowManager.LayoutParams(
-                                    WindowManager.LayoutParams.MATCH_PARENT,
-                                    WindowManager.LayoutParams.MATCH_PARENT,
-                                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                                    WindowManager.LayoutParams.FLAG_LOCAL_FOCUS_MODE,
-                                    PixelFormat.OPAQUE
-                                )
-                            } else {
-                                null
-                            }
+                    else if(catTimeInSeconds > maxTime - 36 && catTimeInSeconds <= maxTime-24){
                         handler.post {
+                            blockingScreenView.dont_text.text=context.getString(R.string.don_t_break_the_rule)
                             blockingScreenView.close_app_text.text=context.getString(R.string.close_app_soon)
                             blockingScreenView.time_launches_left_text.text=context.getString(R.string.blocking_screen_t21,36)
                             blockingScreenView.textView18.text=context.getString(R.string.blocking_screen_t3,penalties[cat])
+                            blockingScreenView.textView43.text =context.getString(R.string.you_can_still_help)
                             blockingScreenView.textView44.text=context.getString(R.string.blocking_screen_t41)
                             blockingScreenView.app_time.text=(appTime/60000).toString()
                             blockingScreenView.app_launches.text=appLaunches.toString()
                             blockingScreenView.cat_time.text=(catTimeInSeconds/oneMinuteInSeconds).toString()
                             blockingScreenView.cat_launches.text=catLaunches.toString()
-                            blockingScreenView.ok_button.setOnClickListener {
+                            blockingScreenView.button.setOnClickListener {
                                 wm.removeView(blockingScreenView)
                             }
                             val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionImages/mission${missionNumber}Image.jpg")
@@ -713,9 +720,9 @@ class TestService : Service() {
                                 .transition(DrawableTransitionOptions.withCrossFade())
                                 .apply(
                                     RequestOptions()
-                                        .placeholder(R.drawable.ic_launcher_background)
-                                        .error(R.drawable.ic_launcher_foreground)
-                                        .fallback(R.drawable.ic_launcher_foreground)
+                                        .placeholder(R.drawable.ic_imageplaceholder)
+                                        .error(R.drawable.ic_imageplaceholder)
+                                        .fallback(R.drawable.ic_imageplaceholder)
                                 )
                                 .into(blockingScreenView.image)
                             if(blockingScreenView.windowToken!=null){
@@ -728,28 +735,18 @@ class TestService : Service() {
                     }
                         else if (catLaunches == maxLaunches) {
                         if (now.timeInMillis <= lastResumeTimeStamp + 1000) {
-                            val blockingScreenParams: WindowManager.LayoutParams? =
-                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                                    WindowManager.LayoutParams(
-                                        WindowManager.LayoutParams.MATCH_PARENT,
-                                        WindowManager.LayoutParams.MATCH_PARENT,
-                                        WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                                        WindowManager.LayoutParams.FLAG_LOCAL_FOCUS_MODE,
-                                        PixelFormat.OPAQUE
-                                    )
-                                } else {
-                                    null
-                                }
                             handler.post {
+                                blockingScreenView.dont_text.text=context.getString(R.string.don_t_break_the_rule)
                                 blockingScreenView.close_app_text.text=context.getString(R.string.dont_relaunch_app)
                                 blockingScreenView.time_launches_left_text.text=context.getString(R.string.blocking_screen_t22)
                                 blockingScreenView.textView18.text=context.getString(R.string.blocking_screen_t3,penalties[cat])
+                                blockingScreenView.textView43.text =context.getString(R.string.you_can_still_help)
                                 blockingScreenView.textView44.text=context.getString(R.string.blocking_screen_t42)
                                 blockingScreenView.app_time.text=(appTime/60000).toString()
                                 blockingScreenView.app_launches.text=appLaunches.toString()
                                 blockingScreenView.cat_time.text=(catTimeInSeconds/oneMinuteInSeconds).toString()
                                 blockingScreenView.cat_launches.text=catLaunches.toString()
-                                blockingScreenView.ok_button.setOnClickListener {
+                                blockingScreenView.button.setOnClickListener {
                                     wm.removeView(blockingScreenView)
                                 }
                                 val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionImages/mission${missionNumber}Image.jpg")
@@ -758,9 +755,9 @@ class TestService : Service() {
                                     .transition(DrawableTransitionOptions.withCrossFade())
                                     .apply(
                                         RequestOptions()
-                                            .placeholder(R.drawable.ic_launcher_background)
-                                            .error(R.drawable.ic_launcher_foreground)
-                                            .fallback(R.drawable.ic_launcher_foreground)
+                                            .placeholder(R.drawable.ic_imageplaceholder)
+                                            .error(R.drawable.ic_imageplaceholder)
+                                            .fallback(R.drawable.ic_imageplaceholder)
                                     )
                                     .into(blockingScreenView.image)
                                 if(blockingScreenView.windowToken!=null){
@@ -793,7 +790,7 @@ class TestService : Service() {
                     }
                     else if(now.timeInMillis <= lastResumeTimeStamp + 10000){
                         handler.post {
-                            Toast.makeText(context, "You have spent ${catTimeInSeconds/60} mins on on $cat apps", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "You have spent ${catTimeInSeconds/60} mins on this and other $cat apps", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -835,8 +832,10 @@ class TestService : Service() {
                         eval = false
                     } else {
                         eval = true
-                        pkg = event.packageName
-                        lastResumeTimeStamp = event.timeStamp
+                        if(event.packageName!=pkg){
+                            lastResumeTimeStamp = event.timeStamp
+                            pkg = event.packageName
+                        }
                     }
                 }
                 sortedEvents[event.packageName]?.add(event)
@@ -921,7 +920,6 @@ class TestService : Service() {
                     }
                 if (catTimeInSeconds > maxTime || catLaunches > maxLaunches) {
                     handler.post {
-                        Log.i("koij","khg")
                         blockingScreenViewStrict.app_time_s.text=(appTime/60000).toString()
                         blockingScreenViewStrict.app_launches_s.text=appLaunches.toString()
                         blockingScreenViewStrict.cat_time_s.text=(catTimeInSeconds/oneMinuteInSeconds).toString()
@@ -934,9 +932,9 @@ class TestService : Service() {
                             .transition(DrawableTransitionOptions.withCrossFade())
                             .apply(
                                 RequestOptions()
-                                    .placeholder(R.drawable.ic_launcher_background)
-                                    .error(R.drawable.ic_launcher_foreground)
-                                    .fallback(R.drawable.ic_launcher_foreground)
+                                    .placeholder(R.drawable.ic_imageplaceholder)
+                                    .error(R.drawable.ic_imageplaceholder)
+                                    .fallback(R.drawable.ic_imageplaceholder)
                             )
                             .into(blockingScreenViewStrict.image_s)
                         if(blockingScreenView.windowToken!=null){
@@ -952,15 +950,17 @@ class TestService : Service() {
                     if (catTimeInSeconds > maxTime - 10 && catTimeInSeconds <= maxTime-8) {
                         if (now.timeInMillis <= lastResumeTimeStamp + 9000){
                             handler.post {
+                                blockingScreenView.dont_text.text=context.getString(R.string.don_t_break_the_rule)
                                 blockingScreenView.close_app_text.text=context.getString(R.string.close_app_immediately)
                                 blockingScreenView.time_launches_left_text.text=context.getString(R.string.blocking_screen_t21,10)
                                 blockingScreenView.textView18.text=context.getString(R.string.blocking_screen_t3,penalties[cat])
+                                blockingScreenView.textView43.text =context.getString(R.string.you_can_still_help)
                                 blockingScreenView.textView44.text=context.getString(R.string.blocking_screen_t41)
                                 blockingScreenView.app_time.text=(appTime/60000).toString()
                                 blockingScreenView.app_launches.text=appLaunches.toString()
                                 blockingScreenView.cat_time.text=(catTimeInSeconds/oneMinuteInSeconds).toString()
                                 blockingScreenView.cat_launches.text=catLaunches.toString()
-                                blockingScreenView.ok_button.setOnClickListener {
+                                blockingScreenView.button.setOnClickListener {
                                     wm.removeView(blockingScreenView)
                                 }
                                 val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionImages/mission${missionNumber}Image.jpg")
@@ -969,9 +969,9 @@ class TestService : Service() {
                                     .transition(DrawableTransitionOptions.withCrossFade())
                                     .apply(
                                         RequestOptions()
-                                            .placeholder(R.drawable.ic_launcher_background)
-                                            .error(R.drawable.ic_launcher_foreground)
-                                            .fallback(R.drawable.ic_launcher_foreground)
+                                            .placeholder(R.drawable.ic_imageplaceholder)
+                                            .error(R.drawable.ic_imageplaceholder)
+                                            .fallback(R.drawable.ic_imageplaceholder)
                                     )
                                     .into(blockingScreenView.image)
                                 if(blockingScreenView.windowToken!=null){
@@ -983,17 +983,19 @@ class TestService : Service() {
                             }
                         }
                     }
-                    else if(catTimeInSeconds > maxTime - 20 && catTimeInSeconds <= 18){
+                    else if(catTimeInSeconds > maxTime - 20 && catTimeInSeconds <= maxTime-18){
                             handler.post {
+                                blockingScreenView.dont_text.text=context.getString(R.string.don_t_break_the_rule)
                                 blockingScreenView.close_app_text.text=context.getString(R.string.close_app_soon)
                                 blockingScreenView.time_launches_left_text.text=context.getString(R.string.blocking_screen_t21,20)
                                 blockingScreenView.textView18.text=context.getString(R.string.blocking_screen_t3,penalties[cat])
+                                blockingScreenView.textView43.text =context.getString(R.string.you_can_still_help)
                                 blockingScreenView.textView44.text=context.getString(R.string.blocking_screen_t41)
                                 blockingScreenView.app_time.text=(appTime/60000).toString()
                                 blockingScreenView.app_launches.text=appLaunches.toString()
                                 blockingScreenView.cat_time.text=(catTimeInSeconds/oneMinuteInSeconds).toString()
                                 blockingScreenView.cat_launches.text=catLaunches.toString()
-                                blockingScreenView.ok_button.setOnClickListener {
+                                blockingScreenView.button.setOnClickListener {
                                     wm.removeView(blockingScreenView)
                                 }
                                 val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionImages/mission${missionNumber}Image.jpg")
@@ -1002,9 +1004,9 @@ class TestService : Service() {
                                     .transition(DrawableTransitionOptions.withCrossFade())
                                     .apply(
                                         RequestOptions()
-                                            .placeholder(R.drawable.ic_launcher_background)
-                                            .error(R.drawable.ic_launcher_foreground)
-                                            .fallback(R.drawable.ic_launcher_foreground)
+                                            .placeholder(R.drawable.ic_imageplaceholder)
+                                            .error(R.drawable.ic_imageplaceholder)
+                                            .fallback(R.drawable.ic_imageplaceholder)
                                     )
                                     .into(blockingScreenView.image)
                                 if(blockingScreenView.windowToken!=null){
@@ -1019,15 +1021,17 @@ class TestService : Service() {
                     else if (catLaunches == maxLaunches) {
                         if (now.timeInMillis <= lastResumeTimeStamp + 1000) {
                             handler.post {
+                                blockingScreenView.dont_text.text=context.getString(R.string.don_t_break_the_rule)
                                 blockingScreenView.close_app_text.text=context.getString(R.string.dont_relaunch_app)
                                 blockingScreenView.time_launches_left_text.text=context.getString(R.string.blocking_screen_t22)
                                 blockingScreenView.textView18.text=context.getString(R.string.blocking_screen_t3,penalties[cat])
+                                blockingScreenView.textView43.text =context.getString(R.string.you_can_still_help)
                                 blockingScreenView.textView44.text=context.getString(R.string.blocking_screen_t42)
                                 blockingScreenView.app_time.text=(appTime/60000).toString()
                                 blockingScreenView.app_launches.text=appLaunches.toString()
                                 blockingScreenView.cat_time.text=(catTimeInSeconds/oneMinuteInSeconds).toString()
                                 blockingScreenView.cat_launches.text=catLaunches.toString()
-                                blockingScreenView.ok_button.setOnClickListener {
+                                blockingScreenView.button.setOnClickListener {
                                     wm.removeView(blockingScreenView)
                                 }
                                 val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionImages/mission${missionNumber}Image.jpg")
@@ -1036,9 +1040,9 @@ class TestService : Service() {
                                     .transition(DrawableTransitionOptions.withCrossFade())
                                     .apply(
                                         RequestOptions()
-                                            .placeholder(R.drawable.ic_launcher_background)
-                                            .error(R.drawable.ic_launcher_foreground)
-                                            .fallback(R.drawable.ic_launcher_foreground)
+                                            .placeholder(R.drawable.ic_imageplaceholder)
+                                            .error(R.drawable.ic_imageplaceholder)
+                                            .fallback(R.drawable.ic_imageplaceholder)
                                     )
                                     .into(blockingScreenView.image)
                                 if (blockingScreenParams != null && blockingScreenView.windowToken==null) {
@@ -1046,9 +1050,9 @@ class TestService : Service() {
                                 }
                             }
                         }
-                    } else if (catTimeInSeconds >= maxTime - 60 && catTimeInSeconds < maxTime - 48) {
+                    } else if (catTimeInSeconds >= maxTime - 60 && catTimeInSeconds < maxTime - 58) {
                         notificationManager.sendNotification("Less than a min remaining", context)
-                    }else if (catTimeInSeconds >= maxTime - 300 && catTimeInSeconds < maxTime - 288) {
+                    }else if (catTimeInSeconds >= maxTime - 300 && catTimeInSeconds < maxTime - 298) {
                         notificationManager.sendNotification("Less than 5 mins remaining", context)
                     }
                     else if (catLaunches == maxLaunches - 1) {
@@ -1068,7 +1072,7 @@ class TestService : Service() {
                     }
                     else if(now.timeInMillis <= lastResumeTimeStamp + 1000){
                         handler.post {
-                            Toast.makeText(context, "You have spent ${catTimeInSeconds/60} mins on on $cat apps", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "You have spent ${catTimeInSeconds/60} mins on this and other $cat apps", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

@@ -26,8 +26,8 @@ class AllSponsorsAdapter(private val onCLickListener: AllSponsorsAdapter.OnClick
                 .load(reference)
                 .apply(
                     RequestOptions()
-                        .placeholder(R.drawable.ic_launcher_background)
-                        .error(R.drawable.ic_launcher_foreground))
+                        .placeholder(R.drawable.ic_sponsor)
+                        .error(R.drawable.ic_sponsor))
                 .into(binding.sponsorLogo)
             binding.sponsoredAmount.text= binding.sponsoredAmount.context.getString(R.string.rs,item.sponsoredAmount)
             binding.sponsorName.text=item.sponsorName

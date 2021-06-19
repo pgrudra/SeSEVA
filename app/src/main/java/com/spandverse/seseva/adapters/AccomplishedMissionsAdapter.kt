@@ -30,8 +30,8 @@ class AccomplishedMissionsAdapter(private val onCLickListener: AccomplishedMissi
                 .load(reference)
                 .apply(
                     RequestOptions()
-                        .placeholder(R.drawable.ic_launcher_background)
-                        .error(R.drawable.ic_launcher_foreground))
+                        .placeholder(R.drawable.ic_imageplaceholder)
+                        .error(R.drawable.ic_imageplaceholder))
                 .into(binding.missionImage)
             if(item.reportAvailable){
                 binding.reportSymbol.setImageResource(R.drawable.ic_report_available)

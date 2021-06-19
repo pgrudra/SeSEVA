@@ -153,7 +153,7 @@ class LoginFragment : Fragment(), View.OnClickListener,NoInternetDialogFragment.
             setAndroidPackageName(
                 "com.example.us0",
                 true, /* installIfNotAvailable */
-                "21" /* minimumVersion */
+                "22" /* minimumVersion */
             )
         }
     }

@@ -32,8 +32,8 @@ class ActiveMissions2Adapter(private val onCLickListener: OnClickListener): List
                 .load(reference)
                 .apply(
                     RequestOptions()
-                        .placeholder(R.drawable.ic_launcher_background)
-                        .error(R.drawable.ic_launcher_foreground))
+                        .placeholder(R.drawable.ic_imageplaceholder)
+                        .error(R.drawable.ic_imageplaceholder))
                 .into(binding.missionImage)
             binding.reportSymbol.visibility=View.GONE
         }

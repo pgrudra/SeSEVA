@@ -43,7 +43,7 @@
             android:layout_marginStart="16dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:srcCompat="@drawable/ic_sponsor_logo" />
+            tools:srcCompat="@drawable/ic_sponsor" />
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

@@ -6,6 +6,7 @@ import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -120,13 +121,10 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     }
 
     private fun displayBannerIfApplicable() {
-        Log.i("HVM1","1")
         val count=sharedPref.getInt((R.string.count).toString(),0)
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(context)) {
-            Log.i("HVM1","2")
             if(count%4==2){
                 //show banner
-                Log.i("HVM1","3")
                 _showOverlayPermissionBanner.value=true
             }
         }
@@ -134,6 +132,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
             val showStrictBanner=sharedPref.getBoolean((R.string.show_strict_banner).toString(),true)
             if(showStrictBanner && count%4==0){
                 //show banner
+                _showStrictModeBanner.value=true
                 //upon enabling strict mode, put showStrictBanner as false
             }
         }
@@ -606,8 +605,16 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                         } catch (e: Exception) {
                             "OTHERS"
                         }
-                        if(category!="OTHERS") {
-                            i.appCategory = allotGroup(category)
+                        val allotedCat=allotGroup(category)
+                        if(allotedCat=="OTHERS"){
+                            val ai=pm.getApplicationInfo(i.packageName,0)
+                            if((ai.flags and ApplicationInfo.FLAG_SYSTEM)!=0){
+                                i.appCategory="WHITELISTED"
+                                appDatabase.update(i)
+                            }
+                        }
+                        else{
+                            i.appCategory = allotedCat
                             appDatabase.update(i)
                         }
                     }
@@ -649,8 +656,22 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                                 nameOfPackage, PackageManager.GET_META_DATA
                             )
                         ) as String
-                        app.appCategory = allotGroup(category)
-                        appDatabase.insert(app)
+                        val allotedCat=allotGroup(category)
+                        if(allotedCat=="OTHERS"){
+                            val ai=pm.getApplicationInfo(app.packageName,0)
+                            if((ai.flags and ApplicationInfo.FLAG_SYSTEM)!=0){
+                                app.appCategory="WHITELISTED"
+                                appDatabase.insert(app)
+                            }
+                            else{
+                                app.appCategory = allotedCat
+                                appDatabase.insert(app)
+                            }
+                        }
+                        else{
+                            app.appCategory = allotedCat
+                            appDatabase.insert(app)
+                        }
                     }
                 }
                 val databaseList = appDatabase.getLaunchablesList()

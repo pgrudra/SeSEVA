@@ -20,19 +20,19 @@ class AppsCategoryBriefAdapter(private val onCLickListener: OnClickListener):
         fun bind(item: AppsCategory) {
 binding.catName.text=item.categoryName
             when(item.ruleBroken){
-                CategoryRuleStatus.BROKEN->{binding.statusSkrim.setBackgroundResource(R.drawable.primary_60p_rounded_corner_4)}
-                CategoryRuleStatus.WARNING->{binding.statusSkrim.setBackgroundResource(R.drawable.all_corner_rounded_4dp_2e)}
-                CategoryRuleStatus.SAFE->{binding.statusSkrim.visibility= View.GONE}
+                CategoryRuleStatus.BROKEN->{binding.statusSkrim.setBackgroundResource(R.drawable.broken_skrim)}
+                CategoryRuleStatus.WARNING->{binding.statusSkrim.setBackgroundResource(R.drawable.warning_skrim)}
+                else -> {}
             }
             when(item.categoryName){
-                "SOCIAL"->binding.catIcon.setImageResource(R.drawable.ic__dummy_category_icon)
-                "COMMUNICATION"->binding.catIcon.setImageResource(R.drawable.ic__dummy_category_icon)
-                "GAMES"->binding.catIcon.setImageResource(R.drawable.ic__dummy_category_icon)
-                "VIDEO"->binding.catIcon.setImageResource(R.drawable.ic__dummy_category_icon)
-                "ENTERTAINMENT"->binding.catIcon.setImageResource(R.drawable.ic__dummy_category_icon)
-                "MSNBS"->binding.catIcon.setImageResource(R.drawable.ic__dummy_category_icon)
-                "OTHERS"->binding.catIcon.setImageResource(R.drawable.ic__dummy_category_icon)
-                "WHITELISTED"->binding.catIcon.setImageResource(R.drawable.ic__dummy_category_icon)
+                "SOCIAL"->binding.catIcon.setImageResource(R.drawable.ic_social)
+                "COMMUNICATION"->binding.catIcon.setImageResource(R.drawable.ic_communication)
+                "GAMES"->binding.catIcon.setImageResource(R.drawable.ic_games)
+                "VIDEO"->binding.catIcon.setImageResource(R.drawable.ic_video)
+                "ENTERTAINMENT"->binding.catIcon.setImageResource(R.drawable.ic_entertainment)
+                "MSNBS"->binding.catIcon.setImageResource(R.drawable.ic_msnbs)
+                "OTHERS"->binding.catIcon.setImageResource(R.drawable.ic_others)
+                "WHITELISTED"->binding.catIcon.setImageResource(R.drawable.ic_whitelisted)
             }
         }
         companion object {

@@ -2,6 +2,7 @@ package com.spandverse.seseva
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
@@ -51,8 +52,16 @@ class CategoryRefreshWorker(appContext: Context, workerParams: WorkerParameters)
                         } catch (e: Exception) {
                             "OTHERS"
                         }
-                        if(category!="OTHERS") {
-                            i.appCategory = allotGroup(category)
+                        val allotedCat=allotGroup(category)
+                        if(allotedCat=="OTHERS"){
+                            val ai=pm.getApplicationInfo(i.packageName,0)
+                            if((ai.flags and ApplicationInfo.FLAG_SYSTEM)!=0){
+                                i.appCategory="WHITELISTED"
+                                dao.update(i)
+                            }
+                        }
+                        else{
+                            i.appCategory = allotedCat
                             dao.update(i)
                         }
                     }
@@ -94,8 +103,22 @@ class CategoryRefreshWorker(appContext: Context, workerParams: WorkerParameters)
                                 nameOfPackage, PackageManager.GET_META_DATA
                             )
                         ) as String
-                        app.appCategory = allotGroup(category)
-                        dao.insert(app)
+                        val allotedCat=allotGroup(category)
+                        if(allotedCat=="OTHERS"){
+                            val ai=pm.getApplicationInfo(app.packageName,0)
+                            if((ai.flags and ApplicationInfo.FLAG_SYSTEM)!=0){
+                                app.appCategory="WHITELISTED"
+                                dao.insert(app)
+                            }
+                            else{
+                                app.appCategory = allotedCat
+                                dao.insert(app)
+                            }
+                        }
+                        else{
+                            app.appCategory = allotedCat
+                            dao.insert(app)
+                        }
                     }
                 }
                 val databaseList=dao.getLaunchablesList()

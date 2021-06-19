@@ -12,36 +12,38 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/card"
         android:background="@drawable/all_corner_rounded_4dp_2e"
-        android:layout_width="140dp"
+        android:layout_width="139dp"
         android:elevation="5dp"
-        android:layout_height="100dp">
+        android:layout_marginEnd="4dp"
+        android:layout_height="91dp">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/cat_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/cat_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/cat_icon"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="Communication"
-            style="@style/caption"
-            android:textColor="@color/secondary_text"/>
 
         <View
             android:id="@+id/status_skrim"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/skrim"
+            android:background="@null"
             android:visibility="visible" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/cat_icon"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/cat_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="Communication"
+            style="@style/caption"
+            android:textColor="@color/primary_text"/>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

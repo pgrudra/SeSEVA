@@ -124,16 +124,16 @@
                             android:background="@drawable/all_corner_rounded_4dp"
                             android:elevation="3dp">
 
-                            <ImageView
+                            <androidx.appcompat.widget.AppCompatImageView
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_marginTop="18dp"
-                                android:src="@drawable/ic_launcher_foreground"
+                                app:srcCompat="@drawable/ic_social"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_1"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/social_expand_or_contract"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -145,7 +145,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/i_social"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -255,16 +255,16 @@
                             android:background="@drawable/all_corner_rounded_4dp"
                             android:elevation="3dp">
 
-                            <ImageView
+                            <androidx.appcompat.widget.AppCompatImageView
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_marginTop="18dp"
-                                android:src="@drawable/ic_launcher_foreground"
+                                app:srcCompat="@drawable/ic_video"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_2"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/video_expand_or_contract"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -276,7 +276,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/i_video"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -383,16 +383,16 @@
                             android:background="@drawable/all_corner_rounded_4dp"
                             android:elevation="3dp">
 
-                            <ImageView
+                            <androidx.appcompat.widget.AppCompatImageView
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_marginTop="18dp"
-                                android:src="@drawable/ic_launcher_foreground"
+                                app:srcCompat="@drawable/ic_games"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_3"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/games_expand_or_contract"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -404,7 +404,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/i_games"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -509,16 +509,16 @@
                             android:background="@drawable/all_corner_rounded_4dp"
                             android:elevation="3dp">
 
-                            <ImageView
+                            <androidx.appcompat.widget.AppCompatImageView
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_marginTop="18dp"
-                                android:src="@drawable/ic_launcher_foreground"
+                                app:srcCompat="@drawable/ic_communication"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_4"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/communication_expand_or_contract"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -530,7 +530,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/i_communication"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -637,16 +637,16 @@
                             android:background="@drawable/all_corner_rounded_4dp"
                             android:elevation="3dp">
 
-                            <ImageView
+                            <androidx.appcompat.widget.AppCompatImageView
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_marginTop="18dp"
-                                android:src="@drawable/ic_launcher_foreground"
+                                app:srcCompat="@drawable/ic_msnbs"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_6"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/msnbs_expand_or_contract"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -658,7 +658,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/i_msnbs"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -765,16 +765,16 @@
                             android:background="@drawable/all_corner_rounded_4dp"
                             android:elevation="3dp">
 
-                            <ImageView
+                            <androidx.appcompat.widget.AppCompatImageView
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_marginTop="18dp"
-                                android:src="@drawable/ic_launcher_foreground"
+                                app:srcCompat="@drawable/ic_whitelisted"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_5"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/whitelisted_expand_or_contract"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -786,7 +786,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/i_whitelisted"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -854,16 +854,16 @@
                             android:background="@drawable/all_corner_rounded_4dp"
                             android:elevation="3dp">
 
-                            <ImageView
+                            <androidx.appcompat.widget.AppCompatImageView
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_marginTop="18dp"
-                                android:src="@drawable/ic_launcher_foreground"
+                                app:srcCompat="@drawable/ic_others"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_7"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/others_expand_or_contract"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -875,7 +875,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/i_others"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -991,16 +991,16 @@
                             android:background="@drawable/all_corner_rounded_4dp"
                             android:elevation="3dp">
 
-                            <ImageView
+                            <androidx.appcompat.widget.AppCompatImageView
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_marginTop="18dp"
-                                android:src="@drawable/ic_launcher_foreground"
+                                app:srcCompat="@drawable/ic_entertainment"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_8"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/entertainment_expand_or_contract"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -1012,7 +1012,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/i_entertainment"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -1112,7 +1112,7 @@
             </LinearLayout>
         </ScrollView>
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/intro_scrim"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

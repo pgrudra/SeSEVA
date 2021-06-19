@@ -4,6 +4,7 @@ import android.app.AppOpsManager
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.net.ConnectivityManager
@@ -524,7 +525,6 @@ class Rules2ViewModel(
             }
         }
         val appsList: List<AppAndCategory>? = database.getList()
-        Log.i("RVM","${appsList?.size}")
         if (appsList != null) {
             for (i in appsList) {
                 val queryUrl = GOOGLE_URL + i.packageName + "&hl=en"
@@ -554,8 +554,19 @@ class Rules2ViewModel(
                 } catch (e: Exception) {
                     "OTHERS"
                 }
-                i.appCategory = allotGroup(category)
-                database.update(i)
+                val allotedCat=allotGroup(category)
+                if(allotedCat=="OTHERS"){
+                    val ai=pm.getApplicationInfo(i.packageName,0)
+                    if((ai.flags and ApplicationInfo.FLAG_SYSTEM)!=0){
+                        i.appCategory="WHITELISTED"
+                        database.update(i)
+                    }
+                }
+                else{
+                    i.appCategory = allotedCat
+                    database.update(i)
+                }
+
             }
         }
     }

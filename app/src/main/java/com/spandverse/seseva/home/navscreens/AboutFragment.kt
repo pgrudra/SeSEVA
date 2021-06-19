@@ -31,7 +31,7 @@ class AboutFragment : Fragment() {
         binding.gmailIcon.setOnClickListener {
             val intent= Intent(Intent.ACTION_SENDTO).apply {
                 data = Uri.parse("mailto:")
-                putExtra(Intent.EXTRA_EMAIL,"pgr19990109@gmail.com" )
+                putExtra(Intent.EXTRA_EMAIL,"spandverse@gmail.com" )
                 putExtra(Intent.EXTRA_SUBJECT, "Connecting with SeSEVA")
             }
             val pkgMng=activity?.packageManager

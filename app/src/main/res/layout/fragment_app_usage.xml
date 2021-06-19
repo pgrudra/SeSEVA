@@ -44,7 +44,7 @@
                     android:scaleType="fitXY"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/ic_sponsor_logo" />
+                    tools:src="@drawable/seseva_icon_foreground" />
 
                 <TextView
                     android:id="@+id/textView32"
@@ -285,7 +285,7 @@
                         android:paddingStart="9dp"
                         android:paddingEnd="9dp"
                         android:text="Past year"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/secondary_text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/this_month_button"
@@ -317,12 +317,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:layout_marginTop="16dp"
-                        android:layout_marginEnd="46dp"
+                        android:layout_marginEnd="4dp"
                         android:background="@drawable/all_corner_rounded_4dp_2e"
                         android:paddingStart="9dp"
                         android:paddingEnd="9dp"
                         android:text="Past month"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/secondary_text"
                         app:layout_constraintEnd_toStartOf="@+id/this_year_button"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/this_week_button"

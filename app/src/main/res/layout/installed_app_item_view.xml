@@ -26,7 +26,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_sponsor_logo" />
+            tools:src="@drawable/seseva_icon_foreground" />
 
         <TextView
             android:id="@+id/app_name"

@@ -150,7 +150,6 @@ class HomeFragment : Fragment(),MissionAccomplishedDialog.MissionAccomplishedDia
             })
         viewModel.showStrictModeBanner.observe(viewLifecycleOwner, Observer<Boolean> { show ->
             if (show) {
-                Log.i("asxz","1")
                 binding.bannerBody.text=getString(R.string.strict_mode_banner_body)
                 binding.positive.text="ENABLE STRICT MODE"
                 binding.positive.setOnClickListener {

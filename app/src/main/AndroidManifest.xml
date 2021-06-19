@@ -19,9 +19,9 @@
     <application
         android:name="com.spandverse.seseva.ClickerApplication"
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/seseva_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/seseva_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 

@@ -430,7 +430,7 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
 
                     for(key in categoryTimes.toSortedMap().keys) {
 
-                        if (key != "ENTERTAINMENT" && key!="TOTAL") {
+                        if (key != "ENTERTAINMENT" && key!="TOTAL" && key!="WHITELISTED") {
                             if (categoryTimes[key]!! >= timeRules[key]!! || categoryLaunches[key]!! >= launchRules[key]!!) {
                                 val appsCategory=AppsCategory(key,AppsCategoryType.DAILY,CategoryRuleStatus.BROKEN)
                                 list.add(appsCategory)
@@ -446,7 +446,9 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
 
                         }
                     }
-
+                    val wKey="WHITELISTED"
+                    val appsCategory=AppsCategory(wKey,AppsCategoryType.DAILY,CategoryRuleStatus.SAFE)
+                    list.add(appsCategory)
                     val entertainmentKey="ENTERTAINMENT"
                     val eT=entertainmentTime+categoryTimes[entertainmentKey]!!
                     val eL=entertainmentLaunches+categoryLaunches[entertainmentKey]!!

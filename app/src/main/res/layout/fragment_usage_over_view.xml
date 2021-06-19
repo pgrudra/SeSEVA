@@ -301,7 +301,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Rules broken"
+            android:text="Rule broken"
             android:textColor="@color/disabled_text" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -313,6 +313,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Warning"
+            android:layout_marginStart="8dp"
+            style="@style/tertiary_text"
+            android:textColor="@color/disabled_text"/>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            app:srcCompat="@drawable/ic_rules_safe_icon" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Safe"
             android:layout_marginStart="8dp"
             style="@style/tertiary_text"
             android:textColor="@color/disabled_text"/>
