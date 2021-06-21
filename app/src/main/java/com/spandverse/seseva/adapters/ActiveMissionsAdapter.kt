@@ -1,6 +1,7 @@
 package com.spandverse.seseva.adapters
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -30,6 +31,7 @@ class ActiveMissionsAdapter(private val onCLickListener:OnClickListener ): ListA
            /* binding.appName.text=item.appName
             binding.packageName.text=item.packageName
             binding.appCategory.text=item.appCategory*/
+            Log.i("AMA", "${item.missionNumber}")
             val reference=cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionImages/mission${item.missionNumber}Image.jpg")
             binding.availableTill.text=item.deadlineAsDate
             binding.money.text=item.totalMoneyRaised.toString()

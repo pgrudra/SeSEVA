@@ -4,7 +4,6 @@ import android.app.AppOpsManager
 import android.app.Application
 import android.content.Context
 import android.os.Process
-import android.util.Log
 import androidx.lifecycle.*
 import com.spandverse.seseva.R
 import com.spandverse.seseva.data.missions.*
@@ -22,10 +21,9 @@ class ChooseMissionViewModel(
     private val database: MissionsDatabaseDao,
     application: Application) : AndroidViewModel(application) {
     private val context = getApplication<Application>().applicationContext
-    private val sharedPref = context.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
+    //private val sharedPref = context.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
     private val userId = Firebase.auth.currentUser?.uid
     private val cloudReference = Firebase.database.reference
-
     private val _navigateToSelectedMission=MutableLiveData<DomainActiveMission?>()
     val navigateToSelectedMission:LiveData<DomainActiveMission?>
         get()=_navigateToSelectedMission
@@ -55,10 +53,10 @@ class ChooseMissionViewModel(
                     }
                     if(loadedList!=null){
                         val toDownloadList=entireList.minus(loadedList)
-                        insertIntoDatabase(toDownloadList,loadedList,contributorsList)
+                        insertIntoDatabase(toDownloadList.reversed(),loadedList,contributorsList)
                     }
                     else{
-                        insertIntoDatabase(entireList,null,contributorsList)
+                        insertIntoDatabase(entireList.reversed(),null,contributorsList)
                     }
                 }
 
@@ -81,7 +79,6 @@ class ChooseMissionViewModel(
                 val contributionsReference= userId?.let { cloudReference.child("users").child(it).child("contributions") }
                 contributionsReference?.get()?.addOnSuccessListener { dataSnapshot ->
                     for(i in dataSnapshot.children){
-                        Log.i("CMVM","$i")
                         contributionsList.add(Pair(i.key!!.toInt(),i.value.toString().toInt()))
                     }
                     for (i in list){
@@ -96,7 +93,7 @@ class ChooseMissionViewModel(
                                 mission?.missionActive=now.timeInMillis<= mission?.deadline!!
                                 mission.totalMoneyRaised=moneyRaisedList.find{it.first==primaryKey}?.second ?:0
                                 mission.contribution=contributionsList.find { it.first==primaryKey }?.second ?:0
-                                Log.i("CMVM","$mission")
+
                                 viewModelScope.launch { database.insert(mission) }
                             }
 
@@ -120,7 +117,6 @@ class ChooseMissionViewModel(
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                Log.i("nji", "loadPost:onCancelled", databaseError.toException())
             }
 
         })
@@ -176,7 +172,6 @@ class ChooseMissionViewModel(
             this?.apply()}
     }*/
     init {
-        Log.i("nji","hhuuh")
         checkAndLoad()
         checkUsageAccessPermission()
     }

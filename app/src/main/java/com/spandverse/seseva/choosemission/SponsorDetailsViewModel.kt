@@ -29,6 +29,9 @@ class SponsorDetailsViewModel(sponsorNumber:Int,sponsorDatabaseDao: SponsorDatab
     private val _expandContractVisibility= MutableLiveData<Boolean>()
     val expandContractVisibility: LiveData<Boolean>
         get()=_expandContractVisibility
+    private val _missionsSponsoredVisibility= MutableLiveData<Boolean>()
+    val missionsSponsoredVisibility: LiveData<Boolean>
+        get()=_missionsSponsoredVisibility
     private val _hideProgress= MutableLiveData<Boolean>()
     val hideProgress: LiveData<Boolean>
         get()=_hideProgress
@@ -66,17 +69,18 @@ class SponsorDetailsViewModel(sponsorNumber:Int,sponsorDatabaseDao: SponsorDatab
                 cloudReference.child(sponsorNumber.toString())
                     .addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
-                            val missionAmounts = snapshot.child("missionAmounts").value.toString()
+                            val missionAmounts = snapshot.child("missionAmounts").value
                             val sponsoredAmount =
-                                missionAmounts.split(",").map { it.trim().toInt() }.sum()
+                                missionAmounts?.toString()?.split(",")?.map { it.trim().toInt() }
+                                    ?.sum() ?: 0
                             val mSponsor = Sponsor(
                                 sponsorNumber = sponsorNumber,
                                 sponsorName = snapshot.child("sponsorName").value.toString(),
                                 sponsorDescription = snapshot.child("sponsorDescription").value.toString(),
                                 sponsorAddress = snapshot.child("sponsorAddress").value.toString(),
                                 sponsorSite = snapshot.child("sponsorSite").value.toString(),
-                                missionsSponsored = snapshot.child("missionsSponsored").value.toString(),
-                                missionAmounts = missionAmounts,
+                                missionsSponsored = if(snapshot.child("missionsSponsored").value==null) "" else snapshot.child("missionsSponsored").value.toString(),
+                                missionAmounts = missionAmounts?.toString() ?: "",
                                 sponsoredAmount = sponsoredAmount
                             )
                             _sponsorName.value = mSponsor.sponsorName
@@ -85,11 +89,16 @@ class SponsorDetailsViewModel(sponsorNumber:Int,sponsorDatabaseDao: SponsorDatab
                             _sponsorSite.value=mSponsor.sponsorSite
 
                             mSponsor.sponsorAddress?.let { _sponsorAddress.value = it }
-                            val missionNamesList = mSponsor.missionsSponsored.split(",").map { it.trim() }
-                            val missionAmountsList = mSponsor.missionAmounts.split(",").map { it.trim().toInt() }
-                            Log.i("SDVM","b$missionAmountsList")
-                            Log.i("SDVM","b$missionNamesList")
-                            display(missionNamesList, missionAmountsList)
+                            if(missionAmounts!=null){
+                                val missionNamesList = mSponsor.missionsSponsored.split(",").map { it.trim() }
+                                val missionAmountsList = mSponsor.missionAmounts.split(",").map { it.trim().toInt() }
+                                display(missionNamesList, missionAmountsList)
+                            }
+                            else{
+                                _expandContractVisibility.value=false
+                                _missionsSponsoredVisibility.value=false
+                            }
+
                             /*val adapter =
                                 SponsoredMissionsAdapter(SponsoredMissionsAdapter.OnClickListener {
                                     //download report
@@ -113,9 +122,15 @@ class SponsorDetailsViewModel(sponsorNumber:Int,sponsorDatabaseDao: SponsorDatab
                 _logoReference.value = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/sponsorLogos/sponsor${sponsor.sponsorNumber}Logo.png")
                 _sponsorSite.value=sponsor.sponsorSite
                 sponsor.sponsorAddress?.let { _sponsorAddress.value = it }
-                val missionNamesList = sponsor.missionsSponsored.split(",").map { it.trim() }
-                val missionAmountsList = sponsor.missionAmounts.split(",").map { it.trim().toInt() }
-                display(missionNamesList, missionAmountsList)
+                if(sponsor.missionAmounts!=""){
+                    val missionNamesList = sponsor.missionsSponsored.split(",").map { it.trim() }
+                    val missionAmountsList = sponsor.missionAmounts.split(",").map { it.trim().toInt() }
+                    display(missionNamesList, missionAmountsList)
+                }
+                else{
+                    _expandContractVisibility.value=false
+                    _missionsSponsoredVisibility.value=false
+                }
                 /*val adapter=SponsoredMissionsAdapter(SponsoredMissionsAdapter.OnClickListener{
                     //download report
                 })

@@ -1,6 +1,7 @@
 package com.spandverse.seseva.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -29,7 +30,13 @@ class AllSponsorsAdapter(private val onCLickListener: AllSponsorsAdapter.OnClick
                         .placeholder(R.drawable.ic_sponsor)
                         .error(R.drawable.ic_sponsor))
                 .into(binding.sponsorLogo)
-            binding.sponsoredAmount.text= binding.sponsoredAmount.context.getString(R.string.rs,item.sponsoredAmount)
+            if(item.sponsoredAmount!=0){
+                binding.sponsoredAmount.text= binding.sponsoredAmount.context.getString(R.string.rs,item.sponsoredAmount)
+            }
+            else{
+                binding.sponsoredAmount.visibility=View.GONE
+                binding.sponsoredText.text=binding.sponsoredText.context.getString(R.string.sponsoring_an_ongoing_mission)
+            }
             binding.sponsorName.text=item.sponsorName
         }
 

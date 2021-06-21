@@ -71,18 +71,24 @@
             android:layout_height="wrap_content"
             android:background="@drawable/available_till_date_background"
             android:fontFamily="@font/montserrat_used"
-            android:letterSpacing="0.04"
-            android:lineHeight="15sp"
             android:paddingTop="4dp"
             android:paddingEnd="40dp"
             android:paddingBottom="4dp"
             android:textColor="#FF57BB"
-            android:textFontWeight="400"
-            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
             app:layout_constraintStart_toStartOf="@+id/imageView"
-            tools:text="Available Till" />
-
+            tools:text="Available Till 23/08/6746" />
+        <View
+            android:id="@+id/divider_1"
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="#A0A0A0"
+            app:layout_constraintBottom_toTopOf="@id/active_contributors"
+            app:layout_constraintEnd_toEndOf="@id/appCompatImageView2"
+            app:layout_constraintStart_toStartOf="@id/appCompatImageView2"
+            app:layout_constraintTop_toBottomOf="@id/amountRaised" />
 
         <TextView
             android:id="@+id/category"
@@ -113,7 +119,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
-            android:text="@string/sponsor"
+            android:text="@string/aided_by"
             android:textColor="@color/secondary_text"
             app:layout_constraintBottom_toTopOf="@+id/sponsor_name"
             app:layout_constraintStart_toStartOf="@+id/sponsor_name" />

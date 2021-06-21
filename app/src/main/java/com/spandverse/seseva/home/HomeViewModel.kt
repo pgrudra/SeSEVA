@@ -155,10 +155,10 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                 //_totalMoneyRaised.value = "Rs $totalRaisedMoney"
                     if(loadedList!=null){
                         val toDownloadList=entireList.minus(loadedList)
-                        insertIntoDatabase(toDownloadList,loadedList,moneyRaisedList)
+                        insertIntoDatabase(toDownloadList.reversed(),loadedList,moneyRaisedList)
                     }
                     else{
-                        insertIntoDatabase(entireList,null,moneyRaisedList)
+                        insertIntoDatabase(entireList.reversed(),null,moneyRaisedList)
                     }
 
             }

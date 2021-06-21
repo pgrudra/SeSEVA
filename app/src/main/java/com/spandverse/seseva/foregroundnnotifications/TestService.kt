@@ -108,7 +108,7 @@ class TestService : Service() {
             getString(R.string.foreground_service_notification_channel_id)
         )
         return notification
-            .setSmallIcon(R.drawable.seseva_icon_foreground)
+            .setSmallIcon(R.drawable.ic_seseva_notification_icon)
             .setContentTitle(getString(R.string.notification_title))
             .setContentIntent(pendingIntent)
             .build()

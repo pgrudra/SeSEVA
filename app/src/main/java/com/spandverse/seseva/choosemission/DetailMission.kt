@@ -49,15 +49,15 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
         binding.selectedMissionViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         val contribution=mission.contribution
-            val color= context?.let { ContextCompat.getColor(it,R.color.colorPrimary) }
-            if(color!=null){
-                if(contribution!=0){
-                    binding.textView22.setTextColor(color)
-                }
-                else{
-                    binding.textView2.setTextColor(color)
-                }
+        /*val color= context?.let { ContextCompat.getColor(it,R.color.colorPrimary) }
+        if(color!=null){
+            if(contribution!=0){
+                binding.textView22.setTextColor(color)
             }
+            else{
+                binding.textView2.setTextColor(color)
+            }
+        }*/
         if(contribution==0){
             binding.textView22.visibility=View.GONE
         }

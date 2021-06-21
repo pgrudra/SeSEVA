@@ -449,6 +449,7 @@
                         android:layout_marginBottom="24dp"
                         android:text="@{ProfileViewModel.currentMissionDescription}"
                         android:textColor="@color/secondary_text"
+                        android:justificationMode="inter_word"
                         tools:text="asdffk adsd fssdf sdfgdfg dgfg sdfds effrew gddsfg sdfdsf sdgdg sdfgf sgdsdf ffffffffffff ddddddddddd fff" />
                 </FrameLayout>
 

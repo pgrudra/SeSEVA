@@ -65,6 +65,14 @@ class SponsorDetailsFragment : Fragment() {
                 binding.expandOrContract.visibility=View.GONE
             }
         })
+        viewModel.missionsSponsoredVisibility.observe(viewLifecycleOwner,{visible ->
+            if(visible){
+                binding.missionsSupportedText.visibility=View.VISIBLE
+            }
+            else{
+                binding.missionsSupportedText.visibility=View.GONE
+            }
+        })
         viewModel.showNoInternetDialog.observe(viewLifecycleOwner,{show ->
             if(show){
                 val dialog = NoInternetDialogFragment()

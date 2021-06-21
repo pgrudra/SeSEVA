@@ -186,12 +186,9 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                                                                 _lastMissionName.value = mission?.missionName
                                                                 _lastMissionSponsorName.value = " " + mission?.sponsorName
                                                                 rulesNumber = mission?.rulesNumber?.toInt() ?: 0
-                                                                Log.i("LMVM","lMNValue=${_lastMissionName.value}")
                                                                 missionToBeSaved.missionName= mission?.missionName ?: ""
-                                                                Log.i("LMVM","mTBSmN=${missionToBeSaved.missionName}")
                                                                 missionToBeSaved.rulesNumber=rulesNumber
                                                                 missionToBeSaved.sponsorName= mission?.sponsorName ?: ""
-                                                                missionToBeSaved.sponsorDescription= mission?.sponsorDescription ?: ""
                                                                 missionToBeSaved.missionDescription= mission?.missionDescription ?: ""
                                                                 missionToBeSaved.missionCategory= mission?.category ?: ""
                                                                 missionToBeSaved.goal=mission?.goal ?:""

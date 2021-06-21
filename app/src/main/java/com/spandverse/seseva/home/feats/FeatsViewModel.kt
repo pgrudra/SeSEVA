@@ -104,18 +104,20 @@ init {
 cloudReference.child("sponsors").child(i.toString()).child("missionsSponsored").addListenerForSingleValueEvent(object :
     ValueEventListener {
     override fun onDataChange(snapshot: DataSnapshot) {
-        val missionsSponsoredList=snapshot.value.toString()
+        val missionsSponsoredList=if(snapshot.value==null) "" else snapshot.value.toString()
         cloudReference.child("sponsors").child(i.toString()).child("missionAmounts").addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val missionAmounts = snapshot.value.toString()
-                val sponsoredAmount = missionAmounts.split(",").map { it.trim().toInt() }.sum()
+                val missionAmounts = snapshot.value
+                val sponsoredAmount =
+                    missionAmounts?.toString()?.split(",")?.map { it.trim().toInt() }
+                        ?.sum() ?: 0
                 viewModelScope.launch {
                     sponsorsDatabaseDao.update(
                         PartialSponsor(
                             i,
                             missionsSponsored = missionsSponsoredList,
-                            missionAmounts = missionAmounts,
+                            missionAmounts = missionAmounts?.toString() ?: "",
                             sponsoredAmount = sponsoredAmount
                         )
                     )
@@ -137,20 +139,22 @@ cloudReference.child("sponsors").child(i.toString()).child("missionsSponsored").
 
     private fun downloadSponsors(toDownloadList: List<Int>) {
         if(toDownloadList.isNotEmpty()){
-            for(i in toDownloadList){
+            for(i in toDownloadList.reversed()){
                 cloudReference.child("sponsors").child(i.toString()).addListenerForSingleValueEvent(object :
                     ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        val missionAmounts = snapshot.child("missionAmounts").value.toString()
-                        val sponsoredAmount = missionAmounts.split(",").map { it.trim().toInt() }.sum()
+                        val missionAmounts = snapshot.child("missionAmounts").value
+                        val sponsoredAmount =
+                            missionAmounts?.toString()?.split(",")?.map { it.trim().toInt() }
+                                ?.sum() ?: 0
                         val mSponsor = Sponsor(
                             sponsorNumber = i,
                             sponsorName = snapshot.child("sponsorName").value.toString(),
                             sponsorDescription = snapshot.child("sponsorDescription").value.toString(),
                             sponsorAddress = snapshot.child("sponsorAddress").value.toString(),
                             sponsorSite = snapshot.child("sponsorSite").value.toString(),
-                            missionsSponsored = snapshot.child("missionsSponsored").value.toString(),
-                            missionAmounts=missionAmounts,
+                            missionsSponsored = if(snapshot.child("missionsSponsored").value==null) "" else snapshot.child("missionsSponsored").value.toString(),
+                            missionAmounts=missionAmounts?.toString() ?: "",
                             sponsoredAmount = sponsoredAmount
                         )
                         viewModelScope.launch {

@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.spandverse.seseva.R
 import com.spandverse.seseva.databinding.FragmentAutostartPermissionBinding
 import com.spandverse.seseva.home.DrawerLocker
@@ -38,6 +39,30 @@ class AutostartPermissionFragment : Fragment() {
                 with(sharedPref?.edit()) {
                     this?.putBoolean((com.spandverse.seseva.R.string.autostart_permission_asked).toString(), true)
                     this?.apply()
+                }
+                val infoSheet=binding.infoFragment.root
+                val bottomSheetBehavior: BottomSheetBehavior<*> = BottomSheetBehavior.from(infoSheet)
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                bottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+                    override fun onStateChanged(bottomSheet: View, newState: Int) {
+                        if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                            binding.skrim1.visibility = View.GONE
+                            binding.checkAndGrant.isEnabled = true
+                            binding.continueButton.isEnabled=true
+                        }
+                    }
+
+                    override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+                })
+                binding.infoButton.setOnClickListener {
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    binding.skrim1.visibility = View.VISIBLE
+                    binding.checkAndGrant.isEnabled = false
+                    binding.continueButton.isEnabled=false
+                }
+                binding.skrim1.setOnClickListener {
+                    binding.skrim1.visibility = View.GONE
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
                 }
                 binding.continueButton.setOnClickListener{
                     findNavController().navigate(AutostartPermissionFragmentDirections.actionAutostartPermissionFragmentToHomeFragment())

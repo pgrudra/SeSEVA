@@ -90,7 +90,7 @@
     <string name="sign_in">SIGN IN</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
-
+    <string name="sponsoring_an_ongoing_mission">sponsoring_an_ongoing_mission</string>
     <string name="by_signing">By signing up you are agreeing to the \nTerms of Use and Privacy Policy</string>
     <string name="or">OR</string>
     <string name="sign_in_with_google">Sign in with Google</string>
@@ -181,10 +181,15 @@
     <string name="you_are_using_strict_mode">You are using strict mode</string>
     <string name="strict_mode_banner_body">Feeling it hard to get de-addicted from your phone? Try out strict mode!</string>
     <string name="overlay_permission_banner_body">Please provide permission to draw over other apps to make best use of SeSEVA</string>
-    <string name="autostart_permission_body">Your phone\'s OS may kill apps\' processes and services few hours after being removed from foreground. Because of this, crucial features of SeSEVA like usage and rule break warnings, updating money raised towards your chosen mission would not work.\nPlease click on Check &amp; Grant Button.</string>
+    <string name="autostart_permission_body">SeSEVA requires this permission to restart the foreground service and processes in case your phone\'s operating system kills them.</string>
     <string name="autostart_permission_body2">If this permission is found to be necessary for your device, you will be taken to the permission screen in settings, else to SeSEVA home screen.</string>
-    <string name="check_grant">check &amp; grant</string>
+    <string name="check_grant">check and grant</string>
     <string name="i_understand">I UNDERSTAND</string>
     <string name="you_can_still_help">You can still help…</string>
     <string name="you_can_still_help_yourself">You can still help yourself…</string>
+    <string name="aided_by">Aided by</string>
+    <string name="permission_to_autostart">Permission to autostart</string>
+    <string name="after_you_grant_this_permission_tap_on_continue">After you grant this permission, tap on continue.</string>
+    <string name="this_is_a_device_specific_permission_nseseva_will_not_be_able_to_issue_usage_and_rule_breaks_warnings_or_update_the_money_you_raise_towards_your_chosen_mission_if_your_phone_s_operating_system_kills_seseva_s_processes_and_services_few_hours_after_being_removed_from_the_foreground">This is a device specific permission.\nSeSEVA will not be able to issue usage and rule breaks warnings or update the money you raise towards your chosen mission if your phone\'s operating system kills SeSEVA\'s processes and services few hours after being removed from the foreground.</string>
+    <string name="autostart_permission_information">Autostart permission information</string>
 </resources>

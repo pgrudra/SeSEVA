@@ -237,7 +237,6 @@ class PermissionFragment : Fragment(),PermissionMandatoryDialogFragment.Permissi
     private fun onDeleteAccountComplete() {
         //remove workManagers
         WorkManager.getInstance(appContext).cancelAllWork()
-        Log.i("SF", "wM removed")
 
         //remove username and current mission
 
