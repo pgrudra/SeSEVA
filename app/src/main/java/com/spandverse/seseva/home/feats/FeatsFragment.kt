@@ -76,7 +76,6 @@ class FeatsFragment : Fragment() {
             sponsorsButton.setBackgroundResource(R.drawable.login_resend_inactive)
             missionList.visibility=View.VISIBLE
             sponsorsList.visibility=View.GONE
-            binding.listDescriptionText.visibility=View.GONE
             binding.activeMissionLegendConstraintLayout.visibility=View.VISIBLE
             context?.let{missionsButton.setTextColor(
                 ContextCompat.getColor(
@@ -96,7 +95,6 @@ class FeatsFragment : Fragment() {
             sponsorsButton.setBackgroundResource(R.drawable.login_resend_active)
             missionList.visibility=View.GONE
             sponsorsList.visibility=View.VISIBLE
-            binding.listDescriptionText.visibility=View.VISIBLE
             binding.activeMissionLegendConstraintLayout.visibility=View.GONE
             context?.let{missionsButton.setTextColor(
                 ContextCompat.getColor(

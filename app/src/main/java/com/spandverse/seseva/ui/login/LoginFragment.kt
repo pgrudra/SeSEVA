@@ -64,8 +64,6 @@ class LoginFragment : Fragment(), View.OnClickListener,NoInternetDialogFragment.
         mgoogleSignInClient = GoogleSignIn.getClient(appContext, gso)
         auth = Firebase.auth
 
-
-
         verifySignInLink()
         val adapter = OnBoardingAdapter()
         binding.viewPager.adapter = adapter
@@ -93,7 +91,6 @@ class LoginFragment : Fragment(), View.OnClickListener,NoInternetDialogFragment.
 
         viewModel.resendEmail.observe(viewLifecycleOwner, Observer { resend ->
             if (resend) {
-                Log.i("io", "qw")
                 viewModel.resendComplete()
                 binding.progressBar1.visibility = View.VISIBLE
                 binding.skrim.visibility = View.VISIBLE
@@ -318,7 +315,6 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
         startActivityForResult(googleSignInIntent, RC_SIGN_IN)
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
@@ -328,7 +324,6 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)!!
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
@@ -356,7 +351,6 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     val user = auth.currentUser
-                    Log.d(TAG, "signInWithCredential:success")
                     val result = task.result
                     val sharedPref =  activity?.getSharedPreferences(
                         (R.string.shared_pref).toString(),
@@ -396,9 +390,6 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
 
             }
     }
-
-
-
 
     private fun makeActiveBackground() {
         binding.editTextEmailAddress.setBackgroundResource(R.drawable.login_email_edit_box_active)

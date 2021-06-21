@@ -48,6 +48,8 @@
     <string name="count">com.spandverse.seseva.COUNT</string>
     <string name="show_strict_banner">com.spandverse.seseva.SHOW_STRICT_B</string>
     <string name="autostart_permission_asked">com.spandverse.seseva.AUTOSTART_PERMISSION_ASKED</string>
+    <string name="active_missions">com.spandverse.seseva.ACTIVE_MISSIONS</string>
+    <string name="total_missions">com.spandverse.seseva.TOTAL_MISSIONS</string>
 
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
@@ -192,4 +194,5 @@
     <string name="after_you_grant_this_permission_tap_on_continue">After you grant this permission, tap on continue.</string>
     <string name="this_is_a_device_specific_permission_nseseva_will_not_be_able_to_issue_usage_and_rule_breaks_warnings_or_update_the_money_you_raise_towards_your_chosen_mission_if_your_phone_s_operating_system_kills_seseva_s_processes_and_services_few_hours_after_being_removed_from_the_foreground">This is a device specific permission.\nSeSEVA will not be able to issue usage and rule breaks warnings or update the money you raise towards your chosen mission if your phone\'s operating system kills SeSEVA\'s processes and services few hours after being removed from the foreground.</string>
     <string name="autostart_permission_information">Autostart permission information</string>
+    <string name="view_all_available_missions">View all available missions</string>
 </resources>

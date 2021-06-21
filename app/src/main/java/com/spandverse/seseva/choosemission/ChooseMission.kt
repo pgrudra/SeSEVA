@@ -44,7 +44,6 @@ class ChooseMission : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         viewModel.navigateToSelectedMission.observe(viewLifecycleOwner, Observer {
             if(null!=it) {
-                Log.i("SDF45","$it")
                 findNavController().navigate(ChooseMissionDirections.actionChooseMissionFragmentToDetailMission(it))
                 viewModel.toDetailMissionComplete()
             }
@@ -55,8 +54,6 @@ class ChooseMission : Fragment() {
             Log.i("CM","a$it")
             val list = it.filter { mission -> mission.missionNumber!= chosenMissionNumber}
             if(list.isNotEmpty()){
-                Log.i("CM","b$list")
-                Log.i("CM","$chosenMissionNumber")
                 adapter.submitList(list)
             }
         })

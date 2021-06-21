@@ -115,7 +115,6 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                     _goToHome.value=true
             }
             override fun onCancelled(databaseError: DatabaseError) {
-                Log.i("nji", "loadPost:onCancelled", databaseError.toException())
                 //check internet
             }
         })
@@ -220,21 +219,11 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                                                                             }
 
                                                                             override fun onCancelled(databaseError: DatabaseError) {
-                                                                                Log.i(
-                                                                                    "nji",
-                                                                                    "loadPost:onCancelled",
-                                                                                    databaseError.toException()
-                                                                                )
                                                                             }
                                                                         })
                                                                     }
 
                                                                     override fun onCancelled(databaseError: DatabaseError) {
-                                                                        Log.i(
-                                                                            "nji",
-                                                                            "loadPost:onCancelled",
-                                                                            databaseError.toException()
-                                                                        )
                                                                     }
                                                                 })
                                                                 //val now = Calendar.getInstance().timeInMillis
@@ -269,22 +258,12 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                                                             }
 
                                                             override fun onCancelled(databaseError: DatabaseError) {
-                                                                Log.i(
-                                                                    "nji",
-                                                                    "loadPost:onCancelled",
-                                                                    databaseError.toException()
-                                                                )
                                                             }
                                                         })
 
                                                     }
 
                                                     override fun onCancelled(databaseError: DatabaseError) {
-                                                        Log.i(
-                                                            "nji",
-                                                            "loadPost:onCancelled",
-                                                            databaseError.toException()
-                                                        )
                                                     }
                                                 })
 
@@ -296,7 +275,6 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                             }
 
                             override fun onCancelled(databaseError: DatabaseError) {
-                                Log.i("nji", "loadPost:onCancelled", databaseError.toException())
                             }
                         })
 
@@ -308,7 +286,6 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                Log.i("nji", "loadPost:onCancelled", databaseError.toException())
             }
         })
 

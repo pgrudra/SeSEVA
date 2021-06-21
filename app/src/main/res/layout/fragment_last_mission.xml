@@ -10,13 +10,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
         android:background="@color/common_background">
         <Button
             android:id="@+id/choose_this_mission"
             style="@style/button"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="42dp"
             android:layout_marginBottom="12dp"
             android:background="@drawable/login_resend_active"
@@ -24,20 +22,28 @@
             android:text="@string/continue_text"
             android:enabled="false"
             android:textColor="@color/nav_color"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toTopOf="@+id/choose_a_different_mission"
             tools:layout_editor_absoluteX="16dp" />
 
         <Button
             android:id="@+id/choose_a_different_mission"
             style="@style/button"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="42dp"
             android:layout_marginBottom="36dp"
             android:background="@drawable/login_change_email"
             android:onClick="@{()->LastMissionViewModel.chooseOtherMission()}"
-            android:text="@string/choose_a_different_mission"
+            android:text="@string/view_all_available_missions"
             android:textColor="@color/colorPrimary"
             android:enabled="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:layout_editor_absoluteX="16dp" />
 
@@ -133,6 +139,7 @@
             android:text="@string/this_mission_has"
             android:textColor="@color/primary_text"
             app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
             app:layout_constraintTop_toBottomOf="@+id/trigger" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -160,6 +167,7 @@
             android:layout_width="142dp"
             android:layout_height="208dp"
             android:layout_marginTop="72dp"
+            android:layout_marginStart="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_screen_10_dolphin" />
@@ -222,6 +230,7 @@
             android:paddingBottom="11dp"
             android:text="@{LastMissionViewModel.timeLeft}"
             android:textColor="@color/colorPrimary"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/greatWork"

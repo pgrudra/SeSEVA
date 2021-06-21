@@ -19,7 +19,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="16dp"/>
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/mission_image"
             android:layout_width="160dp"
             android:layout_height="100dp"
@@ -87,6 +87,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/you_raised"
             app:layout_constraintStart_toEndOf="@id/mission_image"
             app:layout_constraintTop_toTopOf="@+id/you_raised"
+            app:layout_constraintVertical_bias="0.65"
             app:srcCompat="@drawable/rupee_symbol" />
 
         <TextView
@@ -114,6 +115,7 @@
             android:id="@+id/rupee_symbol_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintVertical_bias="0.65"
             app:layout_constraintBottom_toBottomOf="@+id/total_raised"
             app:layout_constraintStart_toStartOf="@id/rupee_symbol"
             app:layout_constraintTop_toTopOf="@+id/total_raised"

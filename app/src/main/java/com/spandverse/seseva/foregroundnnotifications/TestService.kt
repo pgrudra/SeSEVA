@@ -450,7 +450,7 @@ class TestService : Service() {
                         }
 
                     }
-                    else if(now.timeInMillis <= lastResumeTimeStamp + 10000){
+                    else if((now.timeInMillis-lastResumeTimeStamp)%120000 >110000){
                         handler.post {
                             Toast.makeText(context, "You have spent ${catTimeInSeconds/60} mins on this and other $cat apps", Toast.LENGTH_SHORT).show()
                         }
@@ -623,7 +623,7 @@ class TestService : Service() {
                         }
 
                     }
-                    else if((catTimeInSeconds-maxTime)%40 > 30){
+                    else if((catTimeInSeconds-maxTime)%50 > 40){
                         handler.post {
                             Toast.makeText(context, "Rule Broken!!\nPlease stop for your own good.", Toast.LENGTH_SHORT).show()
                         }
@@ -788,9 +788,9 @@ class TestService : Service() {
                         }
 
                     }
-                    else if(now.timeInMillis <= lastResumeTimeStamp + 10000){
+                    else if((now.timeInMillis-lastResumeTimeStamp)%120000 >110000){
                         handler.post {
-                            Toast.makeText(context, "You have spent ${catTimeInSeconds/60} mins on this and other $cat apps", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "${catTimeInSeconds/60} mins spent on this and other $cat apps", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -1070,7 +1070,7 @@ class TestService : Service() {
                         }
 
                     }
-                    else if(now.timeInMillis <= lastResumeTimeStamp + 1000){
+                    else if((now.timeInMillis - lastResumeTimeStamp)%120000> 118500){
                         handler.post {
                             Toast.makeText(context, "You have spent ${catTimeInSeconds/60} mins on this and other $cat apps", Toast.LENGTH_SHORT).show()
                         }

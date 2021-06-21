@@ -221,32 +221,37 @@
                     android:id="@+id/sponsor_logo"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/sponsor_name"
+                    android:layout_marginTop="4dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/sponsor_text"
-                    app:layout_constraintVertical_bias="0.24"
+                    app:layout_constraintTop_toBottomOf="@+id/sponsor_text"
                     tools:srcCompat="@drawable/ic_sponsor" />
+
                 <TextView
                     android:id="@+id/sponsor_text"
+                    style="@style/overline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toEndOf="@id/sponsor_logo"
-                    android:text="SPONSOR"
-                    app:layout_constraintTop_toBottomOf="@id/constraintLayout3"
                     android:layout_marginTop="24dp"
-                    android:layout_marginStart="8dp"
+                    android:text="@string/aided_by"
                     android:textColor="@color/disabled_text"
-                    style="@style/overline"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/constraintLayout3"
+                    />
+
+
                 <TextView
+                    android:id="@+id/sponsor_name"
+                    style="@style/subtitle_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
                     android:textColor="@color/primary_text"
-                    style="@style/subtitle_1"
-                    android:id="@+id/sponsor_name"
-                    tools:text="Sponsor name"
-                    app:layout_constraintStart_toStartOf="@id/sponsor_text"
-                    app:layout_constraintTop_toBottomOf="@id/sponsor_text"/>
-                <ImageButton
+                    app:layout_constraintBottom_toBottomOf="@+id/sponsor_logo"
+                    app:layout_constraintStart_toEndOf="@+id/sponsor_logo"
+                    app:layout_constraintTop_toTopOf="@+id/sponsor_logo"
+                    tools:text="Sponsor name" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/to_sponsor"
                     android:layout_width="24dp"
                     android:layout_height="24dp"

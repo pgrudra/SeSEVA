@@ -28,7 +28,7 @@
             app:srcCompat="@drawable/mission_item_view_background" />
 
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageView"
             android:layout_width="0dp"
             android:layout_height="200dp"
@@ -84,7 +84,7 @@
             android:layout_height="0.5dp"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
-            android:background="#A0A0A0"
+            android:background="#000000"
             app:layout_constraintBottom_toTopOf="@id/active_contributors"
             app:layout_constraintEnd_toEndOf="@id/appCompatImageView2"
             app:layout_constraintStart_toStartOf="@id/appCompatImageView2"
@@ -194,6 +194,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            app:layout_constraintVertical_bias="0.54"
             app:layout_constraintBottom_toTopOf="@+id/amountRaised"
             app:layout_constraintStart_toStartOf="@+id/appCompatImageView2"
             app:layout_constraintTop_toTopOf="@+id/money"

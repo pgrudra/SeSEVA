@@ -87,7 +87,7 @@ class ProfileViewModel(
             _currentMissionDescription.value=context.getString(
                 R.string.dots, missionDescription.substring(
                     0,
-                    150
+                    225
                 )
             )
         }
@@ -124,7 +124,7 @@ class ProfileViewModel(
             _currentMissionNumber.value=currentMission.missionNumber
             _currentMissionName.value=currentMission.missionName
             missionDescription=currentMission.missionDescription
-            if(missionDescription.length<151){
+            if(missionDescription.length<226){
                 _currentMissionDescription.value=missionDescription
             }
             else{
@@ -132,7 +132,7 @@ class ProfileViewModel(
                 val k=context.getString(
                     R.string.dots, missionDescription.substring(
                         0,
-                        150
+                        225
                     )
                 )
                 _currentMissionDescription.value=k

@@ -17,7 +17,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/choose_this_mission"
+            app:layout_constraintBottom_toTopOf="@id/choose_this_mission"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
             <LinearLayout
                 android:orientation="vertical"
@@ -89,10 +89,10 @@
                         app:layout_constraintStart_toEndOf="@+id/sponsor_logo"
                         app:layout_constraintTop_toTopOf="@+id/sponsor_logo"
                         tools:text="Sponsor name" />
-                    <ImageButton
+                    <androidx.appcompat.widget.AppCompatImageButton
                         android:id="@+id/to_sponsor"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:src="@drawable/ic_arrow_right"
                         android:background="@null"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -121,7 +121,7 @@
                         android:layout_marginTop="24dp">
 
 
-                        <ImageButton
+                        <androidx.appcompat.widget.AppCompatImageButton
                             android:id="@+id/expand_or_contract"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
@@ -148,7 +148,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="20dp"
                         android:textColor="@color/primary_text"
                         app:layout_constraintStart_toEndOf="@+id/appCompatImageView7"
                         app:layout_constraintTop_toBottomOf="@+id/goal"
@@ -191,19 +191,19 @@
                         style="@style/body_2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginEnd="18dp"
+                        android:layout_marginTop="24dp"
                         android:background="@drawable/all_corner_rounded_4dp"
                         android:elevation="15dp"
                         android:gravity="center"
                         android:letterSpacing="0.04"
+                        android:paddingStart="15dp"
                         android:paddingTop="15dp"
+                        android:paddingEnd="15dp"
                         android:paddingBottom="15dp"
                         android:text="@{selectedMissionViewModel.trigger}"
                         android:textColor="@color/colorSecondary"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/amountRaised"
-                        app:layout_constraintTop_toTopOf="@+id/money"
+                        app:layout_constraintTop_toBottomOf="@+id/goal"
                         tools:text="Your chance to add\nRs %1$d more\nbefore mission closes!!" />
 
 
@@ -239,6 +239,7 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="@+id/money"
                         app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintVertical_bias="0.55"
                         app:layout_constraintTop_toTopOf="@+id/money"
                         app:srcCompat="@drawable/rupee_symbol" />
 

@@ -1,6 +1,7 @@
 package com.spandverse.seseva.home.lastmission
 
 import android.os.Bundle
+import android.text.SpannableString
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -56,6 +57,10 @@ viewModel.goToHome.observe(viewLifecycleOwner, Observer<Boolean> { goto->
                 binding.skrim.visibility=View.VISIBLE
                 binding.progressBar1.visibility=View.VISIBLE
             }
+        })
+        viewModel.timeLeft.observe(viewLifecycleOwner, Observer<SpannableString> {
+                binding.trigger.visibility=View.VISIBLE
+
         })
         viewModel.goToChooseMission.observe(viewLifecycleOwner, Observer<Boolean> { goto->
             if(goto){

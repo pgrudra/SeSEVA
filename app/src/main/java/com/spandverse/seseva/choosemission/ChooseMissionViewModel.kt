@@ -4,6 +4,7 @@ import android.app.AppOpsManager
 import android.app.Application
 import android.content.Context
 import android.os.Process
+import android.util.Log
 import androidx.lifecycle.*
 import com.spandverse.seseva.R
 import com.spandverse.seseva.data.missions.*
@@ -82,6 +83,7 @@ class ChooseMissionViewModel(
                         contributionsList.add(Pair(i.key!!.toInt(),i.value.toString().toInt()))
                     }
                     for (i in list){
+                        Log.i("AMA","a$i")
                         val missionReference=cloudReference.child("Missions").child(i.toString())
                         missionReference.addListenerForSingleValueEvent(object :ValueEventListener{
                             override fun onDataChange(snapshot: DataSnapshot) {

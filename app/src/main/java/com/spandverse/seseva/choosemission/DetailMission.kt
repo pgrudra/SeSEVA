@@ -68,7 +68,7 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
         binding.category.text = mission.category
         binding.missionName.text=mission.missionName
         val misDesLength = mission.missionDescription.length
-        if (misDesLength < 151) {
+        if (misDesLength < 226) {
             binding.expandOrContract.visibility = View.GONE
             binding.missionDescription.text = mission.missionDescription
         }
@@ -79,6 +79,9 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
                 binding.toolbar.setNavigationOnClickListener {
                     activity?.onBackPressed()
                 }
+                val layOutParams=binding.chooseADifferentMission.layoutParams as ViewGroup.MarginLayoutParams
+                layOutParams.bottomMargin=40
+                binding.chooseADifferentMission.layoutParams=layOutParams
                 drawerLocker!!.setDrawerEnabled(true)
                 drawerLocker.displayBottomNavigation(true)
             } else {
@@ -92,11 +95,11 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
                 if (show) {
                     binding.missionDescription.text = mission.missionDescription
                     binding.expandOrContract.setImageResource(R.drawable.ic_collapse_vector)
-                } else if (misDesLength > 150) {
+                } else if (misDesLength > 225) {
                     binding.missionDescription.text = getString(
                         R.string.dots, mission.missionDescription.substring(
                             0,
-                            150
+                            225
                         )
                     )
                     binding.expandOrContract.setImageResource(R.drawable.ic_expand_vector)

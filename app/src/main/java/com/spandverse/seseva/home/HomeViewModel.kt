@@ -76,10 +76,17 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     private val _moneyRaised = MutableLiveData<String>()
     val moneyRaised: LiveData<String>
         get() = _moneyRaised
+    var internetAvailable=false
     private val nowMinusOneDay= Calendar.getInstance().timeInMillis-24*60*60*1000
-    val activeMissions=Transformations.map(database.getActiveMissionsCount(nowMinusOneDay)){ it?.toString() ?: "0" }
+    private val _activeMissions = MutableLiveData<String>()
+    val activeMissions: LiveData<String>
+        get() = _activeMissions
+    private val _totalMissions = MutableLiveData<String>()
+    val totalMissions: LiveData<String>
+        get() = _totalMissions
+    //val activeMissions=Transformations.map(database.getActiveMissionsCount(nowMinusOneDay)){ it?.toString() ?: "0" }
     val totalMoneyRaised=Transformations.map(database.getTotalMoneyRaised()){it?.toString() ?: "0"}
-    val totalMissions=Transformations.map(database.getMissionsCount(-1)){it?.toString() ?: "0"}
+    //val totalMissions=Transformations.map(database.getMissionsCount(-1)){it?.toString() ?: "0"}
     private val _levelName = MutableLiveData<String>()
     val levelName: LiveData<String>
         get() = _levelName
@@ -105,7 +112,6 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
 
     private fun notifyAndServiceAndRefreshAppsDatabase() {
         viewModelScope.launch {
-            val m=database.doesMissionExist(1)
             restartService()
             notifyMissionAccomplishedOrAppUpdate()
             displayThings()
@@ -115,9 +121,40 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
 
     private suspend fun displayThings() {
         displayProfileRelatedThings()
+        displayTotalNActiveMissions()
         displayUsageStatsRelatedThings()
         displayBannerIfApplicable()
         displayMissionsRelatedThings()
+    }
+
+    private fun displayTotalNActiveMissions() {
+        cloudReference.child("totalMissions").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                _totalMissions.value=snapshot.getValue<Int>().toString()
+                with(sharedPref?.edit()) {
+                    this?.putInt((R.string.total_missions).toString(), snapshot.getValue<Int>()?:0)
+                    this?.apply()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                _totalMissions.value=sharedPref.getInt((R.string.total_missions).toString(),1).toString()
+            }
+        })
+
+        cloudReference.child("activeMissions").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                _activeMissions.value=snapshot.getValue<Int>().toString()
+                with(sharedPref?.edit()) {
+                    this?.putInt((R.string.active_missions).toString(), snapshot.getValue<Int>()?:0)
+                    this?.apply()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                _activeMissions.value=sharedPref.getInt((R.string.active_missions).toString(),1).toString()
+            }
+        })
     }
 
     private fun displayBannerIfApplicable() {
@@ -139,56 +176,62 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     }
 
     private suspend fun displayMissionsRelatedThings() {
-        val loadedList=database.getDownloadedMissions()
-        val entireList:MutableList<Int> = arrayListOf()
-        val moneyRaisedList:MutableList<Pair<Int,Int>> = arrayListOf()
-        val moneyRaisedReference=cloudReference.child("moneyRaised")
-        moneyRaisedReference.addListenerForSingleValueEvent(object: ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                //_totalMissions.value= snapshot.childrenCount.toString()
-                //var totalRaisedMoney=0
-                for(i in snapshot.children) {
-                    //totalRaisedMoney += i.getValue<Int>() ?: 0
-                    entireList.add(i.key.toString().toInt())
-                    moneyRaisedList.add(Pair(i.key.toString().toInt(),i.value.toString().toInt()))
-                }
-                //_totalMoneyRaised.value = "Rs $totalRaisedMoney"
-                    if(loadedList!=null){
-                        val toDownloadList=entireList.minus(loadedList)
-                        insertIntoDatabase(toDownloadList.reversed(),loadedList,moneyRaisedList)
+        if (internetAvailable) {
+            val loadedList = database.getDownloadedMissions()
+            val entireList: MutableList<Int> = arrayListOf()
+            val moneyRaisedList: MutableList<Pair<Int, Int>> = arrayListOf()
+            val moneyRaisedReference = cloudReference.child("moneyRaised")
+            moneyRaisedReference.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    //_totalMissions.value= snapshot.childrenCount.toString()
+                    //var totalRaisedMoney=0
+                    for (i in snapshot.children) {
+                        //totalRaisedMoney += i.getValue<Int>() ?: 0
+                        entireList.add(i.key.toString().toInt())
+                        moneyRaisedList.add(
+                            Pair(
+                                i.key.toString().toInt(),
+                                i.value.toString().toInt()
+                            )
+                        )
                     }
-                    else{
-                        insertIntoDatabase(entireList.reversed(),null,moneyRaisedList)
+                    //_totalMoneyRaised.value = "Rs $totalRaisedMoney"
+                    if (loadedList != null) {
+                        val toDownloadList = entireList.minus(loadedList)
+                        insertIntoDatabase(toDownloadList.reversed(), loadedList, moneyRaisedList)
+                    } else {
+                        insertIntoDatabase(entireList.reversed(), null, moneyRaisedList)
                     }
 
-            }
+                }
 
-            override fun onCancelled(error: DatabaseError) {
-                //_totalMoneyRaised.value="Rs"+Transformations.map(database.getTotalMoneyRaised()){it.toString()}
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    //_totalMoneyRaised.value="Rs"+Transformations.map(database.getTotalMoneyRaised()){it.toString()}
+                }
+            })
 
-        val accomplishedEntireList:MutableList<Int> = arrayListOf()
-        val accomplishedMoneyRaisedResult=cloudReference.child("accomplishedMoneyRaised").singleValueEvent()
-        when(accomplishedMoneyRaisedResult){
-            is EventResponse.Changed->{
-                val dataSnapshot=accomplishedMoneyRaisedResult.snapshot
-                for(i in dataSnapshot.children) {
-                    //totalRaisedMoney += i.getValue<Int>() ?: 0
-                    accomplishedEntireList.add(i.key.toString().toInt())
+            val accomplishedEntireList: MutableList<Int> = arrayListOf()
+            val accomplishedMoneyRaisedResult =
+                cloudReference.child("accomplishedMoneyRaised").singleValueEvent()
+            when (accomplishedMoneyRaisedResult) {
+                is EventResponse.Changed -> {
+                    val dataSnapshot = accomplishedMoneyRaisedResult.snapshot
+                    for (i in dataSnapshot.children) {
+                        //totalRaisedMoney += i.getValue<Int>() ?: 0
+                        accomplishedEntireList.add(i.key.toString().toInt())
+                    }
+                }
+                is EventResponse.Cancelled -> {
                 }
             }
-            is EventResponse.Cancelled->{}
-        }
-        if(loadedList!=null){
-            val toDownloadList=accomplishedEntireList.minus(loadedList)
-            insertAccomplishedMissionsIntoDatabase(toDownloadList)
-        }
-        else{
-            insertAccomplishedMissionsIntoDatabase(accomplishedEntireList)
-        }
+            if (loadedList != null) {
+                val toDownloadList = accomplishedEntireList.minus(loadedList)
+                insertAccomplishedMissionsIntoDatabase(toDownloadList)
+            } else {
+                insertAccomplishedMissionsIntoDatabase(accomplishedEntireList)
+            }
 
-       /* val deadlinesReference=cloudReference.child("deadlines")
+            /* val deadlinesReference=cloudReference.child("deadlines")
         val now = Calendar.getInstance()
         deadlinesReference.addListenerForSingleValueEvent(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -205,6 +248,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
 
             }
         })*/
+        }
     }
 
     private suspend fun insertAccomplishedMissionsIntoDatabase(toDownloadList: List<Int>) {
@@ -366,13 +410,11 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
         }
         val usm = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         val now = Calendar.getInstance()
-        Log.i("JK", Timestamp(now.timeInMillis).toString())
         val begin: Calendar = Calendar.getInstance()
         begin.set(Calendar.HOUR_OF_DAY, 0)
         begin.set(Calendar.MINUTE, 0)
         begin.set(Calendar.SECOND, 0)
         begin.set(Calendar.MILLISECOND, 0)
-        Log.i("JK", Timestamp(begin.timeInMillis).toString())
 
         val systemEvents: UsageEvents = usm.queryEvents(
             begin.timeInMillis,
@@ -417,10 +459,6 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                     transt = 0L
                 }
                 if (it.eventType == UsageEvents.Event.ACTIVITY_RESUMED || it.eventType == UsageEvents.Event.ACTIVITY_PAUSED) {
-
-                    if (packageName == "com.google.android.youtube") {
-                        Log.i("DWN", it.eventType.toString() + " " + Timestamp(it.timeStamp))
-                    }
                 }
                 if (startTime == 0L && endTime != 0L) {
                     startTime = begin.timeInMillis
@@ -575,6 +613,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
         val appPackageList = ArrayList<String>()
 
         if(checkInternet()){
+            internetAvailable=true
             withContext(Dispatchers.IO) {
                 val otherCategory:List<AppAndCategory>? =appDatabase.getCatApps("OTHERS")
                 if(otherCategory!=null){

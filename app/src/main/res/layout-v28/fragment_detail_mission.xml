@@ -238,8 +238,8 @@ xmlns:tools="http://schemas.android.com/tools">
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="@+id/money"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/money"
                     app:layout_constraintVertical_bias="0.55"
+                    app:layout_constraintTop_toTopOf="@+id/money"
                     app:srcCompat="@drawable/rupee_symbol" />
 
 
@@ -259,6 +259,7 @@ xmlns:tools="http://schemas.android.com/tools">
                     android:paddingBottom="12dp"
                     android:text="@{selectedMissionViewModel.daysLeft}"
                     android:textColor="@color/primary_text"
+                    android:textFontWeight="400"
                     android:textSize="24sp"
                     app:layout_constraintEnd_toStartOf="@+id/days"
                     app:layout_constraintHorizontal_bias="0.5"

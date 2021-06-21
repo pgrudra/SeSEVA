@@ -19,16 +19,16 @@ interface MissionsDatabaseDao{
     @Query("SELECT * FROM list_of_missions WHERE missionNumber=:key")
     suspend fun doesMissionExist(key:Int): Mission?
 
-    @Query("SELECT * FROM list_of_missions WHERE deadline>:now AND contribution>:contribution")
+    @Query("SELECT * FROM list_of_missions WHERE deadline>:now AND contribution>:contribution ORDER BY missionNumber DESC")
     fun getAllActiveMissions(now:Long,contribution:Int): LiveData<List<Mission>>
 
-    @Query("SELECT * FROM list_of_missions")
+    @Query("SELECT * FROM list_of_missions ORDER BY missionNumber DESC")
     fun getAllMissions(): LiveData<List<Mission>>
 
     @Query("DELETE FROM list_of_missions")
     suspend fun clear()
 
-    @Query("SELECT * FROM list_of_missions WHERE deadline<:now AND contribution>:contribution")
+    @Query("SELECT * FROM list_of_missions WHERE deadline<:now AND contribution>:contribution ORDER BY deadline ASC")
     fun getAllAccomplishedMissions(now:Long,contribution:Int): LiveData<List<Mission>>
 
     /*@Query("SELECT * FROM list_of_missions WHERE mission_complete_notification=:t")

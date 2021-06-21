@@ -268,9 +268,9 @@
                     android:id="@+id/rupee_symbol_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintVertical_bias="0.55"
                     app:layout_constraintBottom_toBottomOf="@+id/amount_raised"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintVertical_bias="0.55"
                     app:layout_constraintTop_toTopOf="@+id/amount_raised"
                     app:srcCompat="@drawable/rupee_symbol" />
 
@@ -360,6 +360,7 @@
                     android:fontFamily="@font/montserrat_used"
                     android:text="@{ProfileViewModel.contribution}"
                     android:textColor="@color/colorSecondary"
+                    android:textFontWeight="400"
                     android:textSize="30sp"
                     app:layout_constraintEnd_toEndOf="@id/trigger_holder"
                     app:layout_constraintStart_toStartOf="@id/trigger_holder"
@@ -382,6 +383,7 @@
                     android:paddingBottom="12dp"
                     android:text="@{ProfileViewModel.daysLeft}"
                     android:textColor="@color/primary_text"
+                    android:textFontWeight="400"
                     android:textSize="24sp"
                     app:layout_constraintEnd_toStartOf="@+id/days"
                     app:layout_constraintHorizontal_bias="0.5"

@@ -219,6 +219,9 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
                 binding.toolbar.setNavigationIcon(R.drawable.ic_navdrawer_icon)
                 binding.toolbar.setNavigationOnClickListener { v -> (activity as DrawerLocker?)!!.openCloseNavigationDrawer(v) }
                 drawerLoker!!.setDrawerEnabled(true)
+                val layOutParams=binding.toHome.layoutParams as ViewGroup.MarginLayoutParams
+                layOutParams.bottomMargin=40
+                binding.toHome.layoutParams=layOutParams
                 drawerLoker.displayBottomNavigation(true)
                 val params=LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT)

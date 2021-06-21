@@ -73,6 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
+        app:layout_constraintVertical_bias="0.55"
         app:layout_constraintBottom_toBottomOf="@+id/total_money_raised"
         app:layout_constraintStart_toEndOf="@id/mission_image"
         app:layout_constraintTop_toTopOf="@+id/total_money_raised"

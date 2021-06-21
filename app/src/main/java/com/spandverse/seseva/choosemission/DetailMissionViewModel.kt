@@ -234,8 +234,6 @@ class DetailMissionViewModel(mission: DomainActiveMission, application: Applicat
                         }*/
                     }
                     .addOnFailureListener {
-                        Log.i("IOIO", "FAIL")
-
                     }
             }
             with(sharedPref?.edit()) {
