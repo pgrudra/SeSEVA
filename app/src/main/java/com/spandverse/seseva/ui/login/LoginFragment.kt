@@ -234,7 +234,6 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
             auth.signInWithEmailLink(email, emailLink)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        Log.d(TAG, "Successfully signed in with email link!")
                         val result = task.result
                         val user = auth.currentUser
                         val userId=user!!.uid
@@ -257,7 +256,6 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
                         // You can check if the user is new or existing:
                         // result.getAdditionalUserInfo().isNewUser()
                     } else {
-                        Log.e(TAG, "Error signing in with email link", task.exception)
                         view?.let {
                             Snackbar.make(
                                 it,
@@ -292,6 +290,7 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
         val intent=Intent(activity, HomeActivity::class.java)
         startActivity(intent)
         activity?.overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
+        activity?.finish()
     //findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToHomeActivity())
     //In home fragment, immediately check user name and active mission and take to respective screens incase not selected.
 

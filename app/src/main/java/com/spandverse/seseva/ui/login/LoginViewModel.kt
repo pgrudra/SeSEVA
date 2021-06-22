@@ -42,7 +42,7 @@ class LoginViewModel() : ViewModel() {
     val currentTime: LiveData<Long>
         get() = _currentTime
     val currentTimeString = Transformations.map(currentTime) { time ->
-       if(time.toInt()!=0) {"Didn't get an email? You can resend in ${time}s"}
+       if(time.toInt()!=0) {"You can resend in ${time}s"}
         else ""
     }
 
@@ -54,7 +54,6 @@ class LoginViewModel() : ViewModel() {
     }
 
     fun resend(){
-        Log.i("io","kl")
         _resendEmail.value=true
         _backToLoginScreen.value=true
     }

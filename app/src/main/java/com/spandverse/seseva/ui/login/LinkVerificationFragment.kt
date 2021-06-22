@@ -67,6 +67,8 @@ findNavController().navigate(LinkVerificationFragmentDirections.actionLinkVerifi
         if(currentUser!=null){
             val intent= Intent(activity, HomeActivity::class.java)
             startActivity(intent)
+            activity?.overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
+            activity?.finish()
 //findNavController().navigate(LinkVerificationFragmentDirections.actionLinkVerificationFragmentToHomeActivity())
         }
 

@@ -64,6 +64,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
+                    android:justificationMode="inter_word"
                     android:text="@{sponsorDetailsViewModel.sponsorDescription}"
                     android:textColor="@color/disabled_text"
                     android:layout_marginEnd="16dp"

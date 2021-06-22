@@ -162,10 +162,10 @@
     <string name="profile">Profile</string>
     <string name="permissions">Permissions</string>
     <string name="missions">Missions</string>
-    <string name="display_over_other_apps">Display over other apps</string>
+    <string name="display_over_other_apps">Permission to display over other apps</string>
     <string name="switch_to_this_mission">SWITCH TO THIS MISSION</string>
     <string name="sponsored_mission_name">%1$d. %2$s</string>
-    <string name="address_contact_number"><![CDATA[Address & Contact number]]></string>
+    <string name="address_contact_number">Contact details</string>
     <string name="don_t_break_the_rule">please don\'t break the rule</string>
     <string name="blocking_screen_t3">You will lose your chance of raising Rs %1$d towards the mission you had chosen if you break the rule.</string>
     <string name="blocking_screen_t3_m_b">You have lost your opportunity of raising Rs %1$d towards the mission you had chosen, but you can still help out yourself by spending your time in a better way than wasting it on your smartphone</string>
@@ -195,4 +195,16 @@
     <string name="this_is_a_device_specific_permission_nseseva_will_not_be_able_to_issue_usage_and_rule_breaks_warnings_or_update_the_money_you_raise_towards_your_chosen_mission_if_your_phone_s_operating_system_kills_seseva_s_processes_and_services_few_hours_after_being_removed_from_the_foreground">This is a device specific permission.\nSeSEVA will not be able to issue usage and rule breaks warnings or update the money you raise towards your chosen mission if your phone\'s operating system kills SeSEVA\'s processes and services few hours after being removed from the foreground.</string>
     <string name="autostart_permission_information">Autostart permission information</string>
     <string name="view_all_available_missions">View all available missions</string>
+    <string name="missions_supported">Missions supported</string>
+    <string name="comm_browsers"><![CDATA[Comm. & Browsers]]></string>
+    <string name="video_comics"><![CDATA[Video & Comics]]></string>
+    <string name="email_verfication_from_address">Didn\'t get an email from\nnoreply.seseva@unslave-0.firebaseapp.com?</string>
+    <string name="resend">RESEND</string>
+    <string name="change_email">CHANGE EMAIL</string>
+    <string name="never_mind">NEVER MIND</string>
+    <string name="opps">OPPS</string>
+    <string name="usage_access_is_mandatory">Usage access is mandatory</string>
+    <string name="delete_account">delete account</string>
+    <string name="permission_mandatory_dialog_body">Usage access permission is required for the core functionality of SeSeva. Without it you can\'t proceed further.</string>
+    <string name="ask_me_later">ASK ME LATER</string>
 </resources>

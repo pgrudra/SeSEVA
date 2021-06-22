@@ -106,6 +106,7 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
                 }
 
             })
+
         binding.activeContributors.text = mission.contributors.toString()
         binding.money.text = mission.totalMoneyRaised.toString()
         binding.sponsorName.text = mission.sponsorName
@@ -142,7 +143,6 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
         })
         viewModel.toHomeFragment.observe(viewLifecycleOwner, Observer<Boolean> { goto ->
                 if (goto) {
-                    Log.i("DM5","jgpu")
                     findNavController().navigate(DetailMissionDirections.actionDetailMissionToHomeFragment())
                     viewModel.thisMissionChosenComplete()
                 }
@@ -161,6 +161,11 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.skrim.visibility=View.GONE
+        binding.progressBar1.visibility=View.GONE
+    }
     override fun removeRedBackground(dialog: DialogFragment) {
     }
 

@@ -123,10 +123,10 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
     val processingDataForPieChartDone:LiveData<Boolean>
         get()=_processingDataForPieChartDone
 
-    val categoryTimes:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"OTHERS" to 0,"WHITELISTED" to 0, "GAMES" to 0,"MSNBS" to 0,"VIDEO_PLAYERS_N_COMICS" to 0,"ENTERTAINMENT" to 0,"COMMUNICATION" to 0,"SOCIAL" to 0)
-    val categoryLaunches:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to 0,"COMMUNICATION" to 0, "GAMES" to 0,"WHITELISTED" to 0,"VIDEO_PLAYERS_N_COMICS" to 0,"ENTERTAINMENT" to 0,"MSNBS" to 0,"OTHERS" to 0)
-    val timeRules:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to sharedPref!!.getInt((R.string.social_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"COMMUNICATION" to sharedPref.getInt((R.string.communication_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS, "GAMES" to sharedPref.getInt((R.string.games_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"WHITELISTED" to 0,"VIDEO_PLAYERS_N_COMICS" to sharedPref.getInt((R.string.video_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"ENTERTAINMENT" to sharedPref.getInt((R.string.entertainment_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"MSNBS" to sharedPref.getInt((R.string.msnbs_max_time).toString(),0)*ONE_MINUTE_IN_SECONDS,"OTHERS" to sharedPref.getInt((R.string.others_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS)
-    val launchRules:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to sharedPref!!.getInt((R.string.social_max_launches).toString(),0),"COMMUNICATION" to sharedPref.getInt((R.string.communication_max_launches).toString(),0), "GAMES" to sharedPref.getInt((R.string.games_max_launches).toString(),0),"WHITELISTED" to 0,"VIDEO_PLAYERS_N_COMICS" to sharedPref.getInt((R.string.video_max_launches).toString(),0),"ENTERTAINMENT" to sharedPref.getInt((R.string.entertainment_launches).toString(),0),"MSNBS" to sharedPref.getInt((R.string.msnbs_max_launches).toString(),0),"OTHERS" to sharedPref.getInt((R.string.others_max_launches).toString(),0))
+    val categoryTimes:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"OTHERS" to 0,"WHITELISTED" to 0, "GAMES" to 0,"MSNBS" to 0,"VIDEO & COMICS" to 0,"ENTERTAINMENT" to 0,"COMM. & BROWSING" to 0,"SOCIAL" to 0)
+    val categoryLaunches:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to 0,"COMM. & BROWSING" to 0, "GAMES" to 0,"WHITELISTED" to 0,"VIDEO & COMICS" to 0,"ENTERTAINMENT" to 0,"MSNBS" to 0,"OTHERS" to 0)
+    val timeRules:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to sharedPref!!.getInt((R.string.social_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"COMM. & BROWSING" to sharedPref.getInt((R.string.communication_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS, "GAMES" to sharedPref.getInt((R.string.games_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"WHITELISTED" to 0,"VIDEO & COMICS" to sharedPref.getInt((R.string.video_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"ENTERTAINMENT" to sharedPref.getInt((R.string.entertainment_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"MSNBS" to sharedPref.getInt((R.string.msnbs_max_time).toString(),0)*ONE_MINUTE_IN_SECONDS,"OTHERS" to sharedPref.getInt((R.string.others_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS)
+    val launchRules:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to sharedPref!!.getInt((R.string.social_max_launches).toString(),0),"COMM. & BROWSING" to sharedPref.getInt((R.string.communication_max_launches).toString(),0), "GAMES" to sharedPref.getInt((R.string.games_max_launches).toString(),0),"WHITELISTED" to 0,"VIDEO & COMICS" to sharedPref.getInt((R.string.video_max_launches).toString(),0),"ENTERTAINMENT" to sharedPref.getInt((R.string.entertainment_launches).toString(),0),"MSNBS" to sharedPref.getInt((R.string.msnbs_max_launches).toString(),0),"OTHERS" to sharedPref.getInt((R.string.others_max_launches).toString(),0))
     var entertainmentTime=sharedPref!!.getInt((R.string.entertainment_time).toString(), 0)
     var entertainmentLaunches=sharedPref!!.getInt((R.string.entertainment_launches).toString(), 0)
 
@@ -539,17 +539,17 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
 
     /*fun provideSharedPref(sharedPref: SharedPreferences?) {
         timeRules["SOCIAL"]=sharedPref!!.getInt((R.string.social_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS
-        timeRules["COMMUNICATION"]=sharedPref.getInt((R.string.communication_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS
+        timeRules["COMM. & BROWSING"]=sharedPref.getInt((R.string.communication_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS
         timeRules["GAMES"]=sharedPref.getInt((R.string.games_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS
         timeRules["VIDEO"]=sharedPref.getInt((R.string.video_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS
-        timeRules["VIDEO_PLAYERS_N_COMICS"]=sharedPref.getInt((R.string.video_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS
+        timeRules["VIDEO & COMICS"]=sharedPref.getInt((R.string.video_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS
         timeRules["ENTERTAINMENT"]=sharedPref.getInt((R.string.entertainment_time).toString(),0)* ONE_MINUTE_IN_SECONDS
         timeRules["MSNBS"]=sharedPref.getInt((R.string.msnbs_max_time).toString(),0)*ONE_MINUTE_IN_SECONDS
         timeRules["OTHERS"]=sharedPref.getInt((R.string.others_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS
         launchRules["SOCIAL"]=sharedPref.getInt((R.string.social_max_launches).toString(),0)
-        launchRules["COMMUNICATION"]=sharedPref.getInt((R.string.communication_max_launches).toString(),0)
+        launchRules["COMM. & BROWSING"]=sharedPref.getInt((R.string.communication_max_launches).toString(),0)
         launchRules["GAMES"]=sharedPref.getInt((R.string.games_max_launches).toString(),0)
-        launchRules["VIDEO_PLAYERS_N_COMICS"]=sharedPref.getInt((R.string.video_max_launches).toString(),0)
+        launchRules["VIDEO & COMICS"]=sharedPref.getInt((R.string.video_max_launches).toString(),0)
         launchRules["ENTERTAINMENT"]=sharedPref.getInt((R.string.entertainment_launches).toString(),0)
         launchRules["MSNBS"]=sharedPref.getInt((R.string.msnbs_max_launches).toString(),0)
         launchRules["OTHERS"]=sharedPref.getInt((R.string.others_max_launches).toString(),0)

@@ -162,10 +162,10 @@ class Rules2ViewModel(
     val noInternet: LiveData<Boolean>
         get() = _noInternet
     val socialApps=database.getAll("SOCIAL")
-    val communicationApps=database.getAll("COMMUNICATION")
+    val communicationApps=database.getAll("COMM. & BROWSING")
     val gamesApps=database.getAll("GAMES")
     val entertainmentApps=database.getAll("ENTERTAINMENT")
-    val videoApps=database.getAll("VIDEO_PLAYERS_N_COMICS")
+    val videoApps=database.getAll("VIDEO & COMICS")
     val msnbsApps=database.getAll("MSNBS")
     val whitelistedApps=database.getAll("WHITELISTED")
     val otherApps=database.getAll("OTHERS")
@@ -176,12 +176,10 @@ class Rules2ViewModel(
 
                 _scrimVisible.value=false
                 //_toolBarNDrawer.value=true
-                Log.i("RVM","${_toolBarNDrawer.value}")
                 loadRules()
                 _iUnderstandRulesVisible.value=false
             }
             checkInternet() -> {
-                Log.i("RVM","CI")
                 getAndLoadRules(serviceRestart)
                 getApps()
                 _iUnderstandRulesVisible.value=true
@@ -370,10 +368,8 @@ class Rules2ViewModel(
                 if (serviceRestart) {
                     actionOnService(Actions.STOP)
                     actionOnService(Actions.START)
-                    Log.i("RVM", "serviceRestarted")
                 }
             }
-            Log.i("RVM","rulesNumber=$rulesNumber")
         }
     }
 
@@ -438,7 +434,6 @@ class Rules2ViewModel(
     private fun checkIfRulesShown():Boolean{
         val rN=sharedPref.getInt((R.string.rules_number).toString(),-1)
         val sRN=sharedPref.getInt((R.string.saved_rules_number).toString(),-2)
-        Log.i("RVM","rN=$rN, sRN=$sRN")
         return rN==sRN
     }
 
@@ -486,7 +481,6 @@ class Rules2ViewModel(
     }
 
     private suspend fun insertIntoDatabase() {
-        Log.i("R2VM","ophere")
         val main = Intent(Intent.ACTION_MAIN, null)
         main.addCategory(Intent.CATEGORY_LAUNCHER)
         val launchables = pm.queryIntentActivities(main, 0)

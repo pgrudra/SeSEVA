@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/card"
         android:background="@drawable/all_corner_rounded_4dp_2e"
-        android:layout_width="139dp"
+        android:layout_width="156dp"
         android:elevation="5dp"
         android:layout_marginEnd="4dp"
         android:layout_height="91dp">
@@ -39,7 +39,7 @@
             android:gravity="center"
             android:layout_marginBottom="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="Communication"
+            tools:text="COMM. n BROWSING"
             style="@style/caption"
             android:textColor="@color/primary_text"/>
 

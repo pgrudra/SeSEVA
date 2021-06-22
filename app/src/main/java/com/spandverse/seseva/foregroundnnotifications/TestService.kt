@@ -156,7 +156,6 @@ class TestService : Service() {
     }
 
     private fun startService() {
-        Log.i("TSS","21")
         val sharedPref = applicationContext.getSharedPreferences(
             (R.string.shared_pref).toString(),
             Context.MODE_PRIVATE
@@ -184,7 +183,6 @@ class TestService : Service() {
             this?.apply()
         }
         isServiceStarted = true
-        Log.i("TSS","22")
         setServiceState(this, com.spandverse.seseva.ServiceState.STARTED)
         pkgAndCat=Transformations.map(AllDatabase.getInstance(this).AppDatabaseDao.getEntireList()) { it ->
             it?.map { it.packageName to it.appCategory }?.toMap() ?: emptyMap<String,String>()
@@ -194,7 +192,7 @@ class TestService : Service() {
         val serviceMode= sharedPref.getInt((R.string.service_mode).toString(), 1)
         timeRules["SOCIAL"] =
             sharedPref.getInt((R.string.social_max_time).toString(), 0) * oneMinuteInSeconds
-        timeRules["COMMUNICATION"] = sharedPref.getInt(
+        timeRules["COMM. & BROWSING"] = sharedPref.getInt(
             (R.string.communication_max_time).toString(),
             0
         ) * oneMinuteInSeconds
@@ -208,28 +206,28 @@ class TestService : Service() {
             sharedPref.getInt((R.string.others_max_time).toString(), 0) * oneMinuteInSeconds
         timeRules["MSNBS"] =
             sharedPref.getInt((R.string.msnbs_max_time).toString(), 0) * oneMinuteInSeconds
-        timeRules["VIDEO_PLAYERS_N_COMICS"] =
+        timeRules["VIDEO & COMICS"] =
             sharedPref.getInt((R.string.video_max_time).toString(), 0) * oneMinuteInSeconds
         launchRules["SOCIAL"] = sharedPref.getInt((R.string.social_max_launches).toString(), 0)
-        launchRules["COMMUNICATION"] =
+        launchRules["COMM. & BROWSING"] =
             sharedPref.getInt((R.string.communication_max_launches).toString(), 0)
         launchRules["GAMES"] = sharedPref.getInt((R.string.games_max_launches).toString(), 0)
         launchRules["ENTERTAINMENT"] =
             sharedPref.getInt((R.string.entertainment_max_launches).toString(), 0)
         launchRules["OTHERS"] = sharedPref.getInt((R.string.others_max_launches).toString(), 0)
         launchRules["MSNBS"] = sharedPref.getInt((R.string.msnbs_max_launches).toString(), 0)
-        launchRules["VIDEO_PLAYERS_N_COMICS"] = sharedPref.getInt((R.string.video_max_launches).toString(), 0)
+        launchRules["VIDEO & COMICS"] = sharedPref.getInt((R.string.video_max_launches).toString(), 0)
 
 
         penalties["SOCIAL"] = sharedPref.getInt((R.string.social_penalty).toString(), 0)
-        penalties["COMMUNICATION"] =
+        penalties["COMM. & BROWSING"] =
             sharedPref.getInt((R.string.communication_penalty).toString(), 0)
         penalties["GAMES"] = sharedPref.getInt((R.string.games_penalty).toString(), 0)
         penalties["ENTERTAINMENT"] =
             sharedPref.getInt((R.string.entertainment_penalty).toString(), 0)
         penalties["OTHERS"] = sharedPref.getInt((R.string.others_penalty).toString(), 0)
         penalties["MSNBS"] = sharedPref.getInt((R.string.msnbs_penalty).toString(), 0)
-        penalties["VIDEO_PLAYERS_N_COMICS"] = sharedPref.getInt((R.string.video_penalty).toString(), 0)
+        penalties["VIDEO & COMICS"] = sharedPref.getInt((R.string.video_penalty).toString(), 0)
         missionNumber=sharedPref.getInt((R.string.chosen_mission_number).toString(), 0)
         pkgAndCat.observeForever {
 
@@ -251,14 +249,12 @@ class TestService : Service() {
                 }
                 val appPackageList = appPackageListR.distinct()*/
 
-                Log.i("TS78","25")
                 val sortedEvents = mutableMapOf<String, MutableList<UsageEvents.Event>>()
                 for (l in it.keys) {
                     sortedEvents[l] = mutableListOf()
                 }
                 when (serviceMode) {
                     3 -> {
-                        Log.i("TS78","3")
                         while (isServiceStarted) {
                             delay(oneSecond)
                             launch(Dispatchers.IO) {
@@ -267,7 +263,6 @@ class TestService : Service() {
                         }
                     }
                     2 -> {
-                        Log.i("TS78","2")
                         while (isServiceStarted) {
                             delay(tenSeconds)
                             launch(Dispatchers.IO) {
@@ -276,7 +271,6 @@ class TestService : Service() {
                         }
                     }
                     else -> {
-                        Log.i("TS78","else")
                         while (isServiceStarted) {
                             delay(tenSeconds)
                             launch(Dispatchers.IO) {

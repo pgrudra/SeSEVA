@@ -26,9 +26,9 @@ binding.catName.text=item.categoryName
             }
             when(item.categoryName){
                 "SOCIAL"->binding.catIcon.setImageResource(R.drawable.ic_social)
-                "COMMUNICATION"->binding.catIcon.setImageResource(R.drawable.ic_communication)
+                "COMM. & BROWSING"->binding.catIcon.setImageResource(R.drawable.ic_communication)
                 "GAMES"->binding.catIcon.setImageResource(R.drawable.ic_games)
-                "VIDEO"->binding.catIcon.setImageResource(R.drawable.ic_video)
+                "VIDEO & COMICS"->binding.catIcon.setImageResource(R.drawable.ic_video)
                 "ENTERTAINMENT"->binding.catIcon.setImageResource(R.drawable.ic_entertainment)
                 "MSNBS"->binding.catIcon.setImageResource(R.drawable.ic_msnbs)
                 "OTHERS"->binding.catIcon.setImageResource(R.drawable.ic_others)

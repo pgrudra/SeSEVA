@@ -146,7 +146,12 @@ class SponsorDetailsViewModel(sponsorNumber:Int,sponsorDatabaseDao: SponsorDatab
     private fun display(missionNamesList: List<String>?, missionAmountsList: List<Int>?) {
         if (missionAmountsList!!.size < 4) {
             for (i in missionNamesList!!.indices) {
-                _shortList.value += missionNamesList[i] + "\nRs " + missionAmountsList[i] + "\n\n"
+                if(missionAmountsList[i]==0){
+                    _shortList.value += missionNamesList[i] + "\nOngoing\n\n"
+                }
+                else{
+                    _shortList.value += missionNamesList[i] + "\nRs " + missionAmountsList[i] + "\n\n"
+                }
             }
             _displayList.value=_shortList.value
             _expandContractVisibility.value=false
