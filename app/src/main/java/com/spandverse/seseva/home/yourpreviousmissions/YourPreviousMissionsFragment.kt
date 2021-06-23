@@ -36,7 +36,7 @@ class YourPreviousMissionsFragment : Fragment() {
         val currentMission: DomainActiveMission = YourPreviousMissionsFragmentArgs.fromBundle(requireArguments()).currentMission
         val dataBaseDAO = AllDatabase.getInstance(application).MissionsDatabaseDao
         val nowMinusOneDay= Calendar.getInstance().timeInMillis-24*60*60*1000
-        viewModelFactory= YPMViewModelFactory(dataBaseDAO)
+        viewModelFactory= YPMViewModelFactory(dataBaseDAO,application)
         viewModel= ViewModelProvider(this, viewModelFactory).get(YPMViewModel::class.java)
         binding.ypmViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -80,7 +80,7 @@ class YourPreviousMissionsFragment : Fragment() {
             }
         })
         val activeMissionsAdapter=ActiveMissions2Adapter(ActiveMissions2Adapter.OnClickListener{
-                findNavController().navigate(YourPreviousMissionsFragmentDirections.actionYourPreviousMissionsFragmentToDetailMission(it))
+                findNavController().navigate(YourPreviousMissionsFragmentDirections.actionYourPreviousMissionsFragmentToDetailMission(it,false))
             })
         val accomplishedMissionsAdapter=AccomplishedMissionsAdapter(AccomplishedMissionsAdapter.OnClickListener{
             //add argument

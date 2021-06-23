@@ -76,7 +76,6 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     private val _moneyRaised = MutableLiveData<String>()
     val moneyRaised: LiveData<String>
         get() = _moneyRaised
-    var internetAvailable=false
     private val nowMinusOneDay= Calendar.getInstance().timeInMillis-24*60*60*1000
     private val _activeMissions = MutableLiveData<String>()
     val activeMissions: LiveData<String>
@@ -176,17 +175,15 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     }
 
     private suspend fun displayMissionsRelatedThings() {
-        if (internetAvailable) {
+        if (checkInternet()) {
             val loadedList = database.getDownloadedMissions()
             val entireList: MutableList<Int> = arrayListOf()
             val moneyRaisedList: MutableList<Pair<Int, Int>> = arrayListOf()
             val moneyRaisedReference = cloudReference.child("moneyRaised")
             moneyRaisedReference.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    //_totalMissions.value= snapshot.childrenCount.toString()
-                    //var totalRaisedMoney=0
+
                     for (i in snapshot.children) {
-                        //totalRaisedMoney += i.getValue<Int>() ?: 0
                         entireList.add(i.key.toString().toInt())
                         moneyRaisedList.add(
                             Pair(
@@ -197,9 +194,11 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                     }
                     //_totalMoneyRaised.value = "Rs $totalRaisedMoney"
                     if (loadedList != null) {
+
                         val toDownloadList = entireList.minus(loadedList)
                         insertIntoDatabase(toDownloadList.reversed(), loadedList, moneyRaisedList)
                     } else {
+
                         insertIntoDatabase(entireList.reversed(), null, moneyRaisedList)
                     }
 
@@ -257,16 +256,15 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
             when(val contributionsResult=cloudReference.child("users").child(userId).child("contributions").singleValueEvent()){
                 is EventResponse.Changed->{
                     for(j in contributionsResult.snapshot.children){
-                        contributionsList.add(Pair(j.getValue<Int>()?:0,j.getValue<Int>()?:0))
+                        contributionsList.add(Pair(j.key?.toInt()?:0,j.getValue<Int>()?:0))
                     }
                 }
                 is EventResponse.Cancelled->{}
             }
         }
         for(i in toDownloadList){
-            val accomplishedMissionResult=cloudReference.child("accomplishedMissions").child("i").singleValueEvent()
             val mission=Mission()
-            when(accomplishedMissionResult){
+            when(val accomplishedMissionResult=cloudReference.child("accomplishedMissions").child(i.toString()).singleValueEvent()){
                 is EventResponse.Changed-> {
                     val dataSnapshot=accomplishedMissionResult.snapshot
                     mission.missionNumber=i
@@ -277,13 +275,15 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                     mission.reportAvailable=dataSnapshot.child("reportAvailable").getValue<Boolean>()?:false
                     mission.totalMoneyRaised=dataSnapshot.child("moneyRaised").getValue<Int>()?:0
                     mission.contributors=dataSnapshot.child("contributors").getValue<Int>()?:0
+                    mission.missionCategory=dataSnapshot.child("category").value.toString()
                     mission.deadline=dataSnapshot.child("deadline").value.toString().deadlineStringToLong()
                     mission.contribution=contributionsList.find{it.first==i}?.second ?:0
                 }
-                is EventResponse.Cancelled->{}
+                is EventResponse.Cancelled->{
+                }
             }
+            Log.i("HVM7","$mission")
             database.insert(mission)
-
         }
     }
 
@@ -318,7 +318,8 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                                     val now: Calendar = Calendar.getInstance()
                                     mission?.missionActive=now.timeInMillis<= mission?.deadline!!
                                     mission.contributors=contributorsList.find{it.first==primaryKey}?.second ?:0
-                                    viewModelScope.launch { database.insert(mission) }
+                                    viewModelScope.launch {
+                                        database.insert(mission) }
                                 }
 
                                 override fun onCancelled(error: DatabaseError) {
@@ -331,9 +332,11 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                             viewModelScope.launch {
                                 for (i in loadedList) {
                                     val mission = database.doesMissionExist(i)
-                                    mission?.contributors=contributorsList.find{it.first==i}?.second ?:0
-                                    mission?.totalMoneyRaised=moneyRaisedList.find{it.first==i}?.second ?:0
-                                    mission?.let { database.update(it) }
+                                    if(mission?.deadline?:0 > nowMinusOneDay){
+                                        mission?.contributors=contributorsList.find{it.first==i}?.second ?:0
+                                        mission?.totalMoneyRaised=moneyRaisedList.find{it.first==i}?.second ?:0
+                                        mission?.let { database.update(it) }
+                                    }
                                 }
                             }
                         }
@@ -365,9 +368,11 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                         viewModelScope.launch {
                             for (i in loadedList) {
                                 val mission = database.doesMissionExist(i)
-                                mission?.contributors=contributorsList.find{it.first==i}?.second ?:0
-                                mission?.totalMoneyRaised=moneyRaisedList.find{it.first==i}?.second ?:0
-                                mission?.let { database.update(it) }
+                                if(mission?.deadline?:0 > nowMinusOneDay){
+                                    mission?.contributors=contributorsList.find{it.first==i}?.second ?:0
+                                    mission?.totalMoneyRaised=moneyRaisedList.find{it.first==i}?.second ?:0
+                                    mission?.let { database.update(it) }
+                                }
                             }
                         }
                     }
@@ -430,8 +435,8 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
         }
         val categoryTimes:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to 0,"COMM. & BROWSING" to 0, "GAMES" to 0,"WHITELISTED" to 0,"VIDEO & COMICS" to 0,"ENTERTAINMENT" to 0,"MSNBS" to 0,"OTHERS" to 0)
         val categoryLaunches:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to 0,"COMM. & BROWSING" to 0, "GAMES" to 0,"WHITELISTED" to 0,"VIDEO & COMICS" to 0,"ENTERTAINMENT" to 0,"MSNBS" to 0,"OTHERS" to 0)
-        val timeRules:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to sharedPref.getInt((R.string.social_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"COMM. & BROWSING" to sharedPref.getInt((R.string.communication_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS, "GAMES" to sharedPref.getInt((R.string.games_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"WHITELISTED" to 0,"VIDEO & COMICS" to sharedPref.getInt((R.string.video_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"ENTERTAINMENT" to sharedPref.getInt((R.string.entertainment_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"MSNBS" to sharedPref.getInt((R.string.msnbs_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"OTHERS" to sharedPref.getInt((R.string.others_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS)
-        val launchRules:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to sharedPref.getInt((R.string.social_max_launches).toString(),0),"COMM. & BROWSING" to sharedPref.getInt((R.string.communication_max_launches).toString(),0), "GAMES" to sharedPref.getInt((R.string.games_max_launches).toString(),0),"WHITELISTED" to 0,"VIDEO & COMICS" to sharedPref.getInt((R.string.video_max_launches).toString(),0),"ENTERTAINMENT" to sharedPref.getInt((R.string.entertainment_launches).toString(),0),"MSNBS" to sharedPref.getInt((R.string.msnbs_max_launches).toString(),0),"OTHERS" to sharedPref.getInt((R.string.others_max_launches).toString(),0))
+        val timeRules:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to sharedPref.getInt((R.string.social_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"COMM. & BROWSING" to sharedPref.getInt((R.string.communication_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS, "GAMES" to sharedPref.getInt((R.string.games_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"WHITELISTED" to 0,"VIDEO & COMICS" to sharedPref.getInt((R.string.video_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"ENTERTAINMENT" to sharedPref.getInt((R.string.entertainment_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"MSNBS" to sharedPref.getInt((R.string.msnbs_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"OTHERS" to sharedPref.getInt((R.string.others_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS)
+        val launchRules:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to sharedPref.getInt((R.string.social_max_launches).toString(),0),"COMM. & BROWSING" to sharedPref.getInt((R.string.communication_max_launches).toString(),0), "GAMES" to sharedPref.getInt((R.string.games_max_launches).toString(),0),"WHITELISTED" to 0,"VIDEO & COMICS" to sharedPref.getInt((R.string.video_max_launches).toString(),0),"ENTERTAINMENT" to sharedPref.getInt((R.string.entertainment_max_launches).toString(),0),"MSNBS" to sharedPref.getInt((R.string.msnbs_max_launches).toString(),0),"OTHERS" to sharedPref.getInt((R.string.others_max_launches).toString(),0))
         val categoryPenalties:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to sharedPref.getInt((R.string.social_penalty).toString(),0),"COMM. & BROWSING" to sharedPref.getInt((R.string.communication_penalty).toString(),0), "GAMES" to sharedPref.getInt((R.string.games_penalty).toString(),0),"WHITELISTED" to 0,"VIDEO & COMICS" to sharedPref.getInt((R.string.video_penalty).toString(),0),"ENTERTAINMENT" to sharedPref.getInt((R.string.entertainment_penalty).toString(),0),"MSNBS" to sharedPref.getInt((R.string.msnbs_penalty).toString(),0),"OTHERS" to sharedPref.getInt((R.string.others_penalty).toString(),0))
 
         sortedEvents.forEach { (packageName, events) ->
@@ -457,8 +462,6 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                 if (startTime != 0L && transt != 0L && startTime > transt && (startTime - transt) < 50) {
                     launches -= 1
                     transt = 0L
-                }
-                if (it.eventType == UsageEvents.Event.ACTIVITY_RESUMED || it.eventType == UsageEvents.Event.ACTIVITY_PAUSED) {
                 }
                 if (startTime == 0L && endTime != 0L) {
                     startTime = begin.timeInMillis
@@ -613,7 +616,6 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
         val appPackageList = ArrayList<String>()
 
         if(checkInternet()){
-            internetAvailable=true
             withContext(Dispatchers.IO) {
                 val otherCategory:List<AppAndCategory>? =appDatabase.getCatApps("OTHERS")
                 if(otherCategory!=null){

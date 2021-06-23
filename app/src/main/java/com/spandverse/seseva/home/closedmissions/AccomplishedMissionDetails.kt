@@ -47,7 +47,7 @@ class AccomplishedMissionDetails : Fragment() {
         drawerLocker!!.setDrawerEnabled(false)
         drawerLocker.displayBottomNavigation(true)
         val misDesLength = mission.missionDescription.length
-        if (misDesLength < 151) {
+        if (misDesLength < 226) {
             binding.expandOrContract.visibility = View.GONE
             binding.accomplishedMissionDescription.text = mission.missionDescription
         }
@@ -57,11 +57,11 @@ class AccomplishedMissionDetails : Fragment() {
                 if (show) {
                     binding.accomplishedMissionDescription.text = mission.missionDescription
                     binding.expandOrContract.setImageResource(R.drawable.ic_collapse_vector)
-                } else if (misDesLength > 150) {
+                } else if (misDesLength > 225) {
                     binding.accomplishedMissionDescription.text = getString(
                         R.string.dots, mission.missionDescription.substring(
                             0,
-                            150
+                            225
                         )
                     )
                     binding.expandOrContract.setImageResource(R.drawable.ic_expand_vector)
@@ -88,7 +88,7 @@ class AccomplishedMissionDetails : Fragment() {
             )
             .into(binding.sponsorLogo)
         if(mission.reportAvailable){
-            binding.downloadReportButton.text="DOWNLOAD REPORT"
+            binding.downloadReportButton.text=getString(R.string.download_report)
             context?.let { binding.downloadReportButton.setTextColor(ContextCompat.getColor(it, R.color.colorPrimary)) }
             binding.downloadReportButton.setBackgroundResource(R.drawable.login_change_email)
         }

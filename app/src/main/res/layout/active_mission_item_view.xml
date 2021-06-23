@@ -78,7 +78,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
             app:layout_constraintStart_toStartOf="@+id/imageView"
             tools:text="Available Till 23/08/6746" />
-        <View
+       <!-- <View
             android:id="@+id/divider_1"
             android:layout_width="0dp"
             android:layout_height="0.5dp"
@@ -88,7 +88,7 @@
             app:layout_constraintBottom_toTopOf="@id/active_contributors"
             app:layout_constraintEnd_toEndOf="@id/appCompatImageView2"
             app:layout_constraintStart_toStartOf="@id/appCompatImageView2"
-            app:layout_constraintTop_toBottomOf="@id/amountRaised" />
+            app:layout_constraintTop_toBottomOf="@id/amountRaised" />-->
 
         <TextView
             android:id="@+id/category"

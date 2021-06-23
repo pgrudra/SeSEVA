@@ -20,23 +20,23 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
             app:title="About us"
             app:titleTextColor="@color/disabled_text" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/seseva_symbol"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="116dp"
+            android:layout_height="116dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
-            android:layout_marginTop="16dp"
-            app:srcCompat="@drawable/ic_active_mission_symbol" />
+            app:srcCompat="@drawable/seseva_icon_foreground" />
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/seseva_text"
-            android:layout_width="137dp"
-            android:layout_height="45dp"
-            app:layout_constraintTop_toBottomOf="@id/seseva_symbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="108dp"
             app:srcCompat="@drawable/ic_app_name" />
         <TextView
             android:layout_width="wrap_content"
@@ -141,32 +141,37 @@
             android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@id/privacy_policy_c_l"
             app:layout_constraintStart_toStartOf="parent"/>
-        <ImageButton
+
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/gmail_icon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            app:layout_constraintTop_toBottomOf="@id/connect_with_us_text"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="13dp"
+            android:background="@null"
+            android:src="@drawable/ic_gmail_icon"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="14dp"
-            android:layout_marginStart="16dp"
-            android:src="@drawable/ic_gmail_icon"/>
-        <ImageButton
+            app:layout_constraintTop_toBottomOf="@id/connect_with_us_text" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/twitter_icon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:visibility="invisible"
-            app:layout_constraintTop_toTopOf="@id/gmail_icon"
-            app:layout_constraintStart_toEndOf="@id/gmail_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="18dp"
             android:src="@drawable/ic_twitter_icon"
-            android:layout_marginStart="24dp"/>
-        <ImageButton
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:background="@null"
+            app:layout_constraintStart_toEndOf="@id/gmail_icon"
+            app:layout_constraintTop_toTopOf="@id/gmail_icon" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="18dp"
+            android:background="@null"
+            android:src="@drawable/ic_youtube_icon"
+
             app:layout_constraintStart_toEndOf="@id/twitter_icon"
-            app:layout_constraintTop_toTopOf="@id/gmail_icon"
-            android:layout_marginStart="24dp"
-            android:visibility="invisible"
-            android:src="@drawable/ic_youtube_icon"/>
+            app:layout_constraintTop_toTopOf="@id/gmail_icon" />
 
 <TextView
     android:layout_width="wrap_content"

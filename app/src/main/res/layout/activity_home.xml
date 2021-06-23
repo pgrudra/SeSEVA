@@ -41,9 +41,10 @@
             app:menu="@menu/navdrawer_menu"
             app:headerLayout="@layout/nav_header"
             android:background="@color/nav_drawer_background"
-            app:itemTextColor="@color/secondary_text"
+            app:itemTextColor="@color/primary_text"
             app:itemBackground="@drawable/nav_item_background"
-            style="@style/subtitle_2"/>
+            android:paddingStart="16dp"
+            style="@style/subtitle_1"/>
 
     </androidx.drawerlayout.widget.DrawerLayout>
 </layout>

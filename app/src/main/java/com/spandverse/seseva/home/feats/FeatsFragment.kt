@@ -118,7 +118,7 @@ class FeatsFragment : Fragment() {
                     findNavController().navigate(FeatsFragmentDirections.actionFeatsFragmentToAccomplishedMissionDetails(it))
                 } else {
                     //active
-                    findNavController().navigate(FeatsFragmentDirections.actionFeatsFragmentToDetailMission(it))
+                    findNavController().navigate(FeatsFragmentDirections.actionFeatsFragmentToDetailMission(it,false))
                 }
                 viewModel.toDetailMissionComplete()
             }

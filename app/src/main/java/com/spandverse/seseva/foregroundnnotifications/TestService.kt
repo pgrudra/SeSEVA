@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.*
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
@@ -415,9 +414,9 @@ class TestService : Service() {
                 }
                 else {
                     if (catTimeInSeconds > maxTime - 12 && catTimeInSeconds <= maxTime) {
-                            notificationManager.sendNotification("Less than 12 secs remaining! Quit now, don't loose the opportunity of helping some one in need.", context)
+                            notificationManager.sendNotification("Less than 12 secs remaining! Quit now, don't lose the opportunity of helping some one in need.", context)
                     } else if(catTimeInSeconds > maxTime - 24 && catTimeInSeconds <= maxTime-12){
-                        notificationManager.sendNotification("Less than 25 secs remaining! Quit now, don't loose the opportunity of helping some one in need.", context)
+                        notificationManager.sendNotification("Less than 25 secs remaining! Quit now, don't lose the opportunity of helping some one in need.", context)
                     }
                     else if (catLaunches == maxLaunches) {
                         if (now.timeInMillis <= lastResumeTimeStamp + 10000) {

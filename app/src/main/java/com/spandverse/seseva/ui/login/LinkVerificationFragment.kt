@@ -2,7 +2,6 @@ package com.spandverse.seseva.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,20 +14,13 @@ import androidx.navigation.fragment.findNavController
 import com.spandverse.seseva.R
 import com.spandverse.seseva.databinding.FragmentLinkVerificationBinding
 import com.spandverse.seseva.home.HomeActivity
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class LinkVerificationFragment : Fragment() {
 
-
-    /* The activity that creates an instance of this dialog fragment must
-     * implement this interface in order to receive event callbacks.
-     * Each method passes the DialogFragment in case the host needs to query it. */
     private val viewModel:LoginViewModel by activityViewModels()
     private lateinit var binding:FragmentLinkVerificationBinding
-    private lateinit var auth: FirebaseAuth
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,10 +34,9 @@ class LinkVerificationFragment : Fragment() {
             false
         )
         binding.loginViewModel=viewModel
-binding.lifecycleOwner=this
+        binding.lifecycleOwner=this
         viewModel.backToLoginScreen.observe(viewLifecycleOwner, Observer{ backToLoginScreen->
             if(backToLoginScreen){
-                Log.i("ff","OPOP")
 findNavController().navigate(LinkVerificationFragmentDirections.actionLinkVerificationFragmentToLoginFragment())
                 viewModel.backToLoginScreenComplete()
             }
@@ -63,16 +54,16 @@ findNavController().navigate(LinkVerificationFragmentDirections.actionLinkVerifi
 
     override fun onStart() {
         super.onStart()
-        val currentUser = Firebase.auth.currentUser
-        if(currentUser!=null){
-            val intent= Intent(activity, HomeActivity::class.java)
-            startActivity(intent)
-            activity?.overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
-            activity?.finish()
-//findNavController().navigate(LinkVerificationFragmentDirections.actionLinkVerificationFragmentToHomeActivity())
-        }
-
+            val currentUser = Firebase.auth.currentUser
+            if(currentUser!=null){
+                goToHomeFragment()
+            }
     }
-
+    private fun goToHomeFragment() {
+        val intent=Intent(activity, HomeActivity::class.java)
+        startActivity(intent)
+        activity?.overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
+        activity?.finish()
+    }
 
 }

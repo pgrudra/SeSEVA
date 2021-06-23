@@ -320,7 +320,6 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
     fun chooseOtherMission(){
         sharedPref.edit().remove((R.string.chosen_mission_number).toString()).apply()
         _goToChooseMission.value=true
-
     }
     fun chooseOtherMissionComplete(){
         _goToChooseMission.value=false

@@ -64,7 +64,7 @@ class LoginFragment : Fragment(), View.OnClickListener,NoInternetDialogFragment.
         mgoogleSignInClient = GoogleSignIn.getClient(appContext, gso)
         auth = Firebase.auth
 
-        verifySignInLink()
+        //verifySignInLink()
         val adapter = OnBoardingAdapter()
         binding.viewPager.adapter = adapter
         TabLayoutMediator(binding.tabLayout, binding.viewPager)
@@ -148,7 +148,7 @@ class LoginFragment : Fragment(), View.OnClickListener,NoInternetDialogFragment.
             // This must be true
             handleCodeInApp = true
             setAndroidPackageName(
-                "com.example.us0",
+                "com.spandverse.seseva",
                 true, /* installIfNotAvailable */
                 "22" /* minimumVersion */
             )
@@ -177,7 +177,6 @@ class LoginFragment : Fragment(), View.OnClickListener,NoInternetDialogFragment.
                         binding.errorMessage.visibility = View.VISIBLE
                     }
                     else{
-                        Log.i("OPOP", "hjh")
                         makeErrorBackground(false)
                         showNoInternetConnectionDialog()
                     }
@@ -218,7 +217,7 @@ class LoginFragment : Fragment(), View.OnClickListener,NoInternetDialogFragment.
 findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLinkVerificationFragment())
     }
 
-    private fun verifySignInLink() {
+   /* private fun verifySignInLink() {
         val sharedPref =
             activity?.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
         val defaultValue = "ddd"
@@ -269,7 +268,7 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
                 }
         }
         // [END auth_verify_sign_in_link]
-    }
+    }*/
 
 
     override fun onStart() {
@@ -286,15 +285,10 @@ findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToLi
     }
 
     private fun goToHomeFragment() {
-    //toHomeFragment
         val intent=Intent(activity, HomeActivity::class.java)
         startActivity(intent)
         activity?.overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
         activity?.finish()
-    //findNavController(this).navigate(LoginFragmentDirections.actionLoginFragmentToHomeActivity())
-    //In home fragment, immediately check user name and active mission and take to respective screens incase not selected.
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

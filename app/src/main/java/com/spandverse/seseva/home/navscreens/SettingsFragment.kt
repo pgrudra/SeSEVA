@@ -7,14 +7,13 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.Process
+import android.os.*
 import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -240,7 +239,6 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
         }
         else {
             findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToPermissionFragment())}
-
     }
 
     private fun checkDOOAPermissionAndService() {
@@ -388,26 +386,29 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
             db.AppDatabaseDao.clear()
             db.CategoryStatDatabaseDao.clear()
             db.MissionsDatabaseDao.clear()
+            db.SponsorDatabaseDao.clear()
             db.StatDataBaseDao.clear()
         }.invokeOnCompletion {
-            Log.i("SF", "local db clear")
 //delete account from firebase and google revoke access, google sign out
             try {
                 user?.delete()?.addOnSuccessListener {
                     try {
                         onDeleteAccountComplete(user.uid)
-                        Log.i("SF", "try")
                         googleSignInClient.revokeAccess().addOnSuccessListener {
-                            Log.i("SF", "revokeAccess")
                         }
                         googleSignInClient.signOut().addOnCompleteListener {
-                            Log.i("SF", "gsignout")
                         }
                         toLoginScreen()
                     }
-                    catch (e: kotlin.Exception){
-                        Log.i("Delete", "qqq")
-                        toLoginScreen()
+                    catch (e: kotlin.Exception) {
+                        //toLoginScreen()
+                        view?.let {
+                            Snackbar.make(
+                                binding.root,
+                                "Failed to delete account",
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                        }
                     }
                 }
                     ?.addOnFailureListener {
@@ -419,50 +420,60 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
                             ) ?: "fff"
                         )
                             .addOnSuccessListener { result ->
-                                val signInMethods = result.signInMethods!!
-                                val credential = when {
-                                    signInMethods.contains(EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD) -> EmailAuthProvider.getCredentialWithLink(
-                                        sharedPref.getString(
-                                            (R.string.email_address).toString(),
-                                            defaultValue
-                                        ) ?: "fff", sharedPref.getString(
-                                            (R.string.email_link).toString(),
-                                            defaultValue
-                                        ) ?: "fff"
-                                    )
-                                    GoogleSignIn.getLastSignedInAccount(context) != null -> GoogleAuthProvider.getCredential(
-                                        GoogleSignIn.getLastSignedInAccount(context)?.idToken,
-                                        null
-                                    )
-                                    else -> null
+                                    val signInMethods = result.signInMethods!!
+                                val emailLink=sharedPref.getString(
+                                    (R.string.email_link).toString(),
+                                    defaultValue
+                                ) ?: "fff"
+                                val handler = Handler(Looper.getMainLooper())
+                                handler.post {
+                                    Toast.makeText(
+                                        context,
+                                        emailLink,
+                                        Toast.LENGTH_LONG
+                                    ).show()
                                 }
-                                if (credential != null) {
-                                    user.reauthenticate(credential).addOnCompleteListener { task ->
-                                        if (task.isSuccessful) {
-                                            Log.i("SF", "Reauthenticated.")
-                                            user.delete().addOnSuccessListener {
-                                                Log.i("SF", "account deleted.")
-                                                try {
-                                                    onDeleteAccountComplete(user.uid)
-                                                    googleSignInClient.revokeAccess().addOnSuccessListener {
-                                                        Log.i("SF", "revokeAccess")
-                                                    }
-                                                    googleSignInClient.signOut().addOnCompleteListener {
+                                    val credential = when {
+                                        signInMethods.contains(EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD) -> EmailAuthProvider.getCredentialWithLink(
+                                            sharedPref.getString(
+                                                (R.string.email_address).toString(),
+                                                defaultValue
+                                            ) ?: "fff", sharedPref.getString(
+                                                (R.string.email_link).toString(),
+                                                defaultValue
+                                            ) ?: "fff"
+                                        )
+                                        GoogleSignIn.getLastSignedInAccount(context) != null -> GoogleAuthProvider.getCredential(
+                                            GoogleSignIn.getLastSignedInAccount(context)?.idToken,
+                                            null
+                                        )
+                                        else -> null
+                                    }
+                                    if (credential != null) {
+                                        user.reauthenticate(credential)
+                                            .addOnCompleteListener { task ->
+                                                if (task.isSuccessful) {
+                                                    user.delete().addOnSuccessListener {
+                                                        try {
+                                                            onDeleteAccountComplete(user.uid)
+                                                            googleSignInClient.revokeAccess()
+                                                                .addOnSuccessListener {
+                                                                }
+                                                            googleSignInClient.signOut()
+                                                                .addOnCompleteListener {
 
+                                                                }
+                                                            toLoginScreen()
+                                                        } catch (e: kotlin.Exception) {
+                                                            toLoginScreen()
+                                                        }
                                                     }
-                                                    toLoginScreen()
-                                                }
-                                                catch (e: kotlin.Exception){
-                                                    Log.i("Delete", "qqq")
-                                                    toLoginScreen()
                                                 }
                                             }
-                                        }
                                     }
-                                }
+
                             }
-                            .addOnFailureListener { exception ->
-                                Log.e("SF", "Error getting sign in methods for user", exception)
+                            .addOnFailureListener {
                             }
 
 
@@ -470,7 +481,6 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
 
 
             } catch (e: kotlin.Exception) {
-                Log.i("Delete", "ERROR")
             }
         }
 
@@ -498,13 +508,10 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
         sharedPref.edit()?.clear()?.apply()
         //remove workManagers
         WorkManager.getInstance(appContext).cancelAllWork()
-        Log.i("SF", "wM removed")
 
         //remove username and current mission
         cloudReference.child(uid).child("chosenMission").removeValue()
         cloudReference.child(uid).child("username").removeValue()
-        Log.i("SF", "userName n mission removed")
-
     }
 
     override fun signOut() {
@@ -515,6 +522,7 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
             db.AppDatabaseDao.clear()
             db.CategoryStatDatabaseDao.clear()
             db.MissionsDatabaseDao.clear()
+            db.SponsorDatabaseDao.clear()
             db.StatDataBaseDao.clear()
         }.invokeOnCompletion {
             sharedPref.edit()?.clear()?.apply()
@@ -544,12 +552,10 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
 
     override fun changeUsername(userName: String) {
         if(checkInternetConnectivity(appContext)){
-                Log.i("ANVM","p")
                 insertIntoCloudDatabase(userName)
         }
         else{
             showNoInternetConnectionDialog()
-            Log.i("fg","x")
         }
     }
     private fun insertIntoCloudDatabase(userName: String ){

@@ -2,7 +2,9 @@ package com.spandverse.seseva.home.profile
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.*
+import com.google.firebase.crashlytics.internal.model.CrashlyticsReport
 import com.spandverse.seseva.R
 import com.spandverse.seseva.data.missions.DomainActiveMission
 import com.spandverse.seseva.data.missions.Mission
@@ -111,12 +113,13 @@ class ProfileViewModel(
 
     init {
         //_userName.value=sharedPref.getString((R.string.user_name).toString(),"User")
-        /*val userLevel=sharedPref.getInt((R.string.user_level).toString(),1)
+        val userLevel=sharedPref.getInt((R.string.user_level).toString(),1)
         _levelName.value=when(userLevel){
             1->"Sevak"
             2->"Super Sevak"
             else->"Sevak"
-        }*/
+        }
+        _userName.value=sharedPref.getString((R.string.user_name).toString(),"Username")
         val currentMissionNumber=sharedPref.getInt((R.string.chosen_mission_number).toString(),0)
         viewModelScope.launch {
             currentMission= dataBaseDAO.doesMissionExist(currentMissionNumber)!!

@@ -145,6 +145,7 @@ class PermissionFragment : Fragment(),PermissionMandatoryDialogFragment.Permissi
             db.AppDatabaseDao.clear()
             db.CategoryStatDatabaseDao.clear()
             db.MissionsDatabaseDao.clear()
+            db.SponsorDatabaseDao.clear()
             db.StatDataBaseDao.clear()
         }.invokeOnCompletion {
             try {

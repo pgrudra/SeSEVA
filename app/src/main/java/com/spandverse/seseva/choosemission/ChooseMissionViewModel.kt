@@ -83,7 +83,6 @@ class ChooseMissionViewModel(
                         contributionsList.add(Pair(i.key!!.toInt(),i.value.toString().toInt()))
                     }
                     for (i in list){
-                        Log.i("AMA","a$i")
                         val missionReference=cloudReference.child("Missions").child(i.toString())
                         missionReference.addListenerForSingleValueEvent(object :ValueEventListener{
                             override fun onDataChange(snapshot: DataSnapshot) {

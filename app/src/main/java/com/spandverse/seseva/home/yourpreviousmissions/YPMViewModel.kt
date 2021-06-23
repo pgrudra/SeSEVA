@@ -1,11 +1,13 @@
 package com.spandverse.seseva.home.yourpreviousmissions
 
+import android.app.Application
 import androidx.lifecycle.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.spandverse.seseva.EventResponse
+import com.spandverse.seseva.checkInternetConnectivity
 import com.spandverse.seseva.data.missions.*
 import com.spandverse.seseva.deadlineStringToLong
 import com.spandverse.seseva.singleValueEvent
@@ -14,7 +16,8 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class YPMViewModel(private val database: MissionsDatabaseDao) : ViewModel()  {
+class YPMViewModel(private val database: MissionsDatabaseDao, application: Application) : AndroidViewModel(application)  {
+    private val context = getApplication<Application>().applicationContext
     private val userId = Firebase.auth.currentUser?.uid
     private val cloudReference = Firebase.database.reference
     private val _activeMissionsSelected = MutableLiveData<Boolean>()
@@ -28,7 +31,10 @@ class YPMViewModel(private val database: MissionsDatabaseDao) : ViewModel()  {
         get() = _listDescriptionText
     init{
         _listDescriptionText.value="Tap on a mission card to know more"
-        loadContributedMissions()
+        if(checkInternetConnectivity(context)){
+            loadContributedMissions()
+        }
+
     }
 
     private fun loadContributedMissions() {
@@ -60,8 +66,26 @@ class YPMViewModel(private val database: MissionsDatabaseDao) : ViewModel()  {
     }
 
     private suspend fun insertIntoDatabase(toDownloadList: List<Int>, contributionsList: MutableList<Pair<Int, Int>>) {
-        for(i in toDownloadList){
-            val accomplishedMissionResult=cloudReference.child("accomplishedMissions").child("i").singleValueEvent()
+        val accomplishedMissions: MutableList<Int> = arrayListOf()
+        val activeMissions: MutableList<Int> = arrayListOf()
+        when(val deadLinesListResult=cloudReference.child("deadlines").singleValueEvent()){
+            is EventResponse.Changed->{
+                val dataSnapshot=deadLinesListResult.snapshot
+                for(i in toDownloadList){
+                    val deadline=dataSnapshot.child(i.toString()).value.toString().deadlineStringToLong()
+                    if( deadline > nowMinusOneDay){
+                        activeMissions.add(i)
+                    }
+                    else{
+                        accomplishedMissions.add(i)
+                    }
+                }
+
+            }
+            is EventResponse.Cancelled->{ }
+        }
+        for(i in accomplishedMissions){
+            val accomplishedMissionResult=cloudReference.child("accomplishedMissions").child(i.toString()).singleValueEvent()
             val mission=Mission()
             when(accomplishedMissionResult){
                 is EventResponse.Changed-> {
@@ -75,6 +99,7 @@ class YPMViewModel(private val database: MissionsDatabaseDao) : ViewModel()  {
                     mission.totalMoneyRaised=dataSnapshot.child("moneyRaised").getValue<Int>()?:0
                     mission.contributors=dataSnapshot.child("contributors").getValue<Int>()?:0
                     mission.deadline=dataSnapshot.child("deadline").value.toString().deadlineStringToLong()
+                    mission.missionCategory=dataSnapshot.child("category").value.toString()
                     mission.contribution=contributionsList.find{it.first==i}?.second ?:0
                 }
                 is EventResponse.Cancelled->{}
@@ -82,8 +107,37 @@ class YPMViewModel(private val database: MissionsDatabaseDao) : ViewModel()  {
             database.insert(mission)
 
         }
-
+        for(i in activeMissions){
+            val moneyRaised=when(val moneyRaisedResult=cloudReference.child("moneyRaised").child(i.toString()).singleValueEvent()){
+                is EventResponse.Changed->{
+                    moneyRaisedResult.snapshot.getValue<Int>()
+                }
+                is EventResponse.Cancelled->{
+                    0
+                }
+            }
+            val contributors=when(val contributorsResult=cloudReference.child("contributors").child(i.toString()).singleValueEvent()){
+                is EventResponse.Changed->{
+                    contributorsResult.snapshot.getValue<Int>()
+                }
+                is EventResponse.Cancelled->{
+                    0
+                }
+            }
+            when(val missionResult=cloudReference.child("Missions").child(i.toString()).singleValueEvent()){
+                is EventResponse.Changed->{
+                    val mission:Mission? =missionResult.snapshot.getValue<NetworkMission>()?.asDatabaseModel()
+                    mission?.missionNumber=i
+                    mission?.contribution=contributionsList.find{it.first==i}?.second ?:0
+                    mission?.contributors=contributors?:0
+                    mission?.totalMoneyRaised=moneyRaised?:0
+                    mission?.let { database.insert(it) }
+                }
+                is EventResponse.Cancelled -> {}
+            }
+        }
     }
+
 
 
     private val nowMinusOneDay= Calendar.getInstance().timeInMillis-24*60*60*1000

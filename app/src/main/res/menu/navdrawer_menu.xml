@@ -7,12 +7,12 @@
         android:icon="@drawable/ic_home" />
     <item
         android:id="@+id/becomeSponsor"
-        android:title="Become a sponsor"
+        android:title="@string/become_an_aid_provider"
         android:icon="@drawable/ic_sponsor"
         />
     <item
         android:id="@+id/inviteFriends"
-        android:title="Invite Friends"
+        android:title="@string/invite_friends"
         android:icon="@drawable/ic_invite"
 
         />
@@ -22,7 +22,7 @@
         android:icon="@drawable/ic_settings"/>
     <item
         android:id="@+id/rateUs"
-        android:title="Rate Us"
+        android:title="@string/rate_us"
         android:icon="@drawable/ic_rateus"
         />
 
