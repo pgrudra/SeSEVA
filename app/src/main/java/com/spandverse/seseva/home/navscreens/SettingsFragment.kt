@@ -401,48 +401,30 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
                         toLoginScreen()
                     }
                     catch (e: kotlin.Exception) {
-                        //toLoginScreen()
-                        view?.let {
-                            Snackbar.make(
-                                binding.root,
-                                "Failed to delete account",
-                                Snackbar.LENGTH_LONG
-                            ).show()
-                        }
+                        toLoginScreen()
                     }
                 }
                     ?.addOnFailureListener {
-                        val defaultValue = "ddd"
                         Firebase.auth.fetchSignInMethodsForEmail(
                             sharedPref.getString(
                                 (R.string.email_address).toString(),
-                                defaultValue
-                            ) ?: "fff"
+                                "defaultValue"
+                            ) ?: "null"
                         )
                             .addOnSuccessListener { result ->
                                     val signInMethods = result.signInMethods!!
                                 val emailLink=sharedPref.getString(
                                     (R.string.email_link).toString(),
-                                    defaultValue
-                                ) ?: "fff"
-                                val handler = Handler(Looper.getMainLooper())
-                                handler.post {
-                                    Toast.makeText(
-                                        context,
-                                        emailLink,
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
+                                    "defaultValue"
+                                ) ?: "null"
                                     val credential = when {
-                                        signInMethods.contains(EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD) -> EmailAuthProvider.getCredentialWithLink(
-                                            sharedPref.getString(
-                                                (R.string.email_address).toString(),
-                                                defaultValue
-                                            ) ?: "fff", sharedPref.getString(
-                                                (R.string.email_link).toString(),
-                                                defaultValue
-                                            ) ?: "fff"
-                                        )
+                                        auth.isSignInWithEmailLink(emailLink) && signInMethods.contains(EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD) -> EmailAuthProvider.getCredentialWithLink(
+                                                    sharedPref.getString(
+                                                        (R.string.email_address).toString(),
+                                                        "defaultValue"
+                                                    ) ?: "null", emailLink
+                                                )
+
                                         GoogleSignIn.getLastSignedInAccount(context) != null -> GoogleAuthProvider.getCredential(
                                             GoogleSignIn.getLastSignedInAccount(context)?.idToken,
                                             null
@@ -461,7 +443,6 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
                                                                 }
                                                             googleSignInClient.signOut()
                                                                 .addOnCompleteListener {
-
                                                                 }
                                                             toLoginScreen()
                                                         } catch (e: kotlin.Exception) {

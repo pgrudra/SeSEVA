@@ -225,9 +225,9 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
             }
             if (loadedList != null) {
                 val toDownloadList = accomplishedEntireList.minus(loadedList)
-                insertAccomplishedMissionsIntoDatabase(toDownloadList)
+                insertAccomplishedMissionsIntoDatabase(toDownloadList.reversed())
             } else {
-                insertAccomplishedMissionsIntoDatabase(accomplishedEntireList)
+                insertAccomplishedMissionsIntoDatabase(accomplishedEntireList.reversed())
             }
 
             /* val deadlinesReference=cloudReference.child("deadlines")
@@ -282,7 +282,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                 is EventResponse.Cancelled->{
                 }
             }
-            Log.i("HVM7","$mission")
+            Log.i("HVM7","v$mission")
             database.insert(mission)
         }
     }
@@ -319,6 +319,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                                     mission?.missionActive=now.timeInMillis<= mission?.deadline!!
                                     mission.contributors=contributorsList.find{it.first==primaryKey}?.second ?:0
                                     viewModelScope.launch {
+                                        Log.i("HVM7","c${mission}")
                                         database.insert(mission) }
                                 }
 
@@ -335,7 +336,9 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                                     if(mission?.deadline?:0 > nowMinusOneDay){
                                         mission?.contributors=contributorsList.find{it.first==i}?.second ?:0
                                         mission?.totalMoneyRaised=moneyRaisedList.find{it.first==i}?.second ?:0
-                                        mission?.let { database.update(it) }
+                                        mission?.let {
+                                            Log.i("HVM7","l${it}")
+                                            database.update(it) }
                                     }
                                 }
                             }
@@ -355,7 +358,9 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                                 //may need to remove this
                                 mission?.missionActive=now.timeInMillis<= mission?.deadline!!
                                 mission.contributors=contributorsList.find{it.first==primaryKey}?.second ?:0
-                                viewModelScope.launch { database.insert(mission) }
+                                viewModelScope.launch {
+                                    Log.i("HVM7","x${mission}")
+                                    database.insert(mission) }
                             }
 
                             override fun onCancelled(error: DatabaseError) {
@@ -371,7 +376,9 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                                 if(mission?.deadline?:0 > nowMinusOneDay){
                                     mission?.contributors=contributorsList.find{it.first==i}?.second ?:0
                                     mission?.totalMoneyRaised=moneyRaisedList.find{it.first==i}?.second ?:0
-                                    mission?.let { database.update(it) }
+                                    mission?.let {
+                                        Log.i("HVM7","k${it}")
+                                        database.update(it) }
                                 }
                             }
                         }

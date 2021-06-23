@@ -137,9 +137,8 @@ class PermissionFragment : Fragment(),PermissionMandatoryDialogFragment.Permissi
         val googleSignInClient = GoogleSignIn.getClient(appContext, gso)
         val user = auth.currentUser
         val cloudReference = Firebase.database.reference.child("users")
-        cloudReference.child(user!!.uid).child("chosenMission").removeValue().addOnSuccessListener { Log.i("SF", "${user.uid}") }
-        cloudReference.child(user.uid).child("username").removeValue().addOnSuccessListener {  Log.i("SF", "username removed")}
-        Log.i("SF", "P ${user.uid}")
+        cloudReference.child(user!!.uid).child("chosenMission").removeValue().addOnSuccessListener {  }
+        cloudReference.child(user.uid).child("username").removeValue().addOnSuccessListener {  }
         val db= AllDatabase.getInstance(appContext)
         viewLifecycleOwner.lifecycleScope.launch {
             db.AppDatabaseDao.clear()
@@ -149,13 +148,10 @@ class PermissionFragment : Fragment(),PermissionMandatoryDialogFragment.Permissi
             db.StatDataBaseDao.clear()
         }.invokeOnCompletion {
             try {
-                Log.i("SF", "trtr")
-                user?.delete()?.addOnSuccessListener {
+                user.delete().addOnSuccessListener {
                     try {sharedPref.edit()?.clear()?.apply()
                         onDeleteAccountComplete()
-                        Log.i("SF", "hjkhgj")
                         googleSignInClient.revokeAccess().addOnSuccessListener {
-                            Log.i("SF", "revokeAccess")
                         }
                         googleSignInClient.signOut().addOnCompleteListener {
                             //delete db
@@ -165,29 +161,29 @@ class PermissionFragment : Fragment(),PermissionMandatoryDialogFragment.Permissi
                         }
                         toLoginScreen()
                     } catch (e: kotlin.Exception) {
-                        Log.i("Delete", "qqq")
                         toLoginScreen()
                     }
                 }
-                    ?.addOnFailureListener {
-                        val defaultValue = "ddd"
-                        Firebase.auth.fetchSignInMethodsForEmail(
+                    .addOnFailureListener {
+
+                        auth.fetchSignInMethodsForEmail(
                             sharedPref.getString(
                                 (R.string.email_address).toString(),
-                                defaultValue
-                            ) ?: "fff"
+                                "defaultValue"
+                            ) ?: "null"
                         )
                             .addOnSuccessListener { result ->
                                 val signInMethods = result.signInMethods!!
+                                val emailLink=sharedPref.getString(
+                                    (R.string.email_link).toString(),
+                                    "defaultValue"
+                                ) ?: "null"
                                 val credential = when {
-                                    signInMethods.contains(EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD) -> EmailAuthProvider.getCredentialWithLink(
+                                    auth.isSignInWithEmailLink(emailLink) && signInMethods.contains(EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD) -> EmailAuthProvider.getCredentialWithLink(
                                         sharedPref.getString(
                                             (R.string.email_address).toString(),
-                                            defaultValue
-                                        ) ?: "fff", sharedPref.getString(
-                                            (R.string.email_link).toString(),
-                                            defaultValue
-                                        ) ?: "fff"
+                                            "defaultValue"
+                                        ) ?: "null", emailLink
                                     )
                                     GoogleSignIn.getLastSignedInAccount(context) != null -> GoogleAuthProvider.getCredential(
                                         GoogleSignIn.getLastSignedInAccount(context)?.idToken,
@@ -198,15 +194,12 @@ class PermissionFragment : Fragment(),PermissionMandatoryDialogFragment.Permissi
                                 if (credential != null) {
                                     user.reauthenticate(credential).addOnCompleteListener { task ->
                                         if (task.isSuccessful) {
-                                            Log.i("SF", "Reauthenticated.")
                                             user.delete().addOnSuccessListener {
-                                                Log.i("SF", "account deleted.")
                                                 try {
                                                     sharedPref.edit()?.clear()?.apply()
                                                     onDeleteAccountComplete()
                                                     googleSignInClient.revokeAccess()
                                                         .addOnSuccessListener {
-                                                            Log.i("SF", "revokeAccess")
                                                         }
                                                     googleSignInClient.signOut()
                                                         .addOnCompleteListener {
@@ -214,7 +207,6 @@ class PermissionFragment : Fragment(),PermissionMandatoryDialogFragment.Permissi
                                                         }
                                                     toLoginScreen()
                                                 } catch (e: kotlin.Exception) {
-                                                    Log.i("Delete", "qqq")
                                                     toLoginScreen()
                                                 }
                                             }
@@ -222,8 +214,7 @@ class PermissionFragment : Fragment(),PermissionMandatoryDialogFragment.Permissi
                                     }
                                 }
                             }
-                            .addOnFailureListener { exception ->
-                                Log.e("SF", "Error getting sign in methods for user", exception)
+                            .addOnFailureListener {
                             }
 
 
@@ -231,7 +222,6 @@ class PermissionFragment : Fragment(),PermissionMandatoryDialogFragment.Permissi
 
 
             } catch (e: kotlin.Exception) {
-                Log.i("Delete", "ERROR")
             }
         }
     }
