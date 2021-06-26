@@ -31,6 +31,8 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.spandverse.seseva.checkInternetConnectivity
+import com.spandverse.seseva.ui.login.NoInternetDialogFragment
 import kotlinx.coroutines.launch
 
 
@@ -124,6 +126,7 @@ class PermissionFragment : Fragment(),PermissionMandatoryDialogFragment.Permissi
     }
 
     override fun deleteAccount() {
+        if(checkInternetConnectivity(appContext)){
         val sharedPref =
             appContext.getSharedPreferences(
                 (R.string.shared_pref).toString(),
@@ -223,6 +226,12 @@ class PermissionFragment : Fragment(),PermissionMandatoryDialogFragment.Permissi
 
             } catch (e: kotlin.Exception) {
             }
+        }
+    }
+        else{
+            val dialog = NoInternetDialogFragment()
+            val fragmentManager = childFragmentManager
+            dialog.show(fragmentManager, "No Internet Connection")
         }
     }
     private fun onDeleteAccountComplete() {

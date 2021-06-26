@@ -74,7 +74,6 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
 
         auth= Firebase.auth
         googleSignInClient = GoogleSignIn.getClient(appContext, gso)
-
         binding.deleteAccountCL.setOnClickListener {  showDeleteAccountConfirmationDialog() }
         binding.signOutCL.setOnClickListener { showSignOutConfirmationDialog() }
         binding.clearUsageHistoryCL.setOnClickListener { showClearUsageHistoryConfirmationDialog() }
@@ -372,67 +371,59 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
     }
 
     override fun deleteAccount() {
-        //set loading symbol
-        setLoadingSymbol()
-        val user = auth.currentUser
-
-        //stop service
-        stopService()
-
-
-        //remove dbs
-        val db=AllDatabase.getInstance(appContext)
-        viewLifecycleOwner.lifecycleScope.launch {
-            db.AppDatabaseDao.clear()
-            db.CategoryStatDatabaseDao.clear()
-            db.MissionsDatabaseDao.clear()
-            db.SponsorDatabaseDao.clear()
-            db.StatDataBaseDao.clear()
-        }.invokeOnCompletion {
+        if(checkInternetConnectivity(appContext)) {
+            //set loading symbol
+            setLoadingSymbol()
+            val user = auth.currentUser
+            //stop service
+            stopService()
+            //remove dbs
+            val db = AllDatabase.getInstance(appContext)
+            viewLifecycleOwner.lifecycleScope.launch {
+                db.AppDatabaseDao.clear()
+                db.CategoryStatDatabaseDao.clear()
+                db.MissionsDatabaseDao.clear()
+                db.SponsorDatabaseDao.clear()
+                db.StatDataBaseDao.clear()
+            }.invokeOnCompletion {
 //delete account from firebase and google revoke access, google sign out
-            try {
-                user?.delete()?.addOnSuccessListener {
-                    try {
-                        onDeleteAccountComplete(user.uid)
-                        googleSignInClient.revokeAccess().addOnSuccessListener {
+                try {
+                    user?.delete()?.addOnSuccessListener {
+                        try {
+                            onDeleteAccountComplete(user.uid)
+                            googleSignInClient.revokeAccess().addOnSuccessListener {
+                            }
+                            googleSignInClient.signOut().addOnCompleteListener {
+                            }
+                            toLoginScreen()
+                        } catch (e: kotlin.Exception) {
+                            toLoginScreen()
                         }
-                        googleSignInClient.signOut().addOnCompleteListener {
-                        }
-                        toLoginScreen()
                     }
-                    catch (e: kotlin.Exception) {
-                        toLoginScreen()
-                    }
-                }
-                    ?.addOnFailureListener {
-                        Firebase.auth.fetchSignInMethodsForEmail(
-                            sharedPref.getString(
-                                (R.string.email_address).toString(),
-                                "defaultValue"
-                            ) ?: "null"
-                        )
-                            .addOnSuccessListener { result ->
-                                    val signInMethods = result.signInMethods!!
-                                val emailLink=sharedPref.getString(
-                                    (R.string.email_link).toString(),
+                        ?.addOnFailureListener {
+                            Firebase.auth.fetchSignInMethodsForEmail(
+                                sharedPref.getString(
+                                    (R.string.email_address).toString(),
                                     "defaultValue"
                                 ) ?: "null"
-                                    val credential = when {
-                                        auth.isSignInWithEmailLink(emailLink) && signInMethods.contains(EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD) -> EmailAuthProvider.getCredentialWithLink(
-                                                    sharedPref.getString(
-                                                        (R.string.email_address).toString(),
-                                                        "defaultValue"
-                                                    ) ?: "null", emailLink
-                                                )
-
-                                        GoogleSignIn.getLastSignedInAccount(context) != null -> GoogleAuthProvider.getCredential(
-                                            GoogleSignIn.getLastSignedInAccount(context)?.idToken,
-                                            null
+                            )
+                                .addOnSuccessListener { result ->
+                                    val signInMethods = result.signInMethods!!
+                                    val emailLink = sharedPref.getString(
+                                        (R.string.email_link).toString(),
+                                        "defaultValue"
+                                    ) ?: "null"
+                                    if(auth.isSignInWithEmailLink(emailLink) && signInMethods.contains(
+                                            EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD
+                                        )){
+                                        val credential=EmailAuthProvider.getCredentialWithLink(
+                                            sharedPref.getString(
+                                                (R.string.email_address).toString(),
+                                                "defaultValue"
+                                            ) ?: "null", emailLink
                                         )
-                                        else -> null
-                                    }
-                                    if (credential != null) {
-                                        user.reauthenticate(credential)
+                                        Log.i("DLA", "a$credential")
+                                        user.reauthenticateAndRetrieveData(credential)
                                             .addOnCompleteListener { task ->
                                                 if (task.isSuccessful) {
                                                     user.delete().addOnSuccessListener {
@@ -449,22 +440,98 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
                                                             toLoginScreen()
                                                         }
                                                     }
+                                                } else {
+                                                    Log.i("DLA", "a1${task.result}")
                                                 }
                                             }
                                     }
+                                    else if(GoogleSignIn.getLastSignedInAccount(context) != null){
+                                        val credential=GoogleAuthProvider.getCredential(
+                                            GoogleSignIn.getLastSignedInAccount(context)?.idToken,
+                                            null
+                                        )
+                                        Log.i("DLA", "b$credential")
+                                        user.reauthenticate(credential).addOnCompleteListener { task ->
+                                            if (task.isSuccessful) {
+                                                user.delete().addOnSuccessListener {
+                                                    try {
+                                                        onDeleteAccountComplete(user.uid)
+                                                        googleSignInClient.revokeAccess()
+                                                            .addOnSuccessListener {
+                                                            }
+                                                        googleSignInClient.signOut()
+                                                            .addOnCompleteListener {
+                                                            }
+                                                        toLoginScreen()
+                                                    } catch (e: kotlin.Exception) {
+                                                        toLoginScreen()
+                                                    }
+                                                }
+                                            } else {
+                                                Log.i("DLA", "b1${task.result}")
+                                            }
+                                        }
+                                    }
+                                   /* val credential = when {
+                                        auth.isSignInWithEmailLink(emailLink) && signInMethods.contains(
+                                            EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD
+                                        ) -> EmailAuthProvider.getCredentialWithLink(
+                                            sharedPref.getString(
+                                                (R.string.email_address).toString(),
+                                                "defaultValue"
+                                            ) ?: "null", emailLink
+                                        )
 
-                            }
-                            .addOnFailureListener {
-                            }
+                                        GoogleSignIn.getLastSignedInAccount(context) != null -> GoogleAuthProvider.getCredential(
+                                            GoogleSignIn.getLastSignedInAccount(context)?.idToken,
+                                            null
+                                        )
+                                        else -> null
+                                    }
+
+                                    if (credential != null) {
+                                        user.reauthenticateAndRetrieveData(credential)
+                                            .addOnCompleteListener { task ->
+                                                if (task.isSuccessful) {
+                                                    user.delete().addOnSuccessListener {
+                                                        try {
+                                                            onDeleteAccountComplete(user.uid)
+                                                            googleSignInClient.revokeAccess()
+                                                                .addOnSuccessListener {
+                                                                }
+                                                            googleSignInClient.signOut()
+                                                                .addOnCompleteListener {
+                                                                }
+                                                            toLoginScreen()
+                                                        } catch (e: kotlin.Exception) {
+                                                            toLoginScreen()
+                                                        }
+                                                    }
+                                                } else {
+                                                    Log.i("DLA", "${task.result}")
+                                                }
+                                            }
+                                    }*/
+
+                                }
+                                .addOnFailureListener {
+                                    Log.i("DLA", "poiuy")
+                                }
 
 
-                    }
+                        }
 
 
-            } catch (e: kotlin.Exception) {
+                } catch (e: kotlin.Exception) {
+                }
             }
-        }
 
+        }
+        else{
+            val dialog = NoInternetDialogFragment()
+            val fragmentManager = childFragmentManager
+            dialog.show(fragmentManager, "No Internet Connection")
+        }
     }
 
     private fun stopService() {

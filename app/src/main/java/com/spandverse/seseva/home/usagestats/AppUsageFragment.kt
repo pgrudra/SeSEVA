@@ -47,7 +47,7 @@ class AppUsageFragment : Fragment() {
         }
         drawerLocker!!.setDrawerEnabled(true)
         drawerLocker.displayBottomNavigation(true)
-        viewModel.headsUpDisappear.observe(viewLifecycleOwner, Observer {disappear->
+        viewModel.headsUpDisappearForAppScreen.observe(viewLifecycleOwner, Observer {disappear->
             if(disappear) {
                 binding.headsUpCL.visibility=View.GONE
                 binding.whitelistedDescription.visibility=View.VISIBLE
@@ -61,16 +61,35 @@ class AppUsageFragment : Fragment() {
             when (status) {
                 CategoryRuleStatus.BROKEN -> {
                     binding.headsUpText.text="Oye!!"
+                    binding.subHeadsUpText1.text="kjgkjgk kgj jhgj j jnkj bhjjh hjbhgjgyug gyuj j"
+                    binding.subHeadsUpText2.text="k popi kjlj khh waweaq t ygj"
                     context?.let {
                         binding.headsUpText.setTextColor(ContextCompat.getColor(it, R.color.colorError))
                         binding.timeCountdown.setTextColor(ContextCompat.getColor(it, R.color.colorError))
                         binding.launchesCountdown.setTextColor(ContextCompat.getColor(it, R.color.colorError))}
                     binding.timeCountdown.setBackgroundResource(R.drawable.ic_countdown_red)
                     binding.launchesCountdown.setBackgroundResource(R.drawable.ic_counts_countdown_red)
+                    if(viewModel.exceededTimeText.value=="Time left"){
+                        binding.excededTimeText.visibility=View.GONE
+                        binding.timeCountdown.visibility=View.GONE
+                    }
+                    else{
+                        binding.excededTimeText.visibility=View.VISIBLE
+                        binding.timeCountdown.visibility=View.VISIBLE
+                    }
+                    if(viewModel.exceededLaunchesText.value=="Launches left"){
+                        binding.excededAppLanchesText.visibility=View.GONE
+                        binding.launchesCountdown.visibility=View.GONE
+                    }
+                    else{
+                        binding.excededAppLanchesText.visibility=View.VISIBLE
+                        binding.launchesCountdown.visibility=View.VISIBLE
+                    }
                 }
                 CategoryRuleStatus.WARNING -> {
                     binding.headsUpText.text="Heads Up!"
-
+                    binding.subHeadsUpText1.text="kjgkjgk kgj jhgj j jnkj bhjjh hjbhgjgyug gyuj j"
+                    binding.subHeadsUpText2.text="k pofsd fcg drd dr t ygj"
                     context?.let {
                         binding.headsUpText.setTextColor(ContextCompat.getColor(it, R.color.yellow))
                         binding.timeCountdown.setTextColor(ContextCompat.getColor(it, R.color.yellow))
@@ -81,6 +100,8 @@ class AppUsageFragment : Fragment() {
                 }
                 else -> {
                     binding.headsUpText.text="Hey!"
+                    binding.subHeadsUpText1.text="kjgkjgk kgj jhgj j jnkj bhjjh hjbhgjgyug gyuj j"
+                    binding.subHeadsUpText2.text="k pofsd fcg drd dr t ygj"
                     context?.let {
                         binding.headsUpText.setTextColor(ContextCompat.getColor(it, R.color.colorPrimary))
                         binding.timeCountdown.setTextColor(ContextCompat.getColor(it, R.color.colorPrimary))
@@ -104,6 +125,9 @@ class AppUsageFragment : Fragment() {
         timeWeekChart.xAxis.textColor=R.color.disabled_text
         timeWeekChart.axisLeft.textColor=R.color.disabled_text
         timeWeekChart.axisLeft.axisMinimum=0f
+        timeWeekChart.axisRight.axisMinimum=0f
+        timeWeekChart.xAxis.textColor=Color.WHITE
+        timeWeekChart.axisLeft.textColor=Color.WHITE
         timeWeekChart.invalidate()
         val launchesWeekChart=binding.appLaunchesBarChart
         launchesWeekChart.setNoDataText("Loading")
@@ -118,6 +142,9 @@ class AppUsageFragment : Fragment() {
         launchesWeekChart.xAxis.textColor=R.color.disabled_text
         launchesWeekChart.axisLeft.textColor=R.color.disabled_text
         launchesWeekChart.axisLeft.axisMinimum=0f
+        launchesWeekChart.axisRight.axisMinimum=0f
+        launchesWeekChart.xAxis.textColor=Color.WHITE
+        launchesWeekChart.axisLeft.textColor=Color.WHITE
         launchesWeekChart.invalidate()
 
         val timeMonthChart=binding.timeSpentMonthLineChart
@@ -227,12 +254,18 @@ class AppUsageFragment : Fragment() {
                 }
                 val weekTimeDataSet= BarDataSet(weekTimeEntries, "Time in mins")
                 val weekTimeData= BarData(weekTimeDataSet)
+                weekTimeData.setValueTextColor(Color.GRAY)
+                weekTimeData.setValueFormatter(minutesValueFormatter3())
+                weekTimeData.isHighlightEnabled=false
                 timeWeekChart.data=weekTimeData
                 val xAxisWeekTimeFormatter: ValueFormatter = WeekAxisValueFormatter(binding.timeSpentBarChart, weekLabels)
                 timeWeekChart.xAxis.valueFormatter=xAxisWeekTimeFormatter
-
+                timeWeekChart.axisLeft.valueFormatter=minutesValueFormatter()
                 val weekLaunchesDataSet= BarDataSet(weekLaunchesEntries, "Launches")
                 val weekLaunchesData= BarData(weekLaunchesDataSet)
+                weekLaunchesData.setValueFormatter(launchesValueFormatter2())
+                weekLaunchesData.isHighlightEnabled=false
+                weekLaunchesData.setValueTextColor(Color.GRAY)
                 launchesWeekChart.data=weekLaunchesData
                 val xAxisWeekLaunchesFormatter: ValueFormatter = WeekAxisValueFormatter(binding.appLaunchesBarChart, weekLabels)
                 launchesWeekChart.xAxis.valueFormatter=xAxisWeekLaunchesFormatter
@@ -280,12 +313,15 @@ class AppUsageFragment : Fragment() {
                 }
                 val monthTimeDataSet= LineDataSet(monthTimeEntries, "Time in mins")
                 val monthTimeData= LineData(monthTimeDataSet)
+                monthTimeData.setValueFormatter(noValueFormatter())
                 timeMonthChart.data=monthTimeData
+                timeMonthChart.axisRight.valueFormatter=minutesValueFormatter()
                 val xAxisMonthTimeFormatter: ValueFormatter = MonthAxisValueFormatter(timeMonthChart, monthLabels)
                 timeMonthChart.xAxis.valueFormatter=xAxisMonthTimeFormatter
 
                 val monthLaunchesDataSet= LineDataSet(monthLaunchesEntries, "Launches")
                 val monthLaunchesData= LineData(monthLaunchesDataSet)
+                monthLaunchesData.setValueFormatter(noValueFormatter())
                 launchesMonthChart.data=monthLaunchesData
                 val xAxisMonthLaunchesFormatter: ValueFormatter = MonthAxisValueFormatter(launchesMonthChart, monthLabels)
                 launchesMonthChart.xAxis.valueFormatter=xAxisMonthLaunchesFormatter
@@ -331,13 +367,18 @@ class AppUsageFragment : Fragment() {
                     }
                 }
                 val yearTimeDataSet= LineDataSet(yearTimeEntries, "Time in mins")
+                yearTimeDataSet.setDrawCircles(false)
                 val yearTimeData= LineData(yearTimeDataSet)
+                yearTimeData.setValueFormatter(noValueFormatter())
                 timeYearChart.data=yearTimeData
+                timeYearChart.axisRight.valueFormatter=minutesValueFormatter()
                 val xAxisYearTimeFormatter: ValueFormatter = YearAxisValueFormatter(timeYearChart, yearLabels)
                 timeYearChart.xAxis.valueFormatter=xAxisYearTimeFormatter
 
                 val yearLaunchesDataSet= LineDataSet(yearLaunchesEntries, "Launches")
+                yearLaunchesDataSet.setDrawCircles(false)
                 val yearLaunchesData= LineData(yearLaunchesDataSet)
+                yearLaunchesData.setValueFormatter(noValueFormatter())
                 launchesYearChart.data=yearLaunchesData
                 val xAxisYearLaunchesFormatter: ValueFormatter = YearAxisValueFormatter(launchesYearChart, yearLabels)
                 launchesYearChart.xAxis.valueFormatter=xAxisYearLaunchesFormatter

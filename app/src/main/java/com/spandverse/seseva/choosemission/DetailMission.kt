@@ -64,6 +64,18 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
         if(!showDifferentMissionButton){
             binding.chooseADifferentMission.visibility=View.GONE
         }
+        val chosenMissionNumber=sharedPref?.getInt((R.string.chosen_mission_number).toString(),0)?:0
+        val cTM=binding.chooseThisMission
+        if(chosenMissionNumber==mission.missionNumber){
+            cTM.setBackgroundResource(R.drawable.disabled_button)
+            cTM.isEnabled=false
+            context?.let { cTM.setTextColor(ContextCompat.getColor(it, R.color.disabled_text)) }
+        }
+        else{
+            cTM.setBackgroundResource(R.drawable.login_resend_active)
+            cTM.isEnabled=true
+            context?.let { cTM.setTextColor(ContextCompat.getColor(it, R.color.nav_color)) }
+        }
         viewModel.makeTriggerText(contribution)
         binding.category.text = mission.category
         binding.missionName.text=mission.missionName

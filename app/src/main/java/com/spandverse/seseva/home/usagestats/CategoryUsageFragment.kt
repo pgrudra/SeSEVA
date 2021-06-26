@@ -58,10 +58,26 @@ class CategoryUsageFragment : Fragment() {
             if(it.isEmpty()){
                 binding.comparativeAnalysisLayout.visibility=View.GONE
                 binding.tapToKnowText.visibility=View.GONE
+                binding.headsUpCL.visibility=View.GONE
+                binding.whitelistedDescription.visibility=View.GONE
+                binding.todaySStatistics.visibility=View.GONE
+                binding.i.visibility=View.GONE
+                binding.headsUpCL.visibility=View.GONE
+                binding.totalTimeSpent.visibility=View.GONE
+                binding.totalAppLaunches.visibility=View.GONE
+                binding.mostUsedApp.visibility=View.GONE
+                binding.mostLaunchedApp.visibility=View.GONE
+                binding.appRecyclerView.visibility=View.GONE
             }
             else{
                 binding.comparativeAnalysisLayout.visibility=View.VISIBLE
                 binding.tapToKnowText.visibility=View.VISIBLE
+                binding.todaySStatistics.visibility=View.VISIBLE
+                binding.totalTimeSpent.visibility=View.VISIBLE
+                binding.totalAppLaunches.visibility=View.VISIBLE
+                binding.mostUsedApp.visibility=View.VISIBLE
+                binding.mostLaunchedApp.visibility=View.VISIBLE
+                binding.appRecyclerView.visibility=View.VISIBLE
             }
 
         })
@@ -73,7 +89,7 @@ class CategoryUsageFragment : Fragment() {
                 binding.i.visibility=View.VISIBLE
             }
         })
-        viewModel.headsUpDisappear.observe(viewLifecycleOwner, Observer {disappear->
+        viewModel.headsUpDisappearForCatScreen.observe(viewLifecycleOwner, Observer {disappear->
             if(disappear) {
                 binding.headsUpCL.visibility=View.GONE
                 binding.whitelistedDescription.visibility=View.VISIBLE
@@ -83,35 +99,62 @@ class CategoryUsageFragment : Fragment() {
                 binding.whitelistedDescription.visibility=View.GONE
             }
         })
+
         viewModel.countdownColor.observe(viewLifecycleOwner, Observer {status->
             when (status) {
                 CategoryRuleStatus.BROKEN -> {
                     binding.headsUpText.text="Oye!!"
+                    binding.subHeadsUpText.text="kjgkjgk kgj jhgj j jnkj bhjjh hjbhgjgyug gyuj j"
                     context?.let {
                         binding.headsUpText.setTextColor(ContextCompat.getColor(it, R.color.colorError))
                         binding.timeCountdown.setTextColor(ContextCompat.getColor(it, R.color.colorError))
                         binding.launchesCountdown.setTextColor(ContextCompat.getColor(it, R.color.colorError))}
                     binding.timeCountdown.setBackgroundResource(R.drawable.ic_countdown_red)
                     binding.launchesCountdown.setBackgroundResource(R.drawable.ic_counts_countdown_red)
-
+                    if(viewModel.exceededTimeText.value=="Time left"){
+                        binding.excededTimeText.visibility=View.GONE
+                        binding.timeCountdown.visibility=View.GONE
+                    }
+                    else{
+                        binding.excededTimeText.visibility=View.VISIBLE
+                        binding.timeCountdown.visibility=View.VISIBLE
+                    }
+                    if(viewModel.exceededLaunchesText.value=="Launches left"){
+                        binding.excededAppLanchesText.visibility=View.GONE
+                        binding.launchesCountdown.visibility=View.GONE
+                    }
+                    else{
+                        binding.excededAppLanchesText.visibility=View.VISIBLE
+                        binding.launchesCountdown.visibility=View.VISIBLE
+                    }
                 }
                 CategoryRuleStatus.WARNING -> {
                     binding.headsUpText.text="Heads Up!"
+                    binding.subHeadsUpText.text="kjgkjgk kgj jhgj jgyug gyuj j"
                     context?.let {
                         binding.headsUpText.setTextColor(ContextCompat.getColor(it, R.color.yellow))
                         binding.timeCountdown.setTextColor(ContextCompat.getColor(it, R.color.yellow))
                         binding.launchesCountdown.setTextColor(ContextCompat.getColor(it, R.color.yellow))}
                     binding.timeCountdown.setBackgroundResource(R.drawable.ic_countdown_yellow)
                     binding.launchesCountdown.setBackgroundResource(R.drawable.ic_counts_countdown_yellow)
+                    binding.excededTimeText.visibility=View.VISIBLE
+                    binding.timeCountdown.visibility=View.VISIBLE
+                    binding.excededAppLanchesText.visibility=View.VISIBLE
+                    binding.launchesCountdown.visibility=View.VISIBLE
                 }
                 else -> {
                     binding.headsUpText.text="Hey!"
+                    binding.subHeadsUpText.text="kjgkjgk kgj jhgj j jnkj bhjjh hjbhgjgyug gyuj j"
                     context?.let {
                         binding.headsUpText.setTextColor(ContextCompat.getColor(it, R.color.colorPrimary))
                         binding.timeCountdown.setTextColor(ContextCompat.getColor(it, R.color.colorPrimary))
                         binding.launchesCountdown.setTextColor(ContextCompat.getColor(it, R.color.colorPrimary)) }
                     binding.timeCountdown.setBackgroundResource(R.drawable.ic_countdown_green)
                     binding.launchesCountdown.setBackgroundResource(R.drawable.ic_counts_countdown_green)
+                    binding.excededTimeText.visibility=View.VISIBLE
+                    binding.timeCountdown.visibility=View.VISIBLE
+                    binding.excededAppLanchesText.visibility=View.VISIBLE
+                    binding.launchesCountdown.visibility=View.VISIBLE
                 }
             }
         })
@@ -263,6 +306,7 @@ class CategoryUsageFragment : Fragment() {
                     val catTimePieDataSet = PieDataSet(catTimePieChartEntries, "")
                     catTimePieDataSet.colors = colorsList
                     val catTimePieData = PieData(catTimePieDataSet)
+                    catTimePieData.setValueFormatter(minutesValueFormatter2())
                     timePieChart.data = catTimePieData
                     val timeLegendManager =
                         GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
@@ -285,6 +329,7 @@ class CategoryUsageFragment : Fragment() {
                     val catLaunchesPieDataSet = PieDataSet(catLaunchesPieChartEntries, "")
                     catLaunchesPieDataSet.colors = colorsList
                     val catLaunchesPieData = PieData(catLaunchesPieDataSet)
+                    catLaunchesPieData.setValueFormatter(launchesValueFormatter())
                     launchesPieChart.data = catLaunchesPieData
                     val launchesLegendManager =
                         GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
@@ -327,9 +372,10 @@ class CategoryUsageFragment : Fragment() {
         timeWeekChart.axisRight.isEnabled=false
         timeWeekChart.axisLeft.setDrawGridLines(false)
         timeWeekChart.description.isEnabled=false
-        timeWeekChart.xAxis.textColor=R.color.disabled_text
-        timeWeekChart.axisLeft.textColor=R.color.disabled_text
         timeWeekChart.axisLeft.axisMinimum=0f
+        timeWeekChart.axisRight.axisMinimum=0f
+        timeWeekChart.xAxis.textColor=Color.WHITE
+        timeWeekChart.axisLeft.textColor=Color.WHITE
         timeWeekChart.invalidate()
         val launchesWeekChart=binding.appLaunchesBarChart
         launchesWeekChart.setNoDataText("Loading")
@@ -341,9 +387,10 @@ class CategoryUsageFragment : Fragment() {
         launchesWeekChart.axisRight.isEnabled=false
         launchesWeekChart.axisLeft.setDrawGridLines(false)
         launchesWeekChart.description.isEnabled=false
-        launchesWeekChart.xAxis.textColor=R.color.disabled_text
-        launchesWeekChart.axisLeft.textColor=R.color.disabled_text
         launchesWeekChart.axisLeft.axisMinimum=0f
+        launchesWeekChart.axisRight.axisMinimum=0f
+        launchesWeekChart.xAxis.textColor=Color.WHITE
+        launchesWeekChart.axisLeft.textColor=Color.WHITE
         launchesWeekChart.invalidate()
 
         val timeMonthChart=binding.timeSpentMonthLineChart
@@ -359,6 +406,7 @@ class CategoryUsageFragment : Fragment() {
         timeMonthChart.xAxis.textColor= Color.WHITE
         timeMonthChart.axisRight.textColor= Color.WHITE
         timeMonthChart.axisLeft.axisMinimum=0f
+        timeMonthChart.axisRight.axisMinimum=0f
         timeMonthChart.invalidate()
 
         val launchesMonthChart=binding.appLaunchesMonthLineChart
@@ -374,6 +422,7 @@ class CategoryUsageFragment : Fragment() {
         launchesMonthChart.xAxis.textColor= Color.WHITE
         launchesMonthChart.axisRight.textColor= Color.WHITE
         launchesMonthChart.axisLeft.axisMinimum=0f
+        launchesMonthChart.axisRight.axisMinimum=0f
         launchesMonthChart.invalidate()
 
         val timeYearChart=binding.timeSpentYearLineChart
@@ -389,6 +438,7 @@ class CategoryUsageFragment : Fragment() {
         timeYearChart.xAxis.textColor= Color.WHITE
         timeYearChart.axisRight.textColor= Color.WHITE
         timeYearChart.axisLeft.axisMinimum=0f
+        timeYearChart.axisRight.axisMinimum=0f
         timeYearChart.invalidate()
 
         val launchesYearChart=binding.appLaunchesYearLineChart
@@ -404,6 +454,7 @@ class CategoryUsageFragment : Fragment() {
         launchesYearChart.xAxis.textColor= Color.WHITE
         launchesYearChart.axisRight.textColor= Color.WHITE
         launchesYearChart.axisLeft.axisMinimum=0f
+        launchesYearChart.axisRight.axisMinimum=0f
         launchesYearChart.invalidate()
         viewLifecycleOwner.lifecycleScope.launch {
             val lastWeekStart: Calendar = Calendar.getInstance()
@@ -453,12 +504,18 @@ class CategoryUsageFragment : Fragment() {
                 }
                 val weekTimeDataSet= BarDataSet(weekTimeEntries, "Time in mins")
                 val weekTimeData= BarData(weekTimeDataSet)
+                weekTimeData.setValueTextColor(Color.GRAY)
+                weekTimeData.setValueFormatter(minutesValueFormatter3())
+                weekTimeData.isHighlightEnabled=false
                 timeWeekChart.data=weekTimeData
                 val xAxisWeekTimeFormatter: ValueFormatter = WeekAxisValueFormatter(binding.timeSpentBarChart, weekLabels)
                 timeWeekChart.xAxis.valueFormatter=xAxisWeekTimeFormatter
-
+                timeWeekChart.axisLeft.valueFormatter=minutesValueFormatter()
                 val weekLaunchesDataSet= BarDataSet(weekLaunchesEntries, "Launches")
                 val weekLaunchesData= BarData(weekLaunchesDataSet)
+                weekLaunchesData.setValueFormatter(launchesValueFormatter2())
+                weekLaunchesData.isHighlightEnabled=false
+                weekLaunchesData.setValueTextColor(Color.GRAY)
                 launchesWeekChart.data=weekLaunchesData
                 val xAxisWeekLaunchesFormatter: ValueFormatter = WeekAxisValueFormatter(binding.appLaunchesBarChart, weekLabels)
                 launchesWeekChart.xAxis.valueFormatter=xAxisWeekLaunchesFormatter
@@ -506,12 +563,15 @@ class CategoryUsageFragment : Fragment() {
                 }
                 val monthTimeDataSet= LineDataSet(monthTimeEntries, "Time in mins")
                 val monthTimeData= LineData(monthTimeDataSet)
+                monthTimeData.setValueFormatter(noValueFormatter())
                 timeMonthChart.data=monthTimeData
+                timeMonthChart.axisRight.valueFormatter=minutesValueFormatter()
                 val xAxisMonthTimeFormatter: ValueFormatter = MonthAxisValueFormatter(timeMonthChart, monthLabels)
                 timeMonthChart.xAxis.valueFormatter=xAxisMonthTimeFormatter
 
                 val monthLaunchesDataSet= LineDataSet(monthLaunchesEntries, "Launches")
                 val monthLaunchesData= LineData(monthLaunchesDataSet)
+                monthLaunchesData.setValueFormatter(noValueFormatter())
                 launchesMonthChart.data=monthLaunchesData
                 val xAxisMonthLaunchesFormatter: ValueFormatter = MonthAxisValueFormatter(launchesMonthChart, monthLabels)
                 launchesMonthChart.xAxis.valueFormatter=xAxisMonthLaunchesFormatter
@@ -557,13 +617,18 @@ class CategoryUsageFragment : Fragment() {
                     }
                 }
                 val yearTimeDataSet= LineDataSet(yearTimeEntries, "Time in mins")
+                yearTimeDataSet.setDrawCircles(false)
                 val yearTimeData= LineData(yearTimeDataSet)
+                yearTimeData.setValueFormatter(noValueFormatter())
                 timeYearChart.data=yearTimeData
+                timeYearChart.axisRight.valueFormatter=minutesValueFormatter()
                 val xAxisYearTimeFormatter: ValueFormatter = YearAxisValueFormatter(timeYearChart, yearLabels)
                 timeYearChart.xAxis.valueFormatter=xAxisYearTimeFormatter
 
                 val yearLaunchesDataSet= LineDataSet(yearLaunchesEntries, "Launches")
+                yearLaunchesDataSet.setDrawCircles(false)
                 val yearLaunchesData= LineData(yearLaunchesDataSet)
+                yearLaunchesData.setValueFormatter(noValueFormatter())
                 launchesYearChart.data=yearLaunchesData
                 val xAxisYearLaunchesFormatter: ValueFormatter = YearAxisValueFormatter(launchesYearChart, yearLabels)
                 launchesYearChart.xAxis.valueFormatter=xAxisYearLaunchesFormatter

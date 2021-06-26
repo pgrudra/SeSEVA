@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="16dp"
-        android:paddingBottom="8dp"
+        android:paddingBottom="16dp"
         android:elevation="3dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/all_corner_rounded_4dp_1e">
@@ -65,7 +65,7 @@
             style="@style/subtitle_1"
             android:textColor="@color/colorPrimary"
             app:layout_constraintTop_toBottomOf="@id/mission_image"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="Mission Name"/>
 

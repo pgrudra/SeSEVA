@@ -85,10 +85,18 @@ class DetailMissionViewModel(mission: DomainActiveMission, application: Applicat
     }
 
     private fun setChooseMissionButtonText() {
-        if (sharedPref?.getInt((R.string.chosen_mission_number).toString(), 0) ?: 0 != 0) {
-            _chooseMissionButtonText.value = context.getString(R.string.switch_to_this_mission)
+        val cMN=sharedPref?.getInt((R.string.chosen_mission_number).toString(), 0) ?: 0
+        if ( cMN!= 0) {
+            if(_selectedMission.value?.missionNumber==cMN){
+                _chooseMissionButtonText.value=context.getString(R.string.this_mission_chosen)
 
-        } else {
+            }
+            else{
+                _chooseMissionButtonText.value = context.getString(R.string.switch_to_this_mission)
+            }
+
+        }
+        else {
             _chooseMissionButtonText.value = context.getString(R.string.choose_this_mission)
         }
     }

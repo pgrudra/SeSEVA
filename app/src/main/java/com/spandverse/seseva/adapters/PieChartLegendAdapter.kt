@@ -1,12 +1,15 @@
 package com.spandverse.seseva.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.spandverse.seseva.PieChartLegendItem
+import com.spandverse.seseva.R
 import com.spandverse.seseva.databinding.PieChartLegendItemViewBinding
+import java.util.*
 
 
 class PieChartLegendAdapter: ListAdapter<PieChartLegendItem, PieChartLegendAdapter.ViewHolder>(
@@ -18,7 +21,13 @@ class PieChartLegendAdapter: ListAdapter<PieChartLegendItem, PieChartLegendAdapt
 
         fun bind(item: PieChartLegendItem){
             binding.form.setBackgroundColor(item.formColor)
-            binding.label.text=item.label
+            val label=binding.label
+            if(item.label.isNotEmpty()){
+                label.text=label.context.getString(R.string.first_letter_uc,item.label.substring(0,1),item.label.substring(1).toLowerCase(
+                    Locale.ROOT
+                )
+                )
+            }
         }
 
         companion object {

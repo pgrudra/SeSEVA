@@ -14,6 +14,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import com.spandverse.seseva.R
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -30,10 +31,16 @@ class FeatsViewModel(
     val navigateToSelectedSponsorPage:LiveData<Int?>
         get()=_navigateToSelectedSponsorPage
     val missions:LiveData<List<DomainActiveMission>> = Transformations.map(missionsDatabaseDao.getAllMissions()){it.asActiveDomainModel()}
-    private val nowMinusOneDay= Calendar.getInstance().timeInMillis-24*60*60*1000
-    val activeMissions=Transformations.map(missionsDatabaseDao.getActiveMissionsCount(nowMinusOneDay)){it.toString()}
+    /*private val nowMinusOneDay= Calendar.getInstance().timeInMillis-24*60*60*1000
+    private val _activeMissions = MutableLiveData<String>()
+    val activeMissions: LiveData<String>
+        get() = _activeMissions
+    private val _totalMissions = MutableLiveData<String>()
+    val totalMissions: LiveData<String>
+        get() = _totalMissions*/
+    //val activeMissions=Transformations.map(missionsDatabaseDao.getActiveMissionsCount(nowMinusOneDay)){it.toString()}
     val totMoneyRaised=Transformations.map(missionsDatabaseDao.getTotalMoneyRaised()){ "Rs $it" }
-    val totalMissions=Transformations.map(missionsDatabaseDao.getMissionsCount(-1)){it.toString()}
+    //val totalMissions=Transformations.map(missionsDatabaseDao.getMissionsCount(-1)){it.toString()}
     val sponsors: LiveData<List<Sponsor>> = sponsorsDatabaseDao.getAllSponsors()
         /*dataBaseDAO.getAllAccomplishedMissions(nowMinusOneDay,-1)){
         val sponsorMissionNumbersList:HashMap<String,MutableList<Int>> = hashMapOf()
@@ -98,7 +105,6 @@ init {
         }
 
     }
-
     private fun refreshDownloadedList(downLoadedList: List<Int>) {
         for(i in downLoadedList){
 cloudReference.child("sponsors").child(i.toString()).child("missionsSponsored").addListenerForSingleValueEvent(object :

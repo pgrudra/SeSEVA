@@ -87,7 +87,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/subtitle_1"
-                        android:text="@{FeatsViewModel.activeMissions}"
                         android:textColor="@color/primary_text"
                         tools:text="40"
                         app:layout_constraintStart_toStartOf="parent"
@@ -109,7 +108,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/subtitle_1"
-                        android:text="@{FeatsViewModel.totalMissions}"
                         android:textColor="@color/primary_text"
                         app:layout_constraintStart_toEndOf="@id/vertical_divider"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -209,13 +207,14 @@
         android:id="@+id/mission_available_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/active_symbol_mini"
+        android:layout_marginStart="2dp"
+        android:fontFamily="@font/montserrat_used"
         android:text="Mission Available"
         android:textColor="@color/disabled_text"
-        android:fontFamily="@font/montserrat_used"
-        android:textSize="11sp"/>
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/active_symbol_mini"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/report_available_symbol_mini"
@@ -231,13 +230,14 @@
         android:id="@+id/report_available_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/report_available_symbol_mini"
+        android:layout_marginStart="2dp"
+        android:fontFamily="@font/montserrat_used"
         android:text="Report Available"
         android:textColor="@color/disabled_text"
-        android:fontFamily="@font/montserrat_used"
-        android:textSize="11sp"/>
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/report_available_symbol_mini"
+        app:layout_constraintTop_toTopOf="parent" />
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/report_in_progress_symbol_mini"
         android:layout_width="12dp"
@@ -252,13 +252,14 @@
         android:id="@+id/report_in_progress_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/report_in_progress_symbol_mini"
+        android:layout_marginStart="2dp"
+        android:fontFamily="@font/montserrat_used"
         android:text="Report in progress"
         android:textColor="@color/disabled_text"
-        android:fontFamily="@font/montserrat_used"
-        android:textSize="11sp"/>
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/report_in_progress_symbol_mini"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

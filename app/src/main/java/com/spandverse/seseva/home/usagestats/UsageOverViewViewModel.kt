@@ -115,14 +115,16 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
     private val _catAppLaunchesPieChartVisible=MutableLiveData<Boolean>()
     val catAppLaunchesPieChartVisible:LiveData<Boolean>
         get()=_catAppLaunchesPieChartVisible
-    private val _headsUpDisappear=MutableLiveData<Boolean>()
-    val headsUpDisappear:LiveData<Boolean>
-        get()=_headsUpDisappear
+    private val _headsUpDisappearForCatScreen=MutableLiveData<Boolean>()
+    val headsUpDisappearForCatScreen:LiveData<Boolean>
+        get()=_headsUpDisappearForCatScreen
+    private val _headsUpDisappearForAppScreen=MutableLiveData<Boolean>()
+    val headsUpDisappearForAppScreen:LiveData<Boolean>
+        get()=_headsUpDisappearForAppScreen
 
     private val _processingDataForPieChartDone=MutableLiveData<Boolean>()
     val processingDataForPieChartDone:LiveData<Boolean>
         get()=_processingDataForPieChartDone
-
     val categoryTimes:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"OTHERS" to 0,"WHITELISTED" to 0, "GAMES" to 0,"MSNBS" to 0,"VIDEO & COMICS" to 0,"ENTERTAINMENT" to 0,"COMM. & BROWSING" to 0,"SOCIAL" to 0)
     val categoryLaunches:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to 0,"COMM. & BROWSING" to 0, "GAMES" to 0,"WHITELISTED" to 0,"VIDEO & COMICS" to 0,"ENTERTAINMENT" to 0,"MSNBS" to 0,"OTHERS" to 0)
     val timeRules:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to sharedPref!!.getInt((R.string.social_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"COMM. & BROWSING" to sharedPref.getInt((R.string.communication_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS, "GAMES" to sharedPref.getInt((R.string.games_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"WHITELISTED" to 0,"VIDEO & COMICS" to sharedPref.getInt((R.string.video_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"ENTERTAINMENT" to sharedPref.getInt((R.string.entertainment_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"MSNBS" to sharedPref.getInt((R.string.msnbs_max_time).toString(),0)*ONE_MINUTE_IN_SECONDS,"OTHERS" to sharedPref.getInt((R.string.others_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS)
@@ -140,11 +142,13 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
             _screenHeading.value="Today's statistics"
         }
         if(cat=="WHITELISTED"){
-            _headsUpDisappear.value =true
+            _headsUpDisappearForCatScreen.value =true
+            Log.i("UOVVM","3")
         }
         else{
-            _headsUpDisappear.value=false
-            _countdownColor.value=appsCategory.ruleBroken
+            Log.i("UOVVM","4")
+            _headsUpDisappearForCatScreen.value=false
+
             if(categoryTimes[cat]!! > timeRules[cat]!!){
                 _exceededTimeText.value="Exceeded time"
                 _exceededTime.value=inHrsMins2(categoryTimes[cat]!!- timeRules[cat]!!)
@@ -161,6 +165,7 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
                 _exceededLaunchesText.value="Launches left"
                 _exceededLaunches.value=getCounts(launchRules[cat]!!-categoryLaunches[cat]!!)
             }
+            _countdownColor.value=appsCategory.ruleBroken
         }
         _catNameForCatScreen.value=cat
         val list=appStats.filter { it.appCategory==cat }
@@ -203,7 +208,6 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
         val cat=_catNameForCatScreen.value
         val appsCategory=_listOfCats.value?.find { it.categoryName== cat}
         if(appsCategory!=null){
-            _countdownColor.value=appsCategory.ruleBroken
             if(categoryTimes[cat]!! > timeRules[cat]!!){
                 _exceededTimeText.value="Exceeded time"
                 _exceededTime.value=inHrsMins2(categoryTimes[cat]!!- timeRules[cat]!!)
@@ -221,6 +225,7 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
                 _exceededLaunchesText.value="Launches left"
                 _exceededLaunches.value=getCounts(launchRules[cat]!!-categoryLaunches[cat]!!)
             }
+            _countdownColor.value=appsCategory.ruleBroken
             val list=appStats.filter { it.appCategory==cat }
             if(list.isNotEmpty()){
                 _mostLaunchedAppCatwiseName.value=list.maxByOrNull { it.appLaunches!! }!!.appName!!
@@ -230,11 +235,7 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
                 _totalTimeSpentCatwise.value=inHrsMins(categoryTimes[cat]!!)
                 _appsListEmptyOrApplications.value="Applications"}
             else{
-                _mostLaunchedAppCatwiseName.value="---"
                 _appsInCatList.value= emptyList()
-                _mostUsedAppCatwiseName.value="---"
-                _totalAppLaunchesCatwise.value="---"
-                _totalTimeSpentCatwise.value="---"
                 _appsListEmptyOrApplications.value="You have no apps belonging to this category"
             }
         }
@@ -242,9 +243,11 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
     private fun setHeadsUp(stat: Stat) {
         val cat = stat.appCategory
         if (cat == "WHITELISTED") {
-            _headsUpDisappear.value = true
+            Log.i("UOVVM","1")
+            _headsUpDisappearForAppScreen.value = true
         } else {
-            _headsUpDisappear.value = false
+            Log.i("UOVVM","2")
+            _headsUpDisappearForAppScreen.value = false
             if (categoryTimes[cat]!! > timeRules[cat]!!) {
                 _exceededTimeText.value = "Exceeded time"
                 _exceededTime.value = inHrsMins2(categoryTimes[cat]!! - timeRules[cat]!!)
@@ -334,7 +337,6 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
    fun runHandler() {
         mainHandler.post(object :Runnable{
             override fun run() {
-                Log.i("poiu","klj")
                 viewModelScope.launch {
                     val list:MutableList<AppsCategory> = arrayListOf()
                     //catStats.add(CategoryStat(categoryName = "SOCIAL",timeSpent = 0,appLaunches = 9,ruleViolated = false,date = 0L))
@@ -431,7 +433,7 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
                     for(key in categoryTimes.toSortedMap().keys) {
 
                         if (key != "ENTERTAINMENT" && key!="TOTAL" && key!="WHITELISTED") {
-                            if (categoryTimes[key]!! >= timeRules[key]!! || categoryLaunches[key]!! >= launchRules[key]!!) {
+                            if (categoryTimes[key]!! > timeRules[key]!! || categoryLaunches[key]!! > launchRules[key]!!) {
                                 val appsCategory=AppsCategory(key,AppsCategoryType.DAILY,CategoryRuleStatus.BROKEN)
                                 list.add(appsCategory)
                             }

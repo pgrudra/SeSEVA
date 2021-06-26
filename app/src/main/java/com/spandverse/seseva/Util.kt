@@ -14,6 +14,8 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
 import com.github.mikephil.charting.charts.BarLineChartBase
+import com.github.mikephil.charting.components.AxisBase
+import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -144,8 +146,8 @@ fun getMonth(i: Int): String {
         2 -> "Mar."
         3 -> "Apr."
         4 -> "May"
-        5 -> "Jun."
-        6 -> "Jul."
+        5 -> "June"
+        6 -> "July"
         7 -> "Aug."
         8 -> "Sept."
         9 -> "Oct."
@@ -254,4 +256,70 @@ fun String.deadlineStringToLong(): Long {
         e.printStackTrace()
     }
     return l
+}
+
+class minutesValueFormatter: ValueFormatter() {
+    override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+        val inInt=value.toInt()
+        return when {
+            value.toInt()==0 -> {""}
+            (inInt/60)<1 -> {
+                (inInt%60).toString()+"min"
+            }
+            else -> {
+                (inInt/60).toString()+"h "+(inInt%60)+"min"
+            }
+        }
+    }
+}
+class minutesValueFormatter2: ValueFormatter() {
+    override fun getFormattedValue(value: Float): String {
+        val secInInt=(value/60).toInt()
+        return when{
+            secInInt==0 -> {""}
+            (secInInt/60)<1 -> {
+                (secInInt%60).toString()+"min"
+            }
+            else -> {
+                (secInInt/60).toString()+"h "+(secInInt%60)+"min"
+            }
+        }
+    }
+}
+class minutesValueFormatter3: ValueFormatter() {
+    override fun getFormattedValue(value: Float): String {
+        val inInt=value.toInt()
+        return when{
+            inInt==0 -> {""}
+            (inInt/60)<1 -> {
+                (inInt%60).toString()+"min"
+            }
+            else -> {
+                (inInt/60).toString()+"h "+(inInt%60)+"min"
+            }
+        }
+    }
+}
+
+class launchesValueFormatter: ValueFormatter() {
+    override fun getFormattedValue(value: Float): String {
+        return value.toInt().toString()
+    }
+}
+class noValueFormatter: ValueFormatter() {
+    override fun getFormattedValue(value: Float): String {
+        return ""
+    }
+}
+
+class launchesValueFormatter2: ValueFormatter() {
+    override fun getFormattedValue(value: Float): String {
+        val inInt=value.toInt()
+        return if(inInt==0){
+            ""
+        }
+        else{
+            inInt.toString()
+        }
+    }
 }

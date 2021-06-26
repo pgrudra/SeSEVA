@@ -4,7 +4,6 @@ import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.work.*
 import com.spandverse.seseva.data.AllDatabase
 import com.spandverse.seseva.data.appcategories.CategoryStat
@@ -102,11 +101,11 @@ class LocalDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
             }
         }
 
-        val categoryTimes:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to 0,"COMMUNICATION" to 0, "GAMES" to 0,"WHITELISTED" to 0,"VIDEO_PLAYERS_N_COMICS" to 0,"ENTERTAINMENT" to 0,"MSNBS" to 0,"OTHERS" to 0)
-        val categoryLaunches:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to 0,"COMMUNICATION" to 0, "GAMES" to 0,"WHITELISTED" to 0,"VIDEO_PLAYERS_N_COMICS" to 0,"ENTERTAINMENT" to 0,"MSNBS" to 0,"OTHERS" to 0)
-        val timeRules:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to sharedPref.getInt((R.string.social_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"COMMUNICATION" to sharedPref.getInt((R.string.communication_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS, "GAMES" to sharedPref.getInt((R.string.games_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"WHITELISTED" to 0,"VIDEO_PLAYERS_N_COMICS" to sharedPref.getInt((R.string.video_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"ENTERTAINMENT" to sharedPref.getInt((R.string.entertainment_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"MSNBS" to sharedPref.getInt((R.string.msnbs_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"OTHERS" to sharedPref.getInt((R.string.others_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS)
-        val launchRules:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to sharedPref.getInt((R.string.social_max_launches).toString(),0),"COMMUNICATION" to sharedPref.getInt((R.string.communication_max_launches).toString(),0), "GAMES" to sharedPref.getInt((R.string.games_max_launches).toString(),0),"WHITELISTED" to 0,"VIDEO_PLAYERS_N_COMICS" to sharedPref.getInt((R.string.video_max_launches).toString(),0),"ENTERTAINMENT" to sharedPref.getInt((R.string.entertainment_launches).toString(),0),"MSNBS" to sharedPref.getInt((R.string.msnbs_max_launches).toString(),0),"OTHERS" to sharedPref.getInt((R.string.others_max_launches).toString(),0))
-        val categoryPenalties:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to sharedPref.getInt((R.string.social_penalty).toString(),0),"COMMUNICATION" to sharedPref.getInt((R.string.communication_penalty).toString(),0), "GAMES" to sharedPref.getInt((R.string.games_penalty).toString(),0),"WHITELISTED" to 0,"VIDEO_PLAYERS_N_COMICS" to sharedPref.getInt((R.string.video_penalty).toString(),0),"ENTERTAINMENT" to sharedPref.getInt((R.string.entertainment_penalty).toString(),0),"MSNBS" to sharedPref.getInt((R.string.msnbs_penalty).toString(),0),"OTHERS" to sharedPref.getInt((R.string.others_penalty).toString(),0))
+        val categoryTimes:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to 0,"COMM. & BROWSING" to 0, "GAMES" to 0,"WHITELISTED" to 0,"VIDEO & COMICS" to 0,"ENTERTAINMENT" to 0,"MSNBS" to 0,"OTHERS" to 0)
+        val categoryLaunches:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to 0,"COMM. & BROWSING" to 0, "GAMES" to 0,"WHITELISTED" to 0,"VIDEO & COMICS" to 0,"ENTERTAINMENT" to 0,"MSNBS" to 0,"OTHERS" to 0)
+        val timeRules:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to sharedPref.getInt((R.string.social_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"COMM. & BROWSING" to sharedPref.getInt((R.string.communication_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS, "GAMES" to sharedPref.getInt((R.string.games_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"WHITELISTED" to 0,"VIDEO & COMICS" to sharedPref.getInt((R.string.video_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"ENTERTAINMENT" to sharedPref.getInt((R.string.entertainment_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"MSNBS" to sharedPref.getInt((R.string.msnbs_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS,"OTHERS" to sharedPref.getInt((R.string.others_max_time).toString(),0)* ONE_MINUTE_IN_SECONDS)
+        val launchRules:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to sharedPref.getInt((R.string.social_max_launches).toString(),0),"COMM. & BROWSING" to sharedPref.getInt((R.string.communication_max_launches).toString(),0), "GAMES" to sharedPref.getInt((R.string.games_max_launches).toString(),0),"WHITELISTED" to 0,"VIDEO & COMICS" to sharedPref.getInt((R.string.video_max_launches).toString(),0),"ENTERTAINMENT" to sharedPref.getInt((R.string.entertainment_launches).toString(),0),"MSNBS" to sharedPref.getInt((R.string.msnbs_max_launches).toString(),0),"OTHERS" to sharedPref.getInt((R.string.others_max_launches).toString(),0))
+        val categoryPenalties:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to sharedPref.getInt((R.string.social_penalty).toString(),0),"COMM. & BROWSING" to sharedPref.getInt((R.string.communication_penalty).toString(),0), "GAMES" to sharedPref.getInt((R.string.games_penalty).toString(),0),"WHITELISTED" to 0,"VIDEO & COMICS" to sharedPref.getInt((R.string.video_penalty).toString(),0),"ENTERTAINMENT" to sharedPref.getInt((R.string.entertainment_penalty).toString(),0),"MSNBS" to sharedPref.getInt((R.string.msnbs_penalty).toString(),0),"OTHERS" to sharedPref.getInt((R.string.others_penalty).toString(),0))
 
         sortedEvents.forEach { (packageName, events) ->
             // Keep track of the current start and end times
@@ -132,12 +131,6 @@ class LocalDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                     launches -= 1
                     transt = 0L
                 }
-                if (it.eventType == UsageEvents.Event.ACTIVITY_RESUMED || it.eventType == UsageEvents.Event.ACTIVITY_PAUSED) {
-
-                    if (packageName == "com.google.android.youtube") {
-                        Log.i("DWN", it.eventType.toString() + " " + Timestamp(it.timeStamp))
-                    }
-                }
                 if (startTime == 0L && endTime != 0L) {
                     startTime = begin.timeInMillis
                 }
@@ -161,7 +154,6 @@ class LocalDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                 categoryLaunches[app.appCategory]=categoryLaunches[app.appCategory]!!+launches
                 categoryTimes["TOTAL"]=categoryTimes["TOTAL"]!!+timeInSeconds
                 categoryLaunches["TOTAL"]=categoryLaunches["TOTAL"]!!+launches
-                Log.i("LDUWT", "$timeInSeconds"+"${app.appName}")
             }
         }
         var penaltyToday=0
@@ -224,7 +216,7 @@ for(key in categoryTimes.keys){
     }
     else {
         var violation:Boolean?=null
-        if (categoryTimes[key]!! >= timeRules[key]!! || categoryLaunches[key]!! >= launchRules[key]!!) {
+        if (categoryTimes[key]!! > timeRules[key]!! || categoryLaunches[key]!! > launchRules[key]!!) {
             violation = true
             penaltyToday += categoryPenalties[key]!!
         }
@@ -247,7 +239,6 @@ for(key in categoryTimes.keys){
             mission.contribution+=moneyToBeUpdated-pendingMoneyToBeUpdated
             missionDao.update(mission)
         }
-        Log.i("LDUWT", "MONEY_RAISED=$moneyToBeUpdated Penalty=$penaltyToday")
         //save penalties
         //calculate money raised
     }

@@ -15,11 +15,27 @@
       },
       "oauth_client": [
         {
+          "client_id": "994695151141-8ogensclhh6uqk0qjgs55aqpn28ae14r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.spandverse.seseva",
+            "certificate_hash": "13d8817d555b37798dea9b2a15134e35bad49a58"
+          }
+        },
+        {
           "client_id": "994695151141-oauelu0ijbkum1di1bqhjp64884o9l70.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.spandverse.seseva",
             "certificate_hash": "c01fccd4e387a1aaf6f55ff7a4372c0b0b8a1373"
+          }
+        },
+        {
+          "client_id": "994695151141-s4knavvjmob64hcdk2vo8825oa93a0br.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.spandverse.seseva",
+            "certificate_hash": "473b13664db93ec7c424e69c0637810a5517bc80"
           }
         },
         {

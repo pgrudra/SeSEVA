@@ -1,5 +1,6 @@
 package com.spandverse.seseva.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +23,7 @@ binding.catName.text=item.categoryName
             when(item.ruleBroken){
                 CategoryRuleStatus.BROKEN->{binding.statusSkrim.setBackgroundResource(R.drawable.broken_skrim)}
                 CategoryRuleStatus.WARNING->{binding.statusSkrim.setBackgroundResource(R.drawable.warning_skrim)}
-                else -> {}
+                else -> {binding.statusSkrim.visibility=View.GONE}
             }
             when(item.categoryName){
                 "SOCIAL"->binding.catIcon.setImageResource(R.drawable.ic_social)

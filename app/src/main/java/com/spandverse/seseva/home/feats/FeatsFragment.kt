@@ -1,5 +1,7 @@
 package com.spandverse.seseva.home.feats
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +26,8 @@ class FeatsFragment : Fragment() {
     private lateinit var binding: FragmentFeatsBinding
     private lateinit var viewModel: FeatsViewModel
     private lateinit var viewModelFactory: FeatsViewModelFactory
+    private lateinit var sharedPref: SharedPreferences
+    private lateinit var appContext: Context
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,7 +48,14 @@ class FeatsFragment : Fragment() {
         ) }
         drawerLoker!!.setDrawerEnabled(true)
         drawerLoker.displayBottomNavigation(true)
-
+        appContext = context?.applicationContext ?: return binding.root
+        sharedPref =
+            appContext.getSharedPreferences(
+                (R.string.shared_pref).toString(),
+                Context.MODE_PRIVATE
+            )
+        binding.totalMissions.text=(sharedPref.getInt((R.string.total_missions).toString(),1)).toString()
+        binding.activeMissions.text=(sharedPref.getInt((R.string.active_missions).toString(),1)).toString()
         binding.outermostConstraintLayout.post {
             val outerLayoutHeight=binding.outermostConstraintLayout.height
             binding.toolbar.post{

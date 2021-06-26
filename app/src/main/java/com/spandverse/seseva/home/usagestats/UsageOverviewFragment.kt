@@ -2,6 +2,7 @@ package com.spandverse.seseva.home.usagestats
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -150,7 +151,7 @@ class UsageOverviewFragment : Fragment() {
                         if (viewModel.categoryTimes[key] ?: 0 != 0)
                             totalTimePieChartEntries.add(
                                 PieEntry(
-                                    (viewModel.categoryTimes[key] ?: 0).toFloat(), key
+                                    (viewModel.categoryTimes[key] ?: 0).toFloat(),key
                                 )
                             )
                         if (viewModel.categoryLaunches[key] ?: 0 != 0)
@@ -171,6 +172,7 @@ class UsageOverviewFragment : Fragment() {
                 val totalTimePieDataSet = PieDataSet(totalTimePieChartEntries, "")
                 totalTimePieDataSet.colors = colorsList
                 val totalTimePieData = PieData(totalTimePieDataSet)
+                totalTimePieData.setValueFormatter(minutesValueFormatter2())
                 timePieChart.data = totalTimePieData
                 val timeLegendManager=GridLayoutManager(activity,2,GridLayoutManager.VERTICAL,false)
                 val timeEntries = timeLegend.entries
@@ -188,6 +190,7 @@ class UsageOverviewFragment : Fragment() {
                 val totalLaunchesPieDataSet = PieDataSet(totalLaunchesPieChartEntries, "")
                 totalLaunchesPieDataSet.colors = colorsList
                 val totalLaunchesPieData = PieData(totalLaunchesPieDataSet)
+                totalLaunchesPieData.setValueFormatter(launchesValueFormatter())
                 launchesPieChart.data = totalLaunchesPieData
                 val launchesLegendManager=GridLayoutManager(activity,2,GridLayoutManager.VERTICAL,false)
                 val launchesEntries = launchesLegend.entries
@@ -212,9 +215,10 @@ class UsageOverviewFragment : Fragment() {
         timeWeekChart.axisRight.isEnabled=false
         timeWeekChart.axisLeft.setDrawGridLines(false)
         timeWeekChart.description.isEnabled=false
-        timeWeekChart.xAxis.textColor=R.color.disabled_text
-        timeWeekChart.axisLeft.textColor=R.color.disabled_text
+        timeWeekChart.xAxis.textColor=Color.WHITE
+        timeWeekChart.axisLeft.textColor=Color.WHITE
         timeWeekChart.axisLeft.axisMinimum=0f
+        timeWeekChart.axisRight.axisMinimum=0f
         timeWeekChart.invalidate()
         val launchesWeekChart=binding.appLaunchesBarChart
         launchesWeekChart.setNoDataText("Loading")
@@ -226,9 +230,10 @@ class UsageOverviewFragment : Fragment() {
         launchesWeekChart.axisRight.isEnabled=false
         launchesWeekChart.axisLeft.setDrawGridLines(false)
         launchesWeekChart.description.isEnabled=false
-        launchesWeekChart.xAxis.textColor=R.color.disabled_text
-        launchesWeekChart.axisLeft.textColor=R.color.disabled_text
+        launchesWeekChart.xAxis.textColor=Color.WHITE
+        launchesWeekChart.axisLeft.textColor=Color.WHITE
         launchesWeekChart.axisLeft.axisMinimum=0f
+        launchesWeekChart.axisRight.axisMinimum=0f
         launchesWeekChart.invalidate()
 
         val timeMonthChart=binding.timeSpentMonthLineChart
@@ -244,6 +249,7 @@ class UsageOverviewFragment : Fragment() {
         timeMonthChart.xAxis.textColor=Color.WHITE
         timeMonthChart.axisRight.textColor=Color.WHITE
         timeMonthChart.axisLeft.axisMinimum=0f
+        timeMonthChart.axisRight.axisMinimum=0f
         timeMonthChart.invalidate()
 
         val launchesMonthChart=binding.appLaunchesMonthLineChart
@@ -259,6 +265,7 @@ class UsageOverviewFragment : Fragment() {
         launchesMonthChart.xAxis.textColor=Color.WHITE
         launchesMonthChart.axisRight.textColor=Color.WHITE
         launchesMonthChart.axisLeft.axisMinimum=0f
+        launchesMonthChart.axisRight.axisMinimum=0f
         launchesMonthChart.invalidate()
 
         val timeYearChart=binding.timeSpentYearLineChart
@@ -274,6 +281,7 @@ class UsageOverviewFragment : Fragment() {
         timeYearChart.xAxis.textColor=Color.WHITE
         timeYearChart.axisRight.textColor=Color.WHITE
         timeYearChart.axisLeft.axisMinimum=0f
+        timeYearChart.axisRight.axisMinimum=0f
         timeYearChart.invalidate()
 
         val launchesYearChart=binding.appLaunchesYearLineChart
@@ -289,6 +297,7 @@ class UsageOverviewFragment : Fragment() {
         launchesYearChart.xAxis.textColor=Color.WHITE
         launchesYearChart.axisRight.textColor=Color.WHITE
         launchesYearChart.axisLeft.axisMinimum=0f
+        launchesYearChart.axisRight.axisMinimum=0f
         launchesYearChart.invalidate()
         viewLifecycleOwner.lifecycleScope.launch {
             val lastWeekStart: Calendar = Calendar.getInstance()
@@ -348,15 +357,21 @@ class UsageOverviewFragment : Fragment() {
                 }
                 val weekTimeDataSet= BarDataSet(weekTimeEntries, "Time in mins")
                 val weekTimeData=BarData(weekTimeDataSet)
+                weekTimeData.setValueTextColor(Color.GRAY)
+                weekTimeData.setValueFormatter(minutesValueFormatter3())
+                weekTimeData.isHighlightEnabled=false
                 timeWeekChart.data=weekTimeData
                 val xAxisWeekTimeFormatter: ValueFormatter = WeekAxisValueFormatter(
                     binding.timeSpentBarChart,
                     weekLabels
                 )
                 timeWeekChart.xAxis.valueFormatter=xAxisWeekTimeFormatter
-
+                timeWeekChart.axisLeft.valueFormatter=minutesValueFormatter()
                 val weekLaunchesDataSet= BarDataSet(weekLaunchesEntries, "Launches")
                 val weekLaunchesData=BarData(weekLaunchesDataSet)
+                weekLaunchesData.setValueFormatter(launchesValueFormatter2())
+                weekLaunchesData.isHighlightEnabled=false
+                weekLaunchesData.setValueTextColor(Color.GRAY)
                 launchesWeekChart.data=weekLaunchesData
                 val xAxisWeekLaunchesFormatter: ValueFormatter = WeekAxisValueFormatter(
                     binding.appLaunchesBarChart,
@@ -416,15 +431,18 @@ class UsageOverviewFragment : Fragment() {
                 }
                 val monthTimeDataSet= LineDataSet(monthTimeEntries, "Time in mins")
                 val monthTimeData=LineData(monthTimeDataSet)
+                monthTimeData.setValueFormatter(noValueFormatter())
                 timeMonthChart.data=monthTimeData
+                timeMonthChart.axisRight.valueFormatter=minutesValueFormatter()
                 val xAxisMonthTimeFormatter: ValueFormatter = MonthAxisValueFormatter(
                     timeMonthChart,
                     monthLabels
                 )
                 timeMonthChart.xAxis.valueFormatter=xAxisMonthTimeFormatter
-
+                //timeMonthChart.axisLeft.valueFormatter=minutesValueFormatter()
                 val monthLaunchesDataSet= LineDataSet(monthLaunchesEntries, "Launches")
                 val monthLaunchesData=LineData(monthLaunchesDataSet)
+                monthLaunchesData.setValueFormatter(noValueFormatter())
                 launchesMonthChart.data=monthLaunchesData
                 val xAxisMonthLaunchesFormatter: ValueFormatter = MonthAxisValueFormatter(
                     launchesMonthChart,
@@ -483,16 +501,21 @@ class UsageOverviewFragment : Fragment() {
                     }
                 }
                 val yearTimeDataSet= LineDataSet(yearTimeEntries, "Time in mins")
+                yearTimeDataSet.setDrawCircles(false)
                 val yearTimeData=LineData(yearTimeDataSet)
+                yearTimeData.setValueFormatter(noValueFormatter())
                 timeYearChart.data=yearTimeData
+                timeYearChart.axisRight.valueFormatter=minutesValueFormatter()
                 val xAxisYearTimeFormatter: ValueFormatter = YearAxisValueFormatter(
                     timeYearChart,
                     yearLabels
                 )
                 timeYearChart.xAxis.valueFormatter=xAxisYearTimeFormatter
-
+                //timeYearChart.axisLeft.valueFormatter=minutesValueFormatter()
                 val yearLaunchesDataSet= LineDataSet(yearLaunchesEntries, "Launches")
+                yearLaunchesDataSet.setDrawCircles(false)
                 val yearLaunchesData=LineData(yearLaunchesDataSet)
+                yearLaunchesData.setValueFormatter(noValueFormatter())
                 launchesYearChart.data=yearLaunchesData
                 val xAxisYearLaunchesFormatter: ValueFormatter = YearAxisValueFormatter(
                     launchesYearChart,

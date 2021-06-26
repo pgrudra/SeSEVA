@@ -443,7 +443,7 @@ class TestService : Service() {
                         }
 
                     }
-                    else if((now.timeInMillis-lastResumeTimeStamp)%120000 >110000){
+                    else if((now.timeInMillis-lastResumeTimeStamp)%120000 < 10000){
                         handler.post {
                             Toast.makeText(context, "You have spent ${catTimeInSeconds/60} mins on this and other $cat apps", Toast.LENGTH_SHORT).show()
                         }
@@ -781,7 +781,7 @@ class TestService : Service() {
                         }
 
                     }
-                    else if((now.timeInMillis-lastResumeTimeStamp)%120000 >110000){
+                    else if((now.timeInMillis-lastResumeTimeStamp)%120000 < 10000){
                         handler.post {
                             Toast.makeText(context, "${catTimeInSeconds/60} mins spent on this and other $cat apps", Toast.LENGTH_SHORT).show()
                         }
@@ -1063,7 +1063,7 @@ class TestService : Service() {
                         }
 
                     }
-                    else if((now.timeInMillis - lastResumeTimeStamp)%120000> 118500){
+                    else if((now.timeInMillis - lastResumeTimeStamp)%120000 < 1500){
                         handler.post {
                             Toast.makeText(context, "You have spent ${catTimeInSeconds/60} mins on this and other $cat apps", Toast.LENGTH_SHORT).show()
                         }
