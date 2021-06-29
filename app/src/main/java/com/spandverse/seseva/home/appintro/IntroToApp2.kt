@@ -21,7 +21,7 @@ class IntroToApp2 : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_intro_to_app2, container, false)
-binding.button.setOnClickListener {
+binding.continueButton.setOnClickListener {
     findNavController().navigate(IntroToApp2Directions.actionIntroToApp22ToPassageFragment())
 }
         return binding.root

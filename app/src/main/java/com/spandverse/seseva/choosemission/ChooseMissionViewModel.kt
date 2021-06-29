@@ -44,20 +44,20 @@ class ChooseMissionViewModel(
         viewModelScope.launch {
             val loadedList=database.getDownloadedMissions()
             val entireList:MutableList<Int> = arrayListOf()
-            val contributorsList:MutableList<Pair<Int,Int>> = arrayListOf()
-            val reference=cloudReference.child("contributors")
-            reference.addListenerForSingleValueEvent(object : ValueEventListener{
+            val moneyRaisedList:MutableList<Pair<Int,Int>> = arrayListOf()
+            val moneyRaisedReference=cloudReference.child("moneyRaised")
+            moneyRaisedReference.addListenerForSingleValueEvent(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (i in snapshot.children){
                         entireList.add(i.key.toString().toInt())
-                        contributorsList.add(Pair(i.key.toString().toInt(),i.value.toString().toInt()))
+                        moneyRaisedList.add(Pair(i.key.toString().toInt(),i.value.toString().toInt()))
                     }
                     if(loadedList!=null){
                         val toDownloadList=entireList.minus(loadedList)
-                        insertIntoDatabase(toDownloadList.reversed(),loadedList,contributorsList)
+                        insertIntoDatabase(toDownloadList.reversed(),loadedList,moneyRaisedList)
                     }
                     else{
-                        insertIntoDatabase(entireList.reversed(),null,contributorsList)
+                        insertIntoDatabase(entireList.reversed(),null,moneyRaisedList)
                     }
                 }
 
@@ -68,13 +68,13 @@ class ChooseMissionViewModel(
             })
         }
     }
-    private fun insertIntoDatabase(list: List<Int>,loadedList: List<Int>?,contributorsList:MutableList<Pair<Int,Int>>){
-        val moneyRaisedList:MutableList<Pair<Int,Int>> = arrayListOf()
-        val moneyRaisedReference=cloudReference.child("moneyRaised")
-        moneyRaisedReference.addListenerForSingleValueEvent(object: ValueEventListener {
+    private fun insertIntoDatabase(list: List<Int>,loadedList: List<Int>?,moneyRaisedList:MutableList<Pair<Int,Int>>){
+        val contributorsList:MutableList<Pair<Int,Int>> = arrayListOf()
+        val reference=cloudReference.child("contributors")
+        reference.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for(missionSnapShot in dataSnapshot.children ){
-                    moneyRaisedList.add(Pair(missionSnapShot.key!!.toInt(),missionSnapShot.value.toString().toInt()))
+                    contributorsList.add(Pair(missionSnapShot.key!!.toInt(),missionSnapShot.value.toString().toInt()))
                 }
                 val contributionsList:MutableList<Pair<Int,Int>> = arrayListOf()
                 val contributionsReference= userId?.let { cloudReference.child("users").child(it).child("contributions") }

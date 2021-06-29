@@ -140,8 +140,7 @@ class PermissionFragment : Fragment(),PermissionMandatoryDialogFragment.Permissi
         val googleSignInClient = GoogleSignIn.getClient(appContext, gso)
         val user = auth.currentUser
         val cloudReference = Firebase.database.reference.child("users")
-        cloudReference.child(user!!.uid).child("chosenMission").removeValue().addOnSuccessListener {  }
-        cloudReference.child(user.uid).child("username").removeValue().addOnSuccessListener {  }
+        cloudReference.child(user!!.uid).child("username").removeValue()
         val db= AllDatabase.getInstance(appContext)
         viewLifecycleOwner.lifecycleScope.launch {
             db.AppDatabaseDao.clear()

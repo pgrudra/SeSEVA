@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -28,19 +29,24 @@ import com.spandverse.seseva.ui.login.NoInternetDialogFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.actionCodeSettings
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.spandverse.seseva.foregroundnnotifications.InfoPopUpWindow
 import com.spandverse.seseva.modelspecificpermissions.AutostartPermissionFragmentDirections
+import com.spandverse.seseva.ui.login.LoginFragment
 import kotlinx.coroutines.launch
 
 
-class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountListener,SignOutDialogFragment.SignOutListener,ClearUsageStatsHistoryDialogFragment.ClearHistoryListener,ManageProfileDialogFragment.ManageProfileListener,GrantDOOADialog.GrantDOOAListener {
+class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountListener,SignOutDialogFragment.SignOutListener,ClearUsageStatsHistoryDialogFragment.ClearHistoryListener,ManageProfileDialogFragment.ManageProfileListener,GrantDOOADialog.GrantDOOAListener,ReAuthenticateAndDeleteFragment.ReAuthenticateAndDeleteDialogListener {
     private lateinit var binding:FragmentSettingsBinding
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var appContext: Context
@@ -71,13 +77,24 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
             .requestIdToken(com.spandverse.seseva.R.string.default_web_client_id.toString())
             .requestEmail()
             .build()
-
         auth= Firebase.auth
         googleSignInClient = GoogleSignIn.getClient(appContext, gso)
         binding.deleteAccountCL.setOnClickListener {  showDeleteAccountConfirmationDialog() }
         binding.signOutCL.setOnClickListener { showSignOutConfirmationDialog() }
         binding.clearUsageHistoryCL.setOnClickListener { showClearUsageHistoryConfirmationDialog() }
         binding.manageProfileCL.setOnClickListener { showManageProfileDialog()  }
+        binding.lightInfo.setOnClickListener {
+            val popUpClass = ModeInfoPopUpWindow()
+            popUpClass.showPopupWindow(it)
+        }
+        binding.mediumInfo.setOnClickListener {
+            val popUpClass = ModeInfoPopUpWindow()
+            popUpClass.showPopupWindow(it)
+        }
+        binding.strictInfo.setOnClickListener {
+            val popUpClass = ModeInfoPopUpWindow()
+            popUpClass.showPopupWindow(it)
+        }
         binding.dooaCL.setOnClickListener { findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToDOOAFragment()) }
         binding.autostartCL.setOnClickListener {
             try {
@@ -218,7 +235,8 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
 
     override fun onStart() {
         super.onStart()
-        checkPermissions()
+        if(!sharedPref.getBoolean((R.string.authenticate_to_delete).toString(),false))
+            checkPermissions()
         if(checkIfDeviceSpecificPermissionNeeded())
             binding.autostartCL.visibility=View.VISIBLE
     }
@@ -257,6 +275,9 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
                 startService()
                 //start service
                 serviceMode=2
+            }
+            else{
+                startService()
             }
             binding.dooaIcon.setImageResource(R.drawable.ic_check_icon)
             binding.dooaCL.isClickable=false
@@ -378,26 +399,27 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
             //stop service
             stopService()
             //remove dbs
-            val db = AllDatabase.getInstance(appContext)
-            viewLifecycleOwner.lifecycleScope.launch {
-                db.AppDatabaseDao.clear()
-                db.CategoryStatDatabaseDao.clear()
-                db.MissionsDatabaseDao.clear()
-                db.SponsorDatabaseDao.clear()
-                db.StatDataBaseDao.clear()
-            }.invokeOnCompletion {
+
+            user?.uid?.let {
+                cloudReference.child(it).child("username").removeValue()}
+
+
 //delete account from firebase and google revoke access, google sign out
                 try {
                     user?.delete()?.addOnSuccessListener {
                         try {
-                            onDeleteAccountComplete(user.uid)
                             googleSignInClient.revokeAccess().addOnSuccessListener {
                             }
                             googleSignInClient.signOut().addOnCompleteListener {
                             }
-                            toLoginScreen()
+                            onDeleteAccountComplete(user.uid)
+                            //toLoginScreen()
                         } catch (e: kotlin.Exception) {
-                            toLoginScreen()
+                            removeLoadingSymbol()
+                            view?.let {
+                                Snackbar.make(it, "Failed to delete account", Snackbar.LENGTH_SHORT)
+                                    .show()
+                            }
                         }
                     }
                         ?.addOnFailureListener {
@@ -422,26 +444,33 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
                                                 "defaultValue"
                                             ) ?: "null", emailLink
                                         )
-                                        Log.i("DLA", "a$credential")
                                         user.reauthenticateAndRetrieveData(credential)
                                             .addOnCompleteListener { task ->
                                                 if (task.isSuccessful) {
                                                     user.delete().addOnSuccessListener {
                                                         try {
-                                                            onDeleteAccountComplete(user.uid)
+
                                                             googleSignInClient.revokeAccess()
                                                                 .addOnSuccessListener {
                                                                 }
                                                             googleSignInClient.signOut()
                                                                 .addOnCompleteListener {
                                                                 }
-                                                            toLoginScreen()
+                                                            onDeleteAccountComplete(user.uid)
+                                                            //toLoginScreen()
                                                         } catch (e: kotlin.Exception) {
-                                                            toLoginScreen()
+                                                            removeLoadingSymbol()
+                                                            view?.let {
+                                                                Snackbar.make(it, "Failed to delete account", Snackbar.LENGTH_SHORT)
+                                                                    .show()
+                                                            }
                                                         }
                                                     }
                                                 } else {
-                                                    Log.i("DLA", "a1${task.result}")
+                                                    val dialog = ReAuthenticateAndDeleteFragment()
+                                                    val fragmentManager=childFragmentManager
+                                                    removeLoadingSymbol()
+                                                    dialog.show(fragmentManager, "RNDE")
                                                 }
                                             }
                                     }
@@ -450,25 +479,31 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
                                             GoogleSignIn.getLastSignedInAccount(context)?.idToken,
                                             null
                                         )
-                                        Log.i("DLA", "b$credential")
                                         user.reauthenticate(credential).addOnCompleteListener { task ->
                                             if (task.isSuccessful) {
                                                 user.delete().addOnSuccessListener {
                                                     try {
-                                                        onDeleteAccountComplete(user.uid)
                                                         googleSignInClient.revokeAccess()
                                                             .addOnSuccessListener {
                                                             }
                                                         googleSignInClient.signOut()
                                                             .addOnCompleteListener {
                                                             }
-                                                        toLoginScreen()
+                                                        onDeleteAccountComplete(user.uid)
+                                                        //toLoginScreen()
                                                     } catch (e: kotlin.Exception) {
-                                                        toLoginScreen()
+                                                        removeLoadingSymbol()
+                                                        view?.let {
+                                                            Snackbar.make(it, "Failed to delete account", Snackbar.LENGTH_SHORT)
+                                                                .show()
+                                                        }
                                                     }
                                                 }
                                             } else {
-                                                Log.i("DLA", "b1${task.result}")
+                                                val dialog = ReAuthenticateAndDeleteFragment()
+                                                val fragmentManager=childFragmentManager
+                                                removeLoadingSymbol()
+                                                dialog.show(fragmentManager, "RNDG")
                                             }
                                         }
                                     }
@@ -515,7 +550,6 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
 
                                 }
                                 .addOnFailureListener {
-                                    Log.i("DLA", "poiuy")
                                 }
 
 
@@ -524,7 +558,7 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
 
                 } catch (e: kotlin.Exception) {
                 }
-            }
+
 
         }
         else{
@@ -551,15 +585,26 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
         binding.progressBar1.visibility=View.VISIBLE
         binding.skrim.visibility=View.VISIBLE
     }
+    private fun removeLoadingSymbol() {
+        binding.progressBar1.visibility=View.GONE
+        binding.skrim.visibility=View.GONE
+    }
     private fun onDeleteAccountComplete(uid: String) {
         //remove sharedPref
-        sharedPref.edit()?.clear()?.apply()
-        //remove workManagers
-        WorkManager.getInstance(appContext).cancelAllWork()
+        val db = AllDatabase.getInstance(appContext)
+        viewLifecycleOwner.lifecycleScope.launch {
+            db.AppDatabaseDao.clear()
+            db.CategoryStatDatabaseDao.clear()
+            db.MissionsDatabaseDao.clear()
+            db.SponsorDatabaseDao.clear()
+            db.StatDataBaseDao.clear()
+        }.invokeOnCompletion { sharedPref.edit()?.clear()?.apply()
+            //remove workManagers
+            WorkManager.getInstance(appContext).cancelAllWork()
+            //remove username and current mission
+            toLoginScreen()
+        }
 
-        //remove username and current mission
-        cloudReference.child(uid).child("chosenMission").removeValue()
-        cloudReference.child(uid).child("username").removeValue()
     }
 
     override fun signOut() {
@@ -651,6 +696,10 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
                 this?.putInt((com.spandverse.seseva.R.string.service_mode).toString(), it)
                 this?.apply()
             }
+            with (sharedPref.edit()) {
+                this?.putBoolean((com.spandverse.seseva.R.string.mode_changed).toString(), true)
+                this?.apply()
+            }
         }
         toDOOAPermissionScreen()
     }
@@ -663,5 +712,153 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
         startActivity(intent)
     }
 
+    override fun reAuthenticateAndDelete(dialog: DialogFragment) {
+        /*if(dialog.tag=="RNDE"){
 
+        }
+        else{
+            googleSignInToDelete()
+        }*/
+        otherEmailSignInToDelete()
+    }
+    private fun otherEmailSignInToDelete() {
+        val emailId =sharedPref.getString((R.string.email_address).toString(),"")?:""
+        if (emailId != "") {
+            sendSignInLinkToDelete(emailId, buildActionCodeSettings())
+        } else {
+            removeLoadingSymbol()
+            view?.let {
+                Snackbar.make(it, "Failed to delete account", Snackbar.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
+    private fun buildActionCodeSettings(): ActionCodeSettings {
+        return actionCodeSettings {
+            // URL you want to redirect back to. The domain (www.example.com) for this
+            // URL must be whitelisted in the Firebase Console.
+            url = "https://www.unslave0.com"
+            // This must be true
+            handleCodeInApp = true
+            setAndroidPackageName(
+                "com.spandverse.seseva",
+                false, /* installIfNotAvailable */
+                "22" /* minimumVersion */
+            )
+        }
+    }
+    private fun sendSignInLinkToDelete(email: String, actionCodeSettings: ActionCodeSettings) {
+        // [START auth_send_sign_in_link]
+        Firebase.auth.sendSignInLinkToEmail(email, actionCodeSettings)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    //showLinkVerificationScreenToDelete()
+                    with (sharedPref.edit()) {
+                        this?.putBoolean((com.spandverse.seseva.R.string.authenticate_to_delete).toString(), true)
+                        this?.apply()
+                    }
+                    removeLoadingSymbol()
+                    Snackbar.make(binding.root, "Please check your email and click on the sign in link sent to re-authenticate and delete your account", Snackbar.LENGTH_INDEFINITE)
+                            .show()
+                } else {
+                    removeLoadingSymbol()
+                    if(checkInternetConnectivity(appContext)){
+                        view?.let {
+                            Snackbar.make(it, "Failed to delete account", Snackbar.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+                    else{
+                        showNoInternetConnectionDialog()
+                    }
+                }
+            }
+        // [END auth_send_sign_in_link]
+    }
+    /*private fun googleSignInToDelete() {
+        val googleSignInIntent: Intent = googleSignInClient.signInIntent
+        startActivityForResult(googleSignInIntent, RC_SIGN_IN)
+    }
+    companion object {
+        private const val TAG = "GoogleActivity"
+        private const val RC_SIGN_IN = 4564
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                Log.i("SF3","1")
+                val account = task.getResult(ApiException::class.java)!!
+                Log.i("SF3","87")
+                firebaseAuthWithGoogle(account.idToken!!)
+            } catch (e: ApiException) {
+                Log.i("SF3","2$e")
+                // Google Sign In failed, update UI appropriately
+                removeLoadingSymbol()
+                if(checkInternetConnectivity(appContext)) {
+                    Log.i("SF3","3")
+                    view?.let {
+                        Snackbar.make(it, "Re-Authentication Failed", Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+                else{
+                    Log.i("SF3","4")
+                    showNoInternetConnectionDialog()
+                }
+            }
+        }
+    }*/
+
+
+    /*private fun firebaseAuthWithGoogle(idToken: String) {
+        Log.i("SF3","5")
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener { task ->
+                Log.i("SF3","11")
+                if (task.isSuccessful) {
+                    //delete account
+                    Log.i("SF3","6")
+                    with (sharedPref.edit()) {
+                        this?.putBoolean((com.spandverse.seseva.R.string.authenticate_to_delete).toString(), true)
+                        this?.apply()
+                    }
+                    val user = auth.currentUser
+                    user?.delete()?.addOnSuccessListener {
+                        try {
+                            googleSignInClient.revokeAccess().addOnSuccessListener {
+                            }
+                            googleSignInClient.signOut().addOnCompleteListener {
+                            }
+                            onDeleteAccountComplete(user.uid)
+
+                        } catch (e: kotlin.Exception) {
+                            removeLoadingSymbol()
+                            Log.i("SF3","7")
+                            view?.let {
+                                Snackbar.make(it, "Re-Authentication Failed", Snackbar.LENGTH_SHORT)
+                                    .show()
+                            }
+                        }
+                    }
+                } else {
+                    // If sign in fails, display a message to the user.
+                        removeLoadingSymbol()
+                    Log.i("SF3","8")
+                    if(checkInternetConnectivity(appContext)) {
+                        view?.let {
+                            Snackbar.make(it, "Re-Authentication Failed", Snackbar.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+                    else{
+                        showNoInternetConnectionDialog()
+                    }
+                    binding.progressBar1.visibility=View.GONE
+                    binding.skrim.visibility=View.GONE
+                }
+
+            }
+    }*/
 }

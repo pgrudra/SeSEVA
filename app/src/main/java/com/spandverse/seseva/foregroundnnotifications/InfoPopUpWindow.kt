@@ -17,8 +17,7 @@ class InfoPopUpWindow {
         val popupView: View = inflater.inflate(R.layout.info_pop_up_window, null)
 
         //Specify the length and width through constants
-
-        val width:Int=400*view.context.resources.displayMetrics.density.toInt()
+        val width= 400*view.context.resources.displayMetrics.density.toInt()
         val height = LinearLayout.LayoutParams.WRAP_CONTENT
 
         //Make Inactive Items Outside Of PopupWindow
@@ -28,22 +27,23 @@ class InfoPopUpWindow {
         //Set the location of the window on the screen
         val viewLocation = IntArray(2)
         view.getLocationOnScreen(viewLocation)
-        popupWindow.showAtLocation(
-            view, Gravity.NO_GRAVITY,124, viewLocation[1]+(0.8*view.height).toInt())
+            popupWindow.showAtLocation(
+                view, Gravity.NO_GRAVITY,124, viewLocation[1]+(0.8*view.height).toInt())
+
+
         //Initialize the elements of our window, install the handler
         val text: TextView = popupView.findViewById(R.id.categories)
         text.setText(
             when (view.id) {
                 R.id.i_social -> R.string.categoriy_social
-                R.id.i_communication -> R.string.choose_a_different_mission
-                R.id.i_entertainment -> R.string.choose_new_mission
-                R.id.i_games -> R.string.choose_a_different_mission
-                R.id.i_msnbs -> R.string.choose_new_mission
-                R.id.i_others -> R.string.choose_a_different_mission
-                R.id.i_video -> R.string.choose_new_mission
-                R.id.i_whitelisted -> R.string.choose_a_different_mission
+                R.id.i_communication -> R.string.category_communication
+                R.id.i_entertainment -> R.string.categoriy_entertainment
+                R.id.i_games -> R.string.category_games
+                R.id.i_msnbs -> R.string.category_msnbs
+                R.id.i_others -> R.string.category_others
+                R.id.i_video -> R.string.category_video
                 R.id.i->R.string.meaningOfThisWeeK
-                else -> R.string.active
+                else -> R.string.no_text
             }
         )
 

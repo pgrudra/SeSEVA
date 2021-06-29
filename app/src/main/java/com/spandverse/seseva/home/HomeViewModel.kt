@@ -822,7 +822,7 @@ val minute:Int=(0..2).random()
             twelveOne.add(Calendar.DATE,1)
             val timeDiff=twelveOne.timeInMillis-currentTime.timeInMillis
             val updateStatsLocalRequest= OneTimeWorkRequestBuilder<LocalDatabaseUpdateWorker>()
-                .setInitialDelay(20000,TimeUnit.MILLISECONDS)
+                .setInitialDelay(timeDiff,TimeUnit.MILLISECONDS)
                 .addTag("localDateBase")
                 .build()
             val updateStatsCloudRequest=OneTimeWorkRequestBuilder<CloudDatabaseUpdateWorker>()

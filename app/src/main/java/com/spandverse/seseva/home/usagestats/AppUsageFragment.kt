@@ -60,9 +60,9 @@ class AppUsageFragment : Fragment() {
         viewModel.countdownColor.observe(viewLifecycleOwner, Observer {status->
             when (status) {
                 CategoryRuleStatus.BROKEN -> {
-                    binding.headsUpText.text="Oye!!"
-                    binding.subHeadsUpText1.text="kjgkjgk kgj jhgj j jnkj bhjjh hjbhgjgyug gyuj j"
-                    binding.subHeadsUpText2.text="k popi kjlj khh waweaq t ygj"
+                    binding.headsUpText.text=getString(R.string.alas)
+                    binding.subHeadsUpText1.text=getString(R.string.app_classification_text,viewModel.catNameForAppScreen.value)
+                    binding.subHeadsUpText2.text=getString(R.string.app_broken_text)
                     context?.let {
                         binding.headsUpText.setTextColor(ContextCompat.getColor(it, R.color.colorError))
                         binding.timeCountdown.setTextColor(ContextCompat.getColor(it, R.color.colorError))
@@ -87,9 +87,9 @@ class AppUsageFragment : Fragment() {
                     }
                 }
                 CategoryRuleStatus.WARNING -> {
-                    binding.headsUpText.text="Heads Up!"
-                    binding.subHeadsUpText1.text="kjgkjgk kgj jhgj j jnkj bhjjh hjbhgjgyug gyuj j"
-                    binding.subHeadsUpText2.text="k pofsd fcg drd dr t ygj"
+                    binding.headsUpText.text=getString(R.string.heads_up)
+                    binding.subHeadsUpText1.text=getString(R.string.app_classification_text,viewModel.catNameForAppScreen.value)
+                    binding.subHeadsUpText2.text=getString(R.string.app_warning_text)
                     context?.let {
                         binding.headsUpText.setTextColor(ContextCompat.getColor(it, R.color.yellow))
                         binding.timeCountdown.setTextColor(ContextCompat.getColor(it, R.color.yellow))
@@ -99,9 +99,9 @@ class AppUsageFragment : Fragment() {
                     binding.launchesCountdown.setBackgroundResource(R.drawable.ic_counts_countdown_yellow)
                 }
                 else -> {
-                    binding.headsUpText.text="Hey!"
-                    binding.subHeadsUpText1.text="kjgkjgk kgj jhgj j jnkj bhjjh hjbhgjgyug gyuj j"
-                    binding.subHeadsUpText2.text="k pofsd fcg drd dr t ygj"
+                    binding.headsUpText.text=getString(R.string.going_good)
+                    binding.subHeadsUpText1.text=getString(R.string.app_classification_text,viewModel.catNameForAppScreen.value)
+                    binding.subHeadsUpText2.text=getString(R.string.cat_safe_text)
                     context?.let {
                         binding.headsUpText.setTextColor(ContextCompat.getColor(it, R.color.colorPrimary))
                         binding.timeCountdown.setTextColor(ContextCompat.getColor(it, R.color.colorPrimary))

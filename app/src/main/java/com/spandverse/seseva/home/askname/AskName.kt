@@ -4,7 +4,6 @@ import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,7 +48,6 @@ class AskName : Fragment(),NoInternetDialogFragment.NoInternetDialogListener {
             if (nameInserted) {
                 val userName = binding.editTextTextPersonName.text.toString()
                 if (userName != "") {
-                    Log.i("Lo", userName)
                     viewModel.saveEverywhere(userName)
                 } else {
                     makeErrorBackground()
@@ -59,7 +57,6 @@ class AskName : Fragment(),NoInternetDialogFragment.NoInternetDialogListener {
         viewModel.goToNextFragment.observe(viewLifecycleOwner, Observer<Boolean> { go ->
             if (go) {
                 binding.editTextTextPersonName.hideKeyboard()
-                Log.i("AN5","$go")
                 NavHostFragment.findNavController(this)
                     .navigate(AskNameDirections.actionAskNameToIntroToApp3())
                 viewModel.goToNextFragmentComplete()
@@ -68,7 +65,6 @@ class AskName : Fragment(),NoInternetDialogFragment.NoInternetDialogListener {
         viewModel.noInternet.observe(viewLifecycleOwner, Observer<Boolean> { noInternet ->
             if (noInternet) {
               showNoInternetConnectionDialog()
-                Log.i("fg","b")
             }
         })
         binding.editTextTextPersonName.onFocusChangeListener =
@@ -129,7 +125,6 @@ class AskName : Fragment(),NoInternetDialogFragment.NoInternetDialogListener {
     }
     private fun showNoInternetConnectionDialog() {
         // Create an instance of the dialog fragment and show it
-        Log.i("fg","sdf")
         val dialog = NoInternetDialogFragment()
         val fragmentManager=childFragmentManager
         dialog.show(fragmentManager,"No Internet Connection")

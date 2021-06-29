@@ -100,13 +100,13 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/autostart_icon"
-                android:layout_width="24dp"
+                android:layout_width="48dp"
                 android:layout_height="24dp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView99"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView99"
-                app:srcCompat="@drawable/ic_arrow_right"
-                android:layout_marginEnd="32dp"/>
+                app:srcCompat="@drawable/ic_check_autostart"
+                android:layout_marginEnd="20dp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
         <View
             android:id="@+id/v12"
@@ -179,7 +179,8 @@
                 android:text="Light"
                 style="@style/body_2"
                 android:textColor="@color/primary_text"/>
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/light_info"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:background="@null"
@@ -218,8 +219,8 @@
                 style="@style/body_2"
                 android:textColor="@color/primary_text"/>
 
-            <ImageButton
-                android:id="@+id/imageButton2"
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/medium_info"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
@@ -257,7 +258,8 @@
                 android:text="Strict"
                 style="@style/body_2"
                 android:textColor="@color/primary_text"/>
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/strict_info"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:background="@null"

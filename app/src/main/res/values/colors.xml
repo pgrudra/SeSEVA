@@ -13,6 +13,7 @@
     <color name="mission_item_background">#0DFFFFFF</color>
     <color name="pink">#FF57BB</color>
     <color name="skrim">#CC121212</color>
+    <color name="rules_scrim">#F2121212</color>
 
     <color name="yellow">#F2C94C</color>
     <color name="surface">#121212</color>

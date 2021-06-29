@@ -10,22 +10,33 @@
     android:background="@drawable/blocking_screen_bg">
 
     <TextView
+        android:id="@+id/user_name"
+        style="@style/subtitle_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:textColor="@color/primary_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Hey user" />
+
+    <TextView
         android:id="@+id/dont_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/montserrat_used"
         android:shadowColor="#000000"
         android:shadowDx="1.5"
         android:shadowDy="1.5"
         android:shadowRadius="1"
-
         android:textAllCaps="true"
         android:textColor="#E40606"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/user_name"
+        app:layout_constraintTop_toBottomOf="@id/user_name"
+        tools:text="@string/don_t_break_the_rule" />
 
     <View
         android:layout_width="0dp"
@@ -42,10 +53,9 @@
         style="@style/subtitle_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="4dp"
         android:textColor="@color/primary_text"
-        app:layout_constraintEnd_toEndOf="@+id/dont_text"
-        app:layout_constraintStart_toStartOf="@id/dont_text"
+        app:layout_constraintStart_toStartOf="@+id/dont_text"
         app:layout_constraintTop_toBottomOf="@id/dont_text"
         tools:text="Close appname immediately" />
 
@@ -54,16 +64,15 @@
         style="@style/caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
         android:textColor="@color/primary_text"
-        app:layout_constraintEnd_toEndOf="@+id/dont_text"
         app:layout_constraintStart_toStartOf="@id/dont_text"
         app:layout_constraintTop_toBottomOf="@id/close_app_text"
         tools:text="you have 0 launches left" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/time_bg"
-        android:layout_width="wrap_content"
+        android:layout_width="140dp"
         android:layout_height="52dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/ic_count_min_bg"
@@ -76,14 +85,12 @@
             android:id="@+id/app_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginEnd="4dp"
             android:fontFamily="@font/share_tech_mono"
             android:textColor="@color/colorError"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/d1"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="100" />
 
@@ -92,36 +99,32 @@
             android:layout_width="1dp"
             android:layout_height="16dp"
             android:background="@color/disabled_text"
-            app:layout_constraintBottom_toBottomOf="@id/app_time"
+            app:layout_constraintBottom_toBottomOf="@+id/cat_time"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/app_time"
-            app:layout_constraintVertical_bias="0.35" />
+            app:layout_constraintTop_toTopOf="@+id/cat_time" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
             android:fontFamily="@font/montserrat_used"
             android:text="minutes"
             android:textColor="@color/secondary_text"
             android:textSize="8sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/d1"
-            app:layout_constraintStart_toStartOf="@id/d1"
-            app:layout_constraintTop_toBottomOf="@id/d1"
-            app:layout_constraintVertical_bias="0.3" />
+            app:layout_constraintStart_toStartOf="@id/d1" />
 
         <TextView
             android:id="@+id/cat_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginEnd="16dp"
             android:fontFamily="@font/share_tech_mono"
             android:textColor="@color/colorError"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/d1"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="100" />
@@ -129,7 +132,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/count_bg"
-        android:layout_width="wrap_content"
+        android:layout_width="140dp"
         android:layout_height="52dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/ic_count_min_bg"
@@ -142,14 +145,12 @@
             android:id="@+id/app_launches"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginEnd="4dp"
             android:fontFamily="@font/share_tech_mono"
             android:textColor="@color/colorError"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/d2"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="10" />
 
@@ -158,23 +159,20 @@
             android:layout_width="1dp"
             android:layout_height="16dp"
             android:background="@color/disabled_text"
-            app:layout_constraintBottom_toBottomOf="@id/app_launches"
+            app:layout_constraintBottom_toBottomOf="@+id/cat_launches"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/app_launches"
-            app:layout_constraintVertical_bias="0.35" />
+            app:layout_constraintTop_toTopOf="@+id/cat_launches" />
 
         <TextView
             android:id="@+id/cat_launches"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginEnd="16dp"
             android:fontFamily="@font/share_tech_mono"
             android:textColor="@color/colorError"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/d2"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="100" />
@@ -182,15 +180,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
             android:fontFamily="@font/montserrat_used"
-            android:text="count"
+            android:text="counts"
             android:textColor="@color/secondary_text"
             android:textSize="8sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/d2"
-            app:layout_constraintStart_toStartOf="@id/d2"
-            app:layout_constraintTop_toBottomOf="@id/d2"
-            app:layout_constraintVertical_bias="0.3" />
+            app:layout_constraintStart_toStartOf="@id/d2" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -198,7 +195,7 @@
         style="@style/caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="6dp"
         android:text="You spent"
         android:textColor="@color/common_background"
         app:layout_constraintEnd_toEndOf="@id/time_bg"
@@ -234,7 +231,7 @@
         style="@style/caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="6dp"
         android:text="You launched"
         android:textColor="@color/common_background"
         app:layout_constraintEnd_toEndOf="@id/count_bg"
@@ -245,7 +242,7 @@
         android:id="@+id/textView43"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/montserrat_used"
         android:shadowColor="#000000"
         android:shadowDx="1.5"
@@ -253,17 +250,18 @@
         android:shadowRadius="1"
         android:textColor="@color/primary_text"
         android:textSize="18sp"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="44dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="60dp"
         android:scaleType="fitXY"
         app:layout_constraintTop_toBottomOf="@+id/textView43"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
@@ -273,13 +271,13 @@
         style="@style/caption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="32dp"
         android:textColor="@color/primary_text"
-        app:layout_constraintBottom_toTopOf="@+id/textView44"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image"
-        tools:layout_editor_absoluteX="16dp"
         tools:text="You can contribute Rs 10 to your missionname mission only if you don't break the rule." />
 
     <TextView
@@ -289,13 +287,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="4dp"
         android:gravity="center"
         android:textColor="@color/common_background"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView18"
         tools:text="After you tap OK, please ensure that you close appname" />
 
     <Button
@@ -305,8 +303,7 @@
         android:layout_height="42dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/i_understand"
+        android:layout_marginBottom="36dp"
         android:background="@drawable/all_corner_rounded_4dp_common"
         android:textColor="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -1111,15 +1111,43 @@
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:onClick="@{()->Rules2ViewModel.scrimGoneOrNoInternet()}"
+    android:visibility="visible"
+    android:background="@color/rules_scrim"
+    android:id="@+id/intro_scrim">
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/intro_scrim"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/skrim"
-            android:onClick="@{()->Rules2ViewModel.scrimGoneOrNoInternet()}"
-            android:visibility="visible" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/scrim_svg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src= "@drawable/rule_instructions"/>
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toBottomOf="@id/scrim_svg"
+    android:gravity="center"
+    android:text="Tap anywhere to continue"
+    style="@style/caption"
+    android:textColor="@color/secondary_text"
+    android:layout_marginTop="40dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/montserrat_used"
+        android:textColor="@color/secondary_text"
+        android:layout_marginStart="16dp"
+        android:textSize="8dp"
+        android:text="Please bear with me for few seconds. Categorising apps may take some time depending on your internet speed."/>
 
-
+</androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

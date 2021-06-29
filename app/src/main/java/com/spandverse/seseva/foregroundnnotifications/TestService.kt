@@ -52,6 +52,7 @@ class TestService : Service() {
     private lateinit var blockingScreenView: View
     private lateinit var blockingScreenViewStrict: View
     private var missionNumber:Int=0
+    private var userName:String="User"
     private val cloudImagesReference = Firebase.storage
     /*private val pkgAndCat =
             Transformations.map(AllDatabase.getInstance(this).AppDatabaseDao.getEntireList()) { it ->
@@ -187,7 +188,7 @@ class TestService : Service() {
             it?.map { it.packageName to it.appCategory }?.toMap() ?: emptyMap<String,String>()
         }
         //Try CoroutineScope instead of GlobalScope
-
+        userName=sharedPref.getString((R.string.user_name).toString(),"User")?:"User"
         val serviceMode= sharedPref.getInt((R.string.service_mode).toString(), 1)
         timeRules["SOCIAL"] =
             sharedPref.getInt((R.string.social_max_time).toString(), 0) * oneMinuteInSeconds
@@ -401,7 +402,7 @@ class TestService : Service() {
             if (maxTime > 0) {
                 val handler = Handler(Looper.getMainLooper())
                 if (catTimeInSeconds > maxTime || catLaunches > maxLaunches) {
-                    if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
+                    if ((catTimeInSeconds-maxTime)%60 > 50) {
                         handler.post {
                             Toast.makeText(
                                 context,
@@ -591,12 +592,11 @@ class TestService : Service() {
                 if (catTimeInSeconds > maxTime || catLaunches > maxLaunches) {
                     if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
                         handler.post {
+                            blockingScreenView.user_name.text=context.getString(R.string.hey_user,userName)
                             blockingScreenView.dont_text.text=context.getString(R.string.rule_broken)
-                            blockingScreenView.close_app_text.text =
-                                context.getString(R.string.close_app_for_your_own_good)
-                            blockingScreenView.time_launches_left_text.text=""
-                            blockingScreenView.textView18.text =
-                                context.getString(R.string.blocking_screen_t3_m_b, penalties[cat])
+                            blockingScreenView.close_app_text.text =""
+                            blockingScreenView.time_launches_left_text.text=context.getString(R.string.its_sad_sentence)
+                            blockingScreenView.textView18.text =""
                             blockingScreenView.textView43.text =context.getString(R.string.you_can_still_help_yourself)
                             blockingScreenView.textView44.text=""
                             blockingScreenView.app_time.text = (appTime / 60000).toString()
@@ -604,6 +604,7 @@ class TestService : Service() {
                             blockingScreenView.cat_time.text =
                                 (catTimeInSeconds / oneMinuteInSeconds).toString()
                             blockingScreenView.cat_launches.text = catLaunches.toString()
+                            blockingScreenView.button.text=context.getString(android.R.string.ok)
                             blockingScreenView.button.setOnClickListener {
                                 wm.removeView(blockingScreenView)
                             }
@@ -636,6 +637,7 @@ class TestService : Service() {
                                 blockingScreenView.app_launches.text=appLaunches.toString()
                                 blockingScreenView.cat_time.text=(catTimeInSeconds/oneMinuteInSeconds).toString()
                                 blockingScreenView.cat_launches.text=catLaunches.toString()
+                                blockingScreenView.button.text=context.getString(R.string.i_understand)
                                 blockingScreenView.button.setOnClickListener {
                                     wm.removeView(blockingScreenView)
                                 }
@@ -670,6 +672,7 @@ class TestService : Service() {
                                 blockingScreenView.app_launches.text=appLaunches.toString()
                                 blockingScreenView.cat_time.text=(catTimeInSeconds/oneMinuteInSeconds).toString()
                                 blockingScreenView.cat_launches.text=catLaunches.toString()
+                                blockingScreenView.button.text=context.getString(R.string.i_understand)
                                 blockingScreenView.button.setOnClickListener {
                                     wm.removeView(blockingScreenView)
                                 }
@@ -704,6 +707,7 @@ class TestService : Service() {
                             blockingScreenView.app_launches.text=appLaunches.toString()
                             blockingScreenView.cat_time.text=(catTimeInSeconds/oneMinuteInSeconds).toString()
                             blockingScreenView.cat_launches.text=catLaunches.toString()
+                            blockingScreenView.button.text=context.getString(R.string.i_understand)
                             blockingScreenView.button.setOnClickListener {
                                 wm.removeView(blockingScreenView)
                             }
@@ -739,6 +743,7 @@ class TestService : Service() {
                                 blockingScreenView.app_launches.text=appLaunches.toString()
                                 blockingScreenView.cat_time.text=(catTimeInSeconds/oneMinuteInSeconds).toString()
                                 blockingScreenView.cat_launches.text=catLaunches.toString()
+                                blockingScreenView.button.text=context.getString(R.string.i_understand)
                                 blockingScreenView.button.setOnClickListener {
                                     wm.removeView(blockingScreenView)
                                 }
@@ -917,19 +922,6 @@ class TestService : Service() {
                         blockingScreenViewStrict.app_launches_s.text=appLaunches.toString()
                         blockingScreenViewStrict.cat_time_s.text=(catTimeInSeconds/oneMinuteInSeconds).toString()
                         blockingScreenViewStrict.cat_launches_s.text=catLaunches.toString()
-                        blockingScreenViewStrict.textView18_s.text=context.getString(R.string.blocking_screen_t3_s,penalties[cat])
-                        blockingScreenViewStrict.textView44_s.text=context.getString(R.string.blocking_screen_t4_s)
-                        val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionImages/mission${missionNumber}Image.jpg")
-                        Glide.with(this)
-                            .load(missionImgRef)
-                            .transition(DrawableTransitionOptions.withCrossFade())
-                            .apply(
-                                RequestOptions()
-                                    .placeholder(R.drawable.ic_imageplaceholder)
-                                    .error(R.drawable.ic_imageplaceholder)
-                                    .fallback(R.drawable.ic_imageplaceholder)
-                            )
-                            .into(blockingScreenViewStrict.image_s)
                         if(blockingScreenView.windowToken!=null){
                             wm.removeView(blockingScreenView)
                         }
@@ -953,6 +945,7 @@ class TestService : Service() {
                                 blockingScreenView.app_launches.text=appLaunches.toString()
                                 blockingScreenView.cat_time.text=(catTimeInSeconds/oneMinuteInSeconds).toString()
                                 blockingScreenView.cat_launches.text=catLaunches.toString()
+                                blockingScreenView.button.text=context.getString(R.string.i_understand)
                                 blockingScreenView.button.setOnClickListener {
                                     wm.removeView(blockingScreenView)
                                 }
@@ -988,6 +981,7 @@ class TestService : Service() {
                                 blockingScreenView.app_launches.text=appLaunches.toString()
                                 blockingScreenView.cat_time.text=(catTimeInSeconds/oneMinuteInSeconds).toString()
                                 blockingScreenView.cat_launches.text=catLaunches.toString()
+                                blockingScreenView.button.text=context.getString(R.string.i_understand)
                                 blockingScreenView.button.setOnClickListener {
                                     wm.removeView(blockingScreenView)
                                 }
@@ -1024,6 +1018,7 @@ class TestService : Service() {
                                 blockingScreenView.app_launches.text=appLaunches.toString()
                                 blockingScreenView.cat_time.text=(catTimeInSeconds/oneMinuteInSeconds).toString()
                                 blockingScreenView.cat_launches.text=catLaunches.toString()
+                                blockingScreenView.button.text=context.getString(R.string.i_understand)
                                 blockingScreenView.button.setOnClickListener {
                                     wm.removeView(blockingScreenView)
                                 }

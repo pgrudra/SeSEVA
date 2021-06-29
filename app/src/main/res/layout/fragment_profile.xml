@@ -165,22 +165,22 @@
                     tools:text="CATEGORY"
                     app:layout_constraintTop_toBottomOf="@id/your_current_mission_text" />
 
-                <TextView
+                <Button
                     android:id="@+id/previous_missions_button"
-                    style="@style/overline"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="23dp"
                     android:enabled="false"
-                    android:onClick="@{()->ProfileViewModel.toYourPreviousMissions()}"
-                    android:paddingStart="8dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:text="PREVIOUS MISSIONS"
                     android:textColor="@color/colorSecondary"
+                    android:fontFamily="@font/montserrat_used"
+                    android:textSize="12sp"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:background="@drawable/know_more_button_bg"
+                    android:onClick="@{()->ProfileViewModel.toYourPreviousMissions()}"
+                    android:text="@string/previous_missions"
                     app:layout_constraintBottom_toBottomOf="@+id/missions_supported"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/missions_supported"
-                    tools:ignore="RtlSymmetry" />
+                    app:layout_constraintTop_toTopOf="@+id/missions_supported" />
 
                 <TextView
                     android:id="@+id/mission_name"
@@ -256,12 +256,17 @@
                     app:layout_constraintStart_toEndOf="@+id/sponsor_logo"
                     app:layout_constraintTop_toTopOf="@+id/sponsor_logo"
                     tools:text="Sponsor name" />
-                <androidx.appcompat.widget.AppCompatImageButton
+                <Button
                     android:id="@+id/to_sponsor"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/ic_arrow_right"
-                    android:background="@null"
+                    android:layout_width="wrap_content"
+                    android:layout_height="23dp"
+                    android:text="@string/know_more"
+                    android:textColor="@color/colorSecondary"
+                    android:fontFamily="@font/montserrat_used"
+                    android:textSize="12sp"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:background="@drawable/know_more_button_bg"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/sponsor_name"
                     app:layout_constraintBottom_toBottomOf="@id/sponsor_name"/>

@@ -47,7 +47,6 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
         if(checkInternetConnectivity(context)){
             insertIntoSharedPref(userName)
             viewModelScope.launch {
-                Log.i("ANVM","p")
                 insertIntoCloudDatabase(userName) }
 
             _nameInsertDone.value=false
@@ -55,7 +54,6 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
         }
         else{
             _noInternet.value=true
-            Log.i("fg","x")
         }
 
     }

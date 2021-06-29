@@ -103,8 +103,8 @@ class CategoryUsageFragment : Fragment() {
         viewModel.countdownColor.observe(viewLifecycleOwner, Observer {status->
             when (status) {
                 CategoryRuleStatus.BROKEN -> {
-                    binding.headsUpText.text="Oye!!"
-                    binding.subHeadsUpText.text="kjgkjgk kgj jhgj j jnkj bhjjh hjbhgjgyug gyuj j"
+                    binding.headsUpText.text=getString(R.string.alas)
+                    binding.subHeadsUpText.text=getString(R.string.cat_broken_text)
                     context?.let {
                         binding.headsUpText.setTextColor(ContextCompat.getColor(it, R.color.colorError))
                         binding.timeCountdown.setTextColor(ContextCompat.getColor(it, R.color.colorError))
@@ -129,8 +129,8 @@ class CategoryUsageFragment : Fragment() {
                     }
                 }
                 CategoryRuleStatus.WARNING -> {
-                    binding.headsUpText.text="Heads Up!"
-                    binding.subHeadsUpText.text="kjgkjgk kgj jhgj jgyug gyuj j"
+                    binding.headsUpText.text=getString(R.string.heads_up)
+                    binding.subHeadsUpText.text=getString(R.string.cat_warning_text)
                     context?.let {
                         binding.headsUpText.setTextColor(ContextCompat.getColor(it, R.color.yellow))
                         binding.timeCountdown.setTextColor(ContextCompat.getColor(it, R.color.yellow))
@@ -143,8 +143,8 @@ class CategoryUsageFragment : Fragment() {
                     binding.launchesCountdown.visibility=View.VISIBLE
                 }
                 else -> {
-                    binding.headsUpText.text="Hey!"
-                    binding.subHeadsUpText.text="kjgkjgk kgj jhgj j jnkj bhjjh hjbhgjgyug gyuj j"
+                    binding.headsUpText.text=getString(R.string.going_good)
+                    binding.subHeadsUpText.text=getString(R.string.cat_safe_text)
                     context?.let {
                         binding.headsUpText.setTextColor(ContextCompat.getColor(it, R.color.colorPrimary))
                         binding.timeCountdown.setTextColor(ContextCompat.getColor(it, R.color.colorPrimary))

@@ -20,6 +20,7 @@ import com.spandverse.seseva.adapters.InstalledAppAdapter
 import com.spandverse.seseva.data.AllDatabase
 import com.spandverse.seseva.databinding.FragmentRules2Binding
 import com.spandverse.seseva.foregroundnnotifications.InfoPopUpWindow
+import com.spandverse.seseva.foregroundnnotifications.WhitelistedInfoPopUpWindow
 import com.spandverse.seseva.home.DrawerLocker
 import com.spandverse.seseva.ui.login.NoInternetDialogFragment
 
@@ -350,7 +351,6 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
     }
     private fun showNoInternetConnectionDialog() {
         // Create an instance of the dialog fragment and show it
-        Log.i("fg", "sdf")
         val dialog = NoInternetDialogFragment()
         val fragmentManager=childFragmentManager
         dialog.show(fragmentManager, "No Internet Connection")
@@ -361,9 +361,15 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
     }
 
     override fun onClick(p0: View?) {
-        val popUpClass = InfoPopUpWindow()
-        p0?.let {
-            popUpClass.showPopupWindow(it) }
+
+        if (p0?.id == R.id.i_whitelisted) {
+            val popUpClass = WhitelistedInfoPopUpWindow()
+            popUpClass.showPopupWindow(p0)
+        } else if (p0 != null) {
+            val popUpClass = InfoPopUpWindow()
+            popUpClass.showPopupWindow(p0)
+        }
     }
+
 
 }

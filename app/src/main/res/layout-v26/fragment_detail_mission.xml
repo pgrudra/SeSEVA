@@ -90,12 +90,17 @@
                         app:layout_constraintStart_toEndOf="@+id/sponsor_logo"
                         app:layout_constraintTop_toTopOf="@+id/sponsor_logo"
                         tools:text="Sponsor name" />
-                    <androidx.appcompat.widget.AppCompatImageButton
+                    <Button
                         android:id="@+id/to_sponsor"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_arrow_right"
-                        android:background="@null"
+                        android:layout_width="wrap_content"
+                        android:layout_height="23dp"
+                        android:text="@string/know_more"
+                        android:textColor="@color/colorSecondary"
+                        android:fontFamily="@font/montserrat_used"
+                        android:textSize="12sp"
+                        android:paddingStart="4dp"
+                        android:paddingEnd="4dp"
+                        android:background="@drawable/know_more_button_bg"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:onClick="@{()->selectedMissionViewModel.toSponsorScreen()}"
                         app:layout_constraintTop_toTopOf="@id/sponsor_name"

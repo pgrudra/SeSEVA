@@ -50,6 +50,8 @@
     <string name="autostart_permission_asked">com.spandverse.seseva.AUTOSTART_PERMISSION_ASKED</string>
     <string name="active_missions">com.spandverse.seseva.ACTIVE_MISSIONS</string>
     <string name="total_missions">com.spandverse.seseva.TOTAL_MISSIONS</string>
+    <string name="authenticate_to_delete">com.spandverse.seseva.AUTHENTICATE_TO_DELETE</string>
+
 
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
@@ -144,7 +146,6 @@
     <string name="help">help</string>
     <string name="i_understand_the_rules">I UNDERSTAND THE RULES</string>
     <string name="no_limit_no_penalty">No limit… No penalty !!</string>
-    <string name="categoriy_social">Weather, Travel, Sports, Productivity, Photography, Pdde, Parenting, Medical, Navigation, Health, Finance</string>
     <string name="category_refresh">categoryRefresh</string>
     <string name="loading">Loading</string>
     <string name="faqs">FAQs</string>
@@ -158,7 +159,7 @@
     <string name="usage">Usage</string>
     <string name="feats">Feats</string>
     <string name="today_s_statistics">Today\'s statistics</string>
-    <string name="meaningOfThisWeeK">since last sunday, the day to started using SeSeva</string>
+    <string name="meaningOfThisWeeK">This week’s statistics consists of the usage statistics from the  latest day-of-week you installed SeSEVA to today</string>
     <string name="profile">Profile</string>
     <string name="permissions">Permissions</string>
     <string name="missions">Missions</string>
@@ -166,20 +167,20 @@
     <string name="switch_to_this_mission">SWITCH TO THIS MISSION</string>
     <string name="sponsored_mission_name">%1$d. %2$s</string>
     <string name="address_contact_number">Contact details</string>
-    <string name="don_t_break_the_rule">please don\'t break the rule</string>
-    <string name="blocking_screen_t3">You will lose your chance of raising Rs %1$d towards the mission you had chosen if you break the rule.</string>
-    <string name="blocking_screen_t3_m_b">You have lost your opportunity of raising Rs %1$d towards the mission you had chosen, but you can still help out yourself by spending your time in a better way than wasting it on your smartphone</string>
-    <string name="blocking_screen_t3_s">You have lost your opportunity of raising Rs %1$d towards the mission you had chosen</string>
+    <string name="don_t_break_the_rule">DON\'T BREAK THE RULE</string>
+    <string name="blocking_screen_t3">You can contribute Rs %1$d towards the mission you had chosen if you break the rule.</string>
     <string name="blocking_screen_t21">Less than %1$d seconds remaining for this app.</string>
     <string name="blocking_screen_t22">No more launches left for this app.</string>
-    <string name="close_app_immediately">Close app immediately</string>
-    <string name="close_app_soon">Close app soon</string>
+    <string name="close_app_immediately">Close this app immediately</string>
+    <string name="close_app_soon">Close this app soon</string>
+    <string name="its_sad_sentence">It\'s sad that you missed the chance to raise money for your mission</string>
     <string name="dont_relaunch_app">Don\'t relaunch the app you are using.</string>
     <string name="blocking_screen_t41">After tapping I UNDERSTAND, ensure that you close the app you were using\n(use home button to close app immediately) </string>
     <string name="blocking_screen_t42">After tapping I UNDERSTAND, you can use the app, but ensure that you don\'t relaunch it again.</string>
     <string name="blocking_screen_t4_s">Please press home button. Only after that, this blocking screen will disappear.</string>
-    <string name="rule_broken">Rule Broken</string>
-    <string name="close_app_for_your_own_good">Close app for your own good</string>
+    <string name="rule_broken">YOU BROKE THE RULE</string>
+    <string name="hey_user">Hey %1$s</string>
+    <string name="close_app_for_your_own_good">Close this app for your own good</string>
     <string name="you_are_using_strict_mode">You are using strict mode</string>
     <string name="strict_mode_banner_body">Feeling it hard to get de-addicted from your phone? Try out strict mode!</string>
     <string name="overlay_permission_banner_body">Please provide permission to draw over other apps to make best use of SeSEVA</string>
@@ -188,7 +189,7 @@
     <string name="check_grant">check and grant</string>
     <string name="i_understand">I UNDERSTAND</string>
     <string name="you_can_still_help">You can still help…</string>
-    <string name="you_can_still_help_yourself">You can still help yourself…</string>
+    <string name="you_can_still_help_yourself">CLOSE THE APP AT LEAST\nNOW FOR\nYOUR OWN GOOD</string>
     <string name="aided_by">Aided by</string>
     <string name="permission_to_autostart">Permission to autostart</string>
     <string name="after_you_grant_this_permission_tap_on_continue">After you grant this permission, tap on continue.</string>
@@ -220,8 +221,39 @@
     <string name="download_report">DOWNLOAD REPORT</string>
     <string name="report_will_be_available_for_download_soon">Report will be available for download soon</string>
     <string name="accomplished_on">Accomplished on</string>
-    <string name="this_mission_chosen">Currently on this mission</string>
+    <string name="this_mission_chosen">Your current mission</string>
     <string name="screen_time">Screen Time</string>
     <string name="app_launches">App Launches</string>
     <string name="first_letter_uc">%1$s%2$s</string>
+    <string name="intro_2_text">You now have the opportunity of being part of social missions hosted on SeSEVA.\n\n\nYou will NOT be charged a single rupee either towards the missions or for using SeSEVA.\n\n\nChoose a mission and raise money for it by following a set of rules.\n\nThe money you raise will be donated by Aid Providers collaborating with SeSEVA, who are basically individuals and corporations willing to improve the society we live in.\n\nEach mission has its own set of rules. You can switch between missions at any time.</string>
+    <string name="intro_1_text">%1$s,\n\nNeed a noble reason to use your phone in an optimum way?\nSeSEVA provides you one.\n\n\nWhether you want to keep your smartphone addiction in check or simply want to be aware of the time you spend on it,\nSeSEVA is here for you.</string>
+    <string name="alas">Alas!!</string>
+    <string name="cat_broken_text">You have broken the rule. Stop excess use of your mobile for your own sake.</string>
+    <string name="heads_up">Heads-Up!</string>
+    <string name="going_good">Going good!</string>
+    <string name="cat_safe_text">Your usage is well within the rules for this category.</string>
+    <string name="cat_warning_text">You are on the brink of breaking the rule. Please use cautiously for the sake of your mission as well as yourself.</string>
+    <string name="app_broken_text">You have broken the rule set for this category. Stop excess use of your mobile for your own sake.</string>
+    <string name="app_classification_text">This app is classified under %1$s category.</string>
+    <string name="app_warning_text">You are on the brink of breaking the rule set for this category. Please use cautiously for the sake of your mission as well as yourself.</string>
+    <string name="intro_2_sub_text">Each mission has its own set of rules. You can switch between missions at any time.</string>
+
+    <string name="reauthenticate_and_delete_title">Re-Authenticate and Delete</string>
+    <string name="reauthenticate_and_delete_body">It appears that you had authenticated long back. You need to re-authenticate by signing in with %1$s to delete your account.</string>
+    <string name="reauthenticate_and_delete_button">authenticate to delete</string>
+
+    <string name="categoriy_social">Genres included: Social, Lifestyle and Dating</string>
+    <string name="category_communication">Genres included: Communication and Browsing</string>
+    <string name="category_video">Genres included: Video players and comics</string>
+    <string name="categoriy_entertainment">This category consists of Entertainment apps</string>
+    <string name="category_games">Game genres included: Action games, Adventure, Arcade, Board, Card, Casino, Casual, Racing, Music, Role playing, Simulation, Sports and Strategy</string>
+    <string name="category_msnbs">Genres included:  Music, Audio, Shopping, News, Magazines, Beauty and Sports</string>
+    <string name="category_whitelisted">Genres included: Whether, Business, Tools, Productivity, Photography, Personalization, Parenting, Medical, Maps, Navigation, Libraries, Demo, House, Home, Health, Fitness, Food, Drink, Travel, Local, Finance, Events, Education, Books, References, Auto, Vehicles, Art and Design; Game genres included: Educational, Word, Trivia and Puzzle; System apps that are not available on play store</string>
+    <string name="category_others">This category consists of apps not available on play store</string>
+
+    <string name="mode_light_info">Mode when permission to draw over other apps is not granted.  When you are at the brink of breaking the rule, you will be informed about it through notifications. You will be persuaded to not break the rule, but not be prevented from using the corresponding app.</string>
+    <string name="mode_medium_info">Default mode if permission to draw over other apps is granted. When you are at the brink of breaking the rule, you will be informed about it through a blocking screen. You will be persuaded to not break the rule, but not be prevented from using the corresponding app.</string>
+    <string name="mode_strict_into">Recommended mode if you feel heavily addicted to your smartphone. Once you break a rule, you will be prevented from using the corresponding app.</string>
+    <string name="no_text"> </string>
+    <string name="previous_missions">PREVIOUS MISSIONS</string>
 </resources>
