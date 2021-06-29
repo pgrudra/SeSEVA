@@ -62,10 +62,12 @@
     <TextView
         android:id="@+id/time_launches_left_text"
         style="@style/caption"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
         android:textColor="@color/primary_text"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/dont_text"
         app:layout_constraintTop_toBottomOf="@id/close_app_text"
         tools:text="you have 0 launches left" />
