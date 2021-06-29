@@ -364,6 +364,10 @@ class Rules2ViewModel(
                 this?.putInt((R.string.saved_rules_number).toString(), rulesNumber)
                 this?.apply()
             }
+            with(sharedPref?.edit()) {
+                this?.putBoolean((R.string.refresh_rules).toString(), true)
+                this?.apply()
+            }
             if(sharedPref.getBoolean((R.string.onboarding_done).toString(),false)) {
                 if (serviceRestart) {
                     actionOnService(Actions.STOP)

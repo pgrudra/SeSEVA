@@ -22,7 +22,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/common_background"
             android:elevation="4dp"
-            app:title="SeSeva"
+            app:title="Home"
             android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
             app:layout_constraintTop_toTopOf="parent"
             app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
@@ -382,7 +382,7 @@
                 style="@style/caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="16dp"
                 android:text="Total missions"
                 android:textColor="@color/secondary_text"
                 app:layout_constraintBottom_toTopOf="@id/missions_bk"
@@ -460,7 +460,7 @@
                 android:textColor="#F2C94C"
                 app:layout_constraintStart_toEndOf="@+id/appCompatImageView"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Super Sevak" />
+                tools:text="Sevak" />
 
             <TextView
                 android:id="@+id/money_raised"
@@ -481,7 +481,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="11dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:text="You have raised"
                 android:textColor="@color/secondary_text"
                 app:layout_constraintStart_toStartOf="parent"
@@ -492,13 +492,12 @@
                 style="@style/caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:text="for"
                 android:textColor="@color/secondary_text"
                 app:layout_constraintBottom_toTopOf="@+id/mission_name"
                 app:layout_constraintStart_toStartOf="@+id/textView33"
                 app:layout_constraintTop_toBottomOf="@+id/money_raised"
-                app:layout_constraintVertical_bias="0.24000001"
+                app:layout_constraintVertical_bias="0.060000002"
                 app:layout_constraintVertical_chainStyle="packed" />
 
             <TextView

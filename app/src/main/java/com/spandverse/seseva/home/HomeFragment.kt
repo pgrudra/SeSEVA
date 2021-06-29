@@ -42,6 +42,7 @@ class HomeFragment : Fragment(),MissionAccomplishedDialog.MissionAccomplishedDia
 
         })
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -175,6 +176,11 @@ class HomeFragment : Fragment(),MissionAccomplishedDialog.MissionAccomplishedDia
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.stopHandler()
+        viewModel.runHandler()
+    }
     @TargetApi(Build.VERSION_CODES.M)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

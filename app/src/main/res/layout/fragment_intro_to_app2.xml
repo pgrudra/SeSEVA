@@ -6,31 +6,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/common_background">
-        <TextView
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            style="@style/subtitle_1"
-            android:id="@+id/main_body"
-            android:textColor="@color/primary_text"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/png"
+            android:elevation="15dp"
+            app:srcCompat="@drawable/intro2"
             app:layout_constraintBottom_toTopOf="@id/continue_button"
-            android:text="@string/intro_2_text"/>
-        <!--<TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            style="@style/tertiary_text"
-            android:textColor="@color/disabled_text"
-            app:layout_constraintTop_toBottomOf="@id/main_body"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/continue_button"
-            android:text="@string/intro_2_sub_text"/>-->
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <Button
             android:id="@+id/continue_button"

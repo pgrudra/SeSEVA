@@ -603,6 +603,7 @@ class UsageOverviewFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.stopHandler()
+        viewModel.checkRulesToChange()
         viewModel.runHandler()
     }
 

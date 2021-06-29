@@ -160,6 +160,7 @@
             android:layout_marginStart="18dp"
             android:src="@drawable/ic_twitter_icon"
             android:background="@null"
+            android:visibility="invisible"
             app:layout_constraintStart_toEndOf="@id/gmail_icon"
             app:layout_constraintTop_toTopOf="@id/gmail_icon" />
 
@@ -169,7 +170,7 @@
             android:layout_marginStart="18dp"
             android:background="@null"
             android:src="@drawable/ic_youtube_icon"
-
+            android:visibility="invisible"
             app:layout_constraintStart_toEndOf="@id/twitter_icon"
             app:layout_constraintTop_toTopOf="@id/gmail_icon" />
 

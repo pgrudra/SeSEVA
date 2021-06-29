@@ -33,7 +33,7 @@
         android:id="@+id/sponsored_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sponsored"
+        android:text="sponsored"
         style="@style/caption"
         android:layout_marginTop="8dp"
         android:textColor="@color/secondary_text"

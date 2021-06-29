@@ -28,7 +28,7 @@
         style="@style/body_2"
         android:layout_marginTop="16dp"
         android:textColor="@color/secondary_text"
-        android:text="To serve in this mode, SeSEVA requires to draw over other apps. Please grant this permission" />
+        android:text="@string/dooa_dialog_body" />
     <Button
         android:id="@+id/cancel_button"
         android:layout_width="wrap_content"

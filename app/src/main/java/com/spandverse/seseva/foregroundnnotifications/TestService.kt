@@ -322,6 +322,7 @@ class TestService : Service() {
         var eval = true
         var pkg: String? = null
         var lastResumeTimeStamp: Long = 0L
+        var lastResumeTimeStamp2: Long = 0L
         while (systemEvents.hasNextEvent()) {
             val event = UsageEvents.Event()
             systemEvents.getNextEvent(event)
@@ -336,6 +337,7 @@ class TestService : Service() {
                             lastResumeTimeStamp = event.timeStamp
                             pkg = event.packageName
                         }
+                        lastResumeTimeStamp2=event.timeStamp
                     }
                 }
                 sortedEvents[event.packageName]?.add(event)
@@ -420,7 +422,7 @@ class TestService : Service() {
                         notificationManager.sendNotification("Less than 25 secs remaining! Quit now, don't lose the opportunity of helping some one in need.", context)
                     }
                     else if (catLaunches == maxLaunches) {
-                        if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
+                        if (now.timeInMillis <= lastResumeTimeStamp2 + 10000) {
                             notificationManager.sendNotification("No more launches for this app, else you will lose opportunity of doing something noble!", context)
                         }
                     }
@@ -430,12 +432,12 @@ class TestService : Service() {
                         notificationManager.sendNotification("Less than 5 mins remaining", context)
                     }
                     else if (catLaunches == maxLaunches - 1) {
-                        if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
+                        if (now.timeInMillis <= lastResumeTimeStamp2 + 10000) {
                             notificationManager.sendNotification("Only 1 more launch remaining, use with caution", context)
                         }
                     }else if (catLaunches == maxLaunches - 2) {
-                        if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
-                            notificationManager.sendNotification("Only 2 more launch remaining, use with caution", context)
+                        if (now.timeInMillis <= lastResumeTimeStamp2 + 10000) {
+                            notificationManager.sendNotification("Only 2 more launches remaining, use with caution", context)
                         }
                     }
                     else if (catTimeInSeconds >= maxTime / 2 && catTimeInSeconds < (maxTime / 2) + 12) {
@@ -479,6 +481,7 @@ class TestService : Service() {
         var eval = true
         var pkg: String? = null
         var lastResumeTimeStamp: Long = 0L
+        var lastResumeTimeStamp2:Long = 0L
         while (systemEvents.hasNextEvent()) {
             val event = UsageEvents.Event()
             systemEvents.getNextEvent(event)
@@ -493,6 +496,7 @@ class TestService : Service() {
                             lastResumeTimeStamp = event.timeStamp
                             pkg = event.packageName
                         }
+                        lastResumeTimeStamp2=event.timeStamp
                     }
                 }
                 sortedEvents[event.packageName]?.add(event)
@@ -593,9 +597,10 @@ class TestService : Service() {
                     if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
                         handler.post {
                             blockingScreenView.user_name.text=context.getString(R.string.hey_user,userName)
+                            blockingScreenView.image.visibility=View.INVISIBLE
                             blockingScreenView.dont_text.text=context.getString(R.string.rule_broken)
                             blockingScreenView.close_app_text.text =""
-                            blockingScreenView.time_launches_left_text.text=context.getString(R.string.its_sad_sentence)
+                            blockingScreenView.time_launches_left_text.text=context.getString(R.string.its_sad_sentence,penalties[cat])
                             blockingScreenView.textView18.text =""
                             blockingScreenView.textView43.text =context.getString(R.string.you_can_still_help_yourself)
                             blockingScreenView.textView44.text=""
@@ -625,8 +630,9 @@ class TestService : Service() {
                 }
                 else {
                     if (catTimeInSeconds > maxTime - 12 && catTimeInSeconds <= maxTime) {
-
                             handler.post {
+                                blockingScreenView.user_name.text=context.getString(R.string.hey_user,userName)
+                                blockingScreenView.image.visibility=View.VISIBLE
                                 blockingScreenView.dont_text.text=context.getString(R.string.don_t_break_the_rule)
                                 blockingScreenView.close_app_text.text=context.getString(R.string.close_app_immediately)
                                 blockingScreenView.time_launches_left_text.text=context.getString(R.string.blocking_screen_t21,12)
@@ -662,6 +668,8 @@ class TestService : Service() {
 
                     } else if(catTimeInSeconds > maxTime - 24 && catTimeInSeconds <= maxTime-12){
                             handler.post {
+                                blockingScreenView.user_name.text=context.getString(R.string.hey_user,userName)
+                                blockingScreenView.image.visibility=View.VISIBLE
                                 blockingScreenView.dont_text.text=context.getString(R.string.don_t_break_the_rule)
                                 blockingScreenView.close_app_text.text=context.getString(R.string.close_app_soon)
                                 blockingScreenView.time_launches_left_text.text=context.getString(R.string.blocking_screen_t21,24)
@@ -697,6 +705,8 @@ class TestService : Service() {
                     }
                     else if(catTimeInSeconds > maxTime - 36 && catTimeInSeconds <= maxTime-24){
                         handler.post {
+                            blockingScreenView.user_name.text=context.getString(R.string.hey_user,userName)
+                            blockingScreenView.image.visibility=View.VISIBLE
                             blockingScreenView.dont_text.text=context.getString(R.string.don_t_break_the_rule)
                             blockingScreenView.close_app_text.text=context.getString(R.string.close_app_soon)
                             blockingScreenView.time_launches_left_text.text=context.getString(R.string.blocking_screen_t21,36)
@@ -731,8 +741,10 @@ class TestService : Service() {
                         }
                     }
                         else if (catLaunches == maxLaunches) {
-                        if (now.timeInMillis <= lastResumeTimeStamp + 1000) {
+                        if (now.timeInMillis <= lastResumeTimeStamp2 + 1000) {
                             handler.post {
+                                blockingScreenView.user_name.text=context.getString(R.string.hey_user,userName)
+                                blockingScreenView.image.visibility=View.VISIBLE
                                 blockingScreenView.dont_text.text=context.getString(R.string.don_t_break_the_rule)
                                 blockingScreenView.close_app_text.text=context.getString(R.string.dont_relaunch_app)
                                 blockingScreenView.time_launches_left_text.text=context.getString(R.string.blocking_screen_t22)
@@ -772,12 +784,12 @@ class TestService : Service() {
                         notificationManager.sendNotification("Less than 5 mins remaining", context)
                     }
                     else if (catLaunches == maxLaunches - 1) {
-                        if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
+                        if (now.timeInMillis <= lastResumeTimeStamp2 + 10000) {
                             notificationManager.sendNotification("Only 1 more launch remaining", context)
                         }
                     }else if (catLaunches == maxLaunches - 2) {
-                        if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
-                            notificationManager.sendNotification("Only 2 more launch remaining", context)
+                        if (now.timeInMillis <= lastResumeTimeStamp2 + 10000) {
+                            notificationManager.sendNotification("Only 2 more launches remaining", context)
                         }
                     }
                     else if (catTimeInSeconds >= maxTime / 2 && catTimeInSeconds < (maxTime / 2) + 12) {
@@ -820,6 +832,7 @@ class TestService : Service() {
         var eval = true
         var pkg: String? = null
         var lastResumeTimeStamp: Long = 0L
+        var lastResumeTimeStamp2: Long = 0L
         while (systemEvents.hasNextEvent()) {
             val event = UsageEvents.Event()
             systemEvents.getNextEvent(event)
@@ -834,6 +847,7 @@ class TestService : Service() {
                             lastResumeTimeStamp = event.timeStamp
                             pkg = event.packageName
                         }
+                        lastResumeTimeStamp2=event.timeStamp
                     }
                 }
                 sortedEvents[event.packageName]?.add(event)
@@ -918,6 +932,8 @@ class TestService : Service() {
                     }
                 if (catTimeInSeconds > maxTime || catLaunches > maxLaunches) {
                     handler.post {
+                        blockingScreenViewStrict.user_name_s.text=context.getString(R.string.hey_user,userName)
+                        blockingScreenViewStrict.time_launches_left_text_s.text=context.getString(R.string.its_sad_sentence,penalties[cat])
                         blockingScreenViewStrict.app_time_s.text=(appTime/60000).toString()
                         blockingScreenViewStrict.app_launches_s.text=appLaunches.toString()
                         blockingScreenViewStrict.cat_time_s.text=(catTimeInSeconds/oneMinuteInSeconds).toString()
@@ -935,6 +951,8 @@ class TestService : Service() {
                     if (catTimeInSeconds > maxTime - 10 && catTimeInSeconds <= maxTime-8) {
                         if (now.timeInMillis <= lastResumeTimeStamp + 9000){
                             handler.post {
+                                blockingScreenView.user_name.text=context.getString(R.string.hey_user,userName)
+                                blockingScreenView.image.visibility=View.VISIBLE
                                 blockingScreenView.dont_text.text=context.getString(R.string.don_t_break_the_rule)
                                 blockingScreenView.close_app_text.text=context.getString(R.string.close_app_immediately)
                                 blockingScreenView.time_launches_left_text.text=context.getString(R.string.blocking_screen_t21,10)
@@ -971,6 +989,8 @@ class TestService : Service() {
                     }
                     else if(catTimeInSeconds > maxTime - 20 && catTimeInSeconds <= maxTime-18){
                             handler.post {
+                                blockingScreenView.user_name.text=context.getString(R.string.hey_user,userName)
+                                blockingScreenView.image.visibility=View.VISIBLE
                                 blockingScreenView.dont_text.text=context.getString(R.string.don_t_break_the_rule)
                                 blockingScreenView.close_app_text.text=context.getString(R.string.close_app_soon)
                                 blockingScreenView.time_launches_left_text.text=context.getString(R.string.blocking_screen_t21,20)
@@ -1006,8 +1026,10 @@ class TestService : Service() {
 
                     }
                     else if (catLaunches == maxLaunches) {
-                        if (now.timeInMillis <= lastResumeTimeStamp + 1000) {
+                        if (now.timeInMillis <= lastResumeTimeStamp2 + 1000) {
                             handler.post {
+                                blockingScreenView.user_name.text=context.getString(R.string.hey_user,userName)
+                                blockingScreenView.image.visibility=View.VISIBLE
                                 blockingScreenView.dont_text.text=context.getString(R.string.don_t_break_the_rule)
                                 blockingScreenView.close_app_text.text=context.getString(R.string.dont_relaunch_app)
                                 blockingScreenView.time_launches_left_text.text=context.getString(R.string.blocking_screen_t22)
@@ -1044,12 +1066,12 @@ class TestService : Service() {
                         notificationManager.sendNotification("Less than 5 mins remaining", context)
                     }
                     else if (catLaunches == maxLaunches - 1) {
-                        if (now.timeInMillis <= lastResumeTimeStamp + 1000) {
+                        if (now.timeInMillis <= lastResumeTimeStamp2 + 1000) {
                             notificationManager.sendNotification("Only 1 more launch remaining", context)
                         }
                     }else if (catLaunches == maxLaunches - 2) {
-                        if (now.timeInMillis <= lastResumeTimeStamp + 1000) {
-                            notificationManager.sendNotification("Only 2 more launch remaining", context)
+                        if (now.timeInMillis <= lastResumeTimeStamp2 + 1000) {
+                            notificationManager.sendNotification("Only 2 more launches remaining", context)
                         }
                     }
                     else if (catTimeInSeconds >= maxTime / 2 && catTimeInSeconds < (maxTime / 2) + 1) {

@@ -51,7 +51,7 @@
     <string name="active_missions">com.spandverse.seseva.ACTIVE_MISSIONS</string>
     <string name="total_missions">com.spandverse.seseva.TOTAL_MISSIONS</string>
     <string name="authenticate_to_delete">com.spandverse.seseva.AUTHENTICATE_TO_DELETE</string>
-
+    <string name="refresh_rules">com.spandverse.seseva.REFRESH_RULES</string>
 
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
@@ -168,14 +168,14 @@
     <string name="sponsored_mission_name">%1$d. %2$s</string>
     <string name="address_contact_number">Contact details</string>
     <string name="don_t_break_the_rule">DON\'T BREAK THE RULE</string>
-    <string name="blocking_screen_t3">You can contribute Rs %1$d towards the mission you had chosen if you break the rule.</string>
-    <string name="blocking_screen_t21">Less than %1$d seconds remaining for this app.</string>
-    <string name="blocking_screen_t22">No more launches left for this app.</string>
+    <string name="blocking_screen_t3">You can contribute Rs %1$d towards your mission only if you don\'t break the rule.</string>
+    <string name="blocking_screen_t21">Less than %1$d seconds remaining for this app</string>
+    <string name="blocking_screen_t22">No more launches left for this app</string>
     <string name="close_app_immediately">Close this app immediately</string>
     <string name="close_app_soon">Close this app soon</string>
-    <string name="its_sad_sentence">It\'s sad that you missed the chance to raise money for your mission</string>
-    <string name="dont_relaunch_app">Don\'t relaunch the app you are using.</string>
-    <string name="blocking_screen_t41">After tapping I UNDERSTAND, ensure that you close the app you were using\n(use home button to close app immediately) </string>
+    <string name="its_sad_sentence">It\'s sad that you missed the chance to raise Rs %1$d for your mission</string>
+    <string name="dont_relaunch_app">Don\'t relaunch the app you are using</string>
+    <string name="blocking_screen_t41">After tapping I UNDERSTAND, ensure that you close the app you were using\n(to close app immediately press home button) </string>
     <string name="blocking_screen_t42">After tapping I UNDERSTAND, you can use the app, but ensure that you don\'t relaunch it again.</string>
     <string name="blocking_screen_t4_s">Please press home button. Only after that, this blocking screen will disappear.</string>
     <string name="rule_broken">YOU BROKE THE RULE</string>
@@ -189,7 +189,7 @@
     <string name="check_grant">check and grant</string>
     <string name="i_understand">I UNDERSTAND</string>
     <string name="you_can_still_help">You can still help…</string>
-    <string name="you_can_still_help_yourself">CLOSE THE APP AT LEAST\nNOW FOR\nYOUR OWN GOOD</string>
+    <string name="you_can_still_help_yourself">CLOSE THE APP\nAT LEAST NOW\nFOR YOUR OWN GOOD</string>
     <string name="aided_by">Aided by</string>
     <string name="permission_to_autostart">Permission to autostart</string>
     <string name="after_you_grant_this_permission_tap_on_continue">After you grant this permission, tap on continue.</string>
@@ -225,8 +225,8 @@
     <string name="screen_time">Screen Time</string>
     <string name="app_launches">App Launches</string>
     <string name="first_letter_uc">%1$s%2$s</string>
-    <string name="intro_2_text">You now have the opportunity of being part of social missions hosted on SeSEVA.\n\n\nYou will NOT be charged a single rupee either towards the missions or for using SeSEVA.\n\n\nChoose a mission and raise money for it by following a set of rules.\n\nThe money you raise will be donated by Aid Providers collaborating with SeSEVA, who are basically individuals and corporations willing to improve the society we live in.\n\nEach mission has its own set of rules. You can switch between missions at any time.</string>
-    <string name="intro_1_text">%1$s,\n\nNeed a noble reason to use your phone in an optimum way?\nSeSEVA provides you one.\n\n\nWhether you want to keep your smartphone addiction in check or simply want to be aware of the time you spend on it,\nSeSEVA is here for you.</string>
+    <string name="intro_2_text">You now have the opportunity of being part of social missions hosted on SeSEVA.\n\n\nYou will NOT be charged a single rupee either towards the missions or for using SeSEVA.\n\n\nChoose a mission and raise money for it by following a set of rules.\n\nThe money you raise will be donated by Aid Providers collaborating with SeSEVA. These are individuals and corporations willing to contribute in developing the society we live in.\n\nEach mission has its own set of rules. You can switch between missions at any time.</string>
+    <string name="intro_1_text">%1$s,</string>
     <string name="alas">Alas!!</string>
     <string name="cat_broken_text">You have broken the rule. Stop excess use of your mobile for your own sake.</string>
     <string name="heads_up">Heads-Up!</string>
@@ -256,4 +256,5 @@
     <string name="mode_strict_into">Recommended mode if you feel heavily addicted to your smartphone. Once you break a rule, you will be prevented from using the corresponding app.</string>
     <string name="no_text"> </string>
     <string name="previous_missions">PREVIOUS MISSIONS</string>
+    <string name="dooa_dialog_body">To activate this mode, SeSEVA requires to draw over other apps. Please grant this permission.</string>
 </resources>

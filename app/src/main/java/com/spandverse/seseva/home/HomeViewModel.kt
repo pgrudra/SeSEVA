@@ -11,6 +11,8 @@ import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.os.Process
 import android.provider.Settings
 import android.util.Log
@@ -43,6 +45,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     private val sharedPref = context.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
     private val userId = Firebase.auth.currentUser?.uid
     private val cloudReference = Firebase.database.reference
+    val mainHandler= Handler(Looper.getMainLooper())
     private val _goToPermissionScreen = MutableLiveData<Boolean>()
     val goToPermissionScreen:LiveData<Boolean>
         get()=_goToPermissionScreen
@@ -121,7 +124,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     private suspend fun displayThings() {
         displayProfileRelatedThings()
         displayTotalNActiveMissions()
-        displayUsageStatsRelatedThings()
+        //displayUsageStatsRelatedThings()
         displayBannerIfApplicable()
         displayMissionsRelatedThings()
     }
@@ -540,6 +543,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
 
 
     private suspend fun displayProfileRelatedThings() {
+        _levelName.value="Sevak"
         val choseMission=sharedPref.getInt((R.string.chosen_mission_number).toString(),0)
         val mission=database.doesMissionExist(choseMission)
         if(mission!=null){
@@ -919,6 +923,18 @@ val minute:Int=(0..2).random()
 
     fun showStrictModeBannerComplete() {
         _showStrictModeBanner.value=false
+    }
+
+    fun runHandler() {
+        mainHandler.post(object :Runnable{
+            override fun run() {
+                viewModelScope.launch {  displayUsageStatsRelatedThings() }
+                mainHandler.postDelayed(this, 30000)
+            }
+        })
+    }
+    fun stopHandler() {
+        mainHandler.removeCallbacksAndMessages(null)
     }
 
     companion object {

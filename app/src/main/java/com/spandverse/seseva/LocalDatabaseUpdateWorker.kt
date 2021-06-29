@@ -169,20 +169,20 @@ for(key in categoryTimes.keys){
         val dayAfterInstallation= sharedPref.getInt((R.string.days_after_installation).toString(), 0)
         var entertainmentTime=sharedPref.getInt((R.string.entertainment_time).toString(), 0)
         var entertainmentLaunches=sharedPref.getInt((R.string.entertainment_launches).toString(), 0)
-        if(entertainmentTime>=timeRules[key]!! || entertainmentLaunches>=launchRules[key]!!){
+        if(entertainmentTime>timeRules[key]!! || entertainmentLaunches>launchRules[key]!!){
             violatedAlready=true
         }
         entertainmentLaunches+=categoryLaunches[key]!!
         entertainmentTime+=categoryTimes[key]!!
 
-        if(entertainmentTime>=timeRules[key]!! || entertainmentLaunches>=launchRules[key]!!){
+        if(entertainmentTime>timeRules[key]!! || entertainmentLaunches>launchRules[key]!!){
             if(!violatedAlready){
                 violatedToday=true
             }
         }
 
         if(dayAfterInstallation>5){
-            if(entertainmentTime<timeRules[key]!! && entertainmentLaunches<launchRules[key]!! )
+            if(entertainmentTime<=timeRules[key]!! && entertainmentLaunches<=launchRules[key]!! )
             moneyToBeUpdated+=sharedPref.getInt((R.string.weekly_reward).toString(),0)
             with(sharedPref.edit()) {
                 this?.putInt((R.string.days_after_installation).toString(), 0)

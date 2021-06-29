@@ -8,13 +8,14 @@
     android:layout_marginEnd="16dp"
     android:layout_marginBottom="40dp"
     android:background="@drawable/blocking_screen_bg">
+
     <TextView
         android:id="@+id/user_name_s"
         style="@style/subtitle_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:textColor="@color/primary_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -34,6 +35,8 @@
         android:textAllCaps="true"
         android:textColor="#E40606"
         android:textSize="18sp"
+        android:letterSpacing="0.04"
+        android:textFontWeight="600"
         app:layout_constraintStart_toStartOf="@id/user_name_s"
         app:layout_constraintTop_toBottomOf="@id/user_name_s" />
 
@@ -49,13 +52,13 @@
 
     <TextView
         android:id="@+id/time_launches_left_text_s"
-        style="@style/caption"
+        style="@style/body_1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:text="@string/its_sad_sentence"
+        tools:text="@string/its_sad_sentence"
         android:textColor="@color/primary_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -243,7 +246,7 @@
         android:shadowRadius="1"
         android:text="@string/you_can_still_help_yourself"
         android:textColor="@color/primary_text"
-        android:textSize="18sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
