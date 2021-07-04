@@ -432,11 +432,11 @@ class TestService : Service() {
                         notificationManager.sendNotification("Less than 5 mins remaining", context)
                     }
                     else if (catLaunches == maxLaunches - 1) {
-                        if (now.timeInMillis <= lastResumeTimeStamp2 + 10000) {
+                        if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
                             notificationManager.sendNotification("Only 1 more launch remaining, use with caution", context)
                         }
                     }else if (catLaunches == maxLaunches - 2) {
-                        if (now.timeInMillis <= lastResumeTimeStamp2 + 10000) {
+                        if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
                             notificationManager.sendNotification("Only 2 more launches remaining, use with caution", context)
                         }
                     }
@@ -599,7 +599,7 @@ class TestService : Service() {
                             blockingScreenView.user_name.text=context.getString(R.string.hey_user,userName)
                             blockingScreenView.image.visibility=View.INVISIBLE
                             blockingScreenView.dont_text.text=context.getString(R.string.rule_broken)
-                            blockingScreenView.close_app_text.text =""
+                            blockingScreenView.close_app_text.text =context.getString(R.string.rule_limit_sentence,toHrsMin(maxTime),maxLaunches)
                             blockingScreenView.time_launches_left_text.text=context.getString(R.string.its_sad_sentence,penalties[cat])
                             blockingScreenView.textView18.text =""
                             blockingScreenView.textView43.text =context.getString(R.string.you_can_still_help_yourself)
@@ -741,7 +741,7 @@ class TestService : Service() {
                         }
                     }
                         else if (catLaunches == maxLaunches) {
-                        if (now.timeInMillis <= lastResumeTimeStamp2 + 1000) {
+                        if (now.timeInMillis <= lastResumeTimeStamp + 1000  || now.timeInMillis <= lastResumeTimeStamp2 + 1000 && blockingScreenView.time_launches_left_text.text!=context.getString(R.string.blocking_screen_t22)) {
                             handler.post {
                                 blockingScreenView.user_name.text=context.getString(R.string.hey_user,userName)
                                 blockingScreenView.image.visibility=View.VISIBLE
@@ -784,11 +784,11 @@ class TestService : Service() {
                         notificationManager.sendNotification("Less than 5 mins remaining", context)
                     }
                     else if (catLaunches == maxLaunches - 1) {
-                        if (now.timeInMillis <= lastResumeTimeStamp2 + 10000) {
+                        if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
                             notificationManager.sendNotification("Only 1 more launch remaining", context)
                         }
                     }else if (catLaunches == maxLaunches - 2) {
-                        if (now.timeInMillis <= lastResumeTimeStamp2 + 10000) {
+                        if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
                             notificationManager.sendNotification("Only 2 more launches remaining", context)
                         }
                     }
@@ -809,6 +809,22 @@ class TestService : Service() {
 
         }
 
+    }
+
+    private fun toHrsMin(maxTime: Int): String {
+        val hrs=(maxTime/3600)
+        val mins=(maxTime%3600)/60
+        return when (hrs) {
+            0 -> {
+                "$mins mins"
+            }
+            1 -> {
+                "$hrs hr $mins mins "
+            }
+            else -> {
+                "$hrs hrs $mins mins "
+            }
+        }
     }
 
     private fun getStatsStrict(
@@ -933,6 +949,7 @@ class TestService : Service() {
                 if (catTimeInSeconds > maxTime || catLaunches > maxLaunches) {
                     handler.post {
                         blockingScreenViewStrict.user_name_s.text=context.getString(R.string.hey_user,userName)
+                        blockingScreenViewStrict.close_app_text_s.text=context.getString(R.string.rule_limit_sentence,toHrsMin(maxTime),maxLaunches)
                         blockingScreenViewStrict.time_launches_left_text_s.text=context.getString(R.string.its_sad_sentence,penalties[cat])
                         blockingScreenViewStrict.app_time_s.text=(appTime/60000).toString()
                         blockingScreenViewStrict.app_launches_s.text=appLaunches.toString()
@@ -1026,7 +1043,7 @@ class TestService : Service() {
 
                     }
                     else if (catLaunches == maxLaunches) {
-                        if (now.timeInMillis <= lastResumeTimeStamp2 + 1000) {
+                        if (now.timeInMillis <= lastResumeTimeStamp + 1000  || now.timeInMillis <= lastResumeTimeStamp2 + 1000 && blockingScreenView.time_launches_left_text.text!=context.getString(R.string.blocking_screen_t22)) {
                             handler.post {
                                 blockingScreenView.user_name.text=context.getString(R.string.hey_user,userName)
                                 blockingScreenView.image.visibility=View.VISIBLE
@@ -1066,11 +1083,11 @@ class TestService : Service() {
                         notificationManager.sendNotification("Less than 5 mins remaining", context)
                     }
                     else if (catLaunches == maxLaunches - 1) {
-                        if (now.timeInMillis <= lastResumeTimeStamp2 + 1000) {
+                        if (now.timeInMillis <= lastResumeTimeStamp + 1000) {
                             notificationManager.sendNotification("Only 1 more launch remaining", context)
                         }
                     }else if (catLaunches == maxLaunches - 2) {
-                        if (now.timeInMillis <= lastResumeTimeStamp2 + 1000) {
+                        if (now.timeInMillis <= lastResumeTimeStamp + 1000) {
                             notificationManager.sendNotification("Only 2 more launches remaining", context)
                         }
                     }

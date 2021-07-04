@@ -179,7 +179,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
 
     private suspend fun displayMissionsRelatedThings() {
         if (checkInternet()) {
-            val loadedList = database.getDownloadedMissions()
+            val activeLoadedList = database.getActiveDownloadedMissions(nowMinusOneDay)
             val entireList: MutableList<Int> = arrayListOf()
             val moneyRaisedList: MutableList<Pair<Int, Int>> = arrayListOf()
             val moneyRaisedReference = cloudReference.child("moneyRaised")
@@ -196,10 +196,9 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                         )
                     }
                     //_totalMoneyRaised.value = "Rs $totalRaisedMoney"
-                    if (loadedList != null) {
-
-                        val toDownloadList = entireList.minus(loadedList)
-                        insertIntoDatabase(toDownloadList.reversed(), loadedList, moneyRaisedList)
+                    if (activeLoadedList != null) {
+                        val toDownloadList = entireList.minus(activeLoadedList)
+                        insertIntoDatabase(toDownloadList.reversed(), activeLoadedList.reversed(), moneyRaisedList)
                     } else {
 
                         insertIntoDatabase(entireList.reversed(), null, moneyRaisedList)
@@ -211,7 +210,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                     //_totalMoneyRaised.value="Rs"+Transformations.map(database.getTotalMoneyRaised()){it.toString()}
                 }
             })
-
+            val accomplishedLoadedList=database.getAccomplishedDownloadedMissions(nowMinusOneDay)
             val accomplishedEntireList: MutableList<Int> = arrayListOf()
             val accomplishedMoneyRaisedResult =
                 cloudReference.child("accomplishedMoneyRaised").singleValueEvent()
@@ -226,8 +225,8 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                 is EventResponse.Cancelled -> {
                 }
             }
-            if (loadedList != null) {
-                val toDownloadList = accomplishedEntireList.minus(loadedList)
+            if (accomplishedLoadedList != null) {
+                val toDownloadList = accomplishedEntireList.minus(accomplishedLoadedList)
                 insertAccomplishedMissionsIntoDatabase(toDownloadList.reversed())
             } else {
                 insertAccomplishedMissionsIntoDatabase(accomplishedEntireList.reversed())
@@ -285,7 +284,6 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                 is EventResponse.Cancelled->{
                 }
             }
-            Log.i("HVM7","v$mission")
             database.insert(mission)
         }
     }
@@ -322,8 +320,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                                     mission?.missionActive=now.timeInMillis<= mission?.deadline!!
                                     mission.contributors=contributorsList.find{it.first==primaryKey}?.second ?:0
                                     viewModelScope.launch {
-                                        Log.i("HVM7","c${mission}")
-                                        database.insert(mission) }
+                                         database.insert(mission) }
                                 }
 
                                 override fun onCancelled(error: DatabaseError) {
@@ -340,7 +337,6 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                                         mission?.contributors=contributorsList.find{it.first==i}?.second ?:0
                                         mission?.totalMoneyRaised=moneyRaisedList.find{it.first==i}?.second ?:0
                                         mission?.let {
-                                            Log.i("HVM7","l${it}")
                                             database.update(it) }
                                     }
                                 }

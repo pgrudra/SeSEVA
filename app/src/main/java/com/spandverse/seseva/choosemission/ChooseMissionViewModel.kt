@@ -42,7 +42,8 @@ class ChooseMissionViewModel(
 
     private fun checkAndLoad(){
         viewModelScope.launch {
-            val loadedList=database.getDownloadedMissions()
+
+            val loadedList=database.getActiveDownloadedMissions(nowMinusOneDay)
             val entireList:MutableList<Int> = arrayListOf()
             val moneyRaisedList:MutableList<Pair<Int,Int>> = arrayListOf()
             val moneyRaisedReference=cloudReference.child("moneyRaised")
@@ -54,7 +55,7 @@ class ChooseMissionViewModel(
                     }
                     if(loadedList!=null){
                         val toDownloadList=entireList.minus(loadedList)
-                        insertIntoDatabase(toDownloadList.reversed(),loadedList,moneyRaisedList)
+                        insertIntoDatabase(toDownloadList.reversed(),loadedList.reversed(),moneyRaisedList)
                     }
                     else{
                         insertIntoDatabase(entireList.reversed(),null,moneyRaisedList)

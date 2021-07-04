@@ -40,6 +40,19 @@
         app:layout_constraintStart_toStartOf="@id/user_name_s"
         app:layout_constraintTop_toBottomOf="@id/user_name_s" />
 
+    <TextView
+        android:id="@+id/close_app_text_s"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/montserrat_used"
+        android:textColor="@color/common_background"
+        android:textSize="20sp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/user_name_s"
+        app:layout_constraintTop_toBottomOf="@id/dont_text_s"
+        tools:text="Close appname immediately" />
     <View
         android:layout_width="0dp"
         android:layout_height="2dp"
@@ -62,7 +75,7 @@
         android:textColor="@color/primary_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dont_text_s" />
+        app:layout_constraintTop_toBottomOf="@id/close_app_text_s" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/time_bg"
@@ -190,7 +203,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="You spent"
+        android:text="Your screentime"
         android:textColor="@color/common_background"
         app:layout_constraintEnd_toEndOf="@id/time_bg"
         app:layout_constraintStart_toStartOf="@id/time_bg"
@@ -201,7 +214,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_used"
-        android:text="App time | Category time"
+        android:text="On this App | On its category"
         android:textColor="@color/common_background"
         android:textSize="8sp"
         app:layout_constraintEnd_toEndOf="@id/time_bg"
@@ -212,7 +225,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_used"
-        android:text="App launches | Category launches"
+        android:text="Of this app | Of its category"
         android:textColor="@color/common_background"
         android:textSize="8sp"
         app:layout_constraintEnd_toEndOf="@id/count_bg"
@@ -225,7 +238,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="You launched"
+        android:text="Your launches"
         android:textColor="@color/common_background"
         app:layout_constraintEnd_toEndOf="@id/count_bg"
         app:layout_constraintStart_toStartOf="@id/count_bg"

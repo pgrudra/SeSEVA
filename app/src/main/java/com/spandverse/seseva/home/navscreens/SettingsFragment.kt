@@ -40,9 +40,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.spandverse.seseva.foregroundnnotifications.InfoPopUpWindow
-import com.spandverse.seseva.modelspecificpermissions.AutostartPermissionFragmentDirections
-import com.spandverse.seseva.ui.login.LoginFragment
 import kotlinx.coroutines.launch
 
 
@@ -602,7 +599,7 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
             //remove workManagers
             WorkManager.getInstance(appContext).cancelAllWork()
             //remove username and current mission
-            toLoginScreen()
+            toLoginScreen(true)
         }
 
     }
@@ -624,14 +621,20 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
             WorkManager.getInstance(appContext).cancelAllWork()
             // Google sign out
             googleSignInClient.signOut().addOnCompleteListener {
-                toLoginScreen()
+                toLoginScreen(false)
             }
         }
 
     }
-    private fun toLoginScreen(){
+    private fun toLoginScreen(deleteAccount:Boolean){
         val intentToLoginScreen = Intent(activity, MainActivity::class.java)
         intentToLoginScreen.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        if(deleteAccount){
+            intentToLoginScreen.putExtra(getString(R.string.delete_action),true)
+        }
+        else{
+            intentToLoginScreen.putExtra(getString(R.string.signout_action),true)
+        }
         startActivity(intentToLoginScreen)
         activity?.finish()
     }

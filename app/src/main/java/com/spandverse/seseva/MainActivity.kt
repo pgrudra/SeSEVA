@@ -35,7 +35,23 @@ class MainActivity: AppCompatActivity(){
         if(intent.extras?.getBoolean("Link Verification Failed",false) == true){
             Snackbar.make(
                 binding.root,
-                "Link Verification Failed.",
+                "Link Verification Failed",
+                Snackbar.LENGTH_SHORT
+            ).show()
+
+        }
+        else if(intent.extras?.getBoolean(getString(R.string.delete_action),false) == true){
+            Snackbar.make(
+                binding.root,
+                "Account Deleted Successfully",
+                Snackbar.LENGTH_SHORT
+            ).show()
+
+        }
+        else if(intent.extras?.getBoolean(getString(R.string.signout_action),false) == true){
+            Snackbar.make(
+                binding.root,
+                "Signed Out Successfully",
                 Snackbar.LENGTH_SHORT
             ).show()
 

@@ -52,7 +52,9 @@
     <string name="total_missions">com.spandverse.seseva.TOTAL_MISSIONS</string>
     <string name="authenticate_to_delete">com.spandverse.seseva.AUTHENTICATE_TO_DELETE</string>
     <string name="refresh_rules">com.spandverse.seseva.REFRESH_RULES</string>
-
+    <string name="delete_action">com.spandverse.seseva.DELETE_ACTION</string>
+    <string name="signout_action">com.spandverse.seseva.SIGNOUT_ACTION</string>
+    <string name="report_download_id">com.spandverse.seseva.REPORT_DOWNLOAD_ID</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome_back">Welcome back %1$s</string>
@@ -180,6 +182,7 @@
     <string name="blocking_screen_t4_s">Please press home button. Only after that, this blocking screen will disappear.</string>
     <string name="rule_broken">YOU BROKE THE RULE</string>
     <string name="hey_user">Hey %1$s</string>
+    <string name="rule_limit_sentence">You could spend only %1$s or launch not more then %2$d times</string>
     <string name="close_app_for_your_own_good">Close this app for your own good</string>
     <string name="you_are_using_strict_mode">You are using strict mode</string>
     <string name="strict_mode_banner_body">Feeling it hard to get de-addicted from your phone? Try out strict mode!</string>

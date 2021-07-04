@@ -23,6 +23,12 @@ interface StatDataBaseDao{
     @Query("SELECT time_spent,app_launches,date FROM list_of_stats WHERE package_name=:pkg AND date>:d ORDER BY date ASC")
     suspend fun getTimeLaunchesDate(pkg:String,d:Long): List<TimeLaunchesDate>
 
+    @Query("SELECT SUM(time_spent) FROM list_of_stats WHERE package_name=:pkg AND date>:d")
+    suspend fun getWeekTimeSpent(pkg:String,d:Long): Int?
+
+    @Query("SELECT SUM(app_launches) FROM list_of_stats WHERE package_name=:pkg AND date>:d")
+    suspend fun getWeekLaunches(pkg:String,d:Long): Int?
+
     @Query("DELETE FROM list_of_stats WHERE package_name=:pk")
     suspend fun deleteAppStats(pk:String)
 

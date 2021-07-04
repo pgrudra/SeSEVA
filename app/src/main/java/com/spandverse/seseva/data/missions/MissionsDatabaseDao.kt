@@ -36,8 +36,11 @@ interface MissionsDatabaseDao{
     @Query("SELECT missionNumber,on_accomplish_data_updated,report_available FROM list_of_missions WHERE deadline<:now AND report_available=:key")
     suspend fun getMissionNumbersForReport(now:Long,key:Boolean):List<MissionNumberUpdateReport>?
 
-    @Query("SELECT missionNumber FROM list_of_missions")
-    suspend fun getDownloadedMissions(): List<Int>?
+    @Query("SELECT missionNumber FROM list_of_missions WHERE deadline>:now")
+    suspend fun getActiveDownloadedMissions(now:Long): List<Int>?
+
+    @Query("SELECT missionNumber FROM list_of_missions WHERE deadline<:now")
+    suspend fun getAccomplishedDownloadedMissions(now:Long): List<Int>?
 
     @Query("SELECT missionNumber FROM list_of_missions WHERE contribution>:contribution ")
     suspend fun getDownloadedContributedMissions(contribution:Int): List<Int>?

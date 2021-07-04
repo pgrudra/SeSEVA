@@ -99,6 +99,7 @@ class DynamicLinkActivity : AppCompatActivity() {
     private fun goToLoginScreenOnDelete() {
         val intent= Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.putExtra(getString(R.string.delete_action),true)
         startActivity(intent)
         overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
         finish()

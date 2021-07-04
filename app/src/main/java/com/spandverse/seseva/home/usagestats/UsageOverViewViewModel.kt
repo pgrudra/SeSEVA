@@ -24,6 +24,7 @@ import java.util.*
 
 class UsageOverViewViewModel(application: Application) : AndroidViewModel(application) {
     private val appDatabaseDao = AllDatabase.getInstance(application).AppDatabaseDao
+    private val statDatabaseDao = AllDatabase.getInstance(application).StatDataBaseDao
     private val context = getApplication<Application>().applicationContext
     private val sharedPref = context.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
     val usm = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
@@ -131,7 +132,7 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
     var launchRules:HashMap<String,Int> = hashMapOf("TOTAL" to 0,"SOCIAL" to sharedPref!!.getInt((R.string.social_max_launches).toString(),0),"COMM. & BROWSING" to sharedPref.getInt((R.string.communication_max_launches).toString(),0), "GAMES" to sharedPref.getInt((R.string.games_max_launches).toString(),0),"WHITELISTED" to 0,"VIDEO & COMICS" to sharedPref.getInt((R.string.video_max_launches).toString(),0),"ENTERTAINMENT" to sharedPref.getInt((R.string.entertainment_max_launches).toString(),0),"MSNBS" to sharedPref.getInt((R.string.msnbs_max_launches).toString(),0),"OTHERS" to sharedPref.getInt((R.string.others_max_launches).toString(),0))
     var entertainmentTime=sharedPref!!.getInt((R.string.entertainment_time).toString(), 0)
     var entertainmentLaunches=sharedPref!!.getInt((R.string.entertainment_launches).toString(), 0)
-
+    val weekStartTime=Calendar.getInstance().timeInMillis-((sharedPref!!.getInt((R.string.days_after_installation).toString(), 0)+1)* ONE_DAY)
     private val appStats:MutableList<Stat> = arrayListOf()
     fun toCatUsageScreen(appsCategory: AppsCategory) {
         val cat=appsCategory.categoryName
@@ -177,11 +178,7 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
         _totalTimeSpentCatwise.value=inHrsMins(categoryTimes[cat]!!)
         _appsListEmptyOrApplications.value="Applications"}
         else{
-            _mostLaunchedAppCatwiseName.value="---"
             _appsInCatList.value= emptyList()
-            _mostUsedAppCatwiseName.value="---"
-            _totalAppLaunchesCatwise.value="---"
-            _totalTimeSpentCatwise.value="---"
             _appsListEmptyOrApplications.value="You have no apps belonging to this category"
         }
         _navigateToSelectedCategory.value=appsCategory
@@ -418,7 +415,14 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
                         val timeInSeconds = (totalTime / 1000).toInt()
 
                         val app=mapPkgWithAppNCat.find{it.first==packageName}?.second!!
-                        appStats.add(Stat(packageName = packageName,appName = app.appName,appCategory = app.appCategory,timeSpent = timeInSeconds,appLaunches = launches,date = now.timeInMillis))
+                        if(app.appCategory=="ENTERTAINMENT"){
+                            val t=statDatabaseDao.getWeekTimeSpent(app.packageName,weekStartTime)?:0+timeInSeconds
+                            val l= statDatabaseDao.getWeekLaunches(app.appCategory,weekStartTime)?:0+launches
+                            appStats.add(Stat(packageName = packageName,appName = app.appName,appCategory = app.appCategory,timeSpent = t,appLaunches = l,date = now.timeInMillis))
+                        }
+                        else{
+                            appStats.add(Stat(packageName = packageName,appName = app.appName,appCategory = app.appCategory,timeSpent = timeInSeconds,appLaunches = launches,date = now.timeInMillis))
+                        }
                         categoryTimes[app.appCategory]=categoryTimes[app.appCategory]!!+timeInSeconds
                         categoryLaunches[app.appCategory]=categoryLaunches[app.appCategory]!!+launches
                         categoryTimes["TOTAL"]=categoryTimes["TOTAL"]!!+timeInSeconds
@@ -452,15 +456,15 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
                     val appsCategory=AppsCategory(wKey,AppsCategoryType.DAILY,CategoryRuleStatus.SAFE)
                     list.add(appsCategory)
                     val entertainmentKey="ENTERTAINMENT"
-                    val eT=entertainmentTime+categoryTimes[entertainmentKey]!!
-                    val eL=entertainmentLaunches+categoryLaunches[entertainmentKey]!!
+                    categoryTimes[entertainmentKey]=entertainmentTime+categoryTimes[entertainmentKey]!!
+                    categoryLaunches[entertainmentKey]=entertainmentLaunches+categoryLaunches[entertainmentKey]!!
                     /*entertainmentTime+=categoryTimes[entertainmentKey]!!
                     entertainmentLaunches+=categoryLaunches[entertainmentKey]!!*/
-                    if(eT>timeRules[entertainmentKey]!! || eL>launchRules[entertainmentKey]!!){
+                    if(categoryTimes[entertainmentKey]?:0>timeRules[entertainmentKey]!! || categoryLaunches[entertainmentKey]?:0>launchRules[entertainmentKey]!!){
                         val entertainmentAppsCategory=AppsCategory(entertainmentKey,AppsCategoryType.WEEKLY,CategoryRuleStatus.BROKEN)
                         list.add(entertainmentAppsCategory)
                     }
-                    else if(eT>=timeRules[entertainmentKey]!!-60 || eL>=launchRules[entertainmentKey]!!-2){
+                    else if(categoryTimes[entertainmentKey]?:0>=timeRules[entertainmentKey]!!-60 || categoryLaunches[entertainmentKey]?:0>=launchRules[entertainmentKey]!!-2){
                         val entertainmentAppsCategory=AppsCategory(entertainmentKey,AppsCategoryType.WEEKLY,CategoryRuleStatus.WARNING)//statement that today is weekly bonus day, and you have a chance of raising Rs x more if you follow rule till today midnight
                         list.add(entertainmentAppsCategory)
                     }

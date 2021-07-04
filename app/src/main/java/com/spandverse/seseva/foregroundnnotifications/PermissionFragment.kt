@@ -244,6 +244,7 @@ class PermissionFragment : Fragment(),PermissionMandatoryDialogFragment.Permissi
     private fun toLoginScreen(){
         val intentToLoginScreen = Intent(activity, MainActivity::class.java)
         intentToLoginScreen.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        intentToLoginScreen.putExtra(getString(R.string.delete_action),true)
         startActivity(intentToLoginScreen)
         activity?.finish()
     }

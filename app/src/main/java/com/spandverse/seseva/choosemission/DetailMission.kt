@@ -183,7 +183,6 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
 
     private fun showNoInternetConnectionDialog() {
         // Create an instance of the dialog fragment and show it
-        Log.i("fg", "sdf")
         val dialog = NoInternetDialogFragment()
         val fragmentManager = childFragmentManager
         dialog.show(fragmentManager, "No Internet Connection")

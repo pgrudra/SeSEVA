@@ -1,12 +1,18 @@
 package com.spandverse.seseva.home.closedmissions
 
+import android.app.DownloadManager
+import android.content.*
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -19,12 +25,18 @@ import com.spandverse.seseva.databinding.FragmentAccomplishedMissionsDetailsBind
 import com.spandverse.seseva.home.DrawerLocker
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.spandverse.seseva.checkInternetConnectivity
+import com.spandverse.seseva.ui.login.NoInternetDialogFragment
+import java.io.NotActiveException
 
-class AccomplishedMissionDetails : Fragment() {
-    private val cloudImagesReference = Firebase.storage
+class AccomplishedMissionDetails : Fragment(), NoInternetDialogFragment.NoInternetDialogListener {
+    private val cloudStorageReference = Firebase.storage
     private lateinit var binding: FragmentAccomplishedMissionsDetailsBinding
     private lateinit var viewModel: AMDViewModel
+    private lateinit var appContext: Context
+    private lateinit var sharedPref: SharedPreferences
     private lateinit var viewModelFactory: AMDViewModelFactory
+    private lateinit var downLoadManager:DownloadManager
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,6 +58,12 @@ class AccomplishedMissionDetails : Fragment() {
         }
         drawerLocker!!.setDrawerEnabled(false)
         drawerLocker.displayBottomNavigation(true)
+        appContext = context?.applicationContext ?: return binding.root
+        sharedPref =
+            appContext.getSharedPreferences(
+                (R.string.shared_pref).toString(),
+                Context.MODE_PRIVATE
+            )
         val misDesLength = mission.missionDescription.length
         if (misDesLength < 226) {
             binding.expandOrContract.visibility = View.GONE
@@ -78,7 +96,7 @@ class AccomplishedMissionDetails : Fragment() {
         binding.toSponsor.setOnClickListener {
             findNavController().navigate(AccomplishedMissionDetailsDirections.actionAccomplishedMissionDetailsToSponsorDetailsFragment(mission.sponsorNumber))
         }
-        val reference = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/sponsorLogos/sponsor${mission.sponsorNumber}Logo.png")
+        val reference = cloudStorageReference.getReferenceFromUrl("gs://unslave-0.appspot.com/sponsorLogos/sponsor${mission.sponsorNumber}Logo.png")
         Glide.with(this)
             .load(reference)
             .apply(
@@ -89,11 +107,70 @@ class AccomplishedMissionDetails : Fragment() {
             .into(binding.sponsorLogo)
         if(mission.reportAvailable){
             binding.downloadReportButton.text=getString(R.string.download_report)
+            binding.downloadReportButton.isEnabled=true
             context?.let { binding.downloadReportButton.setTextColor(ContextCompat.getColor(it, R.color.colorPrimary)) }
             binding.downloadReportButton.setBackgroundResource(R.drawable.login_change_email)
         }
+        binding.downloadReportButton.setOnClickListener {
+                val reportReference = cloudStorageReference.reference.child("missionReports/mission${mission.missionNumber}Report.pdf")
+                reportReference.downloadUrl.addOnSuccessListener {
+                    val url=it.toString()
+                    downloadFile("${mission.missionName} Report",url)
+                }.addOnFailureListener {
+                        if(!checkInternetConnectivity(requireContext())){
+                            showNoInternetConnectionDialog()
+                        }
+                        else{
+                            Toast.makeText(context,"Something went wrong",Toast.LENGTH_LONG).show()
+                        }
+                }
+        }
+        appContext.registerReceiver(onDownloadComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
         return binding.root
     }
 
+    private fun downloadFile(
+        fileName: String,
+        url: String
+    ) {
+        downLoadManager=appContext.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val uri= Uri.parse(url)
+        val request=DownloadManager.Request(uri)
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
+        request.setTitle(fileName)
+        request.setDestinationInExternalFilesDir(appContext,Environment.DIRECTORY_DOWNLOADS, "$fileName.pdf")
+        with(sharedPref.edit()) {
+            this?.putLong((com.spandverse.seseva.R.string.report_download_id).toString(), downLoadManager.enqueue(request))
+            this?.apply()
+        }
+    }
 
+    private fun showNoInternetConnectionDialog() {
+        val dialog = NoInternetDialogFragment()
+        val fragmentManager = childFragmentManager
+        dialog.show(fragmentManager, "No Internet Connection")
+    }
+    private val onDownloadComplete: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
+            val downloadID=sharedPref.getLong((R.string.report_download_id).toString(),0)
+            if (downloadID == id) {
+                val uri=downLoadManager.getUriForDownloadedFile(downloadID)
+                val intentToView=Intent(Intent.ACTION_VIEW)
+                intentToView.setDataAndType(uri,"application/pdf")
+                intentToView.flags=Intent.FLAG_GRANT_READ_URI_PERMISSION
+                try{startActivity(intentToView)
+                }catch (e:ActivityNotFoundException){
+                    Toast.makeText(appContext,"No application available to view the report PDF",Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+    override fun removeRedBackground(dialog: DialogFragment) {
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        appContext.unregisterReceiver(onDownloadComplete)
+    }
 }
