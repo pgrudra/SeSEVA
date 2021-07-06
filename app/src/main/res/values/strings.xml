@@ -200,7 +200,7 @@
     <string name="autostart_permission_information">Autostart permission information</string>
     <string name="view_all_available_missions">View all available missions</string>
     <string name="missions_supported">Missions supported</string>
-    <string name="comm_browsers"><![CDATA[Comm. & Browsers]]></string>
+    <string name="comm_browsers"><![CDATA[Comm. & Browsing]]></string>
     <string name="video_comics"><![CDATA[Video & Comics]]></string>
     <string name="email_verfication_from_address">Didn\'t get an email from\nnoreply.seseva@unslave-0.firebaseapp.com?\nCheck your spam as well.</string>
     <string name="resend">RESEND</string>
@@ -260,4 +260,5 @@
     <string name="no_text"> </string>
     <string name="previous_missions">PREVIOUS MISSIONS</string>
     <string name="dooa_dialog_body">To activate this mode, SeSEVA requires to draw over other apps. Please grant this permission.</string>
+    <string name="com_n_brow_short"><![CDATA[COM. & BROW…]]></string>
 </resources>

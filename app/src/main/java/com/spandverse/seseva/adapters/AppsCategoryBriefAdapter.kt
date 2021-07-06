@@ -19,7 +19,23 @@ class AppsCategoryBriefAdapter(private val onCLickListener: OnClickListener):
         binding.root
     ) {
         fun bind(item: AppsCategory) {
-binding.catName.text=item.categoryName
+            if(item.categoryName.length>11){
+                val context=binding.catName.context
+                if(item.categoryName[0].toString()=="C"){
+                    binding.catName.text=context.getString(R.string.com_n_brow_short)
+                }
+                else{
+                    binding.catName.text=context.getString(
+                        R.string.dots,item.categoryName.substring(
+                            0,
+                            11
+                        )
+                    )
+                }
+            }
+            else{
+                binding.catName.text=item.categoryName
+            }
             when(item.ruleBroken){
                 CategoryRuleStatus.BROKEN->{binding.statusSkrim.setBackgroundResource(R.drawable.broken_skrim)}
                 CategoryRuleStatus.WARNING->{binding.statusSkrim.setBackgroundResource(R.drawable.warning_skrim)}

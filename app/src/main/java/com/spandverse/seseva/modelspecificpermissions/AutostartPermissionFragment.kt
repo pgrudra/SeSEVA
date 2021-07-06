@@ -5,11 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.spandverse.seseva.R
@@ -70,31 +70,105 @@ class AutostartPermissionFragment : Fragment() {
                 binding.checkAndGrant.setOnClickListener{
                     try {
                         val manufacturer=android.os.Build.MANUFACTURER
-                        val intent=Intent()
-                        if("xiaomi".equals(manufacturer,true)){
-                            intent.component = ComponentName("com.miui.securitycenter","com.miui.permcenter.autostart.AutoStartManagementActivity")
-                        }
-                        else if("oppo".equals(manufacturer,true)){
-                            intent.component = ComponentName("com.coloros.safecenter","com.coloros.safecenter.permission.startup.StartupAppListActivity")
-                        }
-                        else if("vivo".equals(manufacturer,true)){
-                            intent.component = ComponentName("com.vivo.permissionmanager","com.vivo.permissionmanager.activity.BgStartupManagerActivity")
-                        }
-                        else if("Letv".equals(manufacturer,true)){
-                            intent.component = ComponentName("com.letv.android.letvsafe","com.letv.android.letvsafe.AutobootManageActivity")
-                        }
-                        else if("Honor".equals(manufacturer,true)){
-                            intent.component = ComponentName("com.huawei.systemmanager","com.huawei.systemmanager.optimize.process.ProtectActivity")
-                        }
-                        else{
-                            throw RuntimeException("exception with purpose")
+                        when {
+                            "xiaomi".equals(manufacturer,true) -> {
+                                val intent=Intent()
+                                intent.component = ComponentName("com.miui.securitycenter","com.miui.permcenter.autostart.AutoStartManagementActivity")
+                                val list=context?.packageManager?.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+                                list?.let{
+                                    if(it.size>0){
+                                        startActivity(intent)
+                                    }
+                                }
                             }
-                        val list=context?.packageManager?.queryIntentActivities(intent,PackageManager.MATCH_DEFAULT_ONLY)
-                        list?.let{
-                            if(it.size>0){
-                                startActivity(intent)
+                            "oppo".equals(manufacturer,true) -> {
+
+                                try {
+                                    val intent = Intent()
+                                    intent.setClassName(
+                                        "com.coloros.safecenter",
+                                        "com.coloros.safecenter.permission.startup.StartupAppListActivity"
+                                    )
+                                    startActivity(intent)
+                                } catch (e: java.lang.Exception) {
+                                    try {
+                                        val intent = Intent()
+                                        intent.setClassName(
+                                            "com.oppo.safe",
+                                            "com.oppo.safe.permission.startup.StartupAppListActivity"
+                                        )
+                                        startActivity(intent)
+                                    } catch (ex: java.lang.Exception) {
+                                        try {
+                                            val intent = Intent()
+                                            intent.setClassName(
+                                                "com.coloros.safecenter",
+                                                "com.coloros.safecenter.startupapp.StartupAppListActivity"
+                                            )
+                                            startActivity(intent)
+                                        } catch (exx: java.lang.Exception) {
+                                        }
+                                    }
+                                }
+                                /*val intent=Intent()
+                                intent.component = ComponentName("com.coloros.safecenter","com.coloros.safecenter.permission.startup.StartupAppListActivity")
+                                val list=context?.packageManager?.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+                                list?.let{
+                                    if(it.size>0){
+                                        startActivity(intent)
+                                    }
+                                }*/
+                            }
+                            "vivo".equals(manufacturer,true) -> {
+                                try {
+                                    val intent=Intent()
+                                    intent.component = ComponentName("com.iqoo.secure",
+                                        "com.iqoo.secure.ui.phoneoptimize.AddWhiteListActivity")
+                                    startActivity(intent)
+                                } catch (e:Exception) {
+                                    try {
+                                        val intent=Intent()
+                                        intent.component = ComponentName ("com.vivo.permissionmanager",
+                                            "com.vivo.permissionmanager.activity.BgStartUpManagerActivity"
+                                        )
+                                        startActivity(intent)
+                                    } catch (ex:Exception) {
+                                        try {
+                                            val intent=Intent()
+                                            intent.setClassName(
+                                                "com.iqoo.secure",
+                                                "com.iqoo.secure.ui.phoneoptimize.BgStartUpManager"
+                                            )
+                                            startActivity(intent)
+                                        } catch (exx:Exception) {
+                                            findNavController().navigate(AutostartPermissionFragmentDirections.actionAutostartPermissionFragmentToHomeFragment())
+                                        }
+                                    }
+                                }
+                                //intent.component = ComponentName("com.vivo.permissionmanager","com.vivo.permissionmanager.activity.BgStartupManagerActivity")
+                            }
+                            "Letv".equals(manufacturer,true) -> {
+                                val intent=Intent()
+                                intent.component = ComponentName("com.letv.android.letvsafe","com.letv.android.letvsafe.AutobootManageActivity")
+                                val list=context?.packageManager?.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+                                list?.let{
+                                    if(it.size>0){
+                                        startActivity(intent)
+                                    }
+                                }
+                            }
+                            "Honor".equals(manufacturer,true) -> {
+                                val intent=Intent()
+                                intent.component = ComponentName("com.huawei.systemmanager","com.huawei.systemmanager.optimize.process.ProtectActivity")
+                                val list=context?.packageManager?.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+                                list?.let{
+                                    if(it.size>0){
+                                        startActivity(intent)
+                                    }
+                                }
                             }
                         }
+
 
                     } catch (e:Exception){
                         findNavController().navigate(AutostartPermissionFragmentDirections.actionAutostartPermissionFragmentToHomeFragment())

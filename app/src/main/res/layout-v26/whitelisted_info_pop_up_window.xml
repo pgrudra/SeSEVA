@@ -5,11 +5,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="328dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_whitelisted_infoexpand_bg"
-        android:paddingTop="36dp"
+        android:background="@drawable/ic_info_popup_background"
+        android:paddingTop="42dp"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        android:paddingBottom="16dp"
+        android:paddingBottom="8dp"
         android:elevation="15dp">
         <TextView
             android:id="@+id/categories"
@@ -18,6 +18,6 @@
             android:layout_height="match_parent"
             android:textColor="@color/secondary_text"
             android:justificationMode="inter_word"
-            tools:text="Weather, Travel, Sports, Productivity, Photography, Pdde, Parenting, Medical, Navigation, Health, Finance"/>
+            tools:text="Weather, Travel, sdfg fgf bdfb dfb vdfxb bdfb dfbdfb dfbdfb dbdfb dbd bdb bdd gbdgbd bdgb dbdgb dgb gbb dgbdb db dbdfb dfb dfbdbf dfbSports, Productivity, Photography, Pdde, Parenting, Medical, Navigation, Health, Finance"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

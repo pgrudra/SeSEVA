@@ -125,8 +125,8 @@
                             android:elevation="3dp">
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
                                 android:layout_marginTop="18dp"
                                 app:srcCompat="@drawable/ic_social"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_1"
@@ -161,7 +161,7 @@
                                 style="@style/subtitle_1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="72dp"
+                                android:layout_marginStart="70dp"
                                 android:layout_marginTop="16dp"
                                 android:text="Social"
                                 android:textColor="@color/colorSecondary"
@@ -256,8 +256,8 @@
                             android:elevation="3dp">
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
                                 android:layout_marginTop="18dp"
                                 app:srcCompat="@drawable/ic_video"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_2"
@@ -290,11 +290,12 @@
                             <TextView
                                 android:id="@+id/t_c_2"
                                 style="@style/subtitle_1"
-                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="72dp"
+                                android:layout_marginStart="70dp"
                                 android:layout_marginTop="16dp"
                                 android:text="@string/video_comics"
+                                android:layout_width="0dp"
+                                app:layout_constraintEnd_toStartOf="@id/i_video"
                                 android:textColor="@color/colorSecondary"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -384,8 +385,8 @@
                             android:elevation="3dp">
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
                                 android:layout_marginTop="18dp"
                                 app:srcCompat="@drawable/ic_games"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_3"
@@ -420,7 +421,7 @@
                                 style="@style/subtitle_1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="72dp"
+                                android:layout_marginStart="70dp"
                                 android:layout_marginTop="16dp"
                                 android:text="Games"
                                 android:textColor="@color/colorSecondary"
@@ -510,8 +511,8 @@
                             android:elevation="3dp">
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
                                 android:layout_marginTop="18dp"
                                 app:srcCompat="@drawable/ic_communication"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_4"
@@ -544,11 +545,12 @@
                             <TextView
                                 android:id="@+id/t_c_4"
                                 style="@style/subtitle_1"
-                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="72dp"
+                                android:layout_marginStart="70dp"
                                 android:layout_marginTop="16dp"
                                 android:text="@string/comm_browsers"
+                                android:layout_width="0dp"
+                                app:layout_constraintEnd_toStartOf="@id/i_communication"
                                 android:textColor="@color/colorSecondary"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -638,8 +640,8 @@
                             android:elevation="3dp">
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
                                 android:layout_marginTop="18dp"
                                 app:srcCompat="@drawable/ic_msnbs"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_6"
@@ -674,7 +676,7 @@
                                 style="@style/subtitle_1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="72dp"
+                                android:layout_marginStart="70dp"
                                 android:layout_marginTop="16dp"
                                 android:text="MSNBS"
                                 android:textColor="@color/colorSecondary"
@@ -766,8 +768,8 @@
                             android:elevation="3dp">
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
                                 android:layout_marginTop="18dp"
                                 app:srcCompat="@drawable/ic_whitelisted"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_5"
@@ -802,9 +804,9 @@
                                 style="@style/subtitle_1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="72dp"
+                                android:layout_marginStart="70dp"
                                 android:layout_marginTop="16dp"
-                                android:text="Whitelisted apps"
+                                android:text="Whitelisted"
                                 android:textColor="@color/colorSecondary"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -855,8 +857,8 @@
                             android:elevation="3dp">
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
                                 android:layout_marginTop="18dp"
                                 app:srcCompat="@drawable/ic_others"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_7"
@@ -891,7 +893,7 @@
                                 style="@style/subtitle_1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="72dp"
+                                android:layout_marginStart="70dp"
                                 android:layout_marginTop="16dp"
                                 android:text="Other apps"
                                 android:textColor="@color/colorSecondary"
@@ -992,8 +994,8 @@
                             android:elevation="3dp">
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
                                 android:layout_marginTop="18dp"
                                 app:srcCompat="@drawable/ic_entertainment"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_8"
@@ -1028,7 +1030,7 @@
                                 style="@style/subtitle_1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="72dp"
+                                android:layout_marginStart="70dp"
                                 android:layout_marginTop="16dp"
                                 android:text="Entertainment"
                                 android:textColor="@color/colorSecondary"

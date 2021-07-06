@@ -7,29 +7,22 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.*
+import android.os.Build
+import android.os.Bundle
+import android.os.Process
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.work.WorkManager
-import com.spandverse.seseva.*
-import com.spandverse.seseva.data.AllDatabase
-import com.spandverse.seseva.databinding.FragmentSettingsBinding
-import com.spandverse.seseva.foregroundnnotifications.TestService
-import com.spandverse.seseva.home.DrawerLocker
-import com.spandverse.seseva.ui.login.NoInternetDialogFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.EmailAuthProvider
@@ -40,6 +33,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.spandverse.seseva.*
+import com.spandverse.seseva.data.AllDatabase
+import com.spandverse.seseva.databinding.FragmentSettingsBinding
+import com.spandverse.seseva.foregroundnnotifications.TestService
+import com.spandverse.seseva.home.DrawerLocker
+import com.spandverse.seseva.ui.login.NoInternetDialogFragment
 import kotlinx.coroutines.launch
 
 
@@ -96,28 +95,109 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
         binding.autostartCL.setOnClickListener {
             try {
                 val manufacturer=android.os.Build.MANUFACTURER
-                val intent=Intent()
-                if("xiaomi".equals(manufacturer,true)){
-                    intent.component = ComponentName("com.miui.securitycenter","com.miui.permcenter.autostart.AutoStartManagementActivity")
-                }
-                else if("oppo".equals(manufacturer,true)){
-                    intent.component = ComponentName("com.coloros.safecenter","com.coloros.safecenter.permission.startup.StartupAppListActivity")
-                }
-                else if("vivo".equals(manufacturer,true)){
-                    intent.component = ComponentName("com.vivo.permissionmanager","com.vivo.permissionmanager.activity.BgStartupManagerActivity")
-                }
-                else if("Letv".equals(manufacturer,true)){
-                    intent.component = ComponentName("com.letv.android.letvsafe","com.letv.android.letvsafe.AutobootManageActivity")
-                }
-                else if("Honor".equals(manufacturer,true)){
-                    intent.component = ComponentName("com.huawei.systemmanager","com.huawei.systemmanager.optimize.process.ProtectActivity")
-                }
-                val list=context?.packageManager?.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
-                list?.let{
-                    if(it.size>0){
-                        startActivity(intent)
+                when {
+                    "xiaomi".equals(manufacturer,true) -> {
+                        val intent=Intent()
+                        intent.component = ComponentName("com.miui.securitycenter","com.miui.permcenter.autostart.AutoStartManagementActivity")
+                        val list=context?.packageManager?.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+                        list?.let{
+                            if(it.size>0){
+                                startActivity(intent)
+                            }
+                        }
+                    }
+                    "oppo".equals(manufacturer,true) -> {
+                        try {
+                            val intent = Intent()
+                            intent.setClassName(
+                                "com.coloros.safecenter",
+                                "com.coloros.safecenter.permission.startup.StartupAppListActivity"
+                            )
+                            startActivity(intent)
+                        } catch (e: java.lang.Exception) {
+                            try {
+                                val intent = Intent()
+                                intent.setClassName(
+                                    "com.oppo.safe",
+                                    "com.oppo.safe.permission.startup.StartupAppListActivity"
+                                )
+                                startActivity(intent)
+                            } catch (ex: java.lang.Exception) {
+                                try {
+                                    val intent = Intent()
+                                    intent.setClassName(
+                                        "com.coloros.safecenter",
+                                        "com.coloros.safecenter.startupapp.StartupAppListActivity"
+                                    )
+                                    startActivity(intent)
+                                } catch (exx: java.lang.Exception) {
+                                }
+                            }
+                        }
+
+
+
+                        /*val intent=Intent()
+                        intent.component = ComponentName("com.coloros.safecenter","com.coloros.safecenter.permission.startup.StartupAppListActivity")
+                        val list=context?.packageManager?.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+                        list?.let{
+                            if(it.size>0){
+                                startActivity(intent)
+                            }
+                        }*/
+                    }
+                    "vivo".equals(manufacturer,true) -> {
+                        try {
+                            val intent=Intent()
+                            intent.component = ComponentName("com.iqoo.secure",
+                                "com.iqoo.secure.ui.phoneoptimize.AddWhiteListActivity")
+                            startActivity(intent)
+                        } catch (e:Exception) {
+                            try {
+                                val intent=Intent()
+                                intent.component = ComponentName ("com.vivo.permissionmanager",
+                                    "com.vivo.permissionmanager.activity.BgStartUpManagerActivity"
+                                )
+                                startActivity(intent)
+                            } catch (ex:Exception) {
+                                try {
+                                    val intent=Intent()
+                                    intent.setClassName(
+                                        "com.iqoo.secure",
+                                        "com.iqoo.secure.ui.phoneoptimize.BgStartUpManager"
+                                    )
+                                    startActivity(intent)
+                                } catch (exx:Exception) {
+                                    view?.let {
+                                        Snackbar.make(it, "Could not proceed to Settings", Snackbar.LENGTH_SHORT).show()
+                                    }
+                                }
+                            }
+                        }
+                        //intent.component = ComponentName("com.vivo.permissionmanager","com.vivo.permissionmanager.activity.BgStartupManagerActivity")
+                    }
+                    "Letv".equals(manufacturer,true) -> {
+                        val intent=Intent()
+                        intent.component = ComponentName("com.letv.android.letvsafe","com.letv.android.letvsafe.AutobootManageActivity")
+                        val list=context?.packageManager?.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+                        list?.let{
+                            if(it.size>0){
+                                startActivity(intent)
+                            }
+                        }
+                    }
+                    "Honor".equals(manufacturer,true) -> {
+                        val intent=Intent()
+                        intent.component = ComponentName("com.huawei.systemmanager","com.huawei.systemmanager.optimize.process.ProtectActivity")
+                        val list=context?.packageManager?.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+                        list?.let{
+                            if(it.size>0){
+                                startActivity(intent)
+                            }
+                        }
                     }
                 }
+
 
             } catch (e:Exception){
             }
@@ -225,11 +305,6 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
         dialog.show(fraManager, "Manage Profile")
     }
 
-    override fun onResume() {
-        super.onResume()
-
-    }
-
     override fun onStart() {
         super.onStart()
         if(!sharedPref.getBoolean((R.string.authenticate_to_delete).toString(),false))
@@ -256,7 +331,7 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
     }
 
     private fun checkDOOAPermissionAndService() {
-        var serviceMode=sharedPref.getInt((R.string.service_mode).toString(),0) ?:0
+        var serviceMode= sharedPref.getInt((R.string.service_mode).toString(),0)
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context)){
             if(serviceMode==0){
                 //stopService()

@@ -67,16 +67,17 @@
         <TextView
             android:id="@+id/available_till"
             style="@style/text_stroke"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/available_till_date_background"
             android:fontFamily="@font/montserrat_used"
             android:paddingTop="4dp"
-            android:paddingEnd="40dp"
             android:paddingBottom="4dp"
             android:textColor="#FF57BB"
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
             app:layout_constraintStart_toStartOf="@+id/imageView"
+            app:layout_constraintEnd_toEndOf="@id/imageView"
+            android:layout_marginEnd="70dp"
             tools:text="Available Till 23/08/6746" />
        <!-- <View
             android:id="@+id/divider_1"
@@ -104,14 +105,14 @@
 
         <TextView
             android:id="@+id/mission_name"
-            style="@style/subtitle_1"
+            style="@style/subtitle_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toTopOf="@+id/textView3"
             app:layout_constraintStart_toStartOf="@+id/textView3"
-            tools:text="Mission Name" />
+            tools:text="Ashraya for children" />
 
         <TextView
             android:id="@+id/textView3"
@@ -127,14 +128,14 @@
 
         <TextView
             android:id="@+id/sponsor_name"
-            style="@style/subtitle_1"
+            style="@style/subtitle_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="36dp"
             android:textColor="@color/primary_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/available_till"
-            tools:text="Sponsor name" />
+            tools:text="GR Industrial Stores" />
 
 
         <TextView

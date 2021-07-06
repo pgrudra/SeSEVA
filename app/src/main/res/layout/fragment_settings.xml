@@ -181,14 +181,15 @@
                 android:textColor="@color/primary_text"/>
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/light_info"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="36dp"
+                android:layout_height="0dp"
                 android:background="@null"
                 android:src="@drawable/ic_info"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="4dp"
                 app:layout_constraintStart_toEndOf="@id/light_text"
-                app:layout_constraintTop_toTopOf="@id/light_text"
-                app:layout_constraintBottom_toBottomOf="@id/light_text"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/light_radio"
@@ -221,14 +222,14 @@
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/medium_info"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="16dp"
+                android:layout_width="36dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="10dp"
                 android:background="@null"
                 android:src="@drawable/ic_info"
-                app:layout_constraintBottom_toBottomOf="@id/medium_text"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/medium_text"
-                app:layout_constraintTop_toTopOf="@id/medium_text" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/medium_radio"
@@ -260,14 +261,15 @@
                 android:textColor="@color/primary_text"/>
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/strict_info"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="36dp"
+                android:layout_height="0dp"
                 android:background="@null"
                 android:src="@drawable/ic_info"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="10dp"
                 app:layout_constraintStart_toEndOf="@id/strict_text"
-                app:layout_constraintTop_toTopOf="@id/strict_text"
-                app:layout_constraintBottom_toBottomOf="@id/strict_text"/>
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"/>
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/strict_radio"
                 android:layout_width="24dp"

@@ -20,7 +20,8 @@ class WhitelistedInfoPopUpWindow {
         val popupView: View = inflater.inflate(R.layout.whitelisted_info_pop_up_window, null)
 
         //Specify the length and width through constants
-        val width=480*view.context.resources.displayMetrics.density.toInt()
+        //val width=480*view.context.resources.displayMetrics.density.toInt()
+        val width=LinearLayout.LayoutParams.WRAP_CONTENT
         val height = LinearLayout.LayoutParams.WRAP_CONTENT
 
         //Make Inactive Items Outside Of PopupWindow
@@ -31,8 +32,7 @@ class WhitelistedInfoPopUpWindow {
         val viewLocation = IntArray(2)
         view.getLocationOnScreen(viewLocation)
             popupWindow.showAtLocation(
-                view, Gravity.NO_GRAVITY,113, viewLocation[1]+(0.8*view.height).toInt())
-
+                view, Gravity.NO_GRAVITY,28*view.context.resources.displayMetrics.density.toInt(), viewLocation[1]+(0.8*view.height).toInt())
 
         //Initialize the elements of our window, install the handler
         val text: TextView = popupView.findViewById(R.id.categories)

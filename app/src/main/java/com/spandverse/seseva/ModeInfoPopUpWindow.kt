@@ -18,7 +18,9 @@ class ModeInfoPopUpWindow {
 
         //Specify the length and width through constants
 
-        val width:Int=400*view.context.resources.displayMetrics.density.toInt()
+        //val width:Int=400*view.context.resources.displayMetrics.density.toInt()
+        val mul=view.context.resources.displayMetrics.density.toInt()
+        val width=LinearLayout.LayoutParams.WRAP_CONTENT
         val height = LinearLayout.LayoutParams.WRAP_CONTENT
 
         //Make Inactive Items Outside Of PopupWindow
@@ -31,15 +33,15 @@ class ModeInfoPopUpWindow {
         when (view.id) {
             R.id.medium_info -> {
                 popupWindow.showAtLocation(
-                    view, Gravity.NO_GRAVITY,268, viewLocation[1]+(1.1*view.height).toInt())
+                    view, Gravity.NO_GRAVITY,61*mul, viewLocation[1]+(0.8*view.height).toInt())
             }
             R.id.strict_info -> {
                 popupWindow.showAtLocation(
-                    view, Gravity.NO_GRAVITY,200, viewLocation[1]+(1.1*view.height).toInt())
+                    view, Gravity.NO_GRAVITY,26*mul, viewLocation[1]+(0.8*view.height).toInt())
             }
             else -> {
                 popupWindow.showAtLocation(
-                    view, Gravity.NO_GRAVITY,190, viewLocation[1]+(1.1*view.height).toInt())
+                    view, Gravity.NO_GRAVITY,22*mul, viewLocation[1]+(0.8*view.height).toInt())
             }
         }
 
