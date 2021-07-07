@@ -6,10 +6,10 @@
         android:layout_width="248dp"
         android:layout_height="wrap_content"
         android:background="@drawable/ic_mode_infoexpand_bg"
-        android:paddingTop="32dp"
+        android:paddingTop="24dp"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        android:paddingBottom="16dp"
+        android:paddingBottom="12dp"
         android:elevation="15dp">
         <TextView
             android:id="@+id/mode_info_text"

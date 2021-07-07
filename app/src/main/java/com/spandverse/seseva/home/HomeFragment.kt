@@ -85,8 +85,10 @@ class HomeFragment : Fragment(),MissionAccomplishedDialog.MissionAccomplishedDia
             Observer<Int> { contribution ->
                 if (contribution != null) {
                     val totalRaised = viewModel.accomplishedMissionTotalRaised.value ?: 0
+                    val missionName=viewModel.missionName.value
                     val dialog = MissionAccomplishedDialog()
                     val args = Bundle()
+                    args.putString("missionName",missionName)
                     args.putInt("you_raised", contribution)
                     args.putInt("total_raised", totalRaised)
                     dialog.arguments = args

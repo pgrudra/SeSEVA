@@ -98,7 +98,18 @@
             app:layout_constraintBottom_toTopOf="@+id/charity_button"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="24dp"
-            app:layout_constraintVertical_weight="150"/>
+            app:layout_constraintVertical_weight="150">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="24dp"
+                android:textColor="@color/primary_text"
+                style="@style/subtitle_1"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="You shall be warned when you are on the brink of breaking a rule or have broken it already."/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:id="@+id/rulebook_bg"

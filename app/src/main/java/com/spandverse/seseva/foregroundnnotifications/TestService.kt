@@ -15,12 +15,14 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import androidx.work.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.spandverse.seseva.*
+import com.spandverse.seseva.R
 import com.spandverse.seseva.data.AllDatabase
 import com.spandverse.seseva.home.HomeActivity
 import kotlinx.android.synthetic.main.blocking_screen.view.*
@@ -35,6 +37,7 @@ import kotlinx.android.synthetic.main.blocking_screen.view.textView44
 import kotlinx.android.synthetic.main.blocking_screen_strict_mode.view.*
 import kotlinx.coroutines.*
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class TestService : Service() {
@@ -184,6 +187,30 @@ class TestService : Service() {
         }
         isServiceStarted = true
         setServiceState(this, com.spandverse.seseva.ServiceState.STARTED)
+
+        /*val constraintNet= Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+        val minute:Int=(0..2).random()
+        val currentTime= Calendar.getInstance()
+        val twelveOne=Calendar.getInstance()
+        twelveOne.set(Calendar.HOUR_OF_DAY,0)
+        twelveOne.set(Calendar.MINUTE,minute)
+        twelveOne.add(Calendar.DATE,1)
+        val timeDiff=twelveOne.timeInMillis-currentTime.timeInMillis
+        val updateStatsLocalRequest= OneTimeWorkRequestBuilder<LocalDatabaseUpdateWorker>()
+            .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
+            .addTag("localDateBase")
+            .build()
+        val updateStatsCloudRequest= OneTimeWorkRequestBuilder<CloudDatabaseUpdateWorker>()
+            .setConstraints(constraintNet)
+            .addTag("cloudDateBase")
+            .build()
+        WorkManager.getInstance(applicationContext).beginUniqueWork("databaseUpdate",
+            ExistingWorkPolicy.KEEP,updateStatsLocalRequest).then(updateStatsCloudRequest).enqueue()
+*/
+
+
         pkgAndCat=Transformations.map(AllDatabase.getInstance(this).AppDatabaseDao.getEntireList()) { it ->
             it?.map { it.packageName to it.appCategory }?.toMap() ?: emptyMap<String,String>()
         }
@@ -647,7 +674,7 @@ class TestService : Service() {
                                 blockingScreenView.button.setOnClickListener {
                                     wm.removeView(blockingScreenView)
                                 }
-                                val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionImages/mission${missionNumber}Image.jpg")
+                                val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionNamedImages/mission${missionNumber}NamedImage.jpg")
                                 Glide.with(this)
                                     .load(missionImgRef)
                                     .transition(DrawableTransitionOptions.withCrossFade())
@@ -684,7 +711,7 @@ class TestService : Service() {
                                 blockingScreenView.button.setOnClickListener {
                                     wm.removeView(blockingScreenView)
                                 }
-                                val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionImages/mission${missionNumber}Image.jpg")
+                                val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionNamedImages/mission${missionNumber}NamedImage.jpg")
                                 Glide.with(this)
                                     .load(missionImgRef)
                                     .transition(DrawableTransitionOptions.withCrossFade())
@@ -721,7 +748,7 @@ class TestService : Service() {
                             blockingScreenView.button.setOnClickListener {
                                 wm.removeView(blockingScreenView)
                             }
-                            val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionImages/mission${missionNumber}Image.jpg")
+                            val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionNamedImages/mission${missionNumber}NamedImage.jpg")
                             Glide.with(this)
                                 .load(missionImgRef)
                                 .transition(DrawableTransitionOptions.withCrossFade())
@@ -759,7 +786,7 @@ class TestService : Service() {
                                 blockingScreenView.button.setOnClickListener {
                                     wm.removeView(blockingScreenView)
                                 }
-                                val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionImages/mission${missionNumber}Image.jpg")
+                                val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionNamedImages/mission${missionNumber}NamedImage.jpg")
                                 Glide.with(this)
                                     .load(missionImgRef)
                                     .transition(DrawableTransitionOptions.withCrossFade())
@@ -781,7 +808,41 @@ class TestService : Service() {
                     } else if (catTimeInSeconds >= maxTime - 60 && catTimeInSeconds < maxTime - 48) {
                         notificationManager.sendNotification("Less than a min remaining", context)
                     }else if (catTimeInSeconds >= maxTime - 300 && catTimeInSeconds < maxTime - 288) {
-                        notificationManager.sendNotification("Less than 5 mins remaining", context)
+                        handler.post {
+                            blockingScreenView.user_name.text=context.getString(R.string.hey_user,userName)
+                            blockingScreenView.image.visibility=View.VISIBLE
+                            blockingScreenView.dont_text.text=context.getString(R.string.don_t_break_the_rule)
+                            blockingScreenView.close_app_text.text=context.getString(R.string.close_app_soon)
+                            blockingScreenView.time_launches_left_text.text=context.getString(R.string.blocking_screen_t23,5)
+                            blockingScreenView.textView18.text=context.getString(R.string.blocking_screen_t3,penalties[cat])
+                            blockingScreenView.textView43.text =context.getString(R.string.you_can_still_help)
+                            blockingScreenView.textView44.text=context.getString(R.string.blocking_screen_t41)
+                            blockingScreenView.app_time.text=(appTime/60000).toString()
+                            blockingScreenView.app_launches.text=appLaunches.toString()
+                            blockingScreenView.cat_time.text=(catTimeInSeconds/oneMinuteInSeconds).toString()
+                            blockingScreenView.cat_launches.text=catLaunches.toString()
+                            blockingScreenView.button.text=context.getString(R.string.i_understand)
+                            blockingScreenView.button.setOnClickListener {
+                                wm.removeView(blockingScreenView)
+                            }
+                            val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionNamedImages/mission${missionNumber}NamedImage.jpg")
+                            Glide.with(this)
+                                .load(missionImgRef)
+                                .transition(DrawableTransitionOptions.withCrossFade())
+                                .apply(
+                                    RequestOptions()
+                                        .placeholder(R.drawable.ic_imageplaceholder)
+                                        .error(R.drawable.ic_imageplaceholder)
+                                        .fallback(R.drawable.ic_imageplaceholder)
+                                )
+                                .into(blockingScreenView.image)
+                            if(blockingScreenView.windowToken!=null){
+                                wm.removeView(blockingScreenView)
+                            }
+                            if (blockingScreenParams != null) {
+                                wm.addView(blockingScreenView, blockingScreenParams)
+                            }
+                        }
                     }
                     else if (catLaunches == maxLaunches - 1) {
                         if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
@@ -984,7 +1045,7 @@ class TestService : Service() {
                                 blockingScreenView.button.setOnClickListener {
                                     wm.removeView(blockingScreenView)
                                 }
-                                val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionImages/mission${missionNumber}Image.jpg")
+                                val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionNamedImages/mission${missionNumber}NamedImage.jpg")
                                 Glide.with(this)
                                     .load(missionImgRef)
                                     .transition(DrawableTransitionOptions.withCrossFade())
@@ -1022,7 +1083,7 @@ class TestService : Service() {
                                 blockingScreenView.button.setOnClickListener {
                                     wm.removeView(blockingScreenView)
                                 }
-                                val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionImages/mission${missionNumber}Image.jpg")
+                                val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionNamedImages/mission${missionNumber}NamedImage.jpg")
                                 Glide.with(this)
                                     .load(missionImgRef)
                                     .transition(DrawableTransitionOptions.withCrossFade())
@@ -1061,7 +1122,7 @@ class TestService : Service() {
                                 blockingScreenView.button.setOnClickListener {
                                     wm.removeView(blockingScreenView)
                                 }
-                                val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionImages/mission${missionNumber}Image.jpg")
+                                val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionNamedImages/mission${missionNumber}NamedImage.jpg")
                                 Glide.with(this)
                                     .load(missionImgRef)
                                     .transition(DrawableTransitionOptions.withCrossFade())
@@ -1080,7 +1141,41 @@ class TestService : Service() {
                     } else if (catTimeInSeconds >= maxTime - 60 && catTimeInSeconds < maxTime - 58) {
                         notificationManager.sendNotification("Less than a min remaining", context)
                     }else if (catTimeInSeconds >= maxTime - 300 && catTimeInSeconds < maxTime - 298) {
-                        notificationManager.sendNotification("Less than 5 mins remaining", context)
+                        handler.post {
+                            blockingScreenView.user_name.text=context.getString(R.string.hey_user,userName)
+                            blockingScreenView.image.visibility=View.VISIBLE
+                            blockingScreenView.dont_text.text=context.getString(R.string.don_t_break_the_rule)
+                            blockingScreenView.close_app_text.text=context.getString(R.string.close_app_soon)
+                            blockingScreenView.time_launches_left_text.text=context.getString(R.string.blocking_screen_t23,5)
+                            blockingScreenView.textView18.text=context.getString(R.string.blocking_screen_t3,penalties[cat])
+                            blockingScreenView.textView43.text =context.getString(R.string.you_can_still_help)
+                            blockingScreenView.textView44.text=context.getString(R.string.blocking_screen_t41)
+                            blockingScreenView.app_time.text=(appTime/60000).toString()
+                            blockingScreenView.app_launches.text=appLaunches.toString()
+                            blockingScreenView.cat_time.text=(catTimeInSeconds/oneMinuteInSeconds).toString()
+                            blockingScreenView.cat_launches.text=catLaunches.toString()
+                            blockingScreenView.button.text=context.getString(R.string.i_understand)
+                            blockingScreenView.button.setOnClickListener {
+                                wm.removeView(blockingScreenView)
+                            }
+                            val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionNamedImages/mission${missionNumber}NamedImage.jpg")
+                            Glide.with(this)
+                                .load(missionImgRef)
+                                .transition(DrawableTransitionOptions.withCrossFade())
+                                .apply(
+                                    RequestOptions()
+                                        .placeholder(R.drawable.ic_imageplaceholder)
+                                        .error(R.drawable.ic_imageplaceholder)
+                                        .fallback(R.drawable.ic_imageplaceholder)
+                                )
+                                .into(blockingScreenView.image)
+                            if(blockingScreenView.windowToken!=null){
+                                wm.removeView(blockingScreenView)
+                            }
+                            if (blockingScreenParams != null) {
+                                wm.addView(blockingScreenView, blockingScreenParams)
+                            }
+                        }
                     }
                     else if (catLaunches == maxLaunches - 1) {
                         if (now.timeInMillis <= lastResumeTimeStamp + 1000) {

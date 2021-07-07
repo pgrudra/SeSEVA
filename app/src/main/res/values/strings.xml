@@ -144,7 +144,7 @@
     <string name="usage_access">Usage access</string>
     <string name="reason_usage_access">SeSEVA requires this permission to provide you your apps\' usage statistics and detect when you are about to break a SeSEVA rule</string>
     <string name="reason_d_o_o_a">SeSEVA requires this permission to diaplay a blocking screen that will warn you when you are about to break a SeSEVA Rule</string>
-    <string name="disclosure_brief">We value your privacy. Information regarding your apps\' usage statistics will only be stored on your local device. Only the amount raised by you for Optox Missions will be collected at our cloud servers.</string>
+    <string name="disclosure_brief">We value your privacy. Information regarding your apps\' usage statistics will only be stored on your local device. Only the amount raised by you for SeSEVA Missions will be collected at our cloud servers.</string>
     <string name="help">help</string>
     <string name="i_understand_the_rules">I UNDERSTAND THE RULES</string>
     <string name="no_limit_no_penalty">No limit… No penalty !!</string>
@@ -172,6 +172,7 @@
     <string name="don_t_break_the_rule">DON\'T BREAK THE RULE</string>
     <string name="blocking_screen_t3">You can contribute Rs %1$d towards your mission only if you don\'t break the rule.</string>
     <string name="blocking_screen_t21">Less than %1$d seconds remaining for this app</string>
+    <string name="blocking_screen_t23">Less than %1$d minutes remaining for this app</string>
     <string name="blocking_screen_t22">No more launches left for this app</string>
     <string name="close_app_immediately">Close this app immediately</string>
     <string name="close_app_soon">Close this app soon</string>
@@ -261,4 +262,5 @@
     <string name="previous_missions">PREVIOUS MISSIONS</string>
     <string name="dooa_dialog_body">To activate this mode, SeSEVA requires to draw over other apps. Please grant this permission.</string>
     <string name="com_n_brow_short"><![CDATA[COM. & BROW…]]></string>
+    <string name="your_mission_accomplished">Your %1$s mission is accomplished</string>
 </resources>

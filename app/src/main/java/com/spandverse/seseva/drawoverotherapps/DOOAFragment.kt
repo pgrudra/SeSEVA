@@ -63,14 +63,23 @@ class DOOAFragment : Fragment() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (!Settings.canDrawOverlays(context)) {
                     // permission not granted...
-                    val intent = Intent(
-                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:" + context?.packageName)
-                    )
-                    startActivityForResult(
-                        intent,
-                        REQUEST_OVERLAY_PERMISSION
-                    )
+                        try{
+                            val intent = Intent(
+                                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                Uri.parse("package:" + context?.packageName)
+                            )
+                            startActivityForResult(
+                                intent,
+                                REQUEST_OVERLAY_PERMISSION
+                            )
+                        }catch (e:Exception){
+                            val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
+                            startActivityForResult(
+                                intent,
+                                REQUEST_OVERLAY_PERMISSION
+                            )
+                        }
+
                 }
             }
         }

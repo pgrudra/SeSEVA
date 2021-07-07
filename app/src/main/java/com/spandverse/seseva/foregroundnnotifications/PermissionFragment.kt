@@ -76,24 +76,29 @@ class PermissionFragment : Fragment(),PermissionMandatoryDialogFragment.Permissi
         })
         val pkgManager=appContext.packageManager
         val intent = Intent(
-            Settings.ACTION_USAGE_ACCESS_SETTINGS,
-            Uri.parse("package:" + context?.packageName)
+            Settings.ACTION_USAGE_ACCESS_SETTINGS
         )
         if(intent.resolveActivity(pkgManager)==null){
-            //show different svg
             binding.appCompatImageView7.setImageResource(R.drawable.vivo_usage_access_help_guide)
         }
         binding.neverMind.setOnClickListener { showPermissionMandatoryDialog() }
         viewModel.grantPermission.observe(viewLifecycleOwner, Observer<Boolean> { grantPermission ->
             if (grantPermission) {
                 try{
-                    startActivity(intent)
+                    val intent1 = Intent(
+                        Settings.ACTION_USAGE_ACCESS_SETTINGS, Uri.parse("package:" + context?.packageName)
+                    )
+                    startActivity(intent1)
                     viewModel.onGrantPermissionComplete()
                 }catch (e:Exception){
-//take to screen for vivo
-                    val intentToSecurity=Intent(Settings.ACTION_SECURITY_SETTINGS)
-                    startActivity(intentToSecurity)
-                    viewModel.onGrantPermissionComplete()
+                    try{
+                        startActivity(intent)
+                        viewModel.onGrantPermissionComplete()
+                    }catch (ex:Exception){
+                        val intentToSecurity=Intent(Settings.ACTION_SECURITY_SETTINGS)
+                        startActivity(intentToSecurity)
+                        viewModel.onGrantPermissionComplete()
+                    }
                 }
             }
         })

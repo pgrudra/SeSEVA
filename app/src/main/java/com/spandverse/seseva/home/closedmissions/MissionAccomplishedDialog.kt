@@ -30,8 +30,10 @@ class MissionAccomplishedDialog: DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         val youRaised=arguments?.getInt("you_raised")
         val totalRaised=arguments?.getInt("total_raised")
+        val missionName=arguments?.getString("missionName")
         view.you_raised.text=getString(R.string.rs,youRaised)
         view.total_raised.text=getString(R.string.rs,totalRaised)
+        view.body_text.text=getString(R.string.your_mission_accomplished,missionName)
         view.choose_a_new_mission.setOnClickListener{
             sendBackResult()
         }

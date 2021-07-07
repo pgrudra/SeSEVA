@@ -1,12 +1,14 @@
 package com.spandverse.seseva.foregroundnnotifications
 
 import android.content.Context
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.spandverse.seseva.R
 
 
@@ -21,9 +23,10 @@ class WhitelistedInfoPopUpWindow {
 
         //Specify the length and width through constants
         //val width=480*view.context.resources.displayMetrics.density.toInt()
-        val width=LinearLayout.LayoutParams.WRAP_CONTENT
+        val mul=view.context.resources.displayMetrics.scaledDensity
+        val width=(328*mul).toInt()
         val height = LinearLayout.LayoutParams.WRAP_CONTENT
-
+//val g=ConstraintLayout.LayoutParams.WRAP_CONTENT
         //Make Inactive Items Outside Of PopupWindow
         val focusable = true
         //Create a window with our parameters
@@ -31,9 +34,10 @@ class WhitelistedInfoPopUpWindow {
         //Set the location of the window on the screen
         val viewLocation = IntArray(2)
         view.getLocationOnScreen(viewLocation)
-            popupWindow.showAtLocation(
-                view, Gravity.NO_GRAVITY,28*view.context.resources.displayMetrics.density.toInt(), viewLocation[1]+(0.8*view.height).toInt())
-
+            //popupWindow.showAtLocation(view, Gravity.NO_GRAVITY,28*view.context.resources.displayMetrics.density.toInt(), viewLocation[1]+(0.8*view.height).toInt())
+        popupWindow.showAtLocation(view, Gravity.NO_GRAVITY,viewLocation[0]-width+(70*mul).toInt(), viewLocation[1]+(0.8*view.height).toInt())
+Log.i("WIP","$width")
+        Log.i("WIP","a${mul}")
         //Initialize the elements of our window, install the handler
         val text: TextView = popupView.findViewById(R.id.categories)
         text.setText(

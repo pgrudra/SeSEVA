@@ -17,8 +17,9 @@ class InfoPopUpWindow {
         val popupView: View = inflater.inflate(R.layout.info_pop_up_window, null)
 
         //Specify the length and width through constants
-        val mul=view.context.resources.displayMetrics.density.toInt()
-        val width= 400*mul
+        val mul=view.context.resources.displayMetrics.scaledDensity
+        //val width= 400*mul
+        val width=(230*mul).toInt()
         val height = LinearLayout.LayoutParams.WRAP_CONTENT
 
         //Make Inactive Items Outside Of PopupWindow
@@ -28,9 +29,8 @@ class InfoPopUpWindow {
         //Set the location of the window on the screen
         val viewLocation = IntArray(2)
         view.getLocationOnScreen(viewLocation)
-            popupWindow.showAtLocation(
-                view, Gravity.NO_GRAVITY,62*mul, viewLocation[1]+(0.8*view.height).toInt())
-
+            //popupWindow.showAtLocation(view, Gravity.NO_GRAVITY,62*mul, viewLocation[1]+(0.8*view.height).toInt())
+        popupWindow.showAtLocation(view, Gravity.NO_GRAVITY,viewLocation[0]-width+(56*mul).toInt(), viewLocation[1]+(0.8*view.height).toInt())
 
         //Initialize the elements of our window, install the handler
         val text: TextView = popupView.findViewById(R.id.categories)

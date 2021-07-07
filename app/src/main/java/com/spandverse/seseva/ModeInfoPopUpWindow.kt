@@ -19,8 +19,8 @@ class ModeInfoPopUpWindow {
         //Specify the length and width through constants
 
         //val width:Int=400*view.context.resources.displayMetrics.density.toInt()
-        val mul=view.context.resources.displayMetrics.density.toInt()
-        val width=LinearLayout.LayoutParams.WRAP_CONTENT
+        val mul=view.context.resources.displayMetrics.scaledDensity
+        val width=(328*mul).toInt()
         val height = LinearLayout.LayoutParams.WRAP_CONTENT
 
         //Make Inactive Items Outside Of PopupWindow
@@ -30,20 +30,21 @@ class ModeInfoPopUpWindow {
         //Set the location of the window on the screen
         val viewLocation = IntArray(2)
         view.getLocationOnScreen(viewLocation)
-        when (view.id) {
+        popupWindow.showAtLocation(
+            view, Gravity.NO_GRAVITY,viewLocation[0]-(55*mul).toInt(), viewLocation[1]+(0.8*view.height).toInt())
+
+        /*when (view.id) {
             R.id.medium_info -> {
-                popupWindow.showAtLocation(
-                    view, Gravity.NO_GRAVITY,61*mul, viewLocation[1]+(0.8*view.height).toInt())
-            }
+                }
             R.id.strict_info -> {
                 popupWindow.showAtLocation(
-                    view, Gravity.NO_GRAVITY,26*mul, viewLocation[1]+(0.8*view.height).toInt())
+                    view, Gravity.NO_GRAVITY,viewLocation[0]-(56*mul).toInt(), viewLocation[1]+(0.8*view.height).toInt())
             }
             else -> {
                 popupWindow.showAtLocation(
-                    view, Gravity.NO_GRAVITY,22*mul, viewLocation[1]+(0.8*view.height).toInt())
+                    view, Gravity.NO_GRAVITY,viewLocation[0]-(56*mul).toInt(), viewLocation[1]+(0.8*view.height).toInt())
             }
-        }
+        }*/
 
         //Initialize the elements of our window, install the handler
         val text: TextView = popupView.findViewById(R.id.mode_info_text)
