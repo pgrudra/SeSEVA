@@ -38,7 +38,7 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                     val userId = user!!.uid
                     cloudReference.child("users").child(userId).child("chosenMission")
                         .setValue(chosenMission)
-                    val moneyToBeUpdated=sharedPref.getInt((R.string.money_to_be_updated).toString(), 0)
+                    val moneyToBeUpdated:Int=sharedPref.getInt((R.string.money_to_be_updated).toString(), 0)
                     if(moneyToBeUpdated!=0){
                         val missionContributionReference=cloudReference.child("users").child(userId).child("contributions").child("$chosenMission")
                         when(val missionContributionResult=missionContributionReference.singleValueEvent()){
@@ -97,10 +97,15 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                                                 val builder=NotificationCompat.Builder(applicationContext,applicationContext.getString(R.string.contribution_update_notification_channel_id))
                                                     .setSmallIcon(R.drawable.ic_seseva_notification_icon)
                                                     .setContentTitle("Your Yesterday's Stats")
-                                                    .setContentText("Congos! You raised Rs $moneyToBeUpdated, but missed your chance to raise...")
                                                     .setPriority(NotificationCompat.PRIORITY_MIN)
                                                     .setContentIntent(pendingIntent)
                                                     .setAutoCancel(true)
+                                                if(sharedPref.getBoolean((R.string.non_zero_penalty).toString(), false)){
+                                                    builder.setContentText("Congo! You raised Rs $moneyToBeUpdated, but missed your chance to raise...")
+                                                }
+                                                else{
+                                                    builder.setContentText("Congo! You raised Rs $moneyToBeUpdated towards your mission")
+                                                }
                                                 with(NotificationManagerCompat.from(applicationContext)){
                                                     notify(2,builder.build())
                                                 }
@@ -205,7 +210,7 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                         val builder=NotificationCompat.Builder(applicationContext,applicationContext.getString(R.string.contribution_update_notification_channel_id))
                             .setSmallIcon(R.drawable.ic_seseva_notification_icon)
                             .setContentTitle("Your Yesterday's Stats")
-                            .setContentText("You entirely lost your chance to rarise money towards your mission!")
+                            .setContentText("You entirely lost your chance to raise money towards your mission!")
                             .setPriority(NotificationCompat.PRIORITY_MIN)
                             .setContentIntent(pendingIntent)
                             .setAutoCancel(true)

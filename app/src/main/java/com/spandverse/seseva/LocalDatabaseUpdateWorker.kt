@@ -182,8 +182,15 @@ for(key in categoryTimes.keys){
         }
 
         if(dayAfterInstallation>5){
-            if(entertainmentTime<=timeRules[key]!! && entertainmentLaunches<=launchRules[key]!! )
-            moneyToBeUpdated+=sharedPref.getInt((R.string.weekly_reward).toString(),0)
+            if(entertainmentTime<=timeRules[key]!! && entertainmentLaunches<=launchRules[key]!! ){
+                moneyToBeUpdated+=sharedPref.getInt((R.string.weekly_reward).toString(),0)
+            }
+            else{
+                with(sharedPref.edit()) {
+                    this?.putBoolean((R.string.non_zero_penalty).toString(), true)
+                    this?.apply()
+                }
+            }
             with(sharedPref.edit()) {
                 this?.putInt((R.string.days_after_installation).toString(), 0)
                 this?.apply()
@@ -225,6 +232,12 @@ for(key in categoryTimes.keys){
     }
 
 }
+        if(penaltyToday>0){
+            with(sharedPref.edit()) {
+                this?.putBoolean((R.string.non_zero_penalty).toString(), true)
+                this?.apply()
+            }
+        }
         if(penaltyToday>dailyReward){
             penaltyToday=dailyReward
         }

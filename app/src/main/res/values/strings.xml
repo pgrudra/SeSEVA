@@ -55,6 +55,8 @@
     <string name="delete_action">com.spandverse.seseva.DELETE_ACTION</string>
     <string name="signout_action">com.spandverse.seseva.SIGNOUT_ACTION</string>
     <string name="report_download_id">com.spandverse.seseva.REPORT_DOWNLOAD_ID</string>
+    <string name="non_zero_penalty">com.spandverse.seseva.NON_ZERO_PENALTY</string>
+
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome_back">Welcome back %1$s</string>
