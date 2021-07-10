@@ -23,10 +23,15 @@ class PieChartLegendAdapter: ListAdapter<PieChartLegendItem, PieChartLegendAdapt
             binding.form.setBackgroundColor(item.formColor)
             val label=binding.label
             if(item.label.isNotEmpty()){
-                label.text=label.context.getString(R.string.first_letter_uc,item.label.substring(0,1),item.label.substring(1).toLowerCase(
-                    Locale.ROOT
-                )
-                )
+                if(item.label=="MSNBS"){
+                    label.text=item.label
+                }
+                else{
+                    label.text=label.context.getString(R.string.first_letter_uc,item.label.substring(0,1),item.label.substring(1).lowercase(
+                        Locale.ROOT
+                    )
+                    )
+                }
             }
         }
 

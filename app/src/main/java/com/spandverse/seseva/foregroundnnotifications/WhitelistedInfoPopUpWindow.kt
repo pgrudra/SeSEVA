@@ -35,9 +35,7 @@ class WhitelistedInfoPopUpWindow {
         val viewLocation = IntArray(2)
         view.getLocationOnScreen(viewLocation)
             //popupWindow.showAtLocation(view, Gravity.NO_GRAVITY,28*view.context.resources.displayMetrics.density.toInt(), viewLocation[1]+(0.8*view.height).toInt())
-        popupWindow.showAtLocation(view, Gravity.NO_GRAVITY,viewLocation[0]-width+(70*mul).toInt(), viewLocation[1]+(0.8*view.height).toInt())
-Log.i("WIP","$width")
-        Log.i("WIP","a${mul}")
+        popupWindow.showAtLocation(view, Gravity.NO_GRAVITY,viewLocation[0]-width+(103*mul).toInt(), viewLocation[1]+(0.8*view.height).toInt())
         //Initialize the elements of our window, install the handler
         val text: TextView = popupView.findViewById(R.id.categories)
         text.setText(

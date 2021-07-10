@@ -318,22 +318,25 @@
                     <TextView
                         android:id="@+id/most_used_app_text"
                         style="@style/caption"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Max used"
                         android:textColor="@color/disabled_text"
+                        app:layout_constraintEnd_toEndOf="@+id/most_used_app_name"
                         app:layout_constraintStart_toStartOf="@id/most_used_app_name"
                         app:layout_constraintTop_toBottomOf="@id/most_used_app_name" />
 
                     <TextView
                         android:id="@+id/most_used_app_name"
                         style="@style/subtitle_2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="13dp"
+                        android:layout_marginEnd="13dp"
                         android:text="@{UsageOverViewViewModel.mostUsedAppCatwiseName}"
                         android:textColor="@color/primary_text"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="Whatsapp" />
@@ -353,25 +356,29 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/most_used_app"
                     app:layout_constraintTop_toBottomOf="@id/total_app_launches">
+
                     <TextView
                         android:id="@+id/most_launched_app_text"
                         style="@style/caption"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Max launched"
                         android:textColor="@color/disabled_text"
+                        app:layout_constraintEnd_toEndOf="@+id/most_launched_app_name"
                         app:layout_constraintStart_toStartOf="@id/most_launched_app_name"
                         app:layout_constraintTop_toBottomOf="@id/most_launched_app_name" />
 
                     <TextView
                         android:id="@+id/most_launched_app_name"
                         style="@style/subtitle_2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="13dp"
+                        android:layout_marginEnd="13dp"
                         android:text="@{UsageOverViewViewModel.mostLaunchedAppCatwiseName}"
                         android:textColor="@color/primary_text"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="Whatsapp" />

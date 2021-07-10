@@ -102,7 +102,9 @@ class DOOAFragment : Fragment() {
                 "oppo".equals(manufacturer,true) ||
                 "vivo".equals(manufacturer,true) ||
                 "Letv".equals(manufacturer,true) ||
-                "Honor".equals(manufacturer,true)
+                "Honor".equals(manufacturer,true)||
+                "asus".equals(manufacturer,true)||
+                "nokia".equals(manufacturer,true)
 
     }
 

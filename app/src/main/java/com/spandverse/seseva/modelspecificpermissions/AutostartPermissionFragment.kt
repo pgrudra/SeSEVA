@@ -85,7 +85,7 @@ class AutostartPermissionFragment : Fragment() {
 
                                 try {
                                     val intent = Intent()
-                                    intent.setClassName(
+                                    intent.component= ComponentName(
                                         "com.coloros.safecenter",
                                         "com.coloros.safecenter.permission.startup.StartupAppListActivity"
                                     )
@@ -93,7 +93,7 @@ class AutostartPermissionFragment : Fragment() {
                                 } catch (e: java.lang.Exception) {
                                     try {
                                         val intent = Intent()
-                                        intent.setClassName(
+                                        intent.component=ComponentName(
                                             "com.oppo.safe",
                                             "com.oppo.safe.permission.startup.StartupAppListActivity"
                                         )
@@ -101,7 +101,7 @@ class AutostartPermissionFragment : Fragment() {
                                     } catch (ex: java.lang.Exception) {
                                         try {
                                             val intent = Intent()
-                                            intent.setClassName(
+                                            intent.component=ComponentName(
                                                 "com.coloros.safecenter",
                                                 "com.coloros.safecenter.startupapp.StartupAppListActivity"
                                             )
@@ -166,6 +166,22 @@ class AutostartPermissionFragment : Fragment() {
                                         startActivity(intent)
                                     }
                                 }
+                            }
+                            "asus".equals(manufacturer,true)->{
+                                val intent=Intent()
+                                intent.component = ComponentName("com.asus.mobilemanager","com.asus.mobilemanager.powersaver.PowerSaverSettings")
+                                try{
+                                    startActivity(intent)
+                                }catch (e:java.lang.Exception){}
+
+                            }
+
+                            "nokia".equals(manufacturer,true)->{
+                                val intent=Intent()
+                                intent.component = ComponentName("com.evenwell.powersaving.g3","com.evenwell.powersaving.g3.exception.PowerSaverExceptionActivity")
+                                try{
+                                    startActivity(intent)
+                                }catch (e:java.lang.Exception){}
                             }
                         }
 

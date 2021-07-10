@@ -1,11 +1,16 @@
 package com.spandverse.seseva
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.os.Build
+import android.util.Log
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.google.firebase.FirebaseApp
-import com.google.firebase.appcheck.FirebaseAppCheck
-import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory
 import com.spandverse.seseva.data.AllDatabase
 import com.spandverse.seseva.data.missions.PartialMission
 import com.google.firebase.auth.ktx.auth
@@ -13,6 +18,7 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import com.spandverse.seseva.contributionupdate.ContributionUpdateActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -81,6 +87,23 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                                             currentData: DataSnapshot?
                                         ) {
                                             if(error==null){
+                                                createContributionNotificationChannel()
+                                                val intent=Intent(applicationContext,
+                                                    ContributionUpdateActivity::class.java).apply{
+                                                    flags=Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                                }
+                                                intent.putExtra("missionNumber",chosenMission)
+                                                val pendingIntent:PendingIntent= PendingIntent.getActivity(applicationContext,0,intent,0)
+                                                val builder=NotificationCompat.Builder(applicationContext,applicationContext.getString(R.string.contribution_update_notification_channel_id))
+                                                    .setSmallIcon(R.drawable.ic_seseva_notification_icon)
+                                                    .setContentTitle("Your Yesterday's Stats")
+                                                    .setContentText("Congos! You raised Rs $moneyToBeUpdated, but missed your chance to raise...")
+                                                    .setPriority(NotificationCompat.PRIORITY_MIN)
+                                                    .setContentIntent(pendingIntent)
+                                                    .setAutoCancel(true)
+                                                with(NotificationManagerCompat.from(applicationContext)){
+                                                    notify(2,builder.build())
+                                                }
                                                 with(sharedPref.edit()) {
                                                     this?.putInt((R.string.money_to_be_updated).toString(), 0)
                                                     this?.apply()
@@ -172,6 +195,28 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                             }
                         })*/
                     }
+                    else{
+                        createContributionNotificationChannel()
+                        val intent=Intent(applicationContext, ContributionUpdateActivity::class.java).apply{
+                            flags=Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        }
+                        intent.putExtra("missionNumber",chosenMission)
+                        val pendingIntent:PendingIntent= PendingIntent.getActivity(applicationContext,0,intent,0)
+                        val builder=NotificationCompat.Builder(applicationContext,applicationContext.getString(R.string.contribution_update_notification_channel_id))
+                            .setSmallIcon(R.drawable.ic_seseva_notification_icon)
+                            .setContentTitle("Your Yesterday's Stats")
+                            .setContentText("You entirely lost your chance to rarise money towards your mission!")
+                            .setPriority(NotificationCompat.PRIORITY_MIN)
+                            .setContentIntent(pendingIntent)
+                            .setAutoCancel(true)
+                        with(NotificationManagerCompat.from(applicationContext)){
+                            notify(2,builder.build())
+                        }
+                    }
+                }
+                else{
+                    //plz choose a mission
+                    //intent to home activity
                 }
                 val nowMinusOneDay= Calendar.getInstance().timeInMillis-24*60*60*1000
                 val list=dao.getMissionNumbersForReport(nowMinusOneDay,false)
@@ -211,6 +256,18 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
             }
 
 
+        }
+    }
+
+    private fun createContributionNotificationChannel(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val contributionUpdateNotificationChannel = NotificationChannel(
+                applicationContext.getString(R.string.contribution_update_notification_channel_id),
+                applicationContext.getString(R.string.contribution_update_notification_channel_name),
+                NotificationManager.IMPORTANCE_MIN
+            )
+            val notificationManager:NotificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(contributionUpdateNotificationChannel)
         }
     }
 }

@@ -82,11 +82,13 @@
                     <TextView
                         android:id="@+id/sponsor_name"
                         style="@style/subtitle_1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
                         android:textColor="@color/primary_text"
                         app:layout_constraintBottom_toBottomOf="@+id/sponsor_logo"
+                        app:layout_constraintEnd_toStartOf="@+id/to_sponsor"
                         app:layout_constraintStart_toEndOf="@+id/sponsor_logo"
                         app:layout_constraintTop_toTopOf="@+id/sponsor_logo"
                         tools:text="Sponsor name" />

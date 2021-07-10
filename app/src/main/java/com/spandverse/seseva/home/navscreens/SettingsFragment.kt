@@ -109,7 +109,7 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
                     "oppo".equals(manufacturer,true) -> {
                         try {
                             val intent = Intent()
-                            intent.setClassName(
+                            intent.component=ComponentName(
                                 "com.coloros.safecenter",
                                 "com.coloros.safecenter.permission.startup.StartupAppListActivity"
                             )
@@ -117,7 +117,7 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
                         } catch (e: java.lang.Exception) {
                             try {
                                 val intent = Intent()
-                                intent.setClassName(
+                                intent.component=ComponentName(
                                     "com.oppo.safe",
                                     "com.oppo.safe.permission.startup.StartupAppListActivity"
                                 )
@@ -125,7 +125,7 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
                             } catch (ex: java.lang.Exception) {
                                 try {
                                     val intent = Intent()
-                                    intent.setClassName(
+                                    intent.component=ComponentName(
                                         "com.coloros.safecenter",
                                         "com.coloros.safecenter.startupapp.StartupAppListActivity"
                                     )
@@ -195,6 +195,22 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
                                 startActivity(intent)
                             }
                         }
+                    }
+                    "asus".equals(manufacturer,true)->{
+                        val intent=Intent()
+                        intent.component = ComponentName("com.asus.mobilemanager","com.asus.mobilemanager.powersaver.PowerSaverSettings")
+                        try{
+                            startActivity(intent)
+                        }catch (e:java.lang.Exception){}
+
+                    }
+
+                    "nokia".equals(manufacturer,true)->{
+                        val intent=Intent()
+                        intent.component = ComponentName("com.evenwell.powersaving.g3","com.evenwell.powersaving.g3.exception.PowerSaverExceptionActivity")
+                        try{
+                            startActivity(intent)
+                        }catch (e:java.lang.Exception){}
                     }
                 }
 
@@ -319,7 +335,9 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
                 "oppo".equals(manufacturer,true) ||
                 "vivo".equals(manufacturer,true) ||
                 "Letv".equals(manufacturer,true) ||
-                "Honor".equals(manufacturer,true)
+                "Honor".equals(manufacturer,true) ||
+                "asus".equals(manufacturer,true)||
+                "nokia".equals(manufacturer,true)
     }
 
     private fun checkPermissions() {

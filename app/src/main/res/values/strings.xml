@@ -64,9 +64,11 @@
     <string name="title_activity_list_installed_apps_and_sign_out">ListInstalledAppsAndSignOut</string>
 
     <string name="foreground_service_notification_channel_id" translatable="false">foreground_channel</string>
-    <string name="foreground_service_notification_channel_name" translatable="true">Foreground</string>
-    <string name="notification_title">Foreground service running</string>
+    <string name="foreground_service_notification_channel_name" translatable="false">Foreground</string>
+    <string name="notification_title">SeSEVA service running</string>
 
+    <string name="contribution_update_notification_channel_id" translatable="false">contribution_update_channel</string>
+    <string name="contribution_update_notification_channel_name" translatable="false">ContributionUpdate</string>
     <string name="usage_alert_notification_channel_id" translatable="false">usage_alert_channel</string>
     <string name="usage_alert_notification_channel_name" translatable="false">UsageAlert</string>
     <string name="usage_alert_title">Usage Alert</string>
@@ -130,6 +132,7 @@
     <string name="know_more">KNOW MORE</string>
     <string name="continue_text">CONTINUE</string>
     <string name="you_are_on">You are on</string>
+    <string name="you_are_on_2">You are on %1$s mission</string>
     <string name="you_raised">You raised</string>
     <string name="great_work">Great work!!</string>
     <string name="this_mission_has">This mission has</string>
@@ -263,4 +266,15 @@
     <string name="dooa_dialog_body">To activate this mode, SeSEVA requires to draw over other apps. Please grant this permission.</string>
     <string name="com_n_brow_short"><![CDATA[COM. & BROW…]]></string>
     <string name="your_mission_accomplished">Your %1$s mission is accomplished</string>
+    <string name="n">%1$s n</string>
+    <string name="comm_browsing"><![CDATA[Comm. & browsing]]></string>
+    <string name="entertainment">Entertainment</string>
+    <string name="raised_nothing_exceeded">You raised nothing as total penalty exceeded yesterday\'s reward</string>
+    <string name="raised_nothing_equalled">You raised nothing as total penalty equalled yesterday\'s reward</string>
+    <string name="go_to_home">go to home</string>
+    <string name="tot_s_t_sentence">Total Screen time: %1$s</string>
+    <string name="tot_a_l_sentence">Total App launches: %1$d</string>
+    <string name="p0">Going great %1$s</string>
+    <string name="p1">Going good %1$s</string>
+    <string name="p2">You could do much better %1$s</string>
 </resources>

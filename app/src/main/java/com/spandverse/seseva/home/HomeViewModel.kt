@@ -284,6 +284,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                 is EventResponse.Cancelled->{
                 }
             }
+            Log.i("wer","1$mission")
             database.insert(mission)
         }
     }
@@ -320,6 +321,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                                     mission?.missionActive=now.timeInMillis<= mission?.deadline!!
                                     mission.contributors=contributorsList.find{it.first==primaryKey}?.second ?:0
                                     viewModelScope.launch {
+                                        Log.i("wer","2$mission")
                                          database.insert(mission) }
                                 }
 
@@ -358,7 +360,7 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                                 mission?.missionActive=now.timeInMillis<= mission?.deadline!!
                                 mission.contributors=contributorsList.find{it.first==primaryKey}?.second ?:0
                                 viewModelScope.launch {
-                                    Log.i("HVM7","x${mission}")
+                                    Log.i("wer","3$mission")
                                     database.insert(mission) }
                             }
 

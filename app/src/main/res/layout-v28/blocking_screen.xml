@@ -257,6 +257,8 @@
         android:shadowDx="1.5"
         android:shadowDy="1.5"
         android:shadowRadius="1"
+        android:lineHeight="26sp"
+        android:letterSpacing="0.04"
         android:textColor="@color/primary_text"
         android:textSize="20sp"
         android:textAllCaps="true"

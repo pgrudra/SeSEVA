@@ -252,7 +252,7 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
             } else {
                 _exceededTimeText.value = "Time left"
                 _exceededTime.value = inHrsMins2(timeRules[cat]!! - categoryTimes[cat]!!)
-                if (categoryTimes[cat]!! > timeRules[cat]!! - 60){
+                if (categoryTimes[cat]!! > timeRules[cat]!! - 300){
                     _countdownColor.value=CategoryRuleStatus.WARNING
                 }
                 else{
@@ -267,7 +267,7 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
                 _exceededLaunchesText.value = "Launches left"
                 _exceededLaunches.value = getCounts(launchRules[cat]!! - categoryLaunches[cat]!!)
                 if(_countdownColor.value!=CategoryRuleStatus.BROKEN){
-                    if(categoryLaunches[cat]!! > launchRules[cat]!!-2){
+                    if(categoryLaunches[cat]!! > launchRules[cat]!!-5){
                         _countdownColor.value=CategoryRuleStatus.WARNING
                     }
                 }
@@ -441,7 +441,7 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
                                 val appsCategory=AppsCategory(key,AppsCategoryType.DAILY,CategoryRuleStatus.BROKEN)
                                 list.add(appsCategory)
                             }
-                            else if(categoryTimes[key]!! >= timeRules[key]!!-60 || categoryLaunches[key]!! >= launchRules[key]!!-2){
+                            else if(categoryTimes[key]!! >= timeRules[key]!!-300 || categoryLaunches[key]!! >= launchRules[key]!!-5){
                                 val appsCategory=AppsCategory(key,AppsCategoryType.DAILY,CategoryRuleStatus.WARNING)
                                 list.add(appsCategory)
                             }
@@ -464,7 +464,7 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
                         val entertainmentAppsCategory=AppsCategory(entertainmentKey,AppsCategoryType.WEEKLY,CategoryRuleStatus.BROKEN)
                         list.add(entertainmentAppsCategory)
                     }
-                    else if(categoryTimes[entertainmentKey]?:0>=timeRules[entertainmentKey]!!-60 || categoryLaunches[entertainmentKey]?:0>=launchRules[entertainmentKey]!!-2){
+                    else if(categoryTimes[entertainmentKey]?:0>=timeRules[entertainmentKey]!!-300 || categoryLaunches[entertainmentKey]?:0>=launchRules[entertainmentKey]!!-5){
                         val entertainmentAppsCategory=AppsCategory(entertainmentKey,AppsCategoryType.WEEKLY,CategoryRuleStatus.WARNING)//statement that today is weekly bonus day, and you have a chance of raising Rs x more if you follow rule till today midnight
                         list.add(entertainmentAppsCategory)
                     }

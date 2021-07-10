@@ -166,7 +166,19 @@ class UsageOverviewFragment : Fragment() {
                 for (c in ColorTemplate.MATERIAL_COLORS) {
                     colorsList.add(c)
                 }
+                for(c in ColorTemplate.JOYFUL_COLORS){
+                    colorsList.add(c)
+                }
+                for(c in ColorTemplate.LIBERTY_COLORS){
+                    colorsList.add(c)
+                }
                 for(c in ColorTemplate.COLORFUL_COLORS){
+                    colorsList.add(c)
+                }
+                for(c in ColorTemplate.VORDIPLOM_COLORS){
+                    colorsList.add(c)
+                }
+                for(c in ColorTemplate.PASTEL_COLORS){
                     colorsList.add(c)
                 }
                 val totalTimePieDataSet = PieDataSet(totalTimePieChartEntries, "")

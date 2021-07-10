@@ -15,7 +15,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import androidx.work.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
@@ -37,7 +36,6 @@ import kotlinx.android.synthetic.main.blocking_screen.view.textView44
 import kotlinx.android.synthetic.main.blocking_screen_strict_mode.view.*
 import kotlinx.coroutines.*
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 
 class TestService : Service() {
@@ -449,8 +447,9 @@ class TestService : Service() {
                         notificationManager.sendNotification("Less than 25 secs remaining! Quit now, don't lose the opportunity of helping some one in need.", context)
                     }
                     else if (catLaunches == maxLaunches) {
-                        if (now.timeInMillis <= lastResumeTimeStamp2 + 10000) {
+                        if (now.timeInMillis <= lastResumeTimeStamp + 10000  || now.timeInMillis <= lastResumeTimeStamp2 + 10000 && blockingScreenView.time_launches_left_text.text!=context.getString(R.string.n,cat)) {
                             notificationManager.sendNotification("No more launches for this app, else you will lose opportunity of doing something noble!", context)
+                            blockingScreenView.time_launches_left_text.text=context.getString(R.string.n,cat)
                         }
                     }
                     else if (catTimeInSeconds >= maxTime - 60 && catTimeInSeconds < maxTime - 48) {
@@ -462,9 +461,9 @@ class TestService : Service() {
                         if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
                             notificationManager.sendNotification("Only 1 more launch remaining, use with caution", context)
                         }
-                    }else if (catLaunches == maxLaunches - 2) {
+                    }else if (catLaunches == maxLaunches - 5) {
                         if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
-                            notificationManager.sendNotification("Only 2 more launches remaining, use with caution", context)
+                            notificationManager.sendNotification("Only 5 more launches remaining, use with caution", context)
                         }
                     }
                     else if (catTimeInSeconds >= maxTime / 2 && catTimeInSeconds < (maxTime / 2) + 12) {
@@ -475,7 +474,7 @@ class TestService : Service() {
                     }
                     else if((now.timeInMillis-lastResumeTimeStamp)%120000 < 10000){
                         handler.post {
-                            Toast.makeText(context, "You have spent ${catTimeInSeconds/60} mins on this and other $cat apps", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "${catTimeInSeconds/60} mins spent on this and other $cat apps", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -489,6 +488,7 @@ class TestService : Service() {
         context: Context,
         sortedEvents: Map<String, MutableList<UsageEvents.Event>>,
     ) {
+
         if(blockingScreenViewStrict.windowToken!=null){
             wm.removeView(blockingScreenViewStrict)
         }
@@ -768,7 +768,7 @@ class TestService : Service() {
                         }
                     }
                         else if (catLaunches == maxLaunches) {
-                        if (now.timeInMillis <= lastResumeTimeStamp + 1000  || now.timeInMillis <= lastResumeTimeStamp2 + 1000 && blockingScreenView.time_launches_left_text.text!=context.getString(R.string.blocking_screen_t22)) {
+                          if (now.timeInMillis <= lastResumeTimeStamp + 10000  || now.timeInMillis <= lastResumeTimeStamp2 + 10000 && blockingScreenView.time_launches_left_text.text!=context.getString(R.string.n,cat)) {
                             handler.post {
                                 blockingScreenView.user_name.text=context.getString(R.string.hey_user,userName)
                                 blockingScreenView.image.visibility=View.VISIBLE
@@ -785,6 +785,7 @@ class TestService : Service() {
                                 blockingScreenView.button.text=context.getString(R.string.i_understand)
                                 blockingScreenView.button.setOnClickListener {
                                     wm.removeView(blockingScreenView)
+                                    blockingScreenView.time_launches_left_text.text=context.getString(R.string.n,cat)
                                 }
                                 val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionNamedImages/mission${missionNumber}NamedImage.jpg")
                                 Glide.with(this)
@@ -848,9 +849,9 @@ class TestService : Service() {
                         if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
                             notificationManager.sendNotification("Only 1 more launch remaining", context)
                         }
-                    }else if (catLaunches == maxLaunches - 2) {
+                    }else if (catLaunches == maxLaunches - 5) {
                         if (now.timeInMillis <= lastResumeTimeStamp + 10000) {
-                            notificationManager.sendNotification("Only 2 more launches remaining", context)
+                            notificationManager.sendNotification("Only 5 more launches remaining", context)
                         }
                     }
                     else if (catTimeInSeconds >= maxTime / 2 && catTimeInSeconds < (maxTime / 2) + 12) {
@@ -1104,7 +1105,7 @@ class TestService : Service() {
 
                     }
                     else if (catLaunches == maxLaunches) {
-                        if (now.timeInMillis <= lastResumeTimeStamp + 1000  || now.timeInMillis <= lastResumeTimeStamp2 + 1000 && blockingScreenView.time_launches_left_text.text!=context.getString(R.string.blocking_screen_t22)) {
+                        if (now.timeInMillis <= lastResumeTimeStamp + 1000  || now.timeInMillis <= lastResumeTimeStamp2 + 1000 && blockingScreenView.time_launches_left_text.text!=context.getString(R.string.n,cat)) {
                             handler.post {
                                 blockingScreenView.user_name.text=context.getString(R.string.hey_user,userName)
                                 blockingScreenView.image.visibility=View.VISIBLE
@@ -1121,6 +1122,7 @@ class TestService : Service() {
                                 blockingScreenView.button.text=context.getString(R.string.i_understand)
                                 blockingScreenView.button.setOnClickListener {
                                     wm.removeView(blockingScreenView)
+                                    blockingScreenView.time_launches_left_text.text=context.getString(R.string.n,cat)
                                 }
                                 val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionNamedImages/mission${missionNumber}NamedImage.jpg")
                                 Glide.with(this)
@@ -1178,12 +1180,12 @@ class TestService : Service() {
                         }
                     }
                     else if (catLaunches == maxLaunches - 1) {
-                        if (now.timeInMillis <= lastResumeTimeStamp + 1000) {
+                        if (now.timeInMillis <= lastResumeTimeStamp + 1500) {
                             notificationManager.sendNotification("Only 1 more launch remaining", context)
                         }
-                    }else if (catLaunches == maxLaunches - 2) {
-                        if (now.timeInMillis <= lastResumeTimeStamp + 1000) {
-                            notificationManager.sendNotification("Only 2 more launches remaining", context)
+                    }else if (catLaunches == maxLaunches - 5) {
+                        if (now.timeInMillis <= lastResumeTimeStamp + 1500) {
+                            notificationManager.sendNotification("Only 5 more launches remaining", context)
                         }
                     }
                     else if (catTimeInSeconds >= maxTime / 2 && catTimeInSeconds < (maxTime / 2) + 1) {
@@ -1194,7 +1196,7 @@ class TestService : Service() {
                     }
                     else if((now.timeInMillis - lastResumeTimeStamp)%120000 < 1500){
                         handler.post {
-                            Toast.makeText(context, "You have spent ${catTimeInSeconds/60} mins on this and other $cat apps", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "${catTimeInSeconds/60} mins spent on this and other $cat apps", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

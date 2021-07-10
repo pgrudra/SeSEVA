@@ -259,6 +259,8 @@
         android:shadowDy="1.5"
         android:shadowRadius="1"
         android:textAllCaps="true"
+        android:lineHeight="26sp"
+        android:letterSpacing="0.04"
         android:text="@string/you_can_still_help_yourself"
         android:textColor="@color/primary_text"
         android:textSize="20sp"

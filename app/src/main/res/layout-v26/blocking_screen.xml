@@ -259,6 +259,7 @@
         android:textSize="20sp"
         android:gravity="center"
         android:textAllCaps="true"
+        android:letterSpacing="0.04"
         tools:text="@string/you_can_still_help"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

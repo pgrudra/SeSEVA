@@ -5,8 +5,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="328dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_info_popup_background"
-        android:paddingTop="42dp"
+        android:background="@drawable/ic_whitelisted_infoexpand_bg"
+        android:paddingTop="22dp"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         android:paddingBottom="8dp"

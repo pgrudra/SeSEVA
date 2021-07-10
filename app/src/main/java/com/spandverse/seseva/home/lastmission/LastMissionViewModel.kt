@@ -139,7 +139,9 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                                 val now = Calendar.getInstance().timeInMillis
                                 val deadlineAsDate = dataSnapshot.getValue<String>()
                                 val deadlineInMillis =
-                                    deadlineAsDate?.let { deadlineStringToLong(it).plus(ONE_DAY) }
+                                    deadlineAsDate?.let { deadlineStringToLong(it) }
+                               /* val deadlineInMillis =
+                                    deadlineAsDate?.let { deadlineStringToLong(it).plus(ONE_DAY) }*/
                                 if (deadlineInMillis != null) {
                                     deadlineLong=deadlineInMillis
                                     if (deadlineInMillis < now) {
@@ -201,7 +203,6 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                                                                         _contributors.value = contri
                                                                         if(contri.toIntOrNull()!=null){
                                                                             missionToBeSaved.contributors=contri.toInt()
-                                                                            Log.i("1LMVM","$contri")
                                                                         }
                                                                         val reference5 =
                                                                             cloudReference.child("moneyRaised")
@@ -213,7 +214,6 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                                                                                 if(tMR.toIntOrNull()!=null){
                                                                                     missionToBeSaved.totalMoneyRaised=tMR.toInt()
                                                                                 }
-                                                                                Log.i("LMVM","wholeMission=$missionToBeSaved")
                                                                                 viewModelScope.launch { database.insert(missionToBeSaved) }
 
                                                                             }
