@@ -101,10 +101,10 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                                                     .setContentIntent(pendingIntent)
                                                     .setAutoCancel(true)
                                                 if(sharedPref.getBoolean((R.string.non_zero_penalty).toString(), false)){
-                                                    builder.setContentText("Congo! You raised Rs $moneyToBeUpdated, but missed your chance to raise...")
+                                                    builder.setContentText("Congrats!! You raised Rs $moneyToBeUpdated, but you could...")
                                                 }
                                                 else{
-                                                    builder.setContentText("Congo! You raised Rs $moneyToBeUpdated towards your mission")
+                                                    builder.setContentText("Kudos! You proved to be a true Sevak by raising the highest reward of Rs $moneyToBeUpdated")
                                                 }
                                                 with(NotificationManagerCompat.from(applicationContext)){
                                                     notify(2,builder.build())
@@ -210,7 +210,7 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                         val builder=NotificationCompat.Builder(applicationContext,applicationContext.getString(R.string.contribution_update_notification_channel_id))
                             .setSmallIcon(R.drawable.ic_seseva_notification_icon)
                             .setContentTitle("Your Yesterday's Stats")
-                            .setContentText("You entirely lost your chance to raise money towards your mission!")
+                            .setContentText("It's sad that you broke many rules and lost your chance to contribute towards your mission!")
                             .setPriority(NotificationCompat.PRIORITY_MIN)
                             .setContentIntent(pendingIntent)
                             .setAutoCancel(true)

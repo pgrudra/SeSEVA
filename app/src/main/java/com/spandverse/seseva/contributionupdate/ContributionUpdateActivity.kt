@@ -2,6 +2,7 @@ package com.spandverse.seseva.contributionupdate
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -13,11 +14,11 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.spandverse.seseva.MainActivity
-import com.spandverse.seseva.R
+import com.spandverse.seseva.*
 import com.spandverse.seseva.databinding.ActivityContributionUpdateBinding
 import com.spandverse.seseva.foregroundnnotifications.PermissionViewModel
 import com.spandverse.seseva.foregroundnnotifications.PermissionViewModelFactory
+import com.spandverse.seseva.foregroundnnotifications.TestService
 import com.spandverse.seseva.home.HomeActivity
 import com.spandverse.seseva.home.PassageViewModel
 import com.spandverse.seseva.home.PassageViewModelFactory
@@ -32,11 +33,13 @@ class ContributionUpdateActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_contribution_update)
+        //stopService()
         viewModelFactory = ContributionUpdateViewModelFactory(application)
         val sharedPref=getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
         val showWeeklyReward=sharedPref.getInt((R.string.days_after_installation).toString(),1)==0
         val missionNumber=intent.getIntExtra("missionNumber",0)
         val savedMissionNumber=sharedPref.getInt((R.string.chosen_mission_number).toString(),0)
+        startService()
         if(savedMissionNumber!=0 && missionNumber==savedMissionNumber){
             viewModel = ViewModelProvider(this, viewModelFactory).get(ContributionUpdateViewModel::class.java)
             binding.lifecycleOwner = this
@@ -150,6 +153,29 @@ class ContributionUpdateActivity : AppCompatActivity() {
         overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
         finish()
     }
+   /* private fun stopService() {
+        if(getServiceState(this) != ServiceState.STOPPED){
+            Intent(this, TestService::class.java).also {
+                it.action = Actions.STOP.name
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(it)
+                } else {
+                    startService(it)
+                }
+            }
+        }
+    }*/
 
+    private fun startService(){
+        Intent(this, TestService::class.java).also{
+            it.action= Actions.START.name
+            if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
+                startForegroundService(it)
+            }
+            else{
+                startService(it)
+            }
+        }
+    }
 
 }

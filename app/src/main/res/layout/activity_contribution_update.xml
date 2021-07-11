@@ -93,7 +93,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="12dp"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="Yesterday's reward"
+                android:text="@string/yesterday_s_reward"
                 android:textColor="@color/primary_text"
                 style="@style/subtitle_1"/>
             <androidx.appcompat.widget.AppCompatImageView
@@ -138,7 +138,7 @@
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/yda_reward_text"
                 app:layout_constraintEnd_toEndOf="@id/yda_reward_text"
-                android:text="Daily reward"
+                android:text="@string/daily_reward_text"
                 android:textColor="@color/disabled_text"
                 style="@style/tertiary_text"/>
             <TextView
@@ -148,7 +148,7 @@
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/daily_reward_text"
                 app:layout_constraintEnd_toEndOf="@id/yda_reward_text"
-                android:text="Weekly reward"
+                android:text="@string/weekly_reward_text"
                 android:textColor="@color/disabled_text"
                 style="@style/tertiary_text"/>
             <TextView
@@ -192,7 +192,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="12dp"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:text="Yesterday's reward"
+                    android:text="@string/yesterday_s_reward"
                     android:textColor="@color/rules_card"
                     style="@style/subtitle_1"/>
                 <TextView
@@ -202,7 +202,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     style="@style/subtitle_1"
                     android:textColor="@color/colorError"
-                    android:text="Total Penalty"
+                    android:text="@string/total_penalty_text"
                     app:layout_constraintEnd_toEndOf="@id/yda_reward_text_i"/>
 
                 <TextView
@@ -267,7 +267,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="16dp"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:text="Yesterday's reward"
+                    android:text="@string/yesterday_s_reward"
                     android:textColor="@color/rules_card"
                     style="@style/subtitle_1"/>
              <TextView
@@ -276,7 +276,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/yda_reward_text_i3"
-                    android:text="Social"
+                    android:text="@string/social_text"
                  android:visibility="gone"
                     android:textColor="@color/disabled_text"
                     style="@style/tertiary_text"/>
@@ -296,7 +296,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/video_penalty_text"
                     app:layout_constraintEnd_toEndOf="@id/yda_reward_text_i3"
-                    android:text="Games"
+                    android:text="@string/games_text"
                     android:visibility="gone"
                     android:textColor="@color/disabled_text"
                     style="@style/tertiary_text"/>
@@ -317,29 +317,30 @@
                     android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@id/com_penalty_text"
                     app:layout_constraintEnd_toEndOf="@id/yda_reward_text_i3"
-                    android:text="MSNBS"
+                    android:text="@string/msnbs_text"
                     android:textColor="@color/disabled_text"
                     style="@style/tertiary_text"/>
+            <TextView
+                android:id="@+id/entertainment_penalty_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/msnbs_penalty_text"
+                app:layout_constraintEnd_toEndOf="@id/yda_reward_text_i3"
+                android:text="@string/entertainment"
+                android:textColor="@color/disabled_text"
+                style="@style/tertiary_text"/>
                 <TextView
                     android:id="@+id/others_penalty_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    app:layout_constraintTop_toBottomOf="@id/msnbs_penalty_text"
-                    app:layout_constraintEnd_toEndOf="@id/yda_reward_text_i3"
-                    android:text="Other Apps"
-                    android:textColor="@color/disabled_text"
-                    style="@style/tertiary_text"/>
-                <TextView
-                    android:id="@+id/entertainment_penalty_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@id/others_penalty_text"
                     app:layout_constraintEnd_toEndOf="@id/yda_reward_text_i3"
-                    android:text="@string/entertainment"
+                    android:text="@string/other_apps_text"
                     android:textColor="@color/disabled_text"
                     style="@style/tertiary_text"/>
+
                 <TextView
                     android:id="@+id/social_penalty"
                     android:layout_width="wrap_content"
@@ -395,28 +396,29 @@
                     android:text="@{ContributionUpdateViewModel.msnbsPenalty}"
                     android:textColor="@color/disabled_text"
                     style="@style/tertiary_text"/>
-                <TextView
+            <TextView
+                android:id="@+id/entertainment_penalty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/msnbs_penalty"
+                app:layout_constraintStart_toStartOf="@id/yda_reward_i3"
+                tools:text="Rs 8"
+                android:text="@{ContributionUpdateViewModel.entertainmentPenalty}"
+                android:textColor="@color/disabled_text"
+                style="@style/tertiary_text"/>
+            <TextView
                     android:id="@+id/others_penalty"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    app:layout_constraintTop_toBottomOf="@id/msnbs_penalty"
-                    app:layout_constraintStart_toStartOf="@id/yda_reward_i3"
-                    tools:text="Rs 8"
-                    android:textColor="@color/disabled_text"
-                    android:text="@{ContributionUpdateViewModel.othersPenalty}"
-                    style="@style/tertiary_text"/>
-                <TextView
-                    android:id="@+id/entertainment_penalty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@id/others_penalty"
                     app:layout_constraintStart_toStartOf="@id/yda_reward_i3"
                     tools:text="Rs 8"
-                    android:text="@{ContributionUpdateViewModel.entertainmentPenalty}"
                     android:textColor="@color/disabled_text"
+                    android:text="@{ContributionUpdateViewModel.othersPenalty}"
                     style="@style/tertiary_text"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
         <View
             android:id="@+id/v1"
@@ -437,7 +439,7 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="24sp"
                 android:fontFamily="@font/montserrat_used"
-                android:text="You raised"
+                android:text="@string/you_raised"
                 app:layout_constraintEnd_toEndOf="@id/yda_reward_text_i2"/>
         <TextView
             android:id="@+id/yda_reward_text_i2"
@@ -446,7 +448,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="16dp"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="Yesterday's reward"
+            android:text="@string/yesterday_s_reward"
             android:textColor="@color/rules_card"
             style="@style/subtitle_1"/>
 
@@ -504,7 +506,7 @@
             android:id="@+id/usage_heading"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Yesterday's usage stats"
+            android:text="@string/yesterday_s_usage_stats"
             android:textColor="@color/primary_text"
             style="@style/subtitle_1"
             app:layout_constraintEnd_toStartOf="@id/usage_e_c_icon"
@@ -549,12 +551,11 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:paddingBottom="28dp"
-
         app:layout_constraintTop_toBottomOf="@id/usage_c_l">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Category"
+            android:text="@string/category_text"
             style="@style/tertiary_text"
             android:id="@+id/category_title"
             android:layout_marginStart="8dp"
@@ -570,7 +571,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:text="App launches"
+            android:text="@string/app_launches_text"
             android:textColor="@color/primary_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -582,10 +583,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:text="Screen time"
+            android:text="@string/screen_time_text"
             android:textColor="@color/primary_text"
             app:layout_constraintEnd_toStartOf="@id/app_launches_title"
-            app:layout_constraintHorizontal_bias="0.78"
+            app:layout_constraintHorizontal_bias="0.8"
             app:layout_constraintStart_toEndOf="@id/category_title"
             app:layout_constraintTop_toTopOf="parent" />
         <View
@@ -602,7 +603,7 @@
             app:layout_constraintTop_toBottomOf="@id/v2"
             style="@style/tertiary_text"
             android:textColor="@color/disabled_text"
-            android:text="Social"
+            android:text="@string/social_text"
             android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="@id/category_title"/>
         <TextView
@@ -622,7 +623,7 @@
             app:layout_constraintTop_toBottomOf="@id/video_subtitle"
             style="@style/tertiary_text"
             android:textColor="@color/disabled_text"
-            android:text="Games"
+            android:text="@string/games_text"
             android:layout_marginTop="1dp"
             app:layout_constraintStart_toStartOf="@id/category_title"/>
         <TextView
@@ -642,7 +643,7 @@
             app:layout_constraintTop_toBottomOf="@id/com_subtitle"
             style="@style/tertiary_text"
             android:textColor="@color/disabled_text"
-            android:text="MSNBS"
+            android:text="@string/msnbs_text"
             android:layout_marginTop="1dp"
             app:layout_constraintStart_toStartOf="@id/category_title"/>
         <TextView
@@ -652,14 +653,14 @@
             app:layout_constraintTop_toBottomOf="@id/entertainment_subtitle"
             style="@style/tertiary_text"
             android:textColor="@color/disabled_text"
-            android:text="Whitelisted"
+            android:text="@string/whitelisted_text"
             android:layout_marginTop="1dp"
             app:layout_constraintStart_toStartOf="@id/category_title"/>
         <TextView
             android:id="@+id/entertainment_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/others_subtitle"
+            app:layout_constraintTop_toBottomOf="@id/msnbs_subtitle"
             style="@style/tertiary_text"
             android:textColor="@color/disabled_text"
             android:text="@string/entertainment"
@@ -669,10 +670,10 @@
             android:id="@+id/others_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/msnbs_subtitle"
+            app:layout_constraintTop_toBottomOf="@id/whitelisted_subtitle"
             style="@style/tertiary_text"
             android:textColor="@color/disabled_text"
-            android:text="Others"
+            android:text="@string/other_apps_text"
             android:layout_marginTop="1dp"
             app:layout_constraintStart_toStartOf="@id/category_title"/>
 
@@ -735,20 +736,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@id/screen_time_title"
-            android:id="@+id/others_st"
-            android:text="@{ContributionUpdateViewModel.othersST}"
-            app:layout_constraintTop_toBottomOf="@id/msnbs_st"
-            android:layout_marginTop="1dp"
-            tools:text="2 hrs 34 mins"
-            style="@style/tertiary_text"
-            android:textColor="@color/disabled_text"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/screen_time_title"
             android:id="@+id/entertainment_st"
             android:text="@{ContributionUpdateViewModel.entertainmentST}"
-            app:layout_constraintTop_toBottomOf="@id/others_st"
+            app:layout_constraintTop_toBottomOf="@id/msnbs_st"
             android:layout_marginTop="1dp"
             tools:text="2 hrs 34 mins"
             style="@style/tertiary_text"
@@ -760,6 +750,17 @@
             android:id="@+id/whitelisted_st"
             app:layout_constraintTop_toBottomOf="@id/entertainment_st"
             android:text="@{ContributionUpdateViewModel.whitelistedST}"
+            android:layout_marginTop="1dp"
+            tools:text="2 hrs 34 mins"
+            style="@style/tertiary_text"
+            android:textColor="@color/disabled_text"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/screen_time_title"
+            android:id="@+id/others_st"
+            android:text="@{ContributionUpdateViewModel.othersST}"
+            app:layout_constraintTop_toBottomOf="@id/whitelisted_st"
             android:layout_marginTop="1dp"
             tools:text="2 hrs 34 mins"
             style="@style/tertiary_text"
@@ -824,19 +825,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@id/app_launches_title"
-            android:id="@+id/others_al"
-            app:layout_constraintTop_toBottomOf="@id/msnbs_al"
-            android:layout_marginTop="1dp"
-            tools:text="24"
-            android:text="@{ContributionUpdateViewModel.othersAL}"
-            style="@style/tertiary_text"
-            android:textColor="@color/disabled_text"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/app_launches_title"
             android:id="@+id/entertainment_al"
-            app:layout_constraintTop_toBottomOf="@id/others_al"
+            app:layout_constraintTop_toBottomOf="@id/msnbs_al"
             android:layout_marginTop="1dp"
             android:text="@{ContributionUpdateViewModel.entertainmentAL}"
             tools:text="24"
@@ -851,6 +841,18 @@
             app:layout_constraintTop_toBottomOf="@id/entertainment_al"
             android:layout_marginTop="1dp"
             tools:text="24"
+            style="@style/tertiary_text"
+            android:textColor="@color/disabled_text"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/app_launches_title"
+            android:id="@+id/others_al"
+            app:layout_constraintTop_toBottomOf="@id/whitelisted_al"
+            android:layout_marginTop="1dp"
+            tools:text="24"
+            android:text="@{ContributionUpdateViewModel.othersAL}"
             style="@style/tertiary_text"
             android:textColor="@color/disabled_text"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

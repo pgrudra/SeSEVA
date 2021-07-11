@@ -157,6 +157,7 @@ class LocalDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
             }
         }
         var penaltyToday=0
+        var nonZeroPenaltyForWeekly=false
         val dailyReward=sharedPref.getInt((R.string.daily_reward).toString(), 0)
         var moneyToBeUpdated=sharedPref.getInt((R.string.money_to_be_updated).toString(), 0)
         val pendingMoneyToBeUpdated=moneyToBeUpdated
@@ -186,10 +187,7 @@ for(key in categoryTimes.keys){
                 moneyToBeUpdated+=sharedPref.getInt((R.string.weekly_reward).toString(),0)
             }
             else{
-                with(sharedPref.edit()) {
-                    this?.putBoolean((R.string.non_zero_penalty).toString(), true)
-                    this?.apply()
-                }
+                nonZeroPenaltyForWeekly=true
             }
             with(sharedPref.edit()) {
                 this?.putInt((R.string.days_after_installation).toString(), 0)
@@ -232,9 +230,15 @@ for(key in categoryTimes.keys){
     }
 
 }
-        if(penaltyToday>0){
+        if(penaltyToday>0 || nonZeroPenaltyForWeekly){
             with(sharedPref.edit()) {
                 this?.putBoolean((R.string.non_zero_penalty).toString(), true)
+                this?.apply()
+            }
+        }
+        else{
+            with(sharedPref.edit()) {
+                this?.putBoolean((R.string.non_zero_penalty).toString(), false)
                 this?.apply()
             }
         }

@@ -279,4 +279,17 @@
     <string name="p0">Going great %1$s</string>
     <string name="p1">Going good %1$s</string>
     <string name="p2">You could do much better %1$s</string>
+    <string name="yesterday_s_reward">Yesterday\'s reward</string>
+    <string name="daily_reward_text">Daily reward</string>
+    <string name="weekly_reward_text">Weekly reward</string>
+    <string name="total_penalty_text">Total penalty</string>
+    <string name="social_text">Social</string>
+    <string name="games_text">Games</string>
+    <string name="msnbs_text">MSNBS</string>
+    <string name="other_apps_text">Other Apps</string>
+    <string name="yesterday_s_usage_stats">Yesterday\'s usage stats</string>
+    <string name="category_text">Category</string>
+    <string name="app_launches_text">App launches</string>
+    <string name="screen_time_text">Screen time</string>
+    <string name="whitelisted_text">Whitelisted</string>
 </resources>
