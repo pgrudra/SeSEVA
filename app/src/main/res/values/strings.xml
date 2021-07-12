@@ -208,7 +208,7 @@
     <string name="missions_supported">Missions supported</string>
     <string name="comm_browsers"><![CDATA[Comm. & Browsing]]></string>
     <string name="video_comics"><![CDATA[Video & Comics]]></string>
-    <string name="email_verfication_from_address">Didn\'t get an email from\nnoreply.seseva@unslave-0.firebaseapp.com?\nCheck your spam as well.</string>
+    <string name="email_verfication_from_address">Didn\'t get an email from\nnoreply@unslave-0.firebaseapp.com?\nCheck your spam as well.</string>
     <string name="resend">RESEND</string>
     <string name="change_email">CHANGE EMAIL</string>
     <string name="never_mind">NEVER MIND</string>
