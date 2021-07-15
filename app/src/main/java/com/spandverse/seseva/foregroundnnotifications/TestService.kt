@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.*
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
@@ -35,6 +36,7 @@ import kotlinx.android.synthetic.main.blocking_screen.view.textView18
 import kotlinx.android.synthetic.main.blocking_screen.view.textView44
 import kotlinx.android.synthetic.main.blocking_screen_strict_mode.view.*
 import kotlinx.coroutines.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 

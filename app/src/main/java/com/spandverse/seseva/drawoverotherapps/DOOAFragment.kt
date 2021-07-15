@@ -45,19 +45,6 @@ class DOOAFragment : Fragment() {
                 (R.string.shared_pref).toString(),
                 Context.MODE_PRIVATE
             )
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context)){
-            if(checkIfDeviceSpecificPermissionNeeded()){
-                    findNavController().navigate(DOOAFragmentDirections.actionDOOAFragmentToAutostartPermissionFragment())
-            }
-            else{
-                with(sharedPref.edit()) {
-                    this?.putBoolean((com.spandverse.seseva.R.string.autostart_permission_asked).toString(), true)
-                    this?.apply()
-                }
-                findNavController().navigate(DOOAFragmentDirections.actionDOOAFragmentToHomeFragment())
-            }
-
-        }
 
         binding.allow.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -94,6 +81,23 @@ class DOOAFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context)){
+            if(checkIfDeviceSpecificPermissionNeeded()){
+                findNavController().navigate(DOOAFragmentDirections.actionDOOAFragmentToAutostartPermissionFragment())
+            }
+            else{
+                with(sharedPref.edit()) {
+                    this?.putBoolean((com.spandverse.seseva.R.string.autostart_permission_asked).toString(), true)
+                    this?.apply()
+                }
+                findNavController().navigate(DOOAFragmentDirections.actionDOOAFragmentToHomeFragment())
+            }
+
+        }
+
+    }
     private fun checkIfDeviceSpecificPermissionNeeded(): Boolean {
         val manufacturer=android.os.Build.MANUFACTURER
         return if(sharedPref.getBoolean((R.string.autostart_permission_asked).toString(), false))

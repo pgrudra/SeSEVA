@@ -130,6 +130,8 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
     }
 
     private fun displayTotalNActiveMissions() {
+        _totalMissions.value=sharedPref.getInt((R.string.total_missions).toString(),1).toString()
+        _activeMissions.value=sharedPref.getInt((R.string.active_missions).toString(),1).toString()
         cloudReference.child("totalMissions").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 _totalMissions.value=snapshot.getValue<Int>().toString()
@@ -826,10 +828,12 @@ val minute:Int=(0..2).random()
             val updateStatsLocalRequest= OneTimeWorkRequestBuilder<LocalDatabaseUpdateWorker>()
                 .setInitialDelay(timeDiff,TimeUnit.MILLISECONDS)
                 .addTag("localDateBase")
+                .setBackoffCriteria(BackoffPolicy.EXPONENTIAL,1,TimeUnit.MINUTES)
                 .build()
             val updateStatsCloudRequest=OneTimeWorkRequestBuilder<CloudDatabaseUpdateWorker>()
                 .setConstraints(constraintNet)
                 .addTag("cloudDateBase")
+                .setBackoffCriteria(BackoffPolicy.EXPONENTIAL,1,TimeUnit.MINUTES)
                 .build()
             WorkManager.getInstance(context).beginUniqueWork("databaseUpdate",ExistingWorkPolicy.KEEP,updateStatsLocalRequest).then(updateStatsCloudRequest).enqueue()
             notifyAndServiceAndRefreshAppsDatabase()

@@ -7,6 +7,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.FirebaseApp
+import com.google.firebase.appcheck.FirebaseAppCheck
+import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory
 import com.spandverse.seseva.R
 import com.spandverse.seseva.checkInternetConnectivity
 import com.spandverse.seseva.data.missions.MissionsDatabaseDao
@@ -46,9 +49,7 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
     fun saveEverywhere(userName: String){
         if(checkInternetConnectivity(context)){
             insertIntoSharedPref(userName)
-            viewModelScope.launch {
-                insertIntoCloudDatabase(userName) }
-
+                insertIntoCloudDatabase(userName)
             _nameInsertDone.value=false
             _goToNextFragment.value=true
         }
@@ -62,8 +63,6 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
         cloudDatabase.child("users").child(userId).child("username").setValue(userName)
             .addOnSuccessListener{
                 insertUsernameIntoFirebase(userName)
-            }
-            .addOnFailureListener {
             }
     }
     private fun insertUsernameIntoFirebase(userName: String){

@@ -42,7 +42,6 @@ class ChooseMissionViewModel(
 
     private fun checkAndLoad(){
         viewModelScope.launch {
-
             val loadedList=database.getActiveDownloadedMissions(nowMinusOneDay)
             val entireList:MutableList<Int> = arrayListOf()
             val moneyRaisedList:MutableList<Pair<Int,Int>> = arrayListOf()
@@ -79,43 +78,51 @@ class ChooseMissionViewModel(
                 }
                 val contributionsList:MutableList<Pair<Int,Int>> = arrayListOf()
                 val contributionsReference= userId?.let { cloudReference.child("users").child(it).child("contributions") }
-                contributionsReference?.get()?.addOnSuccessListener { dataSnapshot ->
-                    for(i in dataSnapshot.children){
-                        contributionsList.add(Pair(i.key!!.toInt(),i.value.toString().toInt()))
-                    }
-                    for (i in list){
-                        val missionReference=cloudReference.child("Missions").child(i.toString())
-                        missionReference.addListenerForSingleValueEvent(object :ValueEventListener{
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                val mission:Mission? =snapshot.getValue<NetworkMission>()?.asDatabaseModel()
-                                val primaryKey= snapshot.key?.toInt() ?: 0
-                                mission?.missionNumber=primaryKey
-                                mission?.contributors= contributorsList.find{it.first==primaryKey}?.second ?:0
-                                val now: Calendar = Calendar.getInstance()
-                                mission?.missionActive=now.timeInMillis<= mission?.deadline!!
-                                mission.totalMoneyRaised=moneyRaisedList.find{it.first==primaryKey}?.second ?:0
-                                mission.contribution=contributionsList.find { it.first==primaryKey }?.second ?:0
+                contributionsReference?.addListenerForSingleValueEvent(object :ValueEventListener{
+                    override fun onDataChange(dSnapshot: DataSnapshot) {
+                        for(i in dSnapshot.children){
+                            contributionsList.add(Pair(i.key!!.toInt(),i.value.toString().toInt()))
+                        }
+                        for (i in list){
+                            val missionReference=cloudReference.child("Missions").child(i.toString())
+                            missionReference.addListenerForSingleValueEvent(object :ValueEventListener{
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    val mission:Mission? =snapshot.getValue<NetworkMission>()?.asDatabaseModel()
+                                    val primaryKey= snapshot.key?.toInt() ?: 0
+                                    mission?.missionNumber=primaryKey
+                                    mission?.contributors= contributorsList.find{it.first==primaryKey}?.second ?:0
+                                    val now: Calendar = Calendar.getInstance()
+                                    mission?.missionActive=now.timeInMillis<= mission?.deadline!!
+                                    mission.totalMoneyRaised=moneyRaisedList.find{it.first==primaryKey}?.second ?:0
+                                    mission.contribution=contributionsList.find { it.first==primaryKey }?.second ?:0
 
-                                viewModelScope.launch { database.insert(mission) }
-                            }
+                                    viewModelScope.launch { database.insert(mission) }
+                                }
 
-                            override fun onCancelled(error: DatabaseError) {
-                                TODO("Not yet implemented")
-                            }
+                                override fun onCancelled(error: DatabaseError) {
+                                    TODO("Not yet implemented")
+                                }
 
-                        })
-                    }
-                    if(loadedList!=null){
-                        viewModelScope.launch {
-                            for (i in loadedList) {
-                                val mission = database.doesMissionExist(i)
-                                mission?.contributors=contributorsList.find{it.first==i}?.second ?:0
-                                mission?.totalMoneyRaised=moneyRaisedList.find{it.first==i}?.second ?:0
-                                mission?.let { database.update(it) }
+                            })
+                        }
+                        if(loadedList!=null){
+                            viewModelScope.launch {
+                                for (i in loadedList) {
+                                    val mission = database.doesMissionExist(i)
+                                    mission?.contributors=contributorsList.find{it.first==i}?.second ?:0
+                                    mission?.totalMoneyRaised=moneyRaisedList.find{it.first==i}?.second ?:0
+                                    mission?.let { database.update(it) }
+                                }
                             }
                         }
                     }
-                }
+
+                    override fun onCancelled(error: DatabaseError) {
+                    }
+                })
+
+
+
             }
 
             override fun onCancelled(databaseError: DatabaseError) {

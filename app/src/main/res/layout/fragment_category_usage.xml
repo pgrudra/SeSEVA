@@ -83,7 +83,7 @@
                     style="@style/caption"
                     android:layout_marginTop="8dp"
                     android:textColor="@color/primary_text"
-                    android:text="There is no rule for apps under this category. You can use these apps as per your need"
+                    android:text="There is no rule for apps under this category. You can use these apps as per your need."
                     android:id="@+id/whitelisted_description"
                     android:visibility="gone"/>
 

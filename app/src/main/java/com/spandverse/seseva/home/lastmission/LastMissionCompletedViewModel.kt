@@ -28,6 +28,9 @@ class LastMissionCompletedViewModel(private val database: MissionsDatabaseDao, a
     private val _enableButton = MutableLiveData<Boolean>()
     val enableButton: LiveData<Boolean>
         get() = _enableButton
+    private val _downLoadReport = MutableLiveData<Boolean>()
+    val downLoadReport: LiveData<Boolean>
+        get() = _downLoadReport
     private val _goToHome = MutableLiveData<Boolean>()
     val goToHome: LiveData<Boolean>
         get() = _goToHome
@@ -37,6 +40,9 @@ class LastMissionCompletedViewModel(private val database: MissionsDatabaseDao, a
     private val _lastMissionName = MutableLiveData<String>()
     val lastMissionName: LiveData<String>
         get() = _lastMissionName
+    private val _missionName = MutableLiveData<String>()
+    val missionName: LiveData<String>
+        get() = _missionName
     private val _personalContribution = MutableLiveData<SpannableString>()
     val personalContribution: LiveData<SpannableString>
         get() = _personalContribution
@@ -77,6 +83,7 @@ init {
             cloudReference.child("accomplishedMissions").child((missionNumber.toString())).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val missionName=dataSnapshot.child("missionName").value.toString()
+                    _missionName.value=missionName
                     val deadline=dataSnapshot.child("deadline").value.toString().replace("-"," " )
                     _reportAvailable.value=dataSnapshot.child("reportAvailable").getValue<Boolean>()
                     _lastMissionName.value=context.getString(R.string.mission_n_deadline,missionName,deadline)
@@ -101,7 +108,12 @@ init {
             })
         _enableButton.value=true
     }
-
+    fun downloadReport(){
+        _downLoadReport.value=true
+    }
+    fun downloadReportComplete(){
+        _downLoadReport.value=true
+    }
     fun onGoToHomeComplete() {
         _goToHome.value=false
     }

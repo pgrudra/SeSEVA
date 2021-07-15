@@ -22,7 +22,7 @@ class IntroToApp : Fragment() {
         val sharedPref = context?.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
         val userName=sharedPref?.getString((R.string.user_name).toString(),"User")?:"User"
 binding.continueButton.setOnClickListener {
-    NavHostFragment.findNavController(this).navigate(IntroToAppDirections.actionIntroToApp3ToIntroToApp22())
+    NavHostFragment.findNavController(this).navigate(IntroToAppDirections.actionIntroToApp3ToPassageFragment())
 }
         binding.introTextBody.text=getString(R.string.intro_1_text,userName)
 

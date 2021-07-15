@@ -1121,25 +1121,29 @@
     android:background="@color/rules_scrim"
     android:id="@+id/intro_scrim">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/scrim_svg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:src= "@drawable/rule_instructions"/>
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_constraintTop_toBottomOf="@id/scrim_svg"
-    android:gravity="center"
-    android:text="Tap anywhere to continue"
-    style="@style/caption"
-    android:textColor="@color/secondary_text"
-    android:layout_marginTop="40dp"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/scrim_svg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/rule_instructions"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.24" />
+
     <TextView
+        style="@style/caption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="Tap anywhere to continue"
+        android:textColor="@color/secondary_text"
+        app:layout_constraintBottom_toTopOf="@id/small_text"
+        app:layout_constraintTop_toBottomOf="@id/scrim_svg" />
+    <TextView
+        android:id="@+id/small_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

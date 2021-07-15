@@ -45,6 +45,7 @@ class LocalDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                 val updateStatsCloudRequest= OneTimeWorkRequestBuilder<CloudDatabaseUpdateWorker>()
                     .setConstraints(constraintNet)
                     .addTag("cloudDateBase")
+                    .setBackoffCriteria(BackoffPolicy.EXPONENTIAL,1,TimeUnit.MINUTES)
                     .build()
                 val minute:Int=(0..2).random()
                 val currentTime = Calendar.getInstance()
@@ -56,6 +57,7 @@ class LocalDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                 val updateStatsLocalRequest= OneTimeWorkRequestBuilder<LocalDatabaseUpdateWorker>()
                     .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
                     .addTag("localDateBase")
+                    .setBackoffCriteria(BackoffPolicy.EXPONENTIAL,1,TimeUnit.MINUTES)
                     .build()
 
                 WorkManager.getInstance(applicationContext).beginUniqueWork("databaseUpdate",
@@ -64,7 +66,7 @@ class LocalDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                 Result.success()
             }
             catch (e:Exception){
-                Result.failure()
+                Result.retry()
             }
         }
     }

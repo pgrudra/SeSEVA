@@ -53,7 +53,18 @@ class HomeActivity :AppCompatActivity(),DrawerLocker,
         super.onCreate(savedInstanceState)
         //val toolbar=findViewById<Toolbar>(R.id.toolbar)
         //setSupportActionBar(toolbar)
-        FirebaseApp.initializeApp(/*context=*/ this)
+        /*val appCheck=sharedPref.getBoolean((R.string.app_check_done).toString(),false)
+        if(!appCheck){
+            FirebaseApp.initializeApp( this)
+            val firebaseAppCheck = FirebaseAppCheck.getInstance()
+            firebaseAppCheck.installAppCheckProviderFactory(
+                SafetyNetAppCheckProviderFactory.getInstance())
+            with (sharedPref.edit()) {
+                this?.putBoolean((R.string.app_check_done).toString(),true)
+                this?.apply()
+            }
+        }*/
+        FirebaseApp.initializeApp( this)
         val firebaseAppCheck = FirebaseAppCheck.getInstance()
         firebaseAppCheck.installAppCheckProviderFactory(
             SafetyNetAppCheckProviderFactory.getInstance())

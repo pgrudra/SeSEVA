@@ -12,6 +12,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.FirebaseApp
+import com.google.firebase.appcheck.FirebaseAppCheck
+import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.spandverse.seseva.*
@@ -32,8 +35,11 @@ class ContributionUpdateActivity : AppCompatActivity() {
     private val cloudImagesReference = Firebase.storage
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp( applicationContext)
+        val firebaseAppCheck = FirebaseAppCheck.getInstance()
+        firebaseAppCheck.installAppCheckProviderFactory(
+            SafetyNetAppCheckProviderFactory.getInstance())
         binding = DataBindingUtil.setContentView(this, R.layout.activity_contribution_update)
-        //stopService()
         viewModelFactory = ContributionUpdateViewModelFactory(application)
         val sharedPref=getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
         val showWeeklyReward=sharedPref.getInt((R.string.days_after_installation).toString(),1)==0

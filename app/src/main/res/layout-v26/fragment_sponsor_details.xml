@@ -63,7 +63,7 @@
                     style="@style/tertiary_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="20dp"
                     android:justificationMode="inter_word"
                     android:text="@{sponsorDetailsViewModel.sponsorDescription}"
                     android:textColor="@color/disabled_text"

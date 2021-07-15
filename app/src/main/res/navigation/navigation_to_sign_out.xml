@@ -84,15 +84,7 @@
         android:name="com.spandverse.seseva.home.appintro.IntroToApp"
         android:label="IntroToApp" >
         <action
-            android:id="@+id/action_introToApp3_to_introToApp22"
-            app:destination="@id/introToApp22" />
-    </fragment>
-    <fragment
-        android:id="@+id/introToApp22"
-        android:name="com.spandverse.seseva.home.appintro.IntroToApp2"
-        android:label="IntroToApp2" >
-        <action
-            android:id="@+id/action_introToApp22_to_passageFragment"
+            android:id="@+id/action_introToApp3_to_passageFragment"
             app:destination="@id/passageFragment" />
     </fragment>
     <fragment

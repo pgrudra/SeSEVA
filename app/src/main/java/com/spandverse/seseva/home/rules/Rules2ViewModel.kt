@@ -21,6 +21,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.spandverse.seseva.*
 import com.spandverse.seseva.data.apps.AppAndCategory
 import com.spandverse.seseva.data.apps.AppDataBaseDao
@@ -261,120 +264,129 @@ class Rules2ViewModel(
 
     private fun getAndLoadRules(serviceRestart: Boolean) {
         val rulesNumber=sharedPref.getInt((R.string.rules_number).toString(), 0)
-        cloudReference.child("rules").child(rulesNumber.toString()).get().addOnSuccessListener {
-            val sMT=it.child("socialMaxTime").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.social_max_time).toString(),sMT.toInt())
-                this?.apply() }
-            val sML=it.child("socialMaxLaunches").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.social_max_launches).toString(), sML.toInt())
-                this?.apply() }
-            val sP=it.child("socialPenalty").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.social_penalty).toString(), sP.toInt())
-                this?.apply() }
-            val cMT=it.child("communicationMaxTime").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.communication_max_time).toString(), cMT.toInt())
-                this?.apply() }
-            val cML=it.child("communicationMaxLaunches").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.communication_max_launches).toString(), cML.toInt())
-                this?.apply() }
-            val cP=it.child("communicationPenalty").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.communication_penalty).toString(), cP.toInt())
-                this?.apply() }
-            val gMT=it.child("gamesMaxTime").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.games_max_time).toString(), gMT.toInt())
-                this?.apply() }
-            val gML=it.child("gamesMaxLaunches").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.games_max_launches).toString(), gML.toInt())
-                this?.apply() }
-            val gP=it.child("gamesPenalty").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.games_penalty).toString(), gP.toInt())
-                this?.apply() }
-            val vMT=it.child("videoMaxTime").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.video_max_time).toString(), vMT.toInt())
-                this?.apply() }
-            val vML=it.child("videoMaxLaunches").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.video_max_launches).toString(), vML.toInt())
-                this?.apply() }
-            val vP=it.child("videoPenalty").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.video_penalty).toString(), vP.toInt())
-                this?.apply() }
-            val mMT=it.child("msnbsMaxTime").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.msnbs_max_time).toString(), mMT.toInt())
-                this?.apply() }
-            val mML=it.child("msnbsMaxLaunches").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.msnbs_max_launches).toString(), mML.toInt())
-                this?.apply() }
-            val mP=it.child("msnbsPenalty").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.msnbs_penalty).toString(), mP.toInt())
-                this?.apply() }
-            val oMT=it.child("othersMaxTime").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.others_max_time).toString(), oMT.toInt())
-                this?.apply() }
-            val oML=it.child("othersMaxLaunches").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.others_max_launches).toString(), oML.toInt())
-                this?.apply() }
-            val oP=it.child("othersPenalty").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.others_penalty).toString(), oP.toInt())
-                this?.apply() }
-            val eMT=it.child("entertainmentMaxTime").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.entertainment_max_time).toString(), eMT.toInt())
-                this?.apply() }
-            val eML=it.child("entertainmentMaxLaunches").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.entertainment_max_launches).toString(), eML.toInt())
-                this?.apply() }
-            val eP= it.child("entertainmentPenalty").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.entertainment_penalty).toString(),eP.toInt())
-                this?.apply() }
-            val dR=it.child("dailyReward").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.daily_reward).toString(),dR.toInt())
-                this?.apply() }
-            val wR=it.child("weeklyReward").value.toString()
-            with(sharedPref?.edit()) { this?.putInt((R.string.weekly_reward).toString(),wR.toInt())
-                this?.apply() }
-            spannable1=SpannableString("Raise upto Rs $dR per day by adhering to below rules")
-            spannable2= SpannableString("Raise upto Rs $wR per week by adhering to below rules")
-            spannable1.setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.colorAccent)),11,16, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            spannable1.setSpan(RelativeSizeSpan(1.333f),11,16,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            spannable2.setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.colorAccent)),11,16, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            spannable2.setSpan(RelativeSizeSpan(1.333f),11,16,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        cloudReference.child("rules").child(rulesNumber.toString()).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(it: DataSnapshot) {
+                val sMT=it.child("socialMaxTime").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.social_max_time).toString(),sMT.toInt())
+                    this?.apply() }
+                val sML=it.child("socialMaxLaunches").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.social_max_launches).toString(), sML.toInt())
+                    this?.apply() }
+                val sP=it.child("socialPenalty").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.social_penalty).toString(), sP.toInt())
+                    this?.apply() }
+                val cMT=it.child("communicationMaxTime").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.communication_max_time).toString(), cMT.toInt())
+                    this?.apply() }
+                val cML=it.child("communicationMaxLaunches").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.communication_max_launches).toString(), cML.toInt())
+                    this?.apply() }
+                val cP=it.child("communicationPenalty").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.communication_penalty).toString(), cP.toInt())
+                    this?.apply() }
+                val gMT=it.child("gamesMaxTime").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.games_max_time).toString(), gMT.toInt())
+                    this?.apply() }
+                val gML=it.child("gamesMaxLaunches").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.games_max_launches).toString(), gML.toInt())
+                    this?.apply() }
+                val gP=it.child("gamesPenalty").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.games_penalty).toString(), gP.toInt())
+                    this?.apply() }
+                val vMT=it.child("videoMaxTime").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.video_max_time).toString(), vMT.toInt())
+                    this?.apply() }
+                val vML=it.child("videoMaxLaunches").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.video_max_launches).toString(), vML.toInt())
+                    this?.apply() }
+                val vP=it.child("videoPenalty").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.video_penalty).toString(), vP.toInt())
+                    this?.apply() }
+                val mMT=it.child("msnbsMaxTime").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.msnbs_max_time).toString(), mMT.toInt())
+                    this?.apply() }
+                val mML=it.child("msnbsMaxLaunches").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.msnbs_max_launches).toString(), mML.toInt())
+                    this?.apply() }
+                val mP=it.child("msnbsPenalty").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.msnbs_penalty).toString(), mP.toInt())
+                    this?.apply() }
+                val oMT=it.child("othersMaxTime").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.others_max_time).toString(), oMT.toInt())
+                    this?.apply() }
+                val oML=it.child("othersMaxLaunches").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.others_max_launches).toString(), oML.toInt())
+                    this?.apply() }
+                val oP=it.child("othersPenalty").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.others_penalty).toString(), oP.toInt())
+                    this?.apply() }
+                val eMT=it.child("entertainmentMaxTime").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.entertainment_max_time).toString(), eMT.toInt())
+                    this?.apply() }
+                val eML=it.child("entertainmentMaxLaunches").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.entertainment_max_launches).toString(), eML.toInt())
+                    this?.apply() }
+                val eP= it.child("entertainmentPenalty").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.entertainment_penalty).toString(),eP.toInt())
+                    this?.apply() }
+                val dR=it.child("dailyReward").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.daily_reward).toString(),dR.toInt())
+                    this?.apply() }
+                val wR=it.child("weeklyReward").value.toString()
+                with(sharedPref?.edit()) { this?.putInt((R.string.weekly_reward).toString(),wR.toInt())
+                    this?.apply() }
+                spannable1=SpannableString("Raise upto Rs $dR per day by adhering to below rules")
+                spannable2= SpannableString("Raise upto Rs $wR per week by adhering to below rules")
+                spannable1.setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.colorAccent)),11,16, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                spannable1.setSpan(RelativeSizeSpan(1.333f),11,16,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                spannable2.setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.colorAccent)),11,16, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                spannable2.setSpan(RelativeSizeSpan(1.333f),11,16,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-            _contributeSentence.value=spannable1
-            _socialMaxTime.value= "$sMT min"
-            _socialMaxLaunches.value=sML
-            _socialPenalty.value= "Rs $sP"
-            _communicationMaxTime.value= "$cMT min"
-            _communicationMaxLaunches.value=cML
-            _communicationPenalty.value= "Rs $cP"
-            _gamesMaxTime.value= "$gMT min"
-            _gamesMaxLaunches.value=gML
-            _gamesPenalty.value= "Rs $gP"
-            _othersMaxTime.value= "$oMT min"
-            _othersMaxLaunches.value=oML
-            _othersPenalty.value= "Rs $oP"
-            _entertainmentMaxTime.value= "$eMT min"
-            _entertainmentMaxLaunches.value=eML
-            _entertainmentPenalty.value= "Rs $eP"
-            _msnbsMaxTime.value= "$mMT min"
-            _msnbsMaxLaunches.value=mML
-            _msnbsPenalty.value= "Rs $mP"
-            _videoMaxTime.value= "$vMT min"
-            _videoMaxLaunches.value=vML
-            _videoPenalty.value= "Rs $vP"
-            with(sharedPref?.edit()) {
-                this?.putInt((R.string.saved_rules_number).toString(), rulesNumber)
-                this?.apply()
-            }
-            with(sharedPref?.edit()) {
-                this?.putBoolean((R.string.refresh_rules).toString(), true)
-                this?.apply()
-            }
-            if(sharedPref.getBoolean((R.string.onboarding_done).toString(),false)) {
-                if (serviceRestart) {
-                    actionOnService(Actions.STOP)
-                    actionOnService(Actions.START)
+                _contributeSentence.value=spannable1
+                _socialMaxTime.value= "$sMT min"
+                _socialMaxLaunches.value=sML
+                _socialPenalty.value= "Rs $sP"
+                _communicationMaxTime.value= "$cMT min"
+                _communicationMaxLaunches.value=cML
+                _communicationPenalty.value= "Rs $cP"
+                _gamesMaxTime.value= "$gMT min"
+                _gamesMaxLaunches.value=gML
+                _gamesPenalty.value= "Rs $gP"
+                _othersMaxTime.value= "$oMT min"
+                _othersMaxLaunches.value=oML
+                _othersPenalty.value= "Rs $oP"
+                _entertainmentMaxTime.value= "$eMT min"
+                _entertainmentMaxLaunches.value=eML
+                _entertainmentPenalty.value= "Rs $eP"
+                _msnbsMaxTime.value= "$mMT min"
+                _msnbsMaxLaunches.value=mML
+                _msnbsPenalty.value= "Rs $mP"
+                _videoMaxTime.value= "$vMT min"
+                _videoMaxLaunches.value=vML
+                _videoPenalty.value= "Rs $vP"
+                with(sharedPref?.edit()) {
+                    this?.putInt((R.string.saved_rules_number).toString(), rulesNumber)
+                    this?.apply()
+                }
+                with(sharedPref?.edit()) {
+                    this?.putBoolean((R.string.refresh_rules).toString(), true)
+                    this?.apply()
+                }
+                if(sharedPref.getBoolean((R.string.onboarding_done).toString(),false)) {
+                    if (serviceRestart) {
+                        actionOnService(Actions.STOP)
+                        actionOnService(Actions.START)
+                    }
                 }
             }
-        }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+
+
     }
 
     private fun actionOnService(action: Actions) {

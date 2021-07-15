@@ -11,6 +11,9 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.google.firebase.FirebaseApp
+import com.google.firebase.appcheck.FirebaseAppCheck
+import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory
 import com.spandverse.seseva.data.AllDatabase
 import com.spandverse.seseva.data.missions.PartialMission
 import com.google.firebase.auth.ktx.auth
@@ -27,6 +30,10 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
     override suspend fun doWork(): Result {
         return withContext(Dispatchers.IO) {
             try {
+                FirebaseApp.initializeApp( applicationContext)
+                val firebaseAppCheck = FirebaseAppCheck.getInstance()
+                firebaseAppCheck.installAppCheckProviderFactory(
+                    SafetyNetAppCheckProviderFactory.getInstance())
                 val sharedPref = applicationContext.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
                 val cloudReference = Firebase.database.reference
                 val user = Firebase.auth.currentUser
@@ -72,7 +79,6 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                                     dao.update(mC)
                                 }
                                 missionContributionReference.setValue(missionContribution) .addOnSuccessListener {
-
                                     val referenceToMissionMoneyRaised=cloudReference.child("moneyRaised").child("$chosenMission")
                                     referenceToMissionMoneyRaised.runTransaction(object : Transaction.Handler{
                                         override fun doTransaction(currentData: MutableData): Transaction.Result {
@@ -220,6 +226,7 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                     }
                 }
                 else{
+
                     //plz choose a mission
                     //intent to home activity
                 }

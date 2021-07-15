@@ -26,7 +26,7 @@
         android:roundIcon="@mipmap/seseva_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".contributionupdate.ContributionUpdateActivity"></activity>
+        <activity android:name=".contributionupdate.ContributionUpdateActivity" />
         <activity android:name=".DynamicLinkActivity">
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
