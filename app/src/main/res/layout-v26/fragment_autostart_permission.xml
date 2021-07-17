@@ -115,14 +115,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginBottom="36dp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <include layout="@layout/fragment_autostart_info"
-            android:id="@+id/info_fragment"/>
         <View
             android:id="@+id/skrim1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="256dp"
             android:background="@color/skrim"
             android:visibility="gone" />
+        <include layout="@layout/fragment_autostart_info"
+            android:id="@+id/info_fragment"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

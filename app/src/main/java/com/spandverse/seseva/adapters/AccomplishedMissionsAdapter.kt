@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.spandverse.seseva.R
 import com.spandverse.seseva.data.missions.DomainActiveMission
@@ -28,6 +29,7 @@ class AccomplishedMissionsAdapter(private val onCLickListener: AccomplishedMissi
             binding.sponsorName.text= binding.sponsorName.context.getString(R.string.sponsored_by_sponsor_name,item.sponsorName)
             Glide.with(binding.missionImage.context)
                 .load(reference)
+                .transition(DrawableTransitionOptions.withCrossFade())
                 .apply(
                     RequestOptions()
                         .placeholder(R.drawable.ic_imageplaceholder)

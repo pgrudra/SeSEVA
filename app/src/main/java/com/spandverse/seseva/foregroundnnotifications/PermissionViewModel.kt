@@ -19,6 +19,9 @@ class PermissionViewModel(application: Application): AndroidViewModel(applicatio
     private val _disclosureVisible= MutableLiveData<Boolean>()
     val disclosureVisible:LiveData<Boolean>
         get()=_disclosureVisible
+    private val _showOrHide= MutableLiveData<Boolean>()
+    val showOrHide:LiveData<Boolean>
+        get()=_showOrHide
     private val _helpVisible= MutableLiveData<Boolean>()
     val helpVisible:LiveData<Boolean>
         get()=_helpVisible
@@ -37,6 +40,9 @@ class PermissionViewModel(application: Application): AndroidViewModel(applicatio
     }
     fun usageDisclosureGone(){
         _disclosureVisible.value=false
+    }
+    fun showHideSteps(){
+        _showOrHide.value=_showOrHide.value!=true
     }
 
     fun checkUsageAccessPermission() {

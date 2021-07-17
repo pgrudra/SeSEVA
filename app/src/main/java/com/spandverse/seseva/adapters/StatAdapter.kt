@@ -17,7 +17,9 @@ class StatAdapter(private val onClickListener: OnClickListener): ListAdapter<Sta
 
         fun bind(item: Stat){
             binding.appName.text=item.appName
-            binding.appIcon.setImageDrawable(binding.appIcon.context.packageManager.getApplicationIcon(item.packageName!!))
+            try{
+                binding.appIcon.setImageDrawable(binding.appIcon.context.packageManager.getApplicationIcon(item.packageName!!))
+            }catch(e:Exception){}
         }
 
         companion object {

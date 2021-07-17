@@ -10,6 +10,7 @@ import android.content.pm.ResolveInfo
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.os.CountDownTimer
 import android.os.Process
 import android.text.Spannable
 import android.text.SpannableString
@@ -30,6 +31,7 @@ import com.spandverse.seseva.data.apps.AppDataBaseDao
 import com.spandverse.seseva.foregroundnnotifications.TestService
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.spandverse.seseva.choosemission.ChooseMissionViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -45,11 +47,16 @@ class Rules2ViewModel(
     private val context = getApplication<Application>().applicationContext
     private val sharedPref = context.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
     private val cloudReference = Firebase.database.reference
-
+    //private val timer: CountDownTimer
     private val _toHomeFragment = MutableLiveData<Boolean>()
     val toHomeFragment: LiveData<Boolean>
         get() = _toHomeFragment
-
+    private val _expandBottomSheet = MutableLiveData<Boolean>()
+    val expandBottomSheet: LiveData<Boolean>
+        get() = _expandBottomSheet
+    private val _expandGuide = MutableLiveData<Boolean>()
+    val expandGuide: LiveData<Boolean>
+        get() = _expandGuide
     private val _toolBarNDrawer = MutableLiveData<Boolean>()
     val toolBarNDrawer: LiveData<Boolean>
         get() = _toolBarNDrawer
@@ -82,6 +89,9 @@ class Rules2ViewModel(
     val contributeSentence:LiveData<SpannableString>
         get()=_contributeSentence
 
+    private val _rulesGuideText=MutableLiveData<String>()
+    val rulesGuideText:LiveData<String>
+        get()=_rulesGuideText
     private val _socialMaxTime=MutableLiveData<String>()
     val socialMaxTime:LiveData<String>
         get()=_socialMaxTime
@@ -193,6 +203,16 @@ class Rules2ViewModel(
                 //_toolBarNDrawer.value=false
             }
         }
+       /* timer = object : CountDownTimer(
+            COUNTDOWN_TIME, ONE_SECOND
+        ) {
+            override fun onTick(millisUntilFinished: Long) {
+            }
+
+            override fun onFinish() {
+                onTimeUp()
+            }
+        }*/
 
         _social.value=false
         _communication.value=false
@@ -202,8 +222,12 @@ class Rules2ViewModel(
         _entertainment.value=false
         _msnbs.value=false
         _others.value=false
-
     }
+
+    private fun onTimeUp() {
+        _expandBottomSheet.value=true
+    }
+
     private fun checkUsageAccessPermission():Boolean {
         val appOps = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
         val mode = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
@@ -234,7 +258,8 @@ class Rules2ViewModel(
     private fun loadRules() {
         _socialMaxTime.value=sharedPref.getInt((R.string.social_max_time).toString(),0).toString()+" min"
         _socialMaxLaunches.value=sharedPref.getInt((R.string.social_max_launches).toString(),0).toString()
-        _socialPenalty.value="Rs "+sharedPref.getInt((R.string.social_penalty).toString(),0).toString()
+        val socialPenalty=sharedPref.getInt((R.string.social_penalty).toString(),0)
+        _socialPenalty.value="Rs "+socialPenalty.toString()
         _communicationMaxTime.value=sharedPref.getInt((R.string.communication_max_time).toString(),0).toString()+" min"
         _communicationMaxLaunches.value=sharedPref.getInt((R.string.communication_max_launches).toString(),0).toString()
         _communicationPenalty.value="Rs "+sharedPref.getInt((R.string.communication_penalty).toString(),0).toString()
@@ -253,13 +278,16 @@ class Rules2ViewModel(
         _videoMaxTime.value=sharedPref.getInt((R.string.video_max_time).toString(),0).toString()+" min"
         _videoMaxLaunches.value=sharedPref.getInt((R.string.video_max_launches).toString(),0).toString()
         _videoPenalty.value="Rs "+sharedPref.getInt((R.string.video_penalty).toString(),0).toString()
-        spannable1=SpannableString("Raise upto Rs ${sharedPref.getInt((R.string.daily_reward).toString(),0)} per day by adhering to below rules")
-        spannable2= SpannableString("Raise upto Rs ${sharedPref.getInt((R.string.weekly_reward).toString(),0)} per week by adhering to below rules")
+        val dailyReward=sharedPref.getInt((R.string.daily_reward).toString(),0)
+        val weeklyReward=sharedPref.getInt((R.string.weekly_reward).toString(),0)
+        spannable1=SpannableString("Raise upto Rs $dailyReward per day by adhering to below rules")
+        spannable2= SpannableString("Raise upto Rs $weeklyReward per week by adhering to below rules")
         spannable1.setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.colorAccent)),11,16, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         spannable1.setSpan(RelativeSizeSpan(1.333f),11,16,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         spannable2.setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.colorAccent)),11,16, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         spannable2.setSpan(RelativeSizeSpan(1.333f),11,16,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         _contributeSentence.value=spannable1
+        _rulesGuideText.value=context.getString(R.string.rules_guide,dailyReward,socialPenalty,dailyReward-socialPenalty,weeklyReward)
     }
 
     private fun getAndLoadRules(serviceRestart: Boolean) {
@@ -365,6 +393,7 @@ class Rules2ViewModel(
                 _videoMaxTime.value= "$vMT min"
                 _videoMaxLaunches.value=vML
                 _videoPenalty.value= "Rs $vP"
+                _rulesGuideText.value=context.getString(R.string.rules_guide,dR.toInt(),sP.toInt(),dR.toInt()-sP.toInt(),wR.toInt())
                 with(sharedPref?.edit()) {
                     this?.putInt((R.string.saved_rules_number).toString(), rulesNumber)
                     this?.apply()
@@ -495,7 +524,9 @@ class Rules2ViewModel(
             insertIntoDatabase()
         }
     }
-
+fun expandContractGuide(){
+    _expandGuide.value=_expandGuide.value!=true
+}
     private suspend fun insertIntoDatabase() {
         val main = Intent(Intent.ACTION_MAIN, null)
         main.addCategory(Intent.CATEGORY_LAUNCHER)
@@ -568,7 +599,12 @@ class Rules2ViewModel(
                 if(allotedCat=="OTHERS"){
                     val ai=pm.getApplicationInfo(i.packageName,0)
                     if((ai.flags and ApplicationInfo.FLAG_SYSTEM)!=0){
-                        i.appCategory="WHITELISTED"
+                        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+                            i.appCategory=getSystemCats(ai.category)
+                        }
+                        else{
+                            i.appCategory="WHITELISTED"
+                        }
                         database.update(i)
                     }
                 }
@@ -580,83 +616,88 @@ class Rules2ViewModel(
             }
         }
     }
-        /*for (i in appNameList.indices) {
-            val app = AppAndCategory()
-            app.appName = appNameList[i]
-            app.packageName = appPackageList[i]
-            val checkApp = database.isAppExist(appPackageList[i])
-            if (checkApp == null) {
-                val queryUrl = GOOGLE_URL + app.packageName + "&hl=en"
-                val category = try {
 
-                    val document = withContext(Dispatchers.IO) {
-                        Jsoup.connect(queryUrl).get()
-                    }
-                    val text = document?.select("a[itemprop=genre]")
-                    if (text == null) {
-                        "OTHERS"
-                    }
-                    val href = text?.attr("abs:href")
-                    if (href != null) {
+   /* fun startCountDown() {
+        timer.start()
+    }*/
+    /*for (i in appNameList.indices) {
+        val app = AppAndCategory()
+        app.appName = appNameList[i]
+        app.packageName = appPackageList[i]
+        val checkApp = database.isAppExist(appPackageList[i])
+        if (checkApp == null) {
+            val queryUrl = GOOGLE_URL + app.packageName + "&hl=en"
+            val category = try {
 
-                        if (href.length > 4 && href.contains(CATEGORY_STRING)) {
-                            href.substring(
-                                href.indexOf(CATEGORY_STRING) + CAT_SIZE,
-                                href.length
-                            )
-                        } else {
-                            "OTHERS"
-                        }
+                val document = withContext(Dispatchers.IO) {
+                    Jsoup.connect(queryUrl).get()
+                }
+                val text = document?.select("a[itemprop=genre]")
+                if (text == null) {
+                    "OTHERS"
+                }
+                val href = text?.attr("abs:href")
+                if (href != null) {
+
+                    if (href.length > 4 && href.contains(CATEGORY_STRING)) {
+                        href.substring(
+                            href.indexOf(CATEGORY_STRING) + CAT_SIZE,
+                            href.length
+                        )
                     } else {
                         "OTHERS"
                     }
-                } catch (e: Exception) {
+                } else {
                     "OTHERS"
                 }
-                app.appCategory = allotGroup(category)
-                Log.i("PaP", "${app.appCategory}")
-                database.insert(app)
-            } else if (checkApp.appCategory == "OTHERS") {
-                val queryUrl = GOOGLE_URL + checkApp.packageName + "&hl=en"
-                val category = try {
-
-                    val document = withContext(Dispatchers.IO) {
-                        Jsoup.connect(queryUrl).get()
-                    }
-                    val text = document?.select("a[itemprop=genre]")
-                    if (text == null) {
-                        "OTHERS"
-                    }
-                    val href = text?.attr("abs:href")
-                    if (href != null) {
-
-                        if (href.length > 4 && href.contains(CATEGORY_STRING)) {
-                            href.substring(
-                                href.indexOf(CATEGORY_STRING) + CAT_SIZE,
-                                href.length
-                            )
-                        } else {
-                            "OTHERS"
-                        }
-                    } else {
-                        "OTHERS"
-                    }
-                } catch (e: Exception) {
-                    "OTHERS"
-                }
-                if (category != "OTHERS") {
-                    checkApp.appCategory = allotGroup(category)
-                    database.update(checkApp)
-                }
+            } catch (e: Exception) {
+                "OTHERS"
             }
-        }*/
+            app.appCategory = allotGroup(category)
+            Log.i("PaP", "${app.appCategory}")
+            database.insert(app)
+        } else if (checkApp.appCategory == "OTHERS") {
+            val queryUrl = GOOGLE_URL + checkApp.packageName + "&hl=en"
+            val category = try {
+
+                val document = withContext(Dispatchers.IO) {
+                    Jsoup.connect(queryUrl).get()
+                }
+                val text = document?.select("a[itemprop=genre]")
+                if (text == null) {
+                    "OTHERS"
+                }
+                val href = text?.attr("abs:href")
+                if (href != null) {
+
+                    if (href.length > 4 && href.contains(CATEGORY_STRING)) {
+                        href.substring(
+                            href.indexOf(CATEGORY_STRING) + CAT_SIZE,
+                            href.length
+                        )
+                    } else {
+                        "OTHERS"
+                    }
+                } else {
+                    "OTHERS"
+                }
+            } catch (e: Exception) {
+                "OTHERS"
+            }
+            if (category != "OTHERS") {
+                checkApp.appCategory = allotGroup(category)
+                database.update(checkApp)
+            }
+        }
+    }*/
 
 
         companion object {
             private const val GOOGLE_URL = "https://play.google.com/store/apps/details?id="
             private const val CAT_SIZE = 9
             private const val CATEGORY_STRING = "category/"
-
+            private const val ONE_SECOND = 1000L
+            private const val COUNTDOWN_TIME = 15000L
         }
 
 }

@@ -5,10 +5,15 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ClickableSpan
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -61,19 +66,6 @@ class PermissionFragment : Fragment(),PermissionMandatoryDialogFragment.Permissi
         drawerLocker!!.setDrawerEnabled(false)
         drawerLocker.displayBottomNavigation(false)
         appContext = context?.applicationContext?: return binding.root
-        val disclosureSheet = binding.disclosureFragment.root
-        val bottomSheetBehavior: BottomSheetBehavior<*> = BottomSheetBehavior.from(disclosureSheet)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-        bottomSheetBehavior.setBottomSheetCallback(object : BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    binding.skrim1.visibility = View.GONE
-                    binding.allow.isEnabled = true
-                }
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
-        })
         val pkgManager=appContext.packageManager
         val intent = Intent(
             Settings.ACTION_USAGE_ACCESS_SETTINGS
@@ -81,6 +73,27 @@ class PermissionFragment : Fragment(),PermissionMandatoryDialogFragment.Permissi
         if(intent.resolveActivity(pkgManager)==null){
             binding.appCompatImageView7.setImageResource(R.drawable.vivo_usage_access_help_guide)
         }
+        val termsAndPolicyString= SpannableString(getString(R.string.terms_of_use_and_privacy_policy))
+        val termsOfUseText: ClickableSpan = object : ClickableSpan() {
+            override fun onClick(textView: View) {
+                // do some thing
+            }
+        }
+        val privacyPolicyText: ClickableSpan = object : ClickableSpan() {
+            override fun onClick(textView: View) {
+                // do another thing
+            }
+        }
+        termsAndPolicyString.setSpan(termsOfUseText,0,12, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        termsAndPolicyString.setSpan(privacyPolicyText,17,31, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        termsAndPolicyString.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.disabled_text)),0,12,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        termsAndPolicyString.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.disabled_text)),17,31,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        binding.loginTermsAndPrivacyText.text=termsAndPolicyString
+
         binding.neverMind.setOnClickListener { showPermissionMandatoryDialog() }
         viewModel.grantPermission.observe(viewLifecycleOwner, Observer<Boolean> { grantPermission ->
             if (grantPermission) {
@@ -102,15 +115,13 @@ class PermissionFragment : Fragment(),PermissionMandatoryDialogFragment.Permissi
                 }
             }
         })
-        viewModel.disclosureVisible.observe(viewLifecycleOwner, Observer<Boolean> { visible ->
-            if (visible) {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                binding.skrim1.visibility = View.VISIBLE
-                binding.allow.isEnabled = false
+        viewModel.showOrHide.observe(viewLifecycleOwner, Observer<Boolean> { show ->
+            if (show) {
+                binding.appCompatImageView7.visibility=View.VISIBLE
+                binding.imageButton.setImageResource(R.drawable.ic_collapse_vector)
             } else {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-                binding.skrim1.visibility = View.GONE
-                binding.allow.isEnabled = true
+                binding.appCompatImageView7.visibility=View.GONE
+                binding.imageButton.setImageResource(R.drawable.ic_expand_vector)
             }
         })
         viewModel.toDOOA.observe(viewLifecycleOwner, Observer<Boolean> { toDOOA ->

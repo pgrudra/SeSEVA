@@ -661,7 +661,12 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                         if(allotedCat=="OTHERS"){
                             val ai=pm.getApplicationInfo(i.packageName,0)
                             if((ai.flags and ApplicationInfo.FLAG_SYSTEM)!=0){
-                                i.appCategory="WHITELISTED"
+                                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+                                    i.appCategory=getSystemCats(ai.category)
+                                }
+                                else{
+                                    i.appCategory="WHITELISTED"
+                                }
                                 appDatabase.update(i)
                             }
                         }
@@ -712,7 +717,12 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                         if(allotedCat=="OTHERS"){
                             val ai=pm.getApplicationInfo(app.packageName,0)
                             if((ai.flags and ApplicationInfo.FLAG_SYSTEM)!=0){
-                                app.appCategory="WHITELISTED"
+                                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+                                    app.appCategory=getSystemCats(ai.category)
+                                }
+                                else{
+                                    app.appCategory="WHITELISTED"
+                                }
                                 appDatabase.insert(app)
                             }
                             else{

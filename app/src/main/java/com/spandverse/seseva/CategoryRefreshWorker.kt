@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.spandverse.seseva.data.AllDatabase
@@ -56,7 +57,12 @@ class CategoryRefreshWorker(appContext: Context, workerParams: WorkerParameters)
                         if(allotedCat=="OTHERS"){
                             val ai=pm.getApplicationInfo(i.packageName,0)
                             if((ai.flags and ApplicationInfo.FLAG_SYSTEM)!=0){
-                                i.appCategory="WHITELISTED"
+                                if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
+                                    i.appCategory=getSystemCats(ai.category)
+                                }
+                                else{
+                                    i.appCategory="WHITELISTED"
+                                }
                                 dao.update(i)
                             }
                         }
@@ -107,7 +113,12 @@ class CategoryRefreshWorker(appContext: Context, workerParams: WorkerParameters)
                         if(allotedCat=="OTHERS"){
                             val ai=pm.getApplicationInfo(app.packageName,0)
                             if((ai.flags and ApplicationInfo.FLAG_SYSTEM)!=0){
-                                app.appCategory="WHITELISTED"
+                                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+                                    app.appCategory=getSystemCats(ai.category)
+                                }
+                                else{
+                                    app.appCategory="WHITELISTED"
+                                }
                                 dao.insert(app)
                             }
                             else{

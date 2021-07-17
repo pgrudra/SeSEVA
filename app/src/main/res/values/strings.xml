@@ -57,7 +57,8 @@
     <string name="report_download_id">com.spandverse.seseva.REPORT_DOWNLOAD_ID</string>
     <string name="non_zero_penalty">com.spandverse.seseva.NON_ZERO_PENALTY</string>
     <string name="app_check_done">com.spandverse.seseva.APP_CHECK_DONE</string>
-
+    <string name="mison_i_sown">com.spandverse.seseva.MISON_I_SOWN</string>
+    <string name="rules_i_sown">com.spandverse.seseva.RULES_I_SOWN</string>
 
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
@@ -97,6 +98,7 @@
     <string name="grant_permission">Grant Permission</string>
     <string name="enter_your_email">Enter your email</string>
     <string name="done">Done</string>
+    <string name="rules_guide">\u25CF If you don\'t break any rule, you raise Rs %1$d.\n\u25CF If you break a rule (e.g. Social), you raise\nRs %1$d - Penalty(Rs %2$d) = Rs %3$d.\n\u25CF In case the total penalties exceed the reward, you would raise Rs 0.\n\u25CF If you follow weekly rules, you raise Rs %4$d extra, once every week.</string>
 
     <string name="hi_there_i_">Hi there,\nI am Spandy</string>
     <string name="sign_in">SIGN IN</string>
@@ -151,7 +153,7 @@
     <string name="usage_access">Usage access</string>
     <string name="reason_usage_access">SeSEVA requires this permission to provide you your apps\' usage statistics and detect when you are about to break a SeSEVA rule</string>
     <string name="reason_d_o_o_a">SeSEVA requires this permission to diaplay a blocking screen that will warn you when you are about to break a SeSEVA Rule</string>
-    <string name="disclosure_brief">We value your privacy. Information regarding your apps\' usage statistics will only be stored on your local device. Only the amount raised by you for SeSEVA Missions will be collected at our cloud servers.</string>
+    <string name="disclosure_brief">Information collected regarding your apps\' usage statistics will only be stored on your local device. Neither team SeSEVA nor any 3rd party has access to it. The only data collected at our cloud servers is the amount raised by you towards SeSEVA missions on a daily basis, the level you are on in SeSEVA and the username provided by you.</string>
     <string name="help">help</string>
     <string name="i_understand_the_rules">I UNDERSTAND THE RULES</string>
     <string name="no_limit_no_penalty">No limit… No penalty !!</string>
@@ -253,13 +255,13 @@
     <string name="reauthenticate_and_delete_body">It appears that you had authenticated long back. You need to re-authenticate by signing in with %1$s to delete your account.</string>
     <string name="reauthenticate_and_delete_button">authenticate to delete</string>
 
-    <string name="categoriy_social">Genres included: Social, Lifestyle and Dating</string>
+    <string name="categoriy_social">Genres included: Social and Dating</string>
     <string name="category_communication">Genres included: Communication and Browsing</string>
     <string name="category_video">Genres included: Video players and comics</string>
     <string name="categoriy_entertainment">This category consists of Entertainment apps</string>
     <string name="category_games">Game genres included: Action games, Adventure, Arcade, Board, Card, Casino, Casual, Racing, Music, Role playing, Simulation, Sports and Strategy</string>
-    <string name="category_msnbs">Genres included:  Music, Audio, Shopping, News, Magazines, Beauty and Sports</string>
-    <string name="category_whitelisted">Genres included: Whether, Business, Tools, Productivity, Photography, Personalization, Parenting, Medical, Maps, Navigation, Libraries, Demo, House, Home, Health, Fitness, Food, Drink, Travel, Local, Finance, Events, Education, Books, References, Auto, Vehicles, Art and Design; Game genres included: Educational, Word, Trivia and Puzzle; System apps that are not available on play store</string>
+    <string name="category_msnbs">Genres included:  Music, Audio, Shopping, News, Magazines, Images, Beauty and Sports</string>
+    <string name="category_whitelisted">Genres included: Whether, Business, Tools, Lifestyle, Productivity, Photography, Personalization, Parenting, Medical, Maps, Navigation, Libraries, Demo, House, Home, Health, Fitness, Food, Drink, Travel, Local, Finance, Events, Education, Books, References, Auto, Vehicles, Art and Design; Game genres included: Educational, Word, Trivia and Puzzle; System apps that are not available on play store</string>
     <string name="category_others">This category consists of apps not available on play store</string>
 
     <string name="mode_light_info">Mode when permission to draw over other apps is not granted.  When you are at the brink of breaking the rule, you will be informed about it through notifications. You will be persuaded to not break the rule, but not be prevented from using the corresponding app.</string>
@@ -295,4 +297,7 @@
     <string name="screen_time_text">Screen time</string>
     <string name="whitelisted_text">Whitelisted</string>
     <string name="welcome_back_text">Welcome back</string>
+    <string name="terms_of_use_and_privacy_policy">Terms of use and Privacy Policy</string>
+    <string name="we_value_your_privacy_text">We value your privacy</string>
+    <string name="need_help">NEED HELP?</string>
 </resources>

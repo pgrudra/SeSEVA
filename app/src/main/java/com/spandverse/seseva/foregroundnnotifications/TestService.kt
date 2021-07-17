@@ -388,33 +388,35 @@ class TestService : Service() {
                     var launches = 0
                     var totalTime = 0L
                     var transt = 0L
-                    events.forEach {
-                        if (it.eventType == UsageEvents.Event.ACTIVITY_RESUMED) {
-                            // App was moved to the foreground: set the start time
-                            startTime = it.timeStamp
-                            launches += 1
+                    if(!events.isNullOrEmpty()){
+                        events.forEach {
+                            if (it.eventType == UsageEvents.Event.ACTIVITY_RESUMED) {
+                                // App was moved to the foreground: set the start time
+                                startTime = it.timeStamp
+                                launches += 1
 
 
-                        } else if (it.eventType == UsageEvents.Event.ACTIVITY_PAUSED) {
-                            if (startTime != 0L || totalTime == 0L) {
-                                endTime = it.timeStamp
-                                transt = it.timeStamp
+                            } else if (it.eventType == UsageEvents.Event.ACTIVITY_PAUSED) {
+                                if (startTime != 0L || totalTime == 0L) {
+                                    endTime = it.timeStamp
+                                    transt = it.timeStamp
+                                }
                             }
-                        }
-                        if (startTime != 0L && transt != 0L && startTime > transt && (startTime - transt) < 50) {
-                            launches -= 1
-                            transt = 0L
-                        }
+                            if (startTime != 0L && transt != 0L && startTime > transt && (startTime - transt) < 50) {
+                                launches -= 1
+                                transt = 0L
+                            }
 
-                        if (startTime == 0L && endTime != 0L) {
-                            startTime = begin.timeInMillis
-                        }
-                        if (startTime != 0L && endTime != 0L) {
-                            // Add the session time to the total time
-                            totalTime += endTime - startTime
-                            // Reset the start/end times to 0
-                            startTime = 0L
-                            endTime = 0L
+                            if (startTime == 0L && endTime != 0L) {
+                                startTime = begin.timeInMillis
+                            }
+                            if (startTime != 0L && endTime != 0L) {
+                                // Add the session time to the total time
+                                totalTime += endTime - startTime
+                                // Reset the start/end times to 0
+                                startTime = 0L
+                                endTime = 0L
+                            }
                         }
                     }
                     if (startTime != 0L && endTime == 0L) {
@@ -431,7 +433,7 @@ class TestService : Service() {
             if (maxTime > 0) {
                 val handler = Handler(Looper.getMainLooper())
                 if (catTimeInSeconds > maxTime || catLaunches > maxLaunches) {
-                    if ((catTimeInSeconds-maxTime)%60 > 50) {
+                    if ((catTimeInSeconds-maxTime)%60 <11) {
                         handler.post {
                             Toast.makeText(
                                 context,
@@ -551,33 +553,35 @@ class TestService : Service() {
                     var launches = 0
                     var totalTime = 0L
                     var transt = 0L
-                    events.forEach {
-                        if (it.eventType == UsageEvents.Event.ACTIVITY_RESUMED) {
-                            // App was moved to the foreground: set the start time
-                            startTime = it.timeStamp
-                            launches += 1
+                    if(!events.isNullOrEmpty()){
+                        events.forEach {
+                            if (it.eventType == UsageEvents.Event.ACTIVITY_RESUMED) {
+                                // App was moved to the foreground: set the start time
+                                startTime = it.timeStamp
+                                launches += 1
 
 
-                        } else if (it.eventType == UsageEvents.Event.ACTIVITY_PAUSED) {
-                            if (startTime != 0L || totalTime == 0L) {
-                                endTime = it.timeStamp
-                                transt = it.timeStamp
+                            } else if (it.eventType == UsageEvents.Event.ACTIVITY_PAUSED) {
+                                if (startTime != 0L || totalTime == 0L) {
+                                    endTime = it.timeStamp
+                                    transt = it.timeStamp
+                                }
                             }
-                        }
-                        if (startTime != 0L && transt != 0L && startTime > transt && (startTime - transt) < 50) {
-                            launches -= 1
-                            transt = 0L
-                        }
+                            if (startTime != 0L && transt != 0L && startTime > transt && (startTime - transt) < 50) {
+                                launches -= 1
+                                transt = 0L
+                            }
 
-                        if (startTime == 0L && endTime != 0L) {
-                            startTime = begin.timeInMillis
-                        }
-                        if (startTime != 0L && endTime != 0L) {
-                            // Add the session time to the total time
-                            totalTime += endTime - startTime
-                            // Reset the start/end times to 0
-                            startTime = 0L
-                            endTime = 0L
+                            if (startTime == 0L && endTime != 0L) {
+                                startTime = begin.timeInMillis
+                            }
+                            if (startTime != 0L && endTime != 0L) {
+                                // Add the session time to the total time
+                                totalTime += endTime - startTime
+                                // Reset the start/end times to 0
+                                startTime = 0L
+                                endTime = 0L
+                            }
                         }
                     }
                     if (startTime != 0L && endTime == 0L) {
@@ -640,7 +644,9 @@ class TestService : Service() {
                             blockingScreenView.cat_launches.text = catLaunches.toString()
                             blockingScreenView.button.text=context.getString(android.R.string.ok)
                             blockingScreenView.button.setOnClickListener {
-                                wm.removeView(blockingScreenView)
+                                if(blockingScreenView.windowToken!=null){
+                                    wm.removeView(blockingScreenView)
+                                }
                             }
                             if(blockingScreenView.windowToken!=null){
                                 wm.removeView(blockingScreenView)
@@ -674,7 +680,9 @@ class TestService : Service() {
                                 blockingScreenView.cat_launches.text=catLaunches.toString()
                                 blockingScreenView.button.text=context.getString(R.string.i_understand)
                                 blockingScreenView.button.setOnClickListener {
-                                    wm.removeView(blockingScreenView)
+                                    if(blockingScreenView.windowToken!=null){
+                                        wm.removeView(blockingScreenView)
+                                    }
                                 }
                                 val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionNamedImages/mission${missionNumber}NamedImage.jpg")
                                 Glide.with(this)
@@ -711,7 +719,9 @@ class TestService : Service() {
                                 blockingScreenView.cat_launches.text=catLaunches.toString()
                                 blockingScreenView.button.text=context.getString(R.string.i_understand)
                                 blockingScreenView.button.setOnClickListener {
-                                    wm.removeView(blockingScreenView)
+                                    if(blockingScreenView.windowToken!=null){
+                                        wm.removeView(blockingScreenView)
+                                    }
                                 }
                                 val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionNamedImages/mission${missionNumber}NamedImage.jpg")
                                 Glide.with(this)
@@ -748,7 +758,9 @@ class TestService : Service() {
                             blockingScreenView.cat_launches.text=catLaunches.toString()
                             blockingScreenView.button.text=context.getString(R.string.i_understand)
                             blockingScreenView.button.setOnClickListener {
-                                wm.removeView(blockingScreenView)
+                                if(blockingScreenView.windowToken!=null){
+                                    wm.removeView(blockingScreenView)
+                                }
                             }
                             val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionNamedImages/mission${missionNumber}NamedImage.jpg")
                             Glide.with(this)
@@ -786,7 +798,9 @@ class TestService : Service() {
                                 blockingScreenView.cat_launches.text=catLaunches.toString()
                                 blockingScreenView.button.text=context.getString(R.string.i_understand)
                                 blockingScreenView.button.setOnClickListener {
-                                    wm.removeView(blockingScreenView)
+                                    if(blockingScreenView.windowToken!=null){
+                                        wm.removeView(blockingScreenView)
+                                    }
                                     blockingScreenView.time_launches_left_text.text=context.getString(R.string.n,cat)
                                 }
                                 val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionNamedImages/mission${missionNumber}NamedImage.jpg")
@@ -826,7 +840,9 @@ class TestService : Service() {
                             blockingScreenView.cat_launches.text=catLaunches.toString()
                             blockingScreenView.button.text=context.getString(R.string.i_understand)
                             blockingScreenView.button.setOnClickListener {
-                                wm.removeView(blockingScreenView)
+                                if(blockingScreenView.windowToken!=null){
+                                    wm.removeView(blockingScreenView)
+                                }
                             }
                             val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionNamedImages/mission${missionNumber}NamedImage.jpg")
                             Glide.with(this)
@@ -953,33 +969,35 @@ class TestService : Service() {
                     var launches = 0
                     var totalTime = 0L
                     var transt = 0L
-                    events.forEach {
-                        if (it.eventType == UsageEvents.Event.ACTIVITY_RESUMED) {
-                            // App was moved to the foreground: set the start time
-                            startTime = it.timeStamp
-                            launches += 1
+                    if(!events.isNullOrEmpty()){
+                        events.forEach {
+                            if (it.eventType == UsageEvents.Event.ACTIVITY_RESUMED) {
+                                // App was moved to the foreground: set the start time
+                                startTime = it.timeStamp
+                                launches += 1
 
 
-                        } else if (it.eventType == UsageEvents.Event.ACTIVITY_PAUSED) {
-                            if (startTime != 0L || totalTime == 0L) {
-                                endTime = it.timeStamp
-                                transt = it.timeStamp
+                            } else if (it.eventType == UsageEvents.Event.ACTIVITY_PAUSED) {
+                                if (startTime != 0L || totalTime == 0L) {
+                                    endTime = it.timeStamp
+                                    transt = it.timeStamp
+                                }
                             }
-                        }
-                        if (startTime != 0L && transt != 0L && startTime > transt && (startTime - transt) < 50) {
-                            launches -= 1
-                            transt = 0L
-                        }
+                            if (startTime != 0L && transt != 0L && startTime > transt && (startTime - transt) < 50) {
+                                launches -= 1
+                                transt = 0L
+                            }
 
-                        if (startTime == 0L && endTime != 0L) {
-                            startTime = begin.timeInMillis
-                        }
-                        if (startTime != 0L && endTime != 0L) {
-                            // Add the session time to the total time
-                            totalTime += endTime - startTime
-                            // Reset the start/end times to 0
-                            startTime = 0L
-                            endTime = 0L
+                            if (startTime == 0L && endTime != 0L) {
+                                startTime = begin.timeInMillis
+                            }
+                            if (startTime != 0L && endTime != 0L) {
+                                // Add the session time to the total time
+                                totalTime += endTime - startTime
+                                // Reset the start/end times to 0
+                                startTime = 0L
+                                endTime = 0L
+                            }
                         }
                     }
                     if (startTime != 0L && endTime == 0L) {
@@ -1046,7 +1064,9 @@ class TestService : Service() {
                                 blockingScreenView.cat_launches.text=catLaunches.toString()
                                 blockingScreenView.button.text=context.getString(R.string.i_understand)
                                 blockingScreenView.button.setOnClickListener {
-                                    wm.removeView(blockingScreenView)
+                                    if(blockingScreenView.windowToken!=null){
+                                        wm.removeView(blockingScreenView)
+                                    }
                                 }
                                 val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionNamedImages/mission${missionNumber}NamedImage.jpg")
                                 Glide.with(this)
@@ -1084,7 +1104,9 @@ class TestService : Service() {
                                 blockingScreenView.cat_launches.text=catLaunches.toString()
                                 blockingScreenView.button.text=context.getString(R.string.i_understand)
                                 blockingScreenView.button.setOnClickListener {
-                                    wm.removeView(blockingScreenView)
+                                    if(blockingScreenView.windowToken!=null){
+                                        wm.removeView(blockingScreenView)
+                                    }
                                 }
                                 val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionNamedImages/mission${missionNumber}NamedImage.jpg")
                                 Glide.with(this)
@@ -1123,7 +1145,9 @@ class TestService : Service() {
                                 blockingScreenView.cat_launches.text=catLaunches.toString()
                                 blockingScreenView.button.text=context.getString(R.string.i_understand)
                                 blockingScreenView.button.setOnClickListener {
-                                    wm.removeView(blockingScreenView)
+                                    if(blockingScreenView.windowToken!=null){
+                                        wm.removeView(blockingScreenView)
+                                    }
                                     blockingScreenView.time_launches_left_text.text=context.getString(R.string.n,cat)
                                 }
                                 val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionNamedImages/mission${missionNumber}NamedImage.jpg")
@@ -1160,7 +1184,9 @@ class TestService : Service() {
                             blockingScreenView.cat_launches.text=catLaunches.toString()
                             blockingScreenView.button.text=context.getString(R.string.i_understand)
                             blockingScreenView.button.setOnClickListener {
-                                wm.removeView(blockingScreenView)
+                                if(blockingScreenView.windowToken!=null){
+                                    wm.removeView(blockingScreenView)
+                                }
                             }
                             val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionNamedImages/mission${missionNumber}NamedImage.jpg")
                             Glide.with(this)

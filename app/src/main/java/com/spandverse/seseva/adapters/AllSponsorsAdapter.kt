@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.spandverse.seseva.R
 import com.spandverse.seseva.data.sponsors.Sponsor
@@ -25,6 +26,7 @@ class AllSponsorsAdapter(private val onCLickListener: AllSponsorsAdapter.OnClick
             val reference=cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/sponsorLogos/sponsor${item.sponsorNumber}Logo.png")
             Glide.with(binding.sponsorLogo.context)
                 .load(reference)
+                .transition(DrawableTransitionOptions.withCrossFade())
                 .apply(
                     RequestOptions()
                         .placeholder(R.drawable.ic_sponsor)

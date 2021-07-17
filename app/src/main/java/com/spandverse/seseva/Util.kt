@@ -102,7 +102,7 @@ fun allotGroup(cat: String): String {
         "GAME_SPORTS" -> "GAMES"
         "GAME_STRATEGY" -> "GAMES"
         "DATING" -> "SOCIAL"
-        "LIFESTYLE" -> "SOCIAL"
+        "LIFESTYLE" -> "WHITELISTED"
         "SOCIAL" -> "SOCIAL"
         "VIDEO_PLAYERS" -> "VIDEO & COMICS"
         "COMICS" -> "VIDEO & COMICS"
@@ -115,7 +115,17 @@ fun allotGroup(cat: String): String {
         else -> "OTHERS"
     }
 }
-
+fun getSystemCats(i:Int):String{
+    return when(i){
+        android.content.pm.ApplicationInfo.CATEGORY_AUDIO->"MSNBS"
+        android.content.pm.ApplicationInfo.CATEGORY_GAME->"GAMES"
+        android.content.pm.ApplicationInfo.CATEGORY_IMAGE->"MSNBS"
+        android.content.pm.ApplicationInfo.CATEGORY_NEWS->"MSNBS"
+        android.content.pm.ApplicationInfo.CATEGORY_SOCIAL->"SOCIAL"
+        android.content.pm.ApplicationInfo.CATEGORY_VIDEO->"VIDEO & COMICS"
+        else->"WHITELISTED"
+    }
+}
 data class TimeLaunchesDate(
     @ColumnInfo(name = "time_spent") val time: Int?,
     @ColumnInfo(name = "app_launches") val launches: Int?,

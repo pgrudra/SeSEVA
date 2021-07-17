@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.spandverse.seseva.R
 import com.spandverse.seseva.data.AllDatabase
@@ -83,6 +84,7 @@ class SponsorDetailsFragment : Fragment() {
         viewModel.logoReference.observe(viewLifecycleOwner,{it ->
             Glide.with(this)
                 .load(it)
+                .transition(DrawableTransitionOptions.withCrossFade())
                 .apply(
                     RequestOptions()
                         .placeholder(R.drawable.ic_sponsor)

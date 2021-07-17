@@ -37,7 +37,7 @@ class LocalDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                     sortedEvents[l] = mutableListOf()
                 }
                 launch(Dispatchers.IO){
-                    saveStats(applicationContext,sortedEvents)
+                    saveStats(sortedEvents)
                 }
                 val constraintNet= Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -66,12 +66,25 @@ class LocalDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                 Result.success()
             }
             catch (e:Exception){
-                Result.retry()
+                try{
+                    deleteStatsIfAny()
+                    Result.retry()
+                }catch (e:Exception){
+                    Result.failure()
+                }
             }
         }
     }
 
-    private suspend fun saveStats(applicationContext: Context, sortedEvents: MutableMap<String, MutableList<UsageEvents.Event>>) {
+    private suspend fun deleteStatsIfAny() {
+        val statDao=AllDatabase.getInstance(applicationContext).StatDataBaseDao
+        val categoryStatDao=AllDatabase.getInstance(applicationContext).CategoryStatDatabaseDao
+        val now=Calendar.getInstance().timeInMillis-(2* ONE_DAY_IN_MILLIS)
+        statDao.deleteStats(now)
+        categoryStatDao.deleteStats(now)
+    }
+
+    private suspend fun saveStats( sortedEvents: MutableMap<String, MutableList<UsageEvents.Event>>) {
 
         val usm = applicationContext.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         val appDao = AllDatabase.getInstance(applicationContext).AppDatabaseDao
@@ -264,5 +277,6 @@ for(key in categoryTimes.keys){
 
     companion object {
         const val ONE_MINUTE_IN_SECONDS = 60
+        const val ONE_DAY_IN_MILLIS=24*60*60*1000
     }
 }

@@ -22,8 +22,10 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.spandverse.seseva.contributionupdate.ContributionUpdateActivity
+import com.spandverse.seseva.home.HomeActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
 import java.util.*
 
 class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParameters): CoroutineWorker(appContext, workerParams) {
@@ -207,6 +209,7 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                         })*/
                     }
                     else{
+
                         createContributionNotificationChannel()
                         val intent=Intent(applicationContext, ContributionUpdateActivity::class.java).apply{
                             flags=Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -224,9 +227,26 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                             notify(2,builder.build())
                         }
                     }
+                    val sdf= SimpleDateFormat("dd-MM-yyyy hh:mm",Locale.getDefault())
+                    val now=sdf.format(Calendar.getInstance().time)
+                    cloudReference.child("users").child(userId).child("dailyContribution").child(now).setValue(moneyToBeUpdated)
                 }
                 else{
-
+                    createContributionNotificationChannel()
+                    val intent=Intent(applicationContext, HomeActivity::class.java).apply{
+                        flags=Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    }
+                    val pendingIntent:PendingIntent= PendingIntent.getActivity(applicationContext,0,intent,0)
+                    val builder=NotificationCompat.Builder(applicationContext,applicationContext.getString(R.string.contribution_update_notification_channel_id))
+                        .setSmallIcon(R.drawable.ic_seseva_notification_icon)
+                        .setContentTitle("Please choose a mission")
+                        .setContentText("The mission you had chosen has been accomplished!")
+                        .setPriority(NotificationCompat.PRIORITY_MIN)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true)
+                    with(NotificationManagerCompat.from(applicationContext)){
+                        notify(2,builder.build())
+                    }
                     //plz choose a mission
                     //intent to home activity
                 }

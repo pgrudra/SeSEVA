@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.spandverse.seseva.R
 import com.spandverse.seseva.data.missions.DomainActiveMission
@@ -30,6 +31,7 @@ class ActiveMissions2Adapter(private val onCLickListener: OnClickListener): List
             val reference=cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionImages/mission${item.missionNumber}Image.jpg")
             Glide.with(binding.missionImage.context)
                 .load(reference)
+                .transition(DrawableTransitionOptions.withCrossFade())
                 .apply(
                     RequestOptions()
                         .placeholder(R.drawable.ic_imageplaceholder)

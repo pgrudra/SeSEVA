@@ -3,6 +3,7 @@ package com.spandverse.seseva.choosemission
 import android.app.AppOpsManager
 import android.app.Application
 import android.content.Context
+import android.os.CountDownTimer
 import android.os.Process
 import android.util.Log
 import androidx.lifecycle.*
@@ -15,6 +16,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import com.spandverse.seseva.ui.login.LoginViewModel
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -23,6 +25,7 @@ class ChooseMissionViewModel(
     application: Application) : AndroidViewModel(application) {
     private val context = getApplication<Application>().applicationContext
     //private val sharedPref = context.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
+    private val timer: CountDownTimer
     private val userId = Firebase.auth.currentUser?.uid
     private val cloudReference = Firebase.database.reference
     private val _navigateToSelectedMission=MutableLiveData<DomainActiveMission?>()
@@ -31,6 +34,9 @@ class ChooseMissionViewModel(
     private val _drawer = MutableLiveData<Boolean>()
     val drawer: LiveData<Boolean>
         get() = _drawer
+    private val _expandBottomSheet = MutableLiveData<Boolean>()
+    val expandBottomSheet: LiveData<Boolean>
+        get() = _expandBottomSheet
     private val nowMinusOneDay= Calendar.getInstance().timeInMillis-24*60*60*1000
     val activeMissions:LiveData<List<DomainActiveMission>> = Transformations.map(database.getAllActiveMissions(nowMinusOneDay,-1)){it -> it.asActiveDomainModel()}
     fun toDetailMission(mission:DomainActiveMission){
@@ -39,7 +45,10 @@ class ChooseMissionViewModel(
     fun toDetailMissionComplete(){
         _navigateToSelectedMission.value=null
     }
-
+    companion object {
+        private const val ONE_SECOND = 1000L
+        private const val COUNTDOWN_TIME = 7000L
+    }
     private fun checkAndLoad(){
         viewModelScope.launch {
             val loadedList=database.getActiveDownloadedMissions(nowMinusOneDay)
@@ -183,6 +192,27 @@ class ChooseMissionViewModel(
     init {
         checkAndLoad()
         checkUsageAccessPermission()
+      timer = object : CountDownTimer(
+            COUNTDOWN_TIME, ONE_SECOND
+        ) {
+            override fun onTick(millisUntilFinished: Long) {
+            }
+
+            override fun onFinish() {
+                onTimeUp()
+            }
+        }
+    }
+    override fun onCleared() {
+        super.onCleared()
+        // Cancel the timer
+        timer.cancel()
+    }
+fun startCountDown(){
+    timer.start()
+}
+    private fun onTimeUp() {
+        _expandBottomSheet.value=true
     }
 
     private fun checkUsageAccessPermission() {

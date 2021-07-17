@@ -1,5 +1,6 @@
 package com.spandverse.seseva.home.rules
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
@@ -15,6 +17,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.spandverse.seseva.R
 import com.spandverse.seseva.adapters.InstalledAppAdapter
 import com.spandverse.seseva.data.AllDatabase
@@ -29,12 +32,18 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
     private lateinit var binding:FragmentRules2Binding
     private lateinit var viewModel: Rules2ViewModel
     private lateinit var viewModelFactory: Rules2ViewModelFactory
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_rules2, container, false)
+        val appContext = context?.applicationContext ?: return binding.root
+        val sharedPref =
+            appContext.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
+
         val application = requireNotNull(this.activity).application
         val datasource = AllDatabase.getInstance(application).AppDatabaseDao
         val pm = requireNotNull(activity?.packageManager)
@@ -43,6 +52,41 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
        viewModelFactory = Rules2ViewModelFactory(datasource, application, pm)
         viewModel = ViewModelProvider(this, viewModelFactory).get(Rules2ViewModel::class.java)
         binding.rules2ViewModel=viewModel
+        /*val infoSheet = binding.infoFragment.root
+        bottomSheetBehavior = BottomSheetBehavior.from(infoSheet)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    //mission item no sensing
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        })
+        if (sharedPref?.getBoolean((R.string.rules_i_sown).toString(), false) != true) {
+            viewModel.startCountDown()
+            with (sharedPref.edit()) {
+                this?.putBoolean((com.spandverse.seseva.R.string.rules_i_sown).toString(), true)
+                this?.apply()
+            }
+        }
+         viewModel.expandBottomSheet.observe(viewLifecycleOwner, Observer<Boolean> { expand ->
+            if (expand) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            }
+        })*/
+        viewModel.expandGuide.observe(viewLifecycleOwner, Observer<Boolean> { expand ->
+            if (expand) {
+                binding.rulesGuide.visibility=View.VISIBLE
+                binding.rulesGuideButton.setImageResource(R.drawable.ic_collapse_vector)
+            }
+            else{
+                binding.rulesGuide.visibility=View.GONE
+                binding.rulesGuideButton.setImageResource(R.drawable.ic_question)
+            }
+        })
         viewModel.social.observe(viewLifecycleOwner, Observer<Boolean> { expand ->
             if (expand) {
                 binding.socialAppsList.visibility = View.VISIBLE
@@ -224,8 +268,8 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
                 layOutParams.bottomMargin=40
                 binding.toHome.layoutParams=layOutParams
                 drawerLoker.displayBottomNavigation(true)
-                val params=LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT)
+                val params=ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT)
                 val r=activity?.resources
                 val px16 = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16F,r?.displayMetrics).toInt()
                 params.setMargins(0,px16,0,0)
