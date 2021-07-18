@@ -390,6 +390,14 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
         binding.iMsnbs.setOnClickListener(this)
         binding.iWhitelisted.setOnClickListener(this)
         binding.iOthers.setOnClickListener(this)
+
+        if(!sharedPref.getBoolean((R.string.rules_i_sown).toString(),false)){
+            viewModel.expandContractGuide()
+            with (sharedPref.edit()) {
+                this?.putBoolean((com.spandverse.seseva.R.string.rules_i_sown).toString(), true)
+                this?.apply()
+            }
+        }
         //viewModel.initiate()
         return binding.root
     }
