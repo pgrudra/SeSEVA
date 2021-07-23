@@ -144,10 +144,8 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
         }
         if(cat=="WHITELISTED"){
             _headsUpDisappearForCatScreen.value =true
-            Log.i("UOVVM","3")
         }
         else{
-            Log.i("UOVVM","4")
             _headsUpDisappearForCatScreen.value=false
 
             if(categoryTimes[cat]!! > timeRules[cat]!!){
@@ -213,7 +211,6 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
                 _exceededTimeText.value="Time left"
                 _exceededTime.value=inHrsMins2(timeRules[cat]!!-categoryTimes[cat]!!)
             }
-            Log.i("nbvc","${timeRules[cat]},${categoryTimes[cat]}")
             if(categoryLaunches[cat]!! > launchRules[cat]!!){
                 _exceededLaunchesText.value="Exceeded launches"
                 _exceededLaunches.value=getCounts(categoryLaunches[cat]!!- launchRules[cat]!!)
@@ -240,10 +237,10 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
     private fun setHeadsUp(stat: Stat) {
         val cat = stat.appCategory
         if (cat == "WHITELISTED") {
-            Log.i("UOVVM","1")
+
             _headsUpDisappearForAppScreen.value = true
         } else {
-            Log.i("UOVVM","2")
+
             _headsUpDisappearForAppScreen.value = false
             if (categoryTimes[cat]!! > timeRules[cat]!!) {
                 _exceededTimeText.value = "Exceeded time"
@@ -526,7 +523,6 @@ class UsageOverViewViewModel(application: Application) : AndroidViewModel(applic
     }
     fun totalTimeSpentConstraintLayoutClicked(){
         _totalTimeSpentPieChartVisible.value = _totalTimeSpentPieChartVisible.value != true
-        Log.i("UOVVM","test")
     }
     fun catTimeSpentConstraintLayoutClicked(){
         _catTimeSpentPieChartVisible.value = _catTimeSpentPieChartVisible.value != true

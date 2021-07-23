@@ -10,7 +10,6 @@
     <color name="toolbar_text_color">#DEFFFFFF</color>
 
 
-    <color name="mission_item_background">#0DFFFFFF</color>
     <color name="pink">#FF57BB</color>
     <color name="skrim">#CC121212</color>
     <color name="rules_scrim">#F2121212</color>
@@ -27,8 +26,8 @@
     <color name="black_text">#000000</color>
     <color name="rules_card">#1E1E1E</color>
     <color name="selected_group_card_background">#2E2E2E</color>
-    <color name="selected_group_recycler_background">#1FFFFFFF</color>
     <color name="nav_drawer_background">#363636</color>
     <color name="t1">#84C9FB</color>
     <color name="t2">#03DAC5</color>
+    <color name="transparent">#00000000</color>
 </resources>

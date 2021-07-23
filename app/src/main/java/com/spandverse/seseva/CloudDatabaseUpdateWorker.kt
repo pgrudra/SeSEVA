@@ -44,6 +44,10 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                 if(chosenMission!=0){
                     //checkk if chosen mission is completed. If yes, then set chosen mission to 0, else continue
 //maybe services closes when this works..check
+                    val mC = dao.doesMissionExist(chosenMission)
+                    val nowMinusOneDay=Calendar.getInstance().timeInMillis-24*60*60*1000
+                    val accomplishedToday=mC!=null && mC.deadline<nowMinusOneDay
+
                     val userId = user!!.uid
                     cloudReference.child("users").child(userId).child("chosenMission")
                         .setValue(chosenMission)
@@ -75,7 +79,7 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                                     missionContribution+=moneyToBeUpdated
                                 }
                                 //update mission Contribution Database
-                                val mC = dao.doesMissionExist(chosenMission)
+
                                 if(mC!=null){
                                     mC.contribution=missionContribution
                                     dao.update(mC)
@@ -104,15 +108,22 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                                                 val pendingIntent:PendingIntent= PendingIntent.getActivity(applicationContext,0,intent,0)
                                                 val builder=NotificationCompat.Builder(applicationContext,applicationContext.getString(R.string.contribution_update_notification_channel_id))
                                                     .setSmallIcon(R.drawable.ic_seseva_notification_icon)
-                                                    .setContentTitle("Your Yesterday's Stats")
-                                                    .setPriority(NotificationCompat.PRIORITY_MIN)
+
+                                                    .setPriority(NotificationCompat.PRIORITY_LOW)
                                                     .setContentIntent(pendingIntent)
                                                     .setAutoCancel(true)
-                                                if(sharedPref.getBoolean((R.string.non_zero_penalty).toString(), false)){
-                                                    builder.setContentText("Congrats!! You raised Rs $moneyToBeUpdated, but you could...")
+                                                if(accomplishedToday){
+                                                    builder.setContentTitle("Hurray! Mission Accomplished")
+                                                    builder.setContentText("Click to view your yesterday's stats and choose new mission")
                                                 }
                                                 else{
-                                                    builder.setContentText("Kudos! You proved to be a true Sevak by raising the highest reward of Rs $moneyToBeUpdated")
+                                                    builder.setContentTitle("Your Yesterday's Stats")
+                                                    if(sharedPref.getBoolean((R.string.non_zero_penalty).toString(), false)){
+                                                        builder.setContentText("Congrats!! You raised Rs $moneyToBeUpdated, but you could...")
+                                                    }
+                                                    else{
+                                                        builder.setContentText("Kudos! You proved to be a true Sevak by raising the highest reward of Rs $moneyToBeUpdated")
+                                                    }
                                                 }
                                                 with(NotificationManagerCompat.from(applicationContext)){
                                                     notify(2,builder.build())
@@ -218,11 +229,18 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                         val pendingIntent:PendingIntent= PendingIntent.getActivity(applicationContext,0,intent,0)
                         val builder=NotificationCompat.Builder(applicationContext,applicationContext.getString(R.string.contribution_update_notification_channel_id))
                             .setSmallIcon(R.drawable.ic_seseva_notification_icon)
-                            .setContentTitle("Your Yesterday's Stats")
-                            .setContentText("It's sad that you broke many rules and lost your chance to contribute towards your mission!")
-                            .setPriority(NotificationCompat.PRIORITY_MIN)
+                            .setPriority(NotificationCompat.PRIORITY_LOW)
                             .setContentIntent(pendingIntent)
                             .setAutoCancel(true)
+                        if(accomplishedToday){
+                            builder.setContentTitle("Hurray! Mission accomplished")
+                                .setContentText("But it's sad that you broke many rules and lost your chance to contribute towards your mission!")
+                        }
+                        else{
+                            builder.setContentTitle("Your Yesterday's Stats")
+                                    .setContentText("It's sad that you broke many rules and lost your chance to contribute towards your mission!")
+
+                        }
                         with(NotificationManagerCompat.from(applicationContext)){
                             notify(2,builder.build())
                         }
@@ -230,6 +248,12 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                     val sdf= SimpleDateFormat("dd-MM-yyyy hh:mm",Locale.getDefault())
                     val now=sdf.format(Calendar.getInstance().time)
                     cloudReference.child("users").child(userId).child("dailyContribution").child(now).setValue(moneyToBeUpdated)
+                    if(accomplishedToday){
+                        with (sharedPref.edit()) {
+                            this?.putInt((R.string.chosen_mission_number).toString(), 0)
+                            this?.apply()
+                        }
+                    }
                 }
                 else{
                     createContributionNotificationChannel()
@@ -241,7 +265,7 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                         .setSmallIcon(R.drawable.ic_seseva_notification_icon)
                         .setContentTitle("Please choose a mission")
                         .setContentText("The mission you had chosen has been accomplished!")
-                        .setPriority(NotificationCompat.PRIORITY_MIN)
+                        .setPriority(NotificationCompat.PRIORITY_LOW)
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true)
                     with(NotificationManagerCompat.from(applicationContext)){
@@ -254,6 +278,8 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                 val list=dao.getMissionNumbersForReport(nowMinusOneDay,false)
                 list?.forEach { i ->
                     run {
+                        var finalMoneyRaised=0
+                        var finalParticipants=0
                         var missionDescription:String?=null
                         var reportAvailable=false
                         if (!i.onAccomplishDataUpdated) {
@@ -267,14 +293,39 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                         val reportAvailableResult=cloudReference.child("accomplishedMissions").child("${i.missionNumber}")
                             .child("reportAvailable").singleValueEvent()
                         when(reportAvailableResult){
-                            is EventResponse.Changed->{reportAvailable = reportAvailableResult.snapshot.getValue<Boolean>()?:false}
+                            is EventResponse.Changed->{reportAvailable = reportAvailableResult.snapshot.getValue<Boolean>()?:false
+                            if(reportAvailable){
+                                val finalMoneyRaisedResult=cloudReference.child("accomplishedMissions").child("${i.missionNumber}")
+                                    .child("reportAvailable").singleValueEvent()
+                                when(finalMoneyRaisedResult){
+                                    is EventResponse.Changed->{ finalMoneyRaised= finalMoneyRaisedResult.snapshot.value.toString().toInt()}
+                                    is EventResponse.Cancelled->{}
+                                }
+                                val finalParticipantsResult=cloudReference.child("accomplishedMissions").child("${i.missionNumber}")
+                                    .child("reportAvailable").singleValueEvent()
+                                when(finalParticipantsResult){
+                                    is EventResponse.Changed->{ finalParticipants= finalParticipantsResult.snapshot.value.toString().toInt()}
+                                    is EventResponse.Cancelled->{}
+                                }
+                            }}
                             is EventResponse.Cancelled->{}
                         }
-                        missionDescription?.let{
-                            dao.partialUpdate(PartialMission(i.missionNumber, it, true, reportAvailable))
-                            }
-
+                        if(missionDescription!=null && !reportAvailable){
+                            dao.partialUpdate(PartialMission(i.missionNumber, missionDescription, onAccomplishDataUpdated = true, false))
                         }
+                        else if(reportAvailable){
+                            val mission=dao.doesMissionExist(i.missionNumber)
+                            if(mission!=null){
+                                mission.reportAvailable=true
+                                mission.contributors=finalParticipants
+                                mission.totalMoneyRaised=finalMoneyRaised
+                                if(missionDescription!=null){
+                                    mission.missionDescription=missionDescription
+                                }
+                                dao.update(mission)
+                            }
+                        }
+                    }
                 }
                 //call accomplished missions with reportAvailable=false
                 //{if(!onAccomplishDataUpdated)
@@ -296,7 +347,7 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
             val contributionUpdateNotificationChannel = NotificationChannel(
                 applicationContext.getString(R.string.contribution_update_notification_channel_id),
                 applicationContext.getString(R.string.contribution_update_notification_channel_name),
-                NotificationManager.IMPORTANCE_MIN
+                NotificationManager.IMPORTANCE_DEFAULT
             )
             val notificationManager:NotificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(contributionUpdateNotificationChannel)

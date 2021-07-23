@@ -29,6 +29,7 @@ class AccomplishedMissionsAdapter(private val onCLickListener: AccomplishedMissi
             binding.sponsorName.text= binding.sponsorName.context.getString(R.string.sponsored_by_sponsor_name,item.sponsorName)
             Glide.with(binding.missionImage.context)
                 .load(reference)
+                .centerCrop()
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .apply(
                     RequestOptions()

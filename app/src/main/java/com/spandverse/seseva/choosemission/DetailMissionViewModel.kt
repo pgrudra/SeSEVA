@@ -131,37 +131,47 @@ class DetailMissionViewModel(mission: DomainActiveMission, application: Applicat
             _daysLeft.value = intDaysLeft.toString()
         }
         var possibleMoney = 0
-        cloudReference.child("rules").child(_selectedMission.value!!.rulesNumber.toString())
-            .child("dailyReward").addListenerForSingleValueEvent(object :
-                ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val dailyReward = snapshot.value.toString().toInt()
-                    cloudReference.child("rules")
-                        .child(_selectedMission.value!!.rulesNumber.toString())
-                        .child("weeklyReward")
-                        .addListenerForSingleValueEvent(object :
-                            ValueEventListener {
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                val weeklyReward = snapshot.value.toString().toInt()
-                                possibleMoney =
-                                    (dailyReward * intDaysLeft + weeklyReward * (intDaysLeft / 7)).toInt()
-                                furtherTriggerText(contribution, possibleMoney)
-                            }
-
-                            override fun onCancelled(error: DatabaseError) {
-                                if (!checkInternetConnectivity()) {
-                                    _noInternet.value = true
+        val dailyR=sharedPref.getInt((R.string.daily_reward).toString(),0)?:0
+        if(dailyR==0){
+            cloudReference.child("rules").child(_selectedMission.value!!.rulesNumber.toString())
+                .child("dailyReward").addListenerForSingleValueEvent(object :
+                    ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val dailyReward = snapshot.value.toString().toInt()
+                        cloudReference.child("rules")
+                            .child(_selectedMission.value!!.rulesNumber.toString())
+                            .child("weeklyReward")
+                            .addListenerForSingleValueEvent(object :
+                                ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    val weeklyReward = snapshot.value.toString().toInt()
+                                    possibleMoney =
+                                        (dailyReward * intDaysLeft + weeklyReward * (intDaysLeft / 7)).toInt()
+                                    furtherTriggerText(contribution, possibleMoney)
                                 }
-                            }
-                        })
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    if (!checkInternetConnectivity()) {
-                        _noInternet.value = true
+                                override fun onCancelled(error: DatabaseError) {
+                                    if (!checkInternetConnectivity()) {
+                                        _noInternet.value = true
+                                    }
+                                }
+                            })
                     }
-                }
-            })
+
+                    override fun onCancelled(error: DatabaseError) {
+                        if (!checkInternetConnectivity()) {
+                            _noInternet.value = true
+                        }
+                    }
+                })
+        }
+        else{
+            val weeklyR=sharedPref.getInt((R.string.weekly_reward).toString(),0)?:0
+            possibleMoney =
+                (dailyR * intDaysLeft + weeklyR * (intDaysLeft / 7)).toInt()
+            furtherTriggerText(contribution, possibleMoney)
+        }
+
 
 
     }

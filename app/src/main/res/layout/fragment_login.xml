@@ -28,14 +28,6 @@
             app:layout_constraintEnd_toEndOf="@+id/other_email_button"
             app:layout_constraintStart_toStartOf="@+id/editTextEmailAddress" />
 
-        <View
-            android:id="@+id/underline"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@drawable/underline"
-            app:layout_constraintBottom_toBottomOf="@id/editTextEmailAddress"
-            app:layout_constraintEnd_toEndOf="@+id/other_email_button"
-            app:layout_constraintStart_toStartOf="@id/editTextEmailAddress" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager"
@@ -49,6 +41,7 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
+            android:background="@color/common_background"
             android:layout_width="48dp"
             android:layout_height="12dp"
             android:layout_above="@+id/google_sign_in_button"
@@ -65,25 +58,6 @@
             app:tabIndicatorHeight="0dp" />
 
 
-
-
-        <Button
-            android:id="@+id/other_email_button"
-            style="@style/button"
-            android:textColor="@color/black_text"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/login_other_sign_in_button"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="@string/sign_in"
-            android:elevation="2dp"
-            app:layout_constraintBottom_toBottomOf="@+id/editTextEmailAddress"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="84"
-            app:layout_constraintStart_toEndOf="@+id/editTextEmailAddress"
-            app:layout_constraintTop_toTopOf="@+id/editTextEmailAddress" />
 
         <EditText
             android:id="@+id/editTextEmailAddress"
@@ -106,8 +80,32 @@
             app:layout_constraintEnd_toStartOf="@+id/other_email_button"
             app:layout_constraintHorizontal_weight="236"
             app:layout_constraintStart_toStartOf="parent" />
-
-
+        <View
+            android:id="@+id/underline"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@drawable/underline"
+            android:elevation="2dp"
+            app:layout_constraintBottom_toBottomOf="@id/editTextEmailAddress"
+            app:layout_constraintEnd_toEndOf="@+id/other_email_button"
+            app:layout_constraintStart_toStartOf="@id/editTextEmailAddress" />
+        <Button
+            android:id="@+id/other_email_button"
+            style="@style/button"
+            android:textColor="@color/black_text"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/login_other_sign_in_button"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@string/sign_in"
+            android:elevation="2dp"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextEmailAddress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="84"
+            app:layout_constraintStart_toEndOf="@+id/editTextEmailAddress"
+            app:layout_constraintTop_toTopOf="@+id/editTextEmailAddress" />
 
         <TextView
             android:id="@+id/login_terms_and_privacy_text"

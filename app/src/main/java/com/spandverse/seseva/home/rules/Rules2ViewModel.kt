@@ -654,7 +654,7 @@ fun expandContractGuide(){
                 "OTHERS"
             }
             app.appCategory = allotGroup(category)
-            Log.i("PaP", "${app.appCategory}")
+
             database.insert(app)
         } else if (checkApp.appCategory == "OTHERS") {
             val queryUrl = GOOGLE_URL + checkApp.packageName + "&hl=en"

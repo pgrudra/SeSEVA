@@ -2,6 +2,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
     android:shape="rectangle">
-    <solid android:color="@color/selected_group_recycler_background"/>
+    <solid android:color="@color/selected_group_card_background"/>
     <corners android:radius="4dp"/>
 </shape>

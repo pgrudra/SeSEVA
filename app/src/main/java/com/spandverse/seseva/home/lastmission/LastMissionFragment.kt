@@ -85,7 +85,7 @@ viewModel.goToHome.observe(viewLifecycleOwner, Observer<Boolean> { goto->
             if(goto){
                 binding.skrim.visibility=View.VISIBLE
                 binding.progressBar1.visibility=View.VISIBLE
-                Log.i("LMF","fkg")
+
                 findNavController().navigate(LastMissionFragmentDirections.actionLastMissionFragmentToRulesFragment2())
                 viewModel.goToRulesComplete()
             }

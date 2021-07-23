@@ -119,10 +119,19 @@ class ProfileViewModel(
             2->"Super Sevak"
             else->"Sevak"
         }
+        _daysLeft.value="--"
         _userName.value=sharedPref.getString((R.string.user_name).toString(),"Username")
         val currentMissionNumber=sharedPref.getInt((R.string.chosen_mission_number).toString(),0)
         viewModelScope.launch {
             currentMission= dataBaseDAO.doesMissionExist(currentMissionNumber)!!
+            val now= Calendar.getInstance().timeInMillis
+            val intDaysLeft=((currentMission.deadline-now+ ONE_DAY)/ ONE_DAY).toInt()+1
+            if(intDaysLeft<10){
+                _daysLeft.value= "0$intDaysLeft"
+            }
+            else{
+                _daysLeft.value= intDaysLeft.toString()
+            }
             _sponsorNumber.value=currentMission.sponsorNumber
             _currentMissionNumber.value=currentMission.missionNumber
             _currentMissionName.value=currentMission.missionName
@@ -146,14 +155,6 @@ class ProfileViewModel(
             _contributors.value=currentMission.contributors.toString()
             _contribution.value="Rs " + currentMission.contribution.toString()
             _category.value=currentMission.missionCategory
-            val now= Calendar.getInstance().timeInMillis
-            val intDaysLeft=((currentMission.deadline-now+ ONE_DAY)/ ONE_DAY).toInt()+1
-            if(intDaysLeft<10){
-                _daysLeft.value= "0$intDaysLeft"
-            }
-            else{
-                _daysLeft.value= intDaysLeft.toString()
-            }
         }
     }
     companion object {

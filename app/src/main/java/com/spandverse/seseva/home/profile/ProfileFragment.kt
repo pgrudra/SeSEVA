@@ -52,6 +52,7 @@ class ProfileFragment : Fragment() {
                 val reference1 = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionImages/mission${it}Image.jpg")
                 Glide.with(this)
                     .load(reference1)
+                    .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .apply(
                         RequestOptions()

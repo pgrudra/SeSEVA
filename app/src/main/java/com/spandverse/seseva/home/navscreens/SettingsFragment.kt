@@ -633,7 +633,7 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
                                                         }
                                                     }
                                                 } else {
-                                                    Log.i("DLA", "${task.result}")
+
                                                 }
                                             }
                                     }*/
@@ -884,22 +884,22 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
-                Log.i("SF3","1")
+
                 val account = task.getResult(ApiException::class.java)!!
-                Log.i("SF3","87")
+
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
-                Log.i("SF3","2$e")
+
                 // Google Sign In failed, update UI appropriately
                 removeLoadingSymbol()
                 if(checkInternetConnectivity(appContext)) {
-                    Log.i("SF3","3")
+
                     view?.let {
                         Snackbar.make(it, "Re-Authentication Failed", Snackbar.LENGTH_SHORT).show()
                     }
                 }
                 else{
-                    Log.i("SF3","4")
+
                     showNoInternetConnectionDialog()
                 }
             }
@@ -908,14 +908,14 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
 
 
     /*private fun firebaseAuthWithGoogle(idToken: String) {
-        Log.i("SF3","5")
+
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
-                Log.i("SF3","11")
+
                 if (task.isSuccessful) {
                     //delete account
-                    Log.i("SF3","6")
+
                     with (sharedPref.edit()) {
                         this?.putBoolean((com.spandverse.seseva.R.string.authenticate_to_delete).toString(), true)
                         this?.apply()
@@ -931,7 +931,7 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
 
                         } catch (e: kotlin.Exception) {
                             removeLoadingSymbol()
-                            Log.i("SF3","7")
+
                             view?.let {
                                 Snackbar.make(it, "Re-Authentication Failed", Snackbar.LENGTH_SHORT)
                                     .show()
@@ -941,7 +941,7 @@ class SettingsFragment : Fragment(), DeleteAccountDialogFragment.DeleteAccountLi
                 } else {
                     // If sign in fails, display a message to the user.
                         removeLoadingSymbol()
-                    Log.i("SF3","8")
+
                     if(checkInternetConnectivity(appContext)) {
                         view?.let {
                             Snackbar.make(it, "Re-Authentication Failed", Snackbar.LENGTH_SHORT)

@@ -54,6 +54,10 @@ class FeatsFragment : Fragment() {
                 (R.string.shared_pref).toString(),
                 Context.MODE_PRIVATE
             )
+        with (sharedPref.edit()) {
+            this?.putBoolean((R.string.from_rules).toString(), false)
+            this?.apply()
+        }
         binding.totalMissions.text=(sharedPref.getInt((R.string.total_missions).toString(),1)).toString()
         binding.activeMissions.text=(sharedPref.getInt((R.string.active_missions).toString(),1)).toString()
         binding.outermostConstraintLayout.post {

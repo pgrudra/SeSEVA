@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-  <solid android:color="@color/mission_item_background"/>
+  <solid android:color="@color/rules_card"/>
 
   <corners android:topLeftRadius="100dp"
       android:topRightRadius="100dp"

@@ -58,7 +58,7 @@ class HomeFragment : Fragment(),MissionAccomplishedDialog.MissionAccomplishedDia
         fm?.let{
             for (i in 0 until it.backStackEntryCount) {
                 it.popBackStack()
-                Log.i("HF","poi")
+
             }
         }*/
 
@@ -134,7 +134,6 @@ class HomeFragment : Fragment(),MissionAccomplishedDialog.MissionAccomplishedDia
             })
         viewModel.showOverlayPermissionBanner.observe(viewLifecycleOwner, Observer<Boolean> { show ->
                 if (show) {
-                    Log.i("HVM1","4")
                    binding.bannerBody.text=getString(R.string.overlay_permission_banner_body)
                     binding.positive.text="GRANT PERMISSION"
                     binding.positive.setOnClickListener {

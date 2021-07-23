@@ -15,10 +15,8 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Process
 import android.provider.Settings
-import android.util.Log
 import androidx.lifecycle.*
 import androidx.work.*
-import com.google.android.material.snackbar.Snackbar
 import com.spandverse.seseva.*
 import com.spandverse.seseva.R
 import com.spandverse.seseva.data.apps.AppAndCategory
@@ -286,7 +284,6 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                 is EventResponse.Cancelled->{
                 }
             }
-            Log.i("wer","1$mission")
             database.insert(mission)
         }
     }
@@ -323,12 +320,10 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                                     mission?.missionActive=now.timeInMillis<= mission?.deadline!!
                                     mission.contributors=contributorsList.find{it.first==primaryKey}?.second ?:0
                                     viewModelScope.launch {
-                                        Log.i("wer","2$mission")
                                          database.insert(mission) }
                                 }
 
                                 override fun onCancelled(error: DatabaseError) {
-                                    TODO("Not yet implemented")
                                 }
 
                             })
@@ -362,12 +357,10 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                                 mission?.missionActive=now.timeInMillis<= mission?.deadline!!
                                 mission.contributors=contributorsList.find{it.first==primaryKey}?.second ?:0
                                 viewModelScope.launch {
-                                    Log.i("wer","3$mission")
                                     database.insert(mission) }
                             }
 
                             override fun onCancelled(error: DatabaseError) {
-                                TODO("Not yet implemented")
                             }
 
                         })
@@ -380,7 +373,6 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
                                     mission?.contributors=contributorsList.find{it.first==i}?.second ?:0
                                     mission?.totalMoneyRaised=moneyRaisedList.find{it.first==i}?.second ?:0
                                     mission?.let {
-                                        Log.i("HVM7","k${it}")
                                         database.update(it) }
                                 }
                             }
@@ -390,7 +382,6 @@ class HomeViewModel(private val database: MissionsDatabaseDao, private val appDa
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
             }
         })
     }
@@ -953,7 +944,6 @@ val minute:Int=(0..2).random()
         private const val GOOGLE_URL = "https://play.google.com/store/apps/details?id="
         private const val CAT_SIZE = 9
         private const val CATEGORY_STRING = "category/"
-        private const val ONE_DAY=24*60*60*1000
         private const val ONE_HOUR_IN_SECONDS=60*60
         private const val ONE_MINUTE_IN_SECONDS = 60
     }

@@ -41,6 +41,7 @@ class ActiveMissionsAdapter(private val onCLickListener:OnClickListener ): ListA
             binding.activeContributors.text=item.contributors.toString()
             Glide.with(binding.imageView.context)
                 .load(reference)
+                .centerCrop()
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .apply(
                     RequestOptions()

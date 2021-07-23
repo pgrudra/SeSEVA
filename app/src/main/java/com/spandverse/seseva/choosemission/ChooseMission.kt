@@ -48,6 +48,10 @@ class ChooseMission : Fragment(), Toolbar.OnMenuItemClickListener {
             ViewModelProvider(this, viewModelFactory).get(ChooseMissionViewModel::class.java)
         binding.chooseMissionViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        with (sharedPref.edit()) {
+            this?.putBoolean((R.string.from_rules).toString(), false)
+            this?.apply()
+        }
         viewModel.navigateToSelectedMission.observe(viewLifecycleOwner, Observer {
             if (null != it) {
                 findNavController().navigate(
@@ -137,14 +141,12 @@ class ChooseMission : Fragment(), Toolbar.OnMenuItemClickListener {
         return true
     }
     /* override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        Log.i("CMVMw","4")
         inflater.inflate(R.menu.choose_mission_info,menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
             R.id.choose_mission_info_button->{
-                Log.i("CMVMw","5")
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                 binding.skrim1.visibility = View.VISIBLE
                 true

@@ -33,28 +33,28 @@
         android:id="@+id/bottom_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_non_selected_mission_image_bottom_right"
+        android:background="@drawable/ic_non_selected_mission_image_bottom_right"
         app:layout_constraintBottom_toBottomOf="@id/mission_image"
         app:layout_constraintEnd_toEndOf="@id/mission_image"/>
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/top_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_non_selected_mission_image_top_left"
+        android:background="@drawable/ic_non_selected_mission_image_top_left"
         app:layout_constraintTop_toTopOf="@id/mission_image"
         app:layout_constraintStart_toStartOf="@id/mission_image"/>
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/bottom_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_non_selsected_mission_image_bottom_left"
+        android:background="@drawable/ic_non_selsected_mission_image_bottom_left"
         app:layout_constraintBottom_toBottomOf="@id/mission_image"
         app:layout_constraintStart_toStartOf="@id/mission_image"/>
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/top_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_non_selected_mission_image_top_right"
+        android:background="@drawable/ic_non_selected_mission_image_top_right"
         app:layout_constraintTop_toTopOf="@id/mission_image"
         app:layout_constraintEnd_toEndOf="@id/mission_image"/>
 

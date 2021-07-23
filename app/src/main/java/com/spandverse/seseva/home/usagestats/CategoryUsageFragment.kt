@@ -352,12 +352,7 @@ class CategoryUsageFragment : Fragment() {
             }
         })
 
-        for(key in viewModel.categoryTimes.keys){
-            if(key!="TOTAL"){
 
-                Log.i("UOF3","$key")
-            }
-        }
         /*val totalTimePieDataSet= PieDataSet(catTimePieChartEntries, "")
         //totalTimePieDataSet.setColors(ColorTemplate.MATERIAL_COLORS)
         val totalTimePieTimeData= PieData(totalTimePieDataSet)*/

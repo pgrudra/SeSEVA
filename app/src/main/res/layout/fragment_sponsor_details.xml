@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:background="@color/common_background"
             android:elevation="4dp"
-            app:title="Aid Provider details"
+            app:title="Sponsor details"
             android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
             android:layout_height="?attr/actionBarSize"
@@ -33,6 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="36dp"
+                android:animateLayoutChanges="true"
                 android:layout_marginStart="16dp">
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/sponsor_logo"

@@ -93,11 +93,9 @@ binding.bottomNavView.itemIconTintList=null
 
             when(destination.id){
                 R.id.detailMission -> {
-                    Log.i("HAQW","$destination")
 
-                        Log.i("HAQW","iouyt")
 
-                            Log.i("HAQW","dfgj")
+
                             //val chosenMission=applicationContext.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE).getInt((R.string.chosen_mission_number).toString(), 0)
                             //val selectedMission= AllDatabase.getInstance(applicationContext).MissionsDatabaseDao.doesMissionExist(chosenMission)?.asActiveDomainModel()
                             //if(selectedMission!=null){
@@ -106,8 +104,7 @@ binding.bottomNavView.itemIconTintList=null
                                 val argument1= NavArgument.Builder().setDefaultValue(d).build()
                                 //destination.addArgument("selectedMission",argument1)
                     destination.addArgument("p",argument1)
-                    Log.i("HAQW","${destination.arguments}")
-                                Log.i("HAQW","sedtgy")
+
                                 *//*val args:Bundle=Bundle()
                                 args.putParcelable("selectedMission",selectedMission)
                                 args.putBoolean("showImage",true)
@@ -183,9 +180,9 @@ binding.bottomNavView.itemIconTintList=null
 
     }
     /*override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Log.i("HAttu","1")
+
         if(item.itemId==R.id.detailMission){
-            Log.i("HAttu","$item")
+
             CoroutineScope(Dispatchers.Main).launch {
                 withContext(Dispatchers.IO){
                     val chosenMission=applicationContext.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE).getInt((R.string.chosen_mission_number).toString(), 0)

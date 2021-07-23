@@ -31,6 +31,7 @@ class ActiveMissions2Adapter(private val onCLickListener: OnClickListener): List
             val reference=cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionImages/mission${item.missionNumber}Image.jpg")
             Glide.with(binding.missionImage.context)
                 .load(reference)
+                .centerCrop()
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .apply(
                     RequestOptions()

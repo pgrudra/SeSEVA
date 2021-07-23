@@ -20,7 +20,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
-class AskNameViewModel(private val database: MissionsDatabaseDao, application: Application) : AndroidViewModel(application)  {
+class AskNameViewModel(application: Application) : AndroidViewModel(application)  {
     private val context = getApplication<Application>().applicationContext
     private val user = Firebase.auth.currentUser
     private val cloudDatabase: DatabaseReference = Firebase.database.reference
@@ -98,9 +98,9 @@ class AskNameViewModel(private val database: MissionsDatabaseDao, application: A
                 val providerId = profile.providerId
 
                 if(providerId=="google.com"){
-                Log.i("opiul","$providerId")
+
                 _userName.value=profile.displayName
-                Log.i("opiul","${_userName.value}")}
+
             }
         }
     }

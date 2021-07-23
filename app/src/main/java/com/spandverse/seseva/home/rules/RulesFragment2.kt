@@ -1,6 +1,7 @@
 package com.spandverse.seseva.home.rules
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
@@ -18,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.firebase.auth.FirebaseAuth
 import com.spandverse.seseva.R
 import com.spandverse.seseva.adapters.InstalledAppAdapter
 import com.spandverse.seseva.data.AllDatabase
@@ -33,15 +35,16 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
     private lateinit var viewModel: Rules2ViewModel
     private lateinit var viewModelFactory: Rules2ViewModelFactory
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
-
+    private lateinit var appContext: Context
+    private lateinit var sharedPref: SharedPreferences
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_rules2, container, false)
-        val appContext = context?.applicationContext ?: return binding.root
-        val sharedPref =
+        appContext = context?.applicationContext ?: return binding.root
+        sharedPref =
             appContext.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
 
         val application = requireNotNull(this.activity).application
@@ -52,6 +55,10 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
        viewModelFactory = Rules2ViewModelFactory(datasource, application, pm)
         viewModel = ViewModelProvider(this, viewModelFactory).get(Rules2ViewModel::class.java)
         binding.rules2ViewModel=viewModel
+        with (sharedPref.edit()) {
+            this?.putBoolean((R.string.from_rules).toString(), true)
+            this?.apply()
+        }
         /*val infoSheet = binding.infoFragment.root
         bottomSheetBehavior = BottomSheetBehavior.from(infoSheet)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
@@ -280,10 +287,8 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
                 drawerLoker.displayBottomNavigation(false)
                 binding.toolbar.visibility = View.GONE
                 binding.toHome.visibility=View.VISIBLE
-                Log.i("RF","$visible")
             }
         })
-        Log.i("fg", "sdf")
         viewModel.noInternet.observe(viewLifecycleOwner, Observer<Boolean> { noInternet ->
             if (noInternet) {
                 showNoInternetConnectionDialog()
@@ -391,13 +396,13 @@ class RulesFragment2 : Fragment(),NoInternetDialogFragment.NoInternetDialogListe
         binding.iWhitelisted.setOnClickListener(this)
         binding.iOthers.setOnClickListener(this)
 
-        if(!sharedPref.getBoolean((R.string.rules_i_sown).toString(),false)){
+        /*if(!sharedPref.getBoolean((R.string.rules_i_sown).toString(),false)){
             viewModel.expandContractGuide()
             with (sharedPref.edit()) {
                 this?.putBoolean((com.spandverse.seseva.R.string.rules_i_sown).toString(), true)
                 this?.apply()
             }
-        }
+        }*/
         //viewModel.initiate()
         return binding.root
     }

@@ -51,7 +51,6 @@ class ManageProfileDialogFragment: DialogFragment() {
         view.done_button.setOnClickListener{
             val userName = view.edit_box.text.toString()
             if (userName != "") {
-                Log.i("Lo", userName)
                 sendBackResult(userName)
             } else {
                 makeErrorBackground(view)

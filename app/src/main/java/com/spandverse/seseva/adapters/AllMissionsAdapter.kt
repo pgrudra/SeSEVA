@@ -29,6 +29,7 @@ class AllMissionsAdapter(private val onCLickListener: AllMissionsAdapter.OnClick
             binding.contributors.text=item.contributors.toString()
             Glide.with(binding.missionImage.context)
                 .load(reference)
+                .centerCrop()
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .apply(
                     RequestOptions()

@@ -113,7 +113,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{ContributionUpdateViewModel.ydaReward}"
-                android:textColor="@color/rules_card"
+                android:textColor="@color/transparent"
                 app:layout_constraintBottom_toBottomOf="@id/yda_reward_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.36"
@@ -193,7 +193,7 @@
                     android:layout_marginStart="12dp"
                     app:layout_constraintTop_toTopOf="parent"
                     android:text="@string/yesterday_s_reward"
-                    android:textColor="@color/rules_card"
+                    android:textColor="@color/transparent"
                     style="@style/subtitle_1"/>
                 <TextView
                     android:id="@+id/tot_penalty_text"
@@ -211,7 +211,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{ContributionUpdateViewModel.ydaReward}"
-                    android:textColor="@color/rules_card"
+                    android:textColor="@color/transparent"
                     app:layout_constraintBottom_toBottomOf="@id/tot_penalty_text"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.36"
@@ -254,7 +254,7 @@
                 android:layout_height="10dp"
                 android:layout_marginEnd="4dp"
                 android:text="@{ContributionUpdateViewModel.ydaReward}"
-                android:textColor="@color/rules_card"
+                android:textColor="@color/transparent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.36"
                 app:layout_constraintStart_toEndOf="@id/yda_reward_text_i3"
@@ -268,7 +268,7 @@
                     android:layout_marginStart="16dp"
                     app:layout_constraintTop_toTopOf="parent"
                     android:text="@string/yesterday_s_reward"
-                    android:textColor="@color/rules_card"
+                    android:textColor="@color/transparent"
                     style="@style/subtitle_1"/>
              <TextView
                     android:id="@+id/social_penalty_text"
@@ -449,7 +449,7 @@
             android:layout_marginStart="16dp"
             app:layout_constraintTop_toTopOf="parent"
             android:text="@string/yesterday_s_reward"
-            android:textColor="@color/rules_card"
+            android:textColor="@color/transparent"
             style="@style/subtitle_1"/>
 
         <TextView
@@ -459,7 +459,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
             android:text="@{ContributionUpdateViewModel.ydaReward}"
-            android:textColor="@color/rules_card"
+            android:textColor="#00000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.36"
             app:layout_constraintStart_toEndOf="@id/yda_reward_text_i2"
@@ -867,7 +867,7 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/login_change_email"
             android:onClick="@{()->ContributionUpdateViewModel.toHome()}"
-            android:text="@string/go_to_home"
+            android:text="@{ContributionUpdateViewModel.buttonText}"
             android:textColor="@color/colorPrimary"
             tools:layout_editor_absoluteX="16dp"
             app:layout_constraintBottom_toBottomOf="parent"

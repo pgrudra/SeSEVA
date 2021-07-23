@@ -332,7 +332,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="36dp"
-            app:srcCompat="@drawable/ic_rules_safe_icon" />
+            android:background="@drawable/ic_rules_safe_icon" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

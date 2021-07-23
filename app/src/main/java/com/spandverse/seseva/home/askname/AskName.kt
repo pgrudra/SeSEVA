@@ -35,8 +35,7 @@ class AskName : Fragment(),NoInternetDialogFragment.NoInternetDialogListener {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ask_name, container, false)
         val application = requireNotNull(this.activity).application
-        val datasource = AllDatabase.getInstance(application).MissionsDatabaseDao
-        viewModelFactory = AskNameViewModelFactory(datasource, application)
+        viewModelFactory = AskNameViewModelFactory(application)
         viewModel = ViewModelProvider(this, viewModelFactory).get(AskNameViewModel::class.java)
         binding.askNameViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner

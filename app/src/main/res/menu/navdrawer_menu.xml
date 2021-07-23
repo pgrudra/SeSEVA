@@ -7,7 +7,7 @@
         android:icon="@drawable/ic_home" />
     <item
         android:id="@+id/becomeSponsor"
-        android:title="@string/become_an_aid_provider"
+        android:title="@string/become_a_sponsor"
         android:icon="@drawable/ic_sponsor"
         />
     <item

@@ -15,12 +15,15 @@ import java.util.*
 
 class ContributionUpdateViewModel(application: Application): AndroidViewModel(application) {
     private val context = getApplication<Application>().applicationContext
-    val missionDb= AllDatabase.getInstance(application).MissionsDatabaseDao
-    val categoryStatsDb=AllDatabase.getInstance(application).CategoryStatDatabaseDao
+    private val missionDb= AllDatabase.getInstance(application).MissionsDatabaseDao
+    private val categoryStatsDb=AllDatabase.getInstance(application).CategoryStatDatabaseDao
     private val sharedPref = context.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
     private val _ydaReward = MutableLiveData<String>()
     val ydaReward: LiveData<String>
         get() = _ydaReward
+    private val _buttonText = MutableLiveData<String>()
+    val buttonText: LiveData<String>
+        get() = _buttonText
     private val _dailyReward = MutableLiveData<String>()
     val dailyReward: LiveData<String>
         get() = _dailyReward
@@ -207,7 +210,15 @@ class ContributionUpdateViewModel(application: Application): AndroidViewModel(ap
                     "MSNBS" to sharedPref.getInt((R.string.msnbs_penalty).toString(), 0),
                     "OTHERS" to sharedPref.getInt((R.string.others_penalty).toString(), 0)
                 )
-                _missionName.value = context.getString(R.string.you_are_on_2, mission.missionName)
+                val nowMinusOneDay= Calendar.getInstance().timeInMillis-24*60*60*1000
+                if(mission.deadline<nowMinusOneDay){
+                    _missionName.value = context.getString(R.string.mission_is_accomplished, mission.missionName)
+                    _buttonText.value=context.getString(R.string.choose_new_mission)
+                }
+                else{
+                    _missionName.value = context.getString(R.string.you_are_on_2, mission.missionName)
+                    _buttonText.value=context.getString(R.string.go_to_home)
+                }
                 _sponsorName.value =
                     context.getString(R.string.sponsored_by_sponsor_name, mission.sponsorName)
                 val dayOfWeek = sharedPref.getInt((R.string.days_after_installation).toString(), 1)

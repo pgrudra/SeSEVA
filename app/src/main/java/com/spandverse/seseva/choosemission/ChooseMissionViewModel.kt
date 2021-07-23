@@ -47,7 +47,7 @@ class ChooseMissionViewModel(
     }
     companion object {
         private const val ONE_SECOND = 1000L
-        private const val COUNTDOWN_TIME = 7000L
+        private const val COUNTDOWN_TIME = 5500L
     }
     private fun checkAndLoad(){
         viewModelScope.launch {
@@ -155,7 +155,7 @@ class ChooseMissionViewModel(
                     mission?.totalMoneyRaised=moneyRaisedList.find{it.first==primaryKey}?.second ?:0
                     mission?.contribution=contributionsList.find { it.first==primaryKey }?.second ?:0
 
-                    Log.i("nji","$mission")
+
 
                     insertOrUpdate(mission)
 
@@ -163,7 +163,7 @@ class ChooseMissionViewModel(
             }
             override fun onCancelled(databaseError: DatabaseError) {
                 // Getting Post failed, log a message
-                Log.i("nji", "loadPost:onCancelled", databaseError.toException())
+
                 // ...
             }
         })*/

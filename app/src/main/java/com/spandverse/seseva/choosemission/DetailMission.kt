@@ -1,6 +1,7 @@
 package com.spandverse.seseva.choosemission
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -30,6 +31,9 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
     private lateinit var binding: FragmentDetailMissionBinding
     private lateinit var viewModel: DetailMissionViewModel
     private lateinit var viewModelFactory: DetailMissionViewModelFactory
+    private lateinit var appContext: Context
+    private lateinit var sharedPref: SharedPreferences
+    private var previousCMission:Int=0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,8 +45,9 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
             container,
             false
         )
+        appContext = context?.applicationContext ?: return binding.root
+        sharedPref = appContext.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
         val application = requireNotNull(this.activity).application
-        val sharedPref = activity?.getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
         val mission:DomainActiveMission = DetailMissionArgs.fromBundle(requireArguments()).selectedMission
         val showDifferentMissionButton=DetailMissionArgs.fromBundle(requireArguments()).showDifferentMissionButton
         viewModelFactory = DetailMissionViewModelFactory(mission, application)
@@ -65,7 +70,8 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
         if(!showDifferentMissionButton){
             binding.chooseADifferentMission.visibility=View.GONE
         }
-        val chosenMissionNumber=sharedPref?.getInt((R.string.chosen_mission_number).toString(),0)?:0
+        val chosenMissionNumber=sharedPref.getInt((R.string.chosen_mission_number).toString(),0)?:0
+        previousCMission=chosenMissionNumber
         val cTM=binding.chooseThisMission
         if(chosenMissionNumber==mission.missionNumber){
             cTM.setBackgroundResource(R.drawable.disabled_button)
@@ -179,6 +185,25 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
         super.onResume()
         binding.skrim.visibility=View.GONE
         binding.progressBar1.visibility=View.GONE
+        if(sharedPref.getBoolean((R.string.from_rules).toString(),false)) {
+            with(sharedPref.edit()) {
+                this?.putInt(
+                    (R.string.chosen_mission_number).toString(),
+                    previousCMission
+                )
+                this?.apply()
+            }
+            binding.chooseThisMission.setBackgroundResource(R.drawable.login_resend_active)
+            binding.chooseThisMission.isEnabled = true
+            context?.let {
+                binding.chooseThisMission.setTextColor(
+                    ContextCompat.getColor(
+                        it,
+                        R.color.nav_color
+                    )
+                )
+            }
+        }
     }
     override fun removeRedBackground(dialog: DialogFragment) {
     }

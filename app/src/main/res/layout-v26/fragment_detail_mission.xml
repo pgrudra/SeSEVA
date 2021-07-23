@@ -73,7 +73,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
-                        android:text="@string/aided_by"
+                        android:text="@string/mission_sponsor"
                         android:textColor="@color/disabled_text"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/timer" />
@@ -197,7 +197,7 @@
                     <TextView
                         android:id="@+id/textView2"
                         style="@style/caption"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
                         android:background="@drawable/all_corner_rounded_4dp"
