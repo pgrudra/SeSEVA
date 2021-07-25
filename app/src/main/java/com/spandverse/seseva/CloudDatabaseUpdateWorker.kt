@@ -40,6 +40,7 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                 val cloudReference = Firebase.database.reference
                 val user = Firebase.auth.currentUser
                 val dao = AllDatabase.getInstance(applicationContext).MissionsDatabaseDao
+                val notificationID=2
                 val chosenMission=sharedPref.getInt((R.string.chosen_mission_number).toString(), 0)
                 if(chosenMission!=0){
                     //checkk if chosen mission is completed. If yes, then set chosen mission to 0, else continue
@@ -126,7 +127,7 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                                                     }
                                                 }
                                                 with(NotificationManagerCompat.from(applicationContext)){
-                                                    notify(2,builder.build())
+                                                    notify(notificationID,builder.build())
                                                 }
                                                 with(sharedPref.edit()) {
                                                     this?.putInt((R.string.money_to_be_updated).toString(), 0)
@@ -242,7 +243,7 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
 
                         }
                         with(NotificationManagerCompat.from(applicationContext)){
-                            notify(2,builder.build())
+                            notify(notificationID,builder.build())
                         }
                     }
                     val sdf= SimpleDateFormat("dd-MM-yyyy hh:mm",Locale.getDefault())
@@ -269,7 +270,7 @@ class CloudDatabaseUpdateWorker(appContext: Context, workerParams: WorkerParamet
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true)
                     with(NotificationManagerCompat.from(applicationContext)){
-                        notify(2,builder.build())
+                        notify(notificationID,builder.build())
                     }
                     //plz choose a mission
                     //intent to home activity

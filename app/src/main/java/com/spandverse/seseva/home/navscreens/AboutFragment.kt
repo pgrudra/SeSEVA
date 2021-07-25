@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import com.spandverse.seseva.PPDialogFragment
 import com.spandverse.seseva.R
+import com.spandverse.seseva.TOUDialogFragment
 import com.spandverse.seseva.databinding.FragmentAboutBinding
 import com.spandverse.seseva.home.DrawerLocker
 
@@ -41,6 +43,16 @@ class AboutFragment : Fragment() {
                 }
             }
 
+        }
+        binding.privacyPolicyCL.setOnClickListener {
+            val dialog= PPDialogFragment()
+            val fraManager=childFragmentManager
+            dialog.show(fraManager, "Privacy Policy")
+        }
+        binding.termsOfUseCL.setOnClickListener {
+            val dialog= TOUDialogFragment()
+            val fraManager=childFragmentManager
+            dialog.show(fraManager, "Terms of use")
         }
         return binding.root
     }

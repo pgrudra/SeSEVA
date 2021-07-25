@@ -89,10 +89,6 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
         get()=_userName
 
     init {
-        /*context?.let { FirebaseApp.initializeApp(*//*context=*//* it) }
-        val firebaseAppCheck = FirebaseAppCheck.getInstance()
-        firebaseAppCheck.installAppCheckProviderFactory(
-            SafetyNetAppCheckProviderFactory.getInstance())*/
         loadUserName()
     }
 
@@ -136,7 +132,7 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                         referenceDeadline?.addListenerForSingleValueEvent(object :
                             ValueEventListener {
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                val now = Calendar.getInstance().timeInMillis
+                                val nowMinusOneDay = Calendar.getInstance().timeInMillis-24*60*60*1000
                                 val deadlineAsDate = dataSnapshot.getValue<String>()
                                 val deadlineInMillis =
                                     deadlineAsDate?.let { deadlineStringToLong(it) }
@@ -144,7 +140,7 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                                     deadlineAsDate?.let { deadlineStringToLong(it).plus(ONE_DAY) }*/
                                 if (deadlineInMillis != null) {
                                     deadlineLong=deadlineInMillis
-                                    if (deadlineInMillis < now) {
+                                    if (deadlineInMillis < nowMinusOneDay) {
                                         _goToLastMissionCompleted.value = lastMissionNumber
                                     }
                                     else{
@@ -226,17 +222,11 @@ class LastMissionViewModel(private val database: MissionsDatabaseDao, applicatio
                                                                     override fun onCancelled(databaseError: DatabaseError) {
                                                                     }
                                                                 })
-                                                                //val now = Calendar.getInstance().timeInMillis
-                                                                val deadlineInMillis2 =
-                                                                    mission?.deadline?.let {
-                                                                        deadlineStringToLong(it).plus(
-                                                                            ONE_DAY
-                                                                        )
-                                                                    }
-                                                                val days = ((deadlineInMillis2?.minus(now))?.plus(
+
+                                                                val days = ((deadlineInMillis.minus(nowMinusOneDay)).plus(
                                                                     ONE_DAY
                                                                 )
-                                                                    ?.div(ONE_DAY))?.toInt()
+                                                                    .div(ONE_DAY)).toInt()
                                                                 var s = "days"
                                                                 if (days == 1) {
                                                                     s = "day"

@@ -87,24 +87,12 @@ init {
                     val deadline=dataSnapshot.child("deadline").value.toString().replace("-"," " )
                     _reportAvailable.value=dataSnapshot.child("reportAvailable").getValue<Boolean>()
                     _lastMissionName.value=context.getString(R.string.mission_n_deadline,missionName,deadline)
-                    cloudReference.child("Users Active").child(missionNumber.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            _contributors.value = dataSnapshot.value.toString()
-                        }
+                    _contributors.value=dataSnapshot.child("contributors").value.toString()
+                    _totalMoneyRaised.value=dataSnapshot.child("moneyRaised").value.toString()
+                }
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
 
-                        override fun onCancelled(databaseError: DatabaseError) {
-                        }
-                    })
-                }
-                override fun onCancelled(databaseError: DatabaseError) {
-                }
-            })
-                cloudReference.child("Money Raised").child(missionNumber.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    _totalMoneyRaised.value = context.getString(R.string.rs,dataSnapshot.getValue<Int>())
-                }
-                override fun onCancelled(databaseError: DatabaseError) {
-                }
             })
         _enableButton.value=true
     }

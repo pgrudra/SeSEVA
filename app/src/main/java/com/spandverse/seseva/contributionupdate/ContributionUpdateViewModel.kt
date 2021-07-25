@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.spandverse.seseva.R
 import com.spandverse.seseva.data.AllDatabase
-import com.spandverse.seseva.home.usagestats.UsageOverViewViewModel
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -187,9 +186,8 @@ class ContributionUpdateViewModel(application: Application): AndroidViewModel(ap
         }
         else return "0 mins"
     }
-    init {
+    fun mainJob(missionNumber:Int){
         var penalty = 0
-        val missionNumber = sharedPref.getInt((R.string.chosen_mission_number).toString(), 0)
         viewModelScope.launch {
             val mission = missionDb.doesMissionExist(missionNumber)
             if (mission != null) {
@@ -244,90 +242,90 @@ class ContributionUpdateViewModel(application: Application): AndroidViewModel(ap
                     categoryStatsDb.getCategoryStatsOfChosenDate(ydaTime.timeInMillis)
                 if (dailyCatStats != null) {
                     for (i in dailyCatStats) {
-                            when (i.categoryName) {
-                                "SOCIAL" -> {
-                                    _socialST.value=inHrsMins(i.timeSpent)
-                                    _socialAL.value=(i.appLaunches?:0).toString()
-                                    if (i.ruleViolated == true) {
-                                        penalty += categoryPenalties["SOCIAL"] ?: 0
-                                        _socialPenalty.value =
-                                            context.getString(
-                                                R.string.rs,
-                                                categoryPenalties["SOCIAL"]
-                                            )
-                                    }
-                                }
-                                "COMM. & BROWSING" -> {
-                                    _comST.value=inHrsMins(i.timeSpent)
-                                    _comAL.value=(i.appLaunches?:0).toString()
-                                    if (i.ruleViolated == true) {
-                                        penalty += categoryPenalties["COMM. & BROWSING"] ?: 0
-                                        _comPenalty.value = context.getString(
+                        when (i.categoryName) {
+                            "SOCIAL" -> {
+                                _socialST.value=inHrsMins(i.timeSpent)
+                                _socialAL.value=(i.appLaunches?:0).toString()
+                                if (i.ruleViolated == true) {
+                                    penalty += categoryPenalties["SOCIAL"] ?: 0
+                                    _socialPenalty.value =
+                                        context.getString(
                                             R.string.rs,
-                                            categoryPenalties["COMM. & BROWSING"]
+                                            categoryPenalties["SOCIAL"]
                                         )
-                                    }
-                                }
-                                "GAMES" -> {
-                                    _gamesST.value=inHrsMins(i.timeSpent)
-                                    _gamesAL.value=(i.appLaunches?:0).toString()
-                                    if (i.ruleViolated == true) {
-                                        penalty += categoryPenalties["GAMES"] ?: 0
-                                        _gamesPenalty.value =
-                                            context.getString(
-                                                R.string.rs,
-                                                categoryPenalties["GAMES"]
-                                            )
-                                    }
-                                }
-                                "VIDEO & COMICS" -> {
-                                    _videoST.value=inHrsMins(i.timeSpent)
-                                    _videoAL.value=(i.appLaunches?:0).toString()
-                                    if (i.ruleViolated == true) {
-                                        penalty += categoryPenalties["VIDEO & COMICS"] ?: 0
-                                        _videoPenalty.value = context.getString(
-                                            R.string.rs,
-                                            categoryPenalties["VIDEO & COMICS"]
-                                        )
-                                    }
-                                }
-                                "OTHERS" -> {
-                                    _othersST.value=inHrsMins(i.timeSpent)
-                                    _othersAL.value=(i.appLaunches?:0).toString()
-                                    if (i.ruleViolated == true) {
-                                        penalty += categoryPenalties["OTHERS"] ?: 0
-                                        _othersPenalty.value =
-                                            context.getString(
-                                                R.string.rs,
-                                                categoryPenalties["OTHERS"]
-                                            )
-                                    }
-                                }
-                                "MSNBS" -> {
-                                    _msnbsST.value=inHrsMins(i.timeSpent)
-                                    _msnbsAL.value=(i.appLaunches?:0).toString()
-                                    if (i.ruleViolated == true) {
-                                        penalty += categoryPenalties["MSNBS"] ?: 0
-                                        _msnbsPenalty.value =
-                                            context.getString(
-                                                R.string.rs,
-                                                categoryPenalties["MSNBS"]
-                                            )
-                                    }
-                                }
-                                "ENTERTAINMENT"->{
-                                    _entertainmentST.value=inHrsMins(i.timeSpent)
-                                    _entertainmentAL.value=(i.appLaunches?:0).toString()
-                                }
-                                "WHITELISTED"->{
-                                    _whitelistedST.value=inHrsMins(i.timeSpent)
-                                    _whitelistedAL.value=(i.appLaunches?:0).toString()
-                                }
-                                "TOTAL"->{
-                                    _totTime.value=context.getString(R.string.tot_s_t_sentence,inHrsMins(i.timeSpent))
-                                    _totLaunches.value=context.getString(R.string.tot_a_l_sentence,i.appLaunches)
                                 }
                             }
+                            "COMM. & BROWSING" -> {
+                                _comST.value=inHrsMins(i.timeSpent)
+                                _comAL.value=(i.appLaunches?:0).toString()
+                                if (i.ruleViolated == true) {
+                                    penalty += categoryPenalties["COMM. & BROWSING"] ?: 0
+                                    _comPenalty.value = context.getString(
+                                        R.string.rs,
+                                        categoryPenalties["COMM. & BROWSING"]
+                                    )
+                                }
+                            }
+                            "GAMES" -> {
+                                _gamesST.value=inHrsMins(i.timeSpent)
+                                _gamesAL.value=(i.appLaunches?:0).toString()
+                                if (i.ruleViolated == true) {
+                                    penalty += categoryPenalties["GAMES"] ?: 0
+                                    _gamesPenalty.value =
+                                        context.getString(
+                                            R.string.rs,
+                                            categoryPenalties["GAMES"]
+                                        )
+                                }
+                            }
+                            "VIDEO & COMICS" -> {
+                                _videoST.value=inHrsMins(i.timeSpent)
+                                _videoAL.value=(i.appLaunches?:0).toString()
+                                if (i.ruleViolated == true) {
+                                    penalty += categoryPenalties["VIDEO & COMICS"] ?: 0
+                                    _videoPenalty.value = context.getString(
+                                        R.string.rs,
+                                        categoryPenalties["VIDEO & COMICS"]
+                                    )
+                                }
+                            }
+                            "OTHERS" -> {
+                                _othersST.value=inHrsMins(i.timeSpent)
+                                _othersAL.value=(i.appLaunches?:0).toString()
+                                if (i.ruleViolated == true) {
+                                    penalty += categoryPenalties["OTHERS"] ?: 0
+                                    _othersPenalty.value =
+                                        context.getString(
+                                            R.string.rs,
+                                            categoryPenalties["OTHERS"]
+                                        )
+                                }
+                            }
+                            "MSNBS" -> {
+                                _msnbsST.value=inHrsMins(i.timeSpent)
+                                _msnbsAL.value=(i.appLaunches?:0).toString()
+                                if (i.ruleViolated == true) {
+                                    penalty += categoryPenalties["MSNBS"] ?: 0
+                                    _msnbsPenalty.value =
+                                        context.getString(
+                                            R.string.rs,
+                                            categoryPenalties["MSNBS"]
+                                        )
+                                }
+                            }
+                            "ENTERTAINMENT"->{
+                                _entertainmentST.value=inHrsMins(i.timeSpent)
+                                _entertainmentAL.value=(i.appLaunches?:0).toString()
+                            }
+                            "WHITELISTED"->{
+                                _whitelistedST.value=inHrsMins(i.timeSpent)
+                                _whitelistedAL.value=(i.appLaunches?:0).toString()
+                            }
+                            "TOTAL"->{
+                                _totTime.value=context.getString(R.string.tot_s_t_sentence,inHrsMins(i.timeSpent))
+                                _totLaunches.value=context.getString(R.string.tot_a_l_sentence,i.appLaunches)
+                            }
+                        }
 
                     }
                 } else {
@@ -387,9 +385,9 @@ class ContributionUpdateViewModel(application: Application): AndroidViewModel(ap
                     }
                 }
             }
-                else {
-                    _goToHome.value = true
-                }
+            else {
+                _goToHome.value = true
+            }
 
 
 

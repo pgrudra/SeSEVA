@@ -44,12 +44,12 @@ class ContributionUpdateActivity : AppCompatActivity() {
         val sharedPref=getSharedPreferences((R.string.shared_pref).toString(), Context.MODE_PRIVATE)
         val showWeeklyReward=sharedPref.getInt((R.string.days_after_installation).toString(),1)==0
         val missionNumber=intent.getIntExtra("missionNumber",0)
-        val savedMissionNumber=sharedPref.getInt((R.string.chosen_mission_number).toString(),0)
         startService()
-        if(savedMissionNumber!=0 && missionNumber==savedMissionNumber){
+        if(missionNumber!=0){
             viewModel = ViewModelProvider(this, viewModelFactory).get(ContributionUpdateViewModel::class.java)
             binding.lifecycleOwner = this
             binding.contributionUpdateViewModel = viewModel
+            viewModel.mainJob(missionNumber)
             val missionImgRef = cloudImagesReference.getReferenceFromUrl("gs://unslave-0.appspot.com/missionImages/mission${missionNumber}Image.jpg")
             Glide.with(this)
                 .load(missionImgRef)
@@ -111,7 +111,6 @@ class ContributionUpdateActivity : AppCompatActivity() {
                 if(toHome){
                     goToHome()
                 }
-
             })
             viewModel.penaltiesExpandContractInvisible.observe(this, Observer<Boolean> {invisible->
                 if(invisible){

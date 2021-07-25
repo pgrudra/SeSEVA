@@ -16,6 +16,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.android.material.snackbar.Snackbar
 import com.spandverse.seseva.R
 import com.spandverse.seseva.data.missions.DomainActiveMission
 import com.google.firebase.auth.ktx.auth
@@ -76,7 +77,9 @@ class DetailMissionViewModel(mission: DomainActiveMission, application: Applicat
     private val _drawer = MutableLiveData<Boolean>()
     val drawer: LiveData<Boolean>
         get() = _drawer
-
+    private val _somethingWentWrong = MutableLiveData<Boolean>()
+    val somethingWentWrong: LiveData<Boolean>
+        get() = _somethingWentWrong
     init {
         _selectedMission.value = mission
         _showDetailMissionDescription.value = false
@@ -234,7 +237,6 @@ class DetailMissionViewModel(mission: DomainActiveMission, application: Applicat
             _noInternet.value = true
         } else {
             _progressVisibility.value = true
-            viewModelScope.launch {
                 val userId = user!!.uid
                 cloudReference.child("users").child(userId).child("chosenMission")
                     .setValue(_selectedMission.value!!.missionNumber)
@@ -246,32 +248,20 @@ class DetailMissionViewModel(mission: DomainActiveMission, application: Applicat
                             )
                             this?.apply()
                         }
-
-                        /*if (checkIfRulesShown()) {
-                            _toHomeFragment.value = true
-                        }*/
+                        with(sharedPref?.edit()) {
+                            this?.putInt(
+                                (R.string.rules_number).toString(),
+                                _selectedMission.value!!.rulesNumber
+                            )
+                            this?.apply()
+                        }
+                        _toRulesFragment.value = true
                     }
                     .addOnFailureListener {
+                        _somethingWentWrong.value=true
                     }
-            }
-            with(sharedPref?.edit()) {
-                this?.putInt(
-                    (R.string.rules_number).toString(),
-                    _selectedMission.value!!.rulesNumber
-                )
-                this?.apply()
-            }
-            _toRulesFragment.value = true
+
         }
-    }
-
-    private fun checkIfRulesShown(): Boolean {
-        val rulesShown = sharedPref?.getBoolean((R.string.rules_shown).toString(), false)
-        return if (rulesShown != true) {
-            _toRulesFragment.value = true
-            false
-        } else true
-
     }
 
     fun toRulesFragmentComplete() {
@@ -312,6 +302,10 @@ class DetailMissionViewModel(mission: DomainActiveMission, application: Applicat
                 false
             }
         } else return false
+    }
+
+    fun hideSnackbar() {
+        _somethingWentWrong.value=false
     }
 
     companion object {

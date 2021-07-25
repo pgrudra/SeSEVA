@@ -3,6 +3,7 @@ package com.spandverse.seseva.ui.login
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.SpannableString
 import android.text.Spanned
+import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.util.Log
@@ -40,6 +42,9 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.actionCodeSettings
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.spandverse.seseva.ManageProfileDialogFragment
+import com.spandverse.seseva.PPDialogFragment
+import com.spandverse.seseva.TOUDialogFragment
 
 
 class LoginFragment : Fragment(), View.OnClickListener,NoInternetDialogFragment.NoInternetDialogListener {
@@ -75,20 +80,27 @@ class LoginFragment : Fragment(), View.OnClickListener,NoInternetDialogFragment.
         val termsAndPolicyString=SpannableString(getString(R.string.by_signing))
         val termsOfUseText: ClickableSpan = object : ClickableSpan() {
             override fun onClick(textView: View) {
-                // do some thing
+                val dialog= TOUDialogFragment()
+                val fraManager=childFragmentManager
+                dialog.show(fraManager, "Terms of use")
             }
         }
         val privacyPolicyText: ClickableSpan = object : ClickableSpan() {
             override fun onClick(textView: View) {
-                // do another thing
+                val dialog= PPDialogFragment()
+                val fraManager=childFragmentManager
+                dialog.show(fraManager, "Privacy Policy")
             }
         }
         termsAndPolicyString.setSpan(termsOfUseText,39,51,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         termsAndPolicyString.setSpan(privacyPolicyText,56,70,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         termsAndPolicyString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.disabled_text)),39,51,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         termsAndPolicyString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.disabled_text)),56,70,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        binding.loginTermsAndPrivacyText.text=termsAndPolicyString
-
+        binding.loginTermsAndPrivacyText.apply {
+            this.text=termsAndPolicyString
+            this.movementMethod= LinkMovementMethod.getInstance()
+            this.highlightColor= Color.TRANSPARENT
+        }
         viewModel.resendEmail.observe(viewLifecycleOwner, Observer { resend ->
             if (resend) {
                 viewModel.resendComplete()

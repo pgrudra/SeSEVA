@@ -2,11 +2,13 @@ package com.spandverse.seseva.foregroundnnotifications
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.text.SpannableString
 import android.text.Spanned
+import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.util.Log
@@ -21,9 +23,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.work.WorkManager
-import com.spandverse.seseva.DeleteAccountDialogFragment
-import com.spandverse.seseva.MainActivity
-import com.spandverse.seseva.R
 import com.spandverse.seseva.data.AllDatabase
 import com.spandverse.seseva.databinding.FragmentPermissionBinding
 import com.spandverse.seseva.home.DrawerLocker
@@ -36,7 +35,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.spandverse.seseva.checkInternetConnectivity
+import com.spandverse.seseva.*
 import com.spandverse.seseva.ui.login.NoInternetDialogFragment
 import kotlinx.coroutines.launch
 
@@ -76,12 +75,16 @@ class PermissionFragment : Fragment(),PermissionMandatoryDialogFragment.Permissi
         val termsAndPolicyString= SpannableString(getString(R.string.terms_of_use_and_privacy_policy))
         val termsOfUseText: ClickableSpan = object : ClickableSpan() {
             override fun onClick(textView: View) {
-                // do some thing
+                val dialog= TOUDialogFragment()
+                val fraManager=childFragmentManager
+                dialog.show(fraManager, "Terms of use")
             }
         }
         val privacyPolicyText: ClickableSpan = object : ClickableSpan() {
             override fun onClick(textView: View) {
-                // do another thing
+                val dialog= PPDialogFragment()
+                val fraManager=childFragmentManager
+                dialog.show(fraManager, "Privacy Policy")
             }
         }
         termsAndPolicyString.setSpan(termsOfUseText,0,12, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -92,8 +95,11 @@ class PermissionFragment : Fragment(),PermissionMandatoryDialogFragment.Permissi
         termsAndPolicyString.setSpan(
             ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.disabled_text)),17,31,
             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        binding.loginTermsAndPrivacyText.text=termsAndPolicyString
-
+        binding.loginTermsAndPrivacyText.apply {
+            this.text=termsAndPolicyString
+            this.movementMethod= LinkMovementMethod.getInstance()
+            this.highlightColor=Color.TRANSPARENT
+        }
         binding.neverMind.setOnClickListener { showPermissionMandatoryDialog() }
         viewModel.grantPermission.observe(viewLifecycleOwner, Observer<Boolean> { grantPermission ->
             if (grantPermission) {

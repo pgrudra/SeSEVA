@@ -1,5 +1,6 @@
 package com.spandverse.seseva.choosemission
 
+import android.app.NotificationManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -17,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.snackbar.Snackbar
 import com.spandverse.seseva.R
 import com.spandverse.seseva.data.missions.DomainActiveMission
 import com.spandverse.seseva.databinding.FragmentDetailMissionBinding
@@ -157,8 +159,20 @@ class DetailMission : Fragment(), NoInternetDialogFragment.NoInternetDialogListe
         })
         viewModel.toRulesFragment.observe(viewLifecycleOwner, Observer<Boolean> { toRulesFragment ->
             if (toRulesFragment) {
+                val notificationManager: NotificationManager = appContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                notificationManager.cancel(2)
                 findNavController().navigate(DetailMissionDirections.actionDetailMissionToRulesFragment2())
                 viewModel.toRulesFragmentComplete()
+            }
+        })
+
+        viewModel.somethingWentWrong.observe(viewLifecycleOwner, Observer<Boolean> { wentWrong ->
+            if (wentWrong) {
+                Snackbar.make(binding.root,
+                    "Something went wrong, please try again later",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                 viewModel.hideSnackbar()
             }
         })
         viewModel.toHomeFragment.observe(viewLifecycleOwner, Observer<Boolean> { goto ->
