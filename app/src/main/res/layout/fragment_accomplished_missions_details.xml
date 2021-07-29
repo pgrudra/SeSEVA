@@ -14,7 +14,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/download_report_button"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

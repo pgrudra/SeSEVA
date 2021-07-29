@@ -75,16 +75,16 @@ class PermissionFragment : Fragment(),PermissionMandatoryDialogFragment.Permissi
         val termsAndPolicyString= SpannableString(getString(R.string.terms_of_use_and_privacy_policy))
         val termsOfUseText: ClickableSpan = object : ClickableSpan() {
             override fun onClick(textView: View) {
-                val dialog= TOUDialogFragment()
-                val fraManager=childFragmentManager
-                dialog.show(fraManager, "Terms of use")
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse("https://sites.google.com/view/seseva-terms-of-use/home")
+                startActivity(i)
             }
         }
         val privacyPolicyText: ClickableSpan = object : ClickableSpan() {
             override fun onClick(textView: View) {
-                val dialog= PPDialogFragment()
-                val fraManager=childFragmentManager
-                dialog.show(fraManager, "Privacy Policy")
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse("https://sites.google.com/view/seseva-privacy-policy/home")
+                startActivity(i)
             }
         }
         termsAndPolicyString.setSpan(termsOfUseText,0,12, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)

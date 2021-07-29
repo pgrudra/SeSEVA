@@ -14,12 +14,10 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import com.spandverse.seseva.R
 import kotlinx.coroutines.launch
-import java.util.*
 
 class FeatsViewModel(
-    private val missionsDatabaseDao: MissionsDatabaseDao,
+    missionsDatabaseDao: MissionsDatabaseDao,
     private val sponsorsDatabaseDao: SponsorDatabaseDao,
     application: Application
 ) : AndroidViewModel(application) {
@@ -84,7 +82,6 @@ init {
         }
 
         override fun onCancelled(error: DatabaseError) {
-            TODO("Not yet implemented")
         }
     })
 }
@@ -131,13 +128,11 @@ cloudReference.child("sponsors").child(i.toString()).child("missionsSponsored").
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
             }
         })
     }
 
     override fun onCancelled(error: DatabaseError) {
-        TODO("Not yet implemented")
     }
 })
         }
@@ -169,7 +164,6 @@ cloudReference.child("sponsors").child(i.toString()).child("missionsSponsored").
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
                     }
                 })
             }
