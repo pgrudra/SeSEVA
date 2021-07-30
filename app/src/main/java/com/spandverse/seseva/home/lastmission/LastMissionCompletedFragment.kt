@@ -89,8 +89,28 @@ class LastMissionCompletedFragment : Fragment(), NoInternetDialogFragment.NoInte
                 viewModel.downloadReportComplete()
             }
         })
-        appContext.registerReceiver(onDownloadComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
-        return binding.root
+       return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        try{
+            appContext.registerReceiver(onDownloadComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+        }catch (e:Exception){
+            context?.registerReceiver(onDownloadComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+        }
+    }
+
+    override fun onPause() {
+        try{
+            appContext.unregisterReceiver(onDownloadComplete)
+        }catch (e:Exception){
+            try{
+                context?.unregisterReceiver(onDownloadComplete)
+            }catch (e:Exception){
+            }
+        }
+        super.onPause()
     }
     private fun showNoInternetConnectionDialog() {
         val dialog = NoInternetDialogFragment()
@@ -131,8 +151,5 @@ class LastMissionCompletedFragment : Fragment(), NoInternetDialogFragment.NoInte
             }
         }
     }
-    override fun onDestroy() {
-        super.onDestroy()
-        appContext.unregisterReceiver(onDownloadComplete)
-    }
+
 }

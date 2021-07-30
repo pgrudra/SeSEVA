@@ -27,7 +27,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.spandverse.seseva.checkInternetConnectivity
 import com.spandverse.seseva.ui.login.NoInternetDialogFragment
-import java.io.NotActiveException
 
 class AccomplishedMissionDetails : Fragment(), NoInternetDialogFragment.NoInternetDialogListener {
     private val cloudStorageReference = Firebase.storage
@@ -125,7 +124,6 @@ class AccomplishedMissionDetails : Fragment(), NoInternetDialogFragment.NoIntern
                         }
                 }
         }
-        appContext.registerReceiver(onDownloadComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
         return binding.root
     }
 
@@ -169,8 +167,24 @@ class AccomplishedMissionDetails : Fragment(), NoInternetDialogFragment.NoIntern
     override fun removeRedBackground(dialog: DialogFragment) {
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        appContext.unregisterReceiver(onDownloadComplete)
+    override fun onResume() {
+        super.onResume()
+        try{
+            appContext.registerReceiver(onDownloadComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+        }catch (e:Exception){
+            context?.registerReceiver(onDownloadComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+        }
+    }
+
+    override fun onPause() {
+        try{
+            appContext.unregisterReceiver(onDownloadComplete)
+        }catch (e:Exception){
+            try{
+                context?.unregisterReceiver(onDownloadComplete)
+            }catch (e:Exception){
+            }
+        }
+        super.onPause()
     }
 }
