@@ -14,7 +14,6 @@
         android:id="@+id/inviteFriends"
         android:title="@string/invite_friends"
         android:icon="@drawable/ic_invite"
-android:visible="false"
         />
     <item
         android:id="@+id/settingsFragment"
@@ -24,7 +23,6 @@ android:visible="false"
         android:id="@+id/rateUs"
         android:title="@string/rate_us"
         android:icon="@drawable/ic_rateus"
-        android:visible="false"
         />
 
     <item

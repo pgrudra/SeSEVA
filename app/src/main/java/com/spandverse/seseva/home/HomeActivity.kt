@@ -25,6 +25,8 @@ import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.android.play.core.review.model.ReviewErrorCode
 import com.google.firebase.FirebaseApp
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory
@@ -284,8 +286,32 @@ binding.bottomNavView.itemIconTintList=null
                     startActivity(intent)
                 }
             }
-            R.id.inviteFriends->{}
-            R.id.rateUs->{}
+            R.id.inviteFriends->{
+                val link="https://seseva.page.link/invite"
+                val intent = Intent(Intent.ACTION_SEND)
+                intent.type = "text/plain"
+                intent.putExtra(Intent.EXTRA_TEXT, link)
+                startActivity(Intent.createChooser(intent, "Share Link"))
+            }
+            R.id.rateUs->{
+                val manager = ReviewManagerFactory.create(this)
+                val request = manager.requestReviewFlow()
+                request.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val reviewInfo = task.result
+                        val flow = manager.launchReviewFlow(this, reviewInfo)
+                        flow.addOnCompleteListener { _ ->
+                            binding.root.let {
+                                Snackbar.make(it, "Thanks for your time", Snackbar.LENGTH_SHORT).show()
+                            }
+                        }
+                    } else {
+                        binding.root.let {
+                            Snackbar.make(it, "Something went wrong", Snackbar.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
             R.id.FAQFragment->{}
             else ->this@HomeActivity.findNavController(R.id.myNavHostFragmentToSignOut).navigate(item.itemId)
         }
