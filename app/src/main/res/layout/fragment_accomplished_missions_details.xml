@@ -5,7 +5,7 @@
     <data>
         <variable
             name="AMDViewModel"
-            type="com.example.us0.home.closedmissions.AMDViewModel" />
+            type="com.spandverse.seseva.home.closedmissions.AMDViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,7 +14,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/download_report_button"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -26,7 +26,7 @@
                     android:id="@+id/hurrah_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hurrah!!"
+                    android:text="@string/hurrah"
                     style="@style/subtitle_1"
                     android:textColor="@color/yellow"
                     app:layout_constraintTop_toTopOf="parent"
@@ -50,7 +50,7 @@
                     app:layout_constraintTop_toBottomOf="@id/mission_name">
 
 
-                    <ImageButton
+                    <androidx.appcompat.widget.AppCompatImageButton
                         android:id="@+id/expand_or_contract"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
@@ -67,7 +67,7 @@
                         android:layout_marginBottom="24dp"
                         tools:text="sdfgdsgdf dfgkjdkfgjls dlfgjldsg ldkfgvnkjlds dd dcvdfgvdfb dfgd dgg f dgh dfbgd dfbgdf dfgdf dfbdf bdb dfg dvbd dbhf hfr ghf dfgdfbdadlgnlk aldkgfnlkdsgn  fglsk"
                         android:textColor="@color/secondary_text"
-                        style="@style/caption"/>
+                        style="@style/tertiary_text"/>
                 </FrameLayout>
 
 
@@ -101,7 +101,7 @@
                         style="@style/caption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Amount raised"
+                        android:text="@string/amount_raised"
                         android:textColor="@color/disabled_text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -135,7 +135,7 @@
                     <TextView
                         android:id="@+id/contributors_text"
                         style="@style/caption"
-                        android:text="Contributors"
+                        android:text="@string/contributors"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/disabled_text"
@@ -174,7 +174,7 @@
                         style="@style/caption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Accomplished on"
+                        android:text="@string/accomplished_on"
                         android:textColor="@color/disabled_text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -208,7 +208,7 @@
                     <TextView
                         android:id="@+id/contribution_text"
                         style="@style/caption"
-                        android:text="You raised"
+                        android:text="@string/you_raised"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/disabled_text"
@@ -217,57 +217,49 @@
                         app:layout_constraintTop_toBottomOf="@id/contribution" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/sponsor_logo"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/sponsor_name"
+                    android:layout_marginTop="4dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/sponsor_text"
-                    app:layout_constraintVertical_bias="0.24"
-                    tools:srcCompat="@drawable/ic_sponsor_logo" />
+                    app:layout_constraintTop_toBottomOf="@+id/sponsor_text"
+                    tools:srcCompat="@drawable/ic_sponsor" />
+
                 <TextView
                     android:id="@+id/sponsor_text"
+                    style="@style/overline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toEndOf="@id/sponsor_logo"
-                    android:text="SPONSOR"
-                    app:layout_constraintTop_toBottomOf="@id/constraintLayout3"
                     android:layout_marginTop="24dp"
-                    android:layout_marginStart="8dp"
+                    android:text="@string/mission_sponsor"
                     android:textColor="@color/disabled_text"
-                    style="@style/overline"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/constraintLayout3"
+                    />
+
+
                 <TextView
+                    android:id="@+id/sponsor_name"
+                    style="@style/subtitle_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
                     android:textColor="@color/primary_text"
-                    style="@style/subtitle_1"
-                    android:id="@+id/sponsor_name"
-                    tools:text="Sponsor name"
-                    app:layout_constraintStart_toStartOf="@id/sponsor_text"
-                    app:layout_constraintTop_toBottomOf="@id/sponsor_text"/>
-                <ImageButton
+                    app:layout_constraintBottom_toBottomOf="@+id/sponsor_logo"
+                    app:layout_constraintStart_toEndOf="@+id/sponsor_logo"
+                    app:layout_constraintTop_toTopOf="@+id/sponsor_logo"
+                    tools:text="Sponsor name" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/to_sponsor"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:src="@drawable/ic_arrow_right"
                     android:background="@null"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/sponsor_name"
                     app:layout_constraintBottom_toBottomOf="@id/sponsor_name"/>
-                <Button
-                    android:id="@+id/download_report_button"
-                    style="@style/button"
-                    android:layout_width="match_parent"
-                    android:layout_height="42dp"
-                    android:layout_marginTop="34dp"
-                    android:background="@drawable/disabled_button"
-                    android:text="Report will be available for download soon"
-                    android:textColor="@color/disabled_text"
-                    android:textAllCaps="false"
-                    android:enabled="false"
-                    app:layout_constraintTop_toBottomOf="@id/sponsor_name"
-                    tools:layout_editor_absoluteX="16dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
         <androidx.appcompat.widget.Toolbar
@@ -283,5 +275,19 @@
             app:titleTextColor="@color/disabled_text"
             app:layout_constraintTop_toTopOf="parent">
         </androidx.appcompat.widget.Toolbar>
+        <Button
+            android:id="@+id/download_report_button"
+            style="@style/button"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginBottom="36dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/disabled_button"
+            android:text="@string/report_will_be_available_for_download_soon"
+            android:textColor="@color/disabled_text"
+            android:textAllCaps="false"
+            android:enabled="false"
+            app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

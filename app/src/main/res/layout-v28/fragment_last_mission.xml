@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="LastMissionViewModel"
+            type="com.spandverse.seseva.home.lastmission.LastMissionViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/common_background">
+        <Button
+            android:id="@+id/choose_this_mission"
+            style="@style/button"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/login_resend_active"
+            android:onClick="@{()->LastMissionViewModel.chooseThisMission()}"
+            android:text="@string/continue_text"
+            android:enabled="false"
+            android:textColor="@color/nav_color"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/choose_a_different_mission"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <Button
+            android:id="@+id/choose_a_different_mission"
+            style="@style/button"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_marginBottom="36dp"
+            android:background="@drawable/login_change_email"
+            android:onClick="@{()->LastMissionViewModel.chooseOtherMission()}"
+            android:text="@string/view_all_available_missions"
+            android:textColor="@color/colorPrimary"
+            android:enabled="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout_editor_absoluteX="16dp" />
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toTopOf="@id/choose_this_mission"
+    >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/welcome_back"
+            style="@style/subtitle_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="72dp"
+            android:text="@string/welcome_back_text"
+            android:textColor="@color/primary_text"
+            app:layout_constraintStart_toEndOf="@+id/appCompatImageView8"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/username"
+            style="@style/subtitle_1"
+            android:textColor="@color/primary_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{LastMissionViewModel.userName}"
+            app:layout_constraintStart_toStartOf="@+id/welcome_back"
+            app:layout_constraintTop_toBottomOf="@+id/welcome_back"
+            tools:text="Prajwal Rudrakshi"/>
+        <TextView
+            android:id="@+id/you_are_on"
+            style="@style/body_2"
+            android:textColor="@color/secondary_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/you_are_on"
+            app:layout_constraintStart_toStartOf="@+id/welcome_back"
+            app:layout_constraintTop_toBottomOf="@+id/username" />
+        <TextView
+            android:id="@+id/mission_name"
+            style="@style/body_2"
+            android:textColor="@color/primary_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{LastMissionViewModel.lastMissionName}"
+            app:layout_constraintStart_toStartOf="@+id/welcome_back"
+            app:layout_constraintTop_toBottomOf="@+id/you_are_on"
+            tools:text="Mission Name" />
+        <TextView
+            android:id="@+id/you_raised"
+            style="@style/body_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/you_raised"
+            android:visibility="@{LastMissionViewModel.viContribution}"
+            android:textColor="@color/secondary_text"
+            app:layout_constraintStart_toStartOf="@+id/welcome_back"
+            app:layout_constraintTop_toBottomOf="@+id/mission_name" />
+        <TextView
+            android:id="@+id/contribution"
+            android:fontFamily="@font/montserrat_used"
+            android:textFontWeight="400"
+            android:textSize="30sp"
+            android:textColor="@color/colorAccent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{LastMissionViewModel.personalContribution}"
+            android:visibility="@{LastMissionViewModel.viContribution}"
+            app:layout_constraintStart_toStartOf="@+id/welcome_back"
+            app:layout_constraintTop_toBottomOf="@+id/you_raised"
+            tools:text="Rs 80"/>
+        <TextView
+            android:id="@+id/greatWork"
+            style="@style/subtitle_2"
+            android:textColor="@color/primary_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/great_work"
+            android:visibility="@{LastMissionViewModel.viGreatWork}"
+            app:layout_constraintStart_toStartOf="@+id/welcome_back"
+            app:layout_constraintTop_toBottomOf="@+id/contribution" />
+        <TextView
+            android:id="@+id/this_mission_has"
+            style="@style/body_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/this_mission_has"
+            android:textColor="@color/primary_text"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/trigger" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/appCompatImageView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView16"
+            app:layout_constraintStart_toEndOf="@+id/textView15"
+            app:layout_constraintTop_toTopOf="@+id/textView16"
+            app:srcCompat="@drawable/users_symbol" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/appCompatImageView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/textView14"
+            app:layout_constraintStart_toStartOf="@+id/this_mission_has"
+            app:layout_constraintTop_toTopOf="@+id/textView14"
+            app:srcCompat="@drawable/rupee_symbol" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/appCompatImageView8"
+            android:layout_width="142dp"
+            android:layout_height="208dp"
+            android:layout_marginTop="72dp"
+            android:layout_marginStart="16dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_screen_10_dolphin" />
+        <TextView
+            android:id="@+id/textView14"
+            style="@style/subtitle_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="8dp"
+            android:text="@{LastMissionViewModel.totalMoneyRaised}"
+            android:textColor="@color/primary_text"
+            app:layout_constraintStart_toEndOf="@+id/appCompatImageView7"
+            app:layout_constraintTop_toBottomOf="@+id/this_mission_has"
+            tools:text="10000" />
+        <TextView
+            android:id="@+id/textView15"
+            style="@style/tertiary_text"
+            android:textColor="@color/secondary_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/amount_raised"
+            app:layout_constraintStart_toStartOf="@+id/textView14"
+            app:layout_constraintTop_toBottomOf="@+id/textView14" />
+        <TextView
+            android:id="@+id/textView16"
+            style="@style/subtitle_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="@{LastMissionViewModel.contributors}"
+            android:textColor="@color/primary_text"
+            app:layout_constraintStart_toEndOf="@+id/appCompatImageView6"
+            app:layout_constraintTop_toTopOf="@+id/textView14"
+            tools:text="150" />
+        <TextView
+            android:id="@+id/textView17"
+            style="@style/tertiary_text"
+            android:textColor="@color/secondary_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contributors"
+            app:layout_constraintStart_toStartOf="@+id/textView16"
+            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+        <TextView
+            android:id="@+id/trigger"
+            style="@style/subtitle_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/all_corner_rounded_4dp"
+            android:elevation="15dp"
+            android:gravity="center"
+            android:paddingTop="11dp"
+            android:paddingBottom="11dp"
+            android:text="@{LastMissionViewModel.timeLeft}"
+            android:textColor="@color/colorPrimary"
+            android:visibility="gone"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/greatWork"
+            tools:text="You have $days more $s to give your best !!" />
+        <TextView
+            android:id="@+id/textView"
+            style="@style/caption"
+            android:textColor="@color/secondary_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/sponsored_by"
+            app:layout_constraintStart_toStartOf="@+id/this_mission_has"
+            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+        <TextView
+            android:id="@+id/sponsor_name"
+            style="@style/subtitle_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{LastMissionViewModel.lastMissionSponsorName}"
+            android:textColor="@color/colorSecondary"
+            app:layout_constraintBottom_toBottomOf="@+id/textView"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="@+id/textView"
+            tools:text="Sponsor name" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
+        
+        <View
+            android:id="@+id/skrim"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/skrim" />
+        <View
+            android:id="@+id/skrim_dark"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/nav_color" />
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="#03DAC5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

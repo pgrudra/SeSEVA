@@ -1,32 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-
+    <item
+        android:id="@+id/homeFragment"
+        android:title="@string/home"
+        android:icon="@drawable/ic_home" />
     <item
         android:id="@+id/becomeSponsor"
-        android:title="Become a sponsor"
+        android:title="@string/become_a_sponsor"
+        android:icon="@drawable/ic_sponsor"
         />
     <item
         android:id="@+id/inviteFriends"
-        android:title="Invite Friends"
+        android:title="@string/invite_friends"
+        android:icon="@drawable/ic_invite"
         />
     <item
         android:id="@+id/settingsFragment"
-        android:title="@string/settings"/>
+        android:title="@string/settings"
+        android:icon="@drawable/ic_settings"/>
     <item
         android:id="@+id/rateUs"
-        android:title="Rate Us"
+        android:title="@string/rate_us"
+        android:icon="@drawable/ic_rateus"
         />
 
     <item
         android:id="@+id/reportBugFragment"
-        android:title="@string/report_bug"/>
+        android:title="@string/report_bug"
+        android:icon="@drawable/ic_bugreport"/>
     <item
         android:id="@+id/FAQFragment"
-        android:title="@string/faqs" />
+        android:title="@string/faqs"
+        android:icon="@drawable/ic_faq"
+        android:visible="false"/>
     <item
         android:id="@+id/aboutFragment"
-        android:title="@string/about"/>
+        android:title="@string/about"
+        android:icon="@drawable/ic_about"/>
 
 
 </menu>

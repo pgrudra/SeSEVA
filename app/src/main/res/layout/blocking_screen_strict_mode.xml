@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="40dp"
+    android:background="@drawable/blocking_screen_bg">
+
+    <TextView
+        android:id="@+id/user_name_s"
+        style="@style/subtitle_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:textColor="@color/primary_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Hey user" />
+
+    <TextView
+        android:id="@+id/dont_text_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/montserrat_used"
+        android:shadowColor="#000000"
+        android:shadowDx="1.5"
+        android:shadowDy="1.5"
+        android:shadowRadius="1"
+        android:text="@string/rule_broken"
+        android:textAllCaps="true"
+        android:textColor="#E40606"
+        android:textSize="20sp"
+        android:letterSpacing="0.04"
+        app:layout_constraintStart_toStartOf="@id/user_name_s"
+        app:layout_constraintTop_toBottomOf="@id/user_name_s" />
+
+    <TextView
+        android:id="@+id/close_app_text_s"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/montserrat_used"
+        android:textColor="@color/common_background"
+        android:textSize="18sp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/user_name_s"
+        app:layout_constraintTop_toBottomOf="@id/dont_text_s"
+        tools:text="Close appname immediately" />
+    <View
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:background="@color/nav_color"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/dont_text_s"
+        app:layout_constraintEnd_toEndOf="@id/dont_text_s"
+        app:layout_constraintStart_toStartOf="@id/dont_text_s"
+        app:layout_constraintTop_toTopOf="@id/dont_text_s" />
+
+    <TextView
+        android:id="@+id/time_launches_left_text_s"
+        style="@style/body_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        tools:text="@string/its_sad_sentence"
+        android:textColor="@color/primary_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/close_app_text_s" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/time_bg"
+        android:layout_width="140dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/ic_count_min_bg"
+        app:layout_constraintEnd_toStartOf="@+id/count_bg"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/time_launches_left_text_s">
+
+        <TextView
+            android:id="@+id/app_time_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:fontFamily="@font/share_tech_mono"
+            android:textColor="@color/colorError"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/d1"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="100" />
+
+        <View
+            android:id="@+id/d1"
+            android:layout_width="1dp"
+            android:layout_height="16dp"
+            android:background="@color/disabled_text"
+            app:layout_constraintBottom_toBottomOf="@+id/cat_time_s"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/cat_time_s" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:fontFamily="@font/montserrat_used"
+            android:text="minutes"
+            android:textColor="@color/secondary_text"
+            android:textSize="8sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/d1"
+            app:layout_constraintStart_toStartOf="@id/d1" />
+
+        <TextView
+            android:id="@+id/cat_time_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:fontFamily="@font/share_tech_mono"
+            android:textColor="@color/colorError"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/d1"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="100" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/count_bg"
+        android:layout_width="140dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/ic_count_min_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/time_bg"
+        app:layout_constraintTop_toBottomOf="@id/time_launches_left_text_s">
+
+        <TextView
+            android:id="@+id/app_launches_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:fontFamily="@font/share_tech_mono"
+            android:textColor="@color/colorError"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/d2"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="10" />
+
+        <View
+            android:id="@+id/d2"
+            android:layout_width="1dp"
+            android:layout_height="16dp"
+            android:background="@color/disabled_text"
+            app:layout_constraintBottom_toBottomOf="@+id/cat_launches_s"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/cat_launches_s" />
+
+        <TextView
+            android:id="@+id/cat_launches_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:fontFamily="@font/share_tech_mono"
+            android:textColor="@color/colorError"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/d2"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="100" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:fontFamily="@font/montserrat_used"
+            android:text="counts"
+            android:textColor="@color/secondary_text"
+            android:textSize="8sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/d2"
+            app:layout_constraintStart_toStartOf="@id/d2" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/textView7"
+        style="@style/caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Your screentime"
+        android:textColor="@color/common_background"
+        app:layout_constraintEnd_toEndOf="@id/time_bg"
+        app:layout_constraintStart_toStartOf="@id/time_bg"
+        app:layout_constraintTop_toBottomOf="@id/time_bg" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_used"
+        android:text="On this App | On its category"
+        android:textColor="@color/common_background"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toEndOf="@id/time_bg"
+        app:layout_constraintStart_toStartOf="@id/time_bg"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_used"
+        android:text="Of this app | Of its category"
+        android:textColor="@color/common_background"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toEndOf="@id/count_bg"
+        app:layout_constraintStart_toStartOf="@id/count_bg"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+    <TextView
+        android:id="@+id/textView12"
+        style="@style/caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Your launches"
+        android:textColor="@color/common_background"
+        app:layout_constraintEnd_toEndOf="@id/count_bg"
+        app:layout_constraintStart_toStartOf="@id/count_bg"
+        app:layout_constraintTop_toBottomOf="@id/count_bg" />
+
+    <TextView
+        android:id="@+id/textView43_s"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center"
+        android:fontFamily="@font/montserrat_used"
+        android:shadowColor="#000000"
+        android:shadowDx="1.5"
+        android:shadowDy="1.5"
+        android:letterSpacing="0.04"
+        android:shadowRadius="1"
+        android:textAllCaps="true"
+        android:text="@string/you_can_still_help_yourself"
+        android:textColor="@color/primary_text"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+    <TextView
+        android:id="@+id/textView18_s"
+        style="@style/caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/you_are_using_strict_mode"
+        android:textColor="@color/primary_text"
+        app:layout_constraintBottom_toTopOf="@+id/textView44_s"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView44_s"
+        style="@style/tertiary_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="56dp"
+        android:gravity="center"
+        android:textColor="@color/common_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/blocking_screen_t4_s" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,21 +7,21 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="16dp"
-    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
     android:elevation="3dp"
     android:background="@drawable/all_corner_rounded_4dp_1e">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/sponsor_logo"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_sponsor_logo" />
+        tools:srcCompat="@drawable/ic_sponsor" />
 
     <TextView
         android:id="@+id/sponsor_name"
-        style="@style/caption"
+        style="@style/subtitle_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorSecondary"
@@ -33,7 +33,7 @@
         android:id="@+id/sponsored_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sponsored"
+        android:text="sponsored"
         style="@style/caption"
         android:layout_marginTop="8dp"
         android:textColor="@color/secondary_text"

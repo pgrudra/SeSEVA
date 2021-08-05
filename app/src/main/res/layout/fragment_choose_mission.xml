@@ -6,13 +6,18 @@
     <data>
         <variable
             name="ChooseMissionViewModel"
-            type="com.example.us0.choosemission.ChooseMissionViewModel" />
+            type="com.spandverse.seseva.choosemission.ChooseMissionViewModel" />
     </data>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/coordi_l"
+        android:background="@color/common_background">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/choose_mission_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/common_background"
         tools:context=".choosemission.ChooseMission">
 
         <androidx.appcompat.widget.Toolbar
@@ -23,6 +28,7 @@
             android:elevation="4dp"
             app:titleTextColor="@color/primary_text"
             app:titleMarginStart="36dp"
+            app:title="@string/titlebar_choose_your_mission"
             android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
             android:layout_height="?attr/actionBarSize"
@@ -36,6 +42,25 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="#03DAC5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
+    <View
+        android:id="@+id/skrim1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/skrim"
+        android:visibility="gone"/>
+        <include layout="@layout/fragment_choose_mission_info"
+            android:id="@+id/info_fragment"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

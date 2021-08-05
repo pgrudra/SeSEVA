@@ -8,18 +8,34 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:994695151141:android:76cd6b8b1ce7157867c9cc",
+        "mobilesdk_app_id": "1:994695151141:android:5f55091eeee797b067c9cc",
         "android_client_info": {
-          "package_name": "com.example.us0"
+          "package_name": "com.spandverse.seseva"
         }
       },
       "oauth_client": [
         {
-          "client_id": "994695151141-2vc339f5cra8hclbagk4qf3id2ktd2ij.apps.googleusercontent.com",
+          "client_id": "994695151141-8ogensclhh6uqk0qjgs55aqpn28ae14r.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.us0",
+            "package_name": "com.spandverse.seseva",
+            "certificate_hash": "13d8817d555b37798dea9b2a15134e35bad49a58"
+          }
+        },
+        {
+          "client_id": "994695151141-oauelu0ijbkum1di1bqhjp64884o9l70.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.spandverse.seseva",
             "certificate_hash": "c01fccd4e387a1aaf6f55ff7a4372c0b0b8a1373"
+          }
+        },
+        {
+          "client_id": "994695151141-s4knavvjmob64hcdk2vo8825oa93a0br.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.spandverse.seseva",
+            "certificate_hash": "473b13664db93ec7c424e69c0637810a5517bc80"
           }
         },
         {
@@ -36,7 +52,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "994695151141-eu2mp7idvlcmgnmoro1eto25l5j062qg.apps.googleusercontent.com",
+              "client_id": "994695151141-dcr2gma4i5khr9q5ltiqeq7mqpqgge4g.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

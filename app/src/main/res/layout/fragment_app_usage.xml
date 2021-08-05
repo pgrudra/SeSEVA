@@ -5,7 +5,7 @@
     <data>
         <variable
             name="UsageOverViewViewModel"
-            type="com.example.us0.home.usagestats.UsageOverViewViewModel" />
+            type="com.spandverse.seseva.home.usagestats.UsageOverViewViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/usage_stats_layout"
@@ -34,7 +34,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp">
 
                 <ImageView
                     android:id="@+id/app_icon"
@@ -44,7 +45,7 @@
                     android:scaleType="fitXY"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/ic_sponsor_logo" />
+                    tools:src="@drawable/seseva_icon_foreground" />
 
                 <TextView
                     android:id="@+id/textView32"
@@ -61,14 +62,14 @@
 
                 <TextView
                     android:id="@+id/today_s_statistics"
-                    style="@style/subtitle_2"
+                    style="@style/subtitle_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="16dp"
                     android:text="@{UsageOverViewViewModel.screenHeading}"
-                    android:textColor="@color/secondary_text"
+                    android:textColor="@color/primary_text"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/app_icon"
+                    app:layout_constraintTop_toBottomOf="@+id/whitelisted_description"
                     tools:text="Today's statistics" />
 
 
@@ -91,8 +92,8 @@
                         style="@style/caption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Total time spent"
+                        android:layout_marginTop="2dp"
+                        android:text="Screen time"
                         android:textColor="@color/disabled_text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -130,8 +131,8 @@
                         style="@style/caption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Total app launches"
+                        android:layout_marginTop="2dp"
+                        android:text="App launches"
                         android:textColor="@color/disabled_text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -153,8 +154,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/time"
-                    android:layout_marginTop="24dp"
+                    app:layout_constraintTop_toBottomOf="@id/app_icon"
+                    android:layout_marginTop="8dp"
+                    style="@style/caption"
+                    android:textColor="@color/primary_text"
                     android:text="This app is classified under whitelisted category. You can use these apps as per your need"
                     android:id="@+id/whitelisted_description"
                     android:visibility="gone"/>
@@ -174,25 +177,27 @@
                     app:layout_constraintTop_toTopOf="parent"
                     style="@style/subtitle_1"
                     app:layout_constraintStart_toStartOf="parent"/>
-                <TextView
-                    android:id="@+id/sub_heads_up_text1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/heads_up_text"
-                    tools:text="This app is classified under Communitation category"
-                    style="@style/tertiary_text"
-                    android:layout_marginTop="8dp"
-                    android:textColor="@color/disabled_text"/>
-                <TextView
+
+    <TextView
+        android:id="@+id/sub_heads_up_text1"
+        style="@style/caption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/primary_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/heads_up_text"
+        tools:text="This app is classified under Communitation category" />
+
+    <TextView
                     android:id="@+id/sub_heads_up_text2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/sub_heads_up_text1"
                     tools:text="you will break a SeSEVA rule it you break the following limit"
-                    style="@style/tertiary_text"
-                    android:textColor="@color/disabled_text"/>
+                    style="@style/caption"
+                    android:textColor="@color/primary_text"/>
                 <TextView
                     android:layout_width="126dp"
                     android:layout_height="52dp"
@@ -248,11 +253,13 @@
                     app:layout_constraintEnd_toEndOf="@id/launches_countdown"
                     android:layout_marginTop="4dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="24dp"
                     android:background="@drawable/all_corner_rounded_4dp_1e"
+                    android:paddingBottom="16dp"
                     app:layout_constraintTop_toBottomOf="@id/heads_up_c_l"
                     tools:layout_editor_absoluteX="16dp">
 
@@ -265,8 +272,8 @@
                         android:layout_marginStart="4dp"
                         android:layout_marginTop="4dp"
                         android:layout_marginEnd="4dp"
-                        android:padding="8dp"
                         android:background="@drawable/all_corner_rounded_4dp_common"
+                        android:padding="8dp"
                         android:text="Comparative analysis"
                         android:textColor="@color/primary_text"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -278,14 +285,12 @@
                         style="@style/caption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
                         android:layout_marginTop="16dp"
-                        android:layout_marginEnd="8dp"
                         android:background="@drawable/all_corner_rounded_4dp_2e"
-                        android:paddingStart="9dp"
-                        android:paddingEnd="9dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
                         android:text="Past year"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/secondary_text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/this_month_button"
@@ -296,17 +301,15 @@
                         style="@style/caption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
                         android:layout_marginTop="16dp"
-                        android:layout_marginEnd="4dp"
                         android:background="@drawable/primary_60p_rounded_corner_4"
-                        android:paddingStart="9dp"
-                        android:paddingEnd="9dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
                         android:text="Past week"
                         android:textColor="@color/primary_text"
                         app:layout_constraintEnd_toStartOf="@+id/this_month_button"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintHorizontal_chainStyle="spread"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/comparative_ana_text" />
 
@@ -315,14 +318,12 @@
                         style="@style/caption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
                         android:layout_marginTop="16dp"
-                        android:layout_marginEnd="46dp"
                         android:background="@drawable/all_corner_rounded_4dp_2e"
-                        android:paddingStart="9dp"
-                        android:paddingEnd="9dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
                         android:text="Past month"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/secondary_text"
                         app:layout_constraintEnd_toStartOf="@+id/this_year_button"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/this_week_button"
@@ -341,47 +342,51 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="32dp"
                             android:gravity="center"
-                            android:textColor="@color/secondary_text"
+                            android:text="@string/screen_time"
+                            android:textColor="@color/primary_text"
                             app:layout_constraintTop_toTopOf="parent"
-                            tools:layout_editor_absoluteX="0dp"
-                            tools:text="Screen Time" />
+                            tools:layout_editor_absoluteX="0dp" />
 
                         <com.github.mikephil.charting.charts.BarChart
                             android:id="@+id/time_spent_bar_chart"
                             android:layout_width="match_parent"
                             android:layout_height="198dp"
-                            app:layout_constraintTop_toBottomOf="@id/graph_time_text"/>
+                            android:layout_marginStart="2dp"
+                            app:layout_constraintTop_toBottomOf="@id/graph_time_text" />
+
                         <TextView
                             android:id="@+id/graph_app_launches_text"
                             style="@style/body_2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:layout_marginTop="32dp"
-                            android:textColor="@color/secondary_text"
+                            android:gravity="center"
+                            android:text="@string/app_launches"
+                            android:textColor="@color/primary_text"
                             app:layout_constraintTop_toBottomOf="@+id/time_spent_bar_chart"
-                            tools:layout_editor_absoluteX="0dp"
-                            tools:text="App Launches" />
+                            tools:layout_editor_absoluteX="0dp" />
+
                         <com.github.mikephil.charting.charts.BarChart
                             android:id="@+id/app_launches_bar_chart"
                             android:layout_width="match_parent"
                             android:layout_height="198dp"
+                            android:layout_marginStart="2dp"
                             android:layout_marginBottom="24dp"
                             app:layout_constraintBottom_toTopOf="@id/time_spent_week_aggregate_constraint_layout"
-                            app:layout_constraintTop_toBottomOf="@+id/graph_app_launches_text"/>
+                            app:layout_constraintTop_toBottomOf="@+id/graph_app_launches_text" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/time_spent_week_aggregate_constraint_layout"
                             android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
                             android:layout_marginEnd="2dp"
-                            android:padding="8dp"
                             android:background="@drawable/all_corner_rounded_4dp_common"
-                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/app_launches_week_aggregate_constraint_layout"
                             app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent">
+                            app:layout_constraintStart_toStartOf="parent">
 
                             <TextView
                                 android:id="@+id/time_spent_week_aggregate_text"
@@ -410,15 +415,15 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/app_launches_week_aggregate_constraint_layout"
                             android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
                             android:layout_marginEnd="4dp"
-                            android:padding="8dp"
                             android:background="@drawable/all_corner_rounded_4dp_common"
-                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toEndOf="@+id/time_spent_week_aggregate_constraint_layout"
-                            app:layout_constraintBottom_toBottomOf="parent">
+                            app:layout_constraintStart_toEndOf="@+id/time_spent_week_aggregate_constraint_layout">
 
                             <TextView
                                 android:id="@+id/app_launches_week_aggregate_text"
@@ -445,60 +450,68 @@
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/month_charts_constraint_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/this_week_button"
-                        android:visibility="gone">
+                        android:visibility="gone"
+                        app:layout_constraintTop_toBottomOf="@id/this_week_button">
+
                         <TextView
                             android:id="@+id/graph_time_month_text"
                             style="@style/body_2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:layout_marginTop="32dp"
-                            android:textColor="@color/secondary_text"
+                            android:gravity="center"
+                            android:text="@string/screen_time"
+                            android:textColor="@color/primary_text"
                             app:layout_constraintTop_toTopOf="parent"
-                            tools:layout_editor_absoluteX="0dp"
-                            tools:text="Screen Time" />
+                            tools:layout_editor_absoluteX="0dp" />
 
                         <com.github.mikephil.charting.charts.LineChart
                             android:id="@+id/time_spent_month_line_chart"
                             android:layout_width="match_parent"
                             android:layout_height="198dp"
-                            app:layout_constraintTop_toBottomOf="@id/graph_time_month_text"/>
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="2dp"
+                            app:layout_constraintTop_toBottomOf="@id/graph_time_month_text" />
+
                         <TextView
                             android:id="@+id/graph_app_launches_month_text"
                             style="@style/body_2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:layout_marginTop="32dp"
-                            android:textColor="@color/secondary_text"
+                            android:gravity="center"
+                            android:text="@string/app_launches"
+                            android:textColor="@color/primary_text"
                             app:layout_constraintTop_toBottomOf="@+id/time_spent_month_line_chart"
-                            tools:layout_editor_absoluteX="0dp"
-                            tools:text="App Launches" />
+                            tools:layout_editor_absoluteX="0dp" />
+
                         <com.github.mikephil.charting.charts.LineChart
                             android:id="@+id/app_launches_month_line_chart"
                             android:layout_width="match_parent"
                             android:layout_height="198dp"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="2dp"
                             android:layout_marginBottom="24dp"
                             app:layout_constraintBottom_toTopOf="@id/time_spent_month_aggregate_constraint_layout"
-                            app:layout_constraintTop_toBottomOf="@+id/graph_app_launches_month_text"/>
+                            app:layout_constraintTop_toBottomOf="@+id/graph_app_launches_month_text" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/time_spent_month_aggregate_constraint_layout"
                             android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
                             android:layout_marginEnd="2dp"
-                            android:padding="8dp"
                             android:background="@drawable/all_corner_rounded_4dp_common"
-                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/app_launches_month_aggregate_constraint_layout"
                             app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent">
+                            app:layout_constraintStart_toStartOf="parent">
 
                             <TextView
                                 android:id="@+id/time_spent_month_aggregate_text"
@@ -527,15 +540,15 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/app_launches_month_aggregate_constraint_layout"
                             android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
                             android:layout_marginEnd="4dp"
-                            android:padding="8dp"
                             android:background="@drawable/all_corner_rounded_4dp_common"
-                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toEndOf="@+id/time_spent_month_aggregate_constraint_layout"
-                            app:layout_constraintBottom_toBottomOf="parent">
+                            app:layout_constraintStart_toEndOf="@+id/time_spent_month_aggregate_constraint_layout">
 
                             <TextView
                                 android:id="@+id/app_launches_month_aggregate_text"
@@ -563,67 +576,75 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/year_charts_constraint_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/this_week_button"
-                        android:visibility="gone">
+                        android:visibility="gone"
+                        app:layout_constraintTop_toBottomOf="@id/this_week_button">
+
                         <TextView
                             android:id="@+id/graph_time_year_text"
                             style="@style/body_2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:layout_marginTop="32dp"
-                            android:textColor="@color/secondary_text"
+                            android:gravity="center"
+                            android:text="@string/screen_time"
+                            android:textColor="@color/primary_text"
                             app:layout_constraintTop_toTopOf="parent"
-                            tools:layout_editor_absoluteX="0dp"
-                            tools:text="Screen Time" />
+                            tools:layout_editor_absoluteX="0dp" />
 
                         <com.github.mikephil.charting.charts.LineChart
                             android:id="@+id/time_spent_year_line_chart"
                             android:layout_width="match_parent"
                             android:layout_height="198dp"
-                            app:layout_constraintTop_toBottomOf="@id/graph_time_year_text"/>
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="2dp"
+                            app:layout_constraintTop_toBottomOf="@id/graph_time_year_text" />
+
                         <TextView
                             android:id="@+id/graph_app_launches_year_text"
                             style="@style/body_2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:layout_marginTop="32dp"
-                            android:textColor="@color/secondary_text"
+                            android:gravity="center"
+                            android:text="@string/app_launches"
+                            android:textColor="@color/primary_text"
                             app:layout_constraintTop_toBottomOf="@+id/time_spent_year_line_chart"
-                            tools:layout_editor_absoluteX="0dp"
-                            tools:text="App Launches" />
+                            tools:layout_editor_absoluteX="0dp" />
+
                         <com.github.mikephil.charting.charts.LineChart
                             android:id="@+id/app_launches_year_line_chart"
                             android:layout_width="match_parent"
                             android:layout_height="198dp"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="2dp"
                             android:layout_marginBottom="24dp"
                             app:layout_constraintBottom_toTopOf="@id/time_spent_year_aggregate_constraint_layout"
-                            app:layout_constraintTop_toBottomOf="@+id/graph_app_launches_year_text"/>
+                            app:layout_constraintTop_toBottomOf="@+id/graph_app_launches_year_text" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/time_spent_year_aggregate_constraint_layout"
                             android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
                             android:layout_marginEnd="2dp"
-                            android:padding="8dp"
                             android:background="@drawable/all_corner_rounded_4dp_common"
-                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/app_launches_year_aggregate_constraint_layout"
                             app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent">
+                            app:layout_constraintStart_toStartOf="parent">
 
                             <TextView
                                 android:id="@+id/time_spent_year_aggregate_text"
                                 style="@style/caption"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
+                                android:layout_marginTop="2dp"
                                 android:text="Total screen time"
                                 android:textColor="@color/disabled_text"
                                 app:layout_constraintEnd_toEndOf="@+id/time_spent_year_aggregate"
@@ -645,22 +666,22 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/app_launches_year_aggregate_constraint_layout"
                             android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
                             android:layout_marginEnd="4dp"
-                            android:padding="8dp"
                             android:background="@drawable/all_corner_rounded_4dp_common"
-                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toEndOf="@+id/time_spent_year_aggregate_constraint_layout"
-                            app:layout_constraintBottom_toBottomOf="parent">
+                            app:layout_constraintStart_toEndOf="@+id/time_spent_year_aggregate_constraint_layout">
 
                             <TextView
                                 android:id="@+id/app_launches_year_aggregate_text"
                                 style="@style/caption"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
+                                android:layout_marginTop="2dp"
                                 android:text="Total app launches"
                                 android:textColor="@color/disabled_text"
                                 app:layout_constraintEnd_toEndOf="@+id/app_launches_year_aggregate"
@@ -687,18 +708,18 @@
                         style="@style/body_2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
-                        android:layout_marginBottom="16dp"
                         android:layout_marginStart="24dp"
+                        android:layout_marginTop="32dp"
                         android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="16dp"
                         android:text="It appears that you are either new or you have deleted the stats!!\nYou can view newly collected stats by tomorrow"
                         android:textColor="@color/secondary_text"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/this_week_button"
-                        tools:layout_editor_absoluteX="24dp"
-                        android:visibility="gone"/>
+                        tools:layout_editor_absoluteX="24dp" />
 
-                     </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 

@@ -7,7 +7,7 @@
 
         <variable
             name="Rules2ViewModel"
-            type="com.example.us0.home.rules.Rules2ViewModel" />
+            type="com.spandverse.seseva.home.rules.Rules2ViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -59,25 +59,55 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:animateLayoutChanges="true"
+    android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/textView5"
                     style="@style/subtitle_1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:text="@{Rules2ViewModel.contributeSentence}"
                     android:textColor="@color/primary_text"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     tools:text="Raise upto Rs 6 per day by adhering to below rules" />
+<TextView
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:id="@+id/rules_guide"
+    tools:text="@string/rules_guide"
+    app:layout_constraintTop_toBottomOf="@id/textView5"
+    android:layout_marginTop="8dp"
+    android:paddingBottom="16dp"
+    android:text="@{Rules2ViewModel.rulesGuideText}"
+    android:visibility="gone"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:textColor="@color/disabled_text"
+    style="@style/tertiary_text"/>
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@null"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="52dp"
+                    android:layout_marginEnd="8dp"
+                    android:onClick="@{()->Rules2ViewModel.expandContractGuide()}"
+                    android:id="@+id/rules_guide_button"
+                    android:src="@drawable/ic_question"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
 
                 <LinearLayout
                     android:id="@+id/daily_weekly_buttons_holder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:layout_marginBottom="24dp"
                     android:orientation="horizontal">
 
@@ -85,8 +115,8 @@
                         android:id="@+id/daily_rules_button"
                         style="@style/caption"
                         android:layout_width="wrap_content"
-                        android:layout_height="32dp"
-                        android:background="@drawable/all_corner_rounded_16dp_primary"
+                        android:layout_height="36dp"
+                        android:background="@drawable/all_corner_rounded_24dp_primary"
                         android:onClick="@{()->Rules2ViewModel.dailyRulesChosen()}"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
@@ -98,9 +128,9 @@
                         android:id="@+id/weekly_rules_button"
                         style="@style/caption"
                         android:layout_width="wrap_content"
-                        android:layout_height="32dp"
+                        android:layout_height="36dp"
                         android:layout_marginStart="16dp"
-                        android:background="@drawable/all_corner_rounded_16dp_disabled"
+                        android:background="@drawable/all_corner_rounded_24dp_disabled"
                         android:onClick="@{()->Rules2ViewModel.weeklyRulesChosen()}"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
@@ -121,19 +151,20 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:paddingBottom="16dp"
+                            android:animateLayoutChanges="true"
                             android:background="@drawable/all_corner_rounded_4dp"
                             android:elevation="3dp">
 
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
                                 android:layout_marginTop="18dp"
-                                android:src="@drawable/ic_launcher_foreground"
+                                app:srcCompat="@drawable/ic_social"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_1"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/social_expand_or_contract"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -145,7 +176,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/i_social"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -161,7 +192,7 @@
                                 style="@style/subtitle_1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="72dp"
+                                android:layout_marginStart="70dp"
                                 android:layout_marginTop="16dp"
                                 android:text="Social"
                                 android:textColor="@color/colorSecondary"
@@ -251,20 +282,21 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
+                            android:animateLayoutChanges="true"
                             android:paddingBottom="16dp"
                             android:background="@drawable/all_corner_rounded_4dp"
                             android:elevation="3dp">
 
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
                                 android:layout_marginTop="18dp"
-                                android:src="@drawable/ic_launcher_foreground"
+                                app:srcCompat="@drawable/ic_video"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_2"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/video_expand_or_contract"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -276,7 +308,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/i_video"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -290,11 +322,12 @@
                             <TextView
                                 android:id="@+id/t_c_2"
                                 style="@style/subtitle_1"
-                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="72dp"
+                                android:layout_marginStart="70dp"
                                 android:layout_marginTop="16dp"
-                                android:text="Video"
+                                android:text="@string/video_comics"
+                                android:layout_width="0dp"
+                                app:layout_constraintEnd_toStartOf="@id/i_video"
                                 android:textColor="@color/colorSecondary"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -379,20 +412,21 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
+                            android:animateLayoutChanges="true"
                             android:paddingBottom="16dp"
                             android:background="@drawable/all_corner_rounded_4dp"
                             android:elevation="3dp">
 
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
                                 android:layout_marginTop="18dp"
-                                android:src="@drawable/ic_launcher_foreground"
+                                app:srcCompat="@drawable/ic_games"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_3"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/games_expand_or_contract"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -404,7 +438,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/i_games"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -420,7 +454,7 @@
                                 style="@style/subtitle_1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="72dp"
+                                android:layout_marginStart="70dp"
                                 android:layout_marginTop="16dp"
                                 android:text="Games"
                                 android:textColor="@color/colorSecondary"
@@ -505,20 +539,21 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
+                            android:animateLayoutChanges="true"
                             android:paddingBottom="16dp"
                             android:background="@drawable/all_corner_rounded_4dp"
                             android:elevation="3dp">
 
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
                                 android:layout_marginTop="18dp"
-                                android:src="@drawable/ic_launcher_foreground"
+                                app:srcCompat="@drawable/ic_communication"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_4"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/communication_expand_or_contract"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -530,7 +565,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/i_communication"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -544,11 +579,12 @@
                             <TextView
                                 android:id="@+id/t_c_4"
                                 style="@style/subtitle_1"
-                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="72dp"
+                                android:layout_marginStart="70dp"
                                 android:layout_marginTop="16dp"
-                                android:text="Communication"
+                                android:text="@string/comm_browsers"
+                                android:layout_width="0dp"
+                                app:layout_constraintEnd_toStartOf="@id/i_communication"
                                 android:textColor="@color/colorSecondary"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -633,20 +669,21 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
+                            android:animateLayoutChanges="true"
                             android:paddingBottom="16dp"
                             android:background="@drawable/all_corner_rounded_4dp"
                             android:elevation="3dp">
 
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
                                 android:layout_marginTop="18dp"
-                                android:src="@drawable/ic_launcher_foreground"
+                                app:srcCompat="@drawable/ic_msnbs"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_6"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/msnbs_expand_or_contract"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -658,7 +695,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/i_msnbs"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -674,7 +711,7 @@
                                 style="@style/subtitle_1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="72dp"
+                                android:layout_marginStart="70dp"
                                 android:layout_marginTop="16dp"
                                 android:text="MSNBS"
                                 android:textColor="@color/colorSecondary"
@@ -761,20 +798,21 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
+                            android:animateLayoutChanges="true"
                             android:paddingBottom="16dp"
                             android:background="@drawable/all_corner_rounded_4dp"
                             android:elevation="3dp">
 
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
                                 android:layout_marginTop="18dp"
-                                android:src="@drawable/ic_launcher_foreground"
+                                app:srcCompat="@drawable/ic_whitelisted"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_5"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/whitelisted_expand_or_contract"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -786,7 +824,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/i_whitelisted"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -802,9 +840,9 @@
                                 style="@style/subtitle_1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="72dp"
+                                android:layout_marginStart="70dp"
                                 android:layout_marginTop="16dp"
-                                android:text="Whitelisted apps"
+                                android:text="Whitelisted"
                                 android:textColor="@color/colorSecondary"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -849,21 +887,22 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
+                            android:animateLayoutChanges="true"
                             android:paddingBottom="16dp"
                             android:layout_marginBottom="4dp"
                             android:background="@drawable/all_corner_rounded_4dp"
                             android:elevation="3dp">
 
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
                                 android:layout_marginTop="18dp"
-                                android:src="@drawable/ic_launcher_foreground"
+                                app:srcCompat="@drawable/ic_others"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_7"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/others_expand_or_contract"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -875,7 +914,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/i_others"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -891,7 +930,7 @@
                                 style="@style/subtitle_1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="72dp"
+                                android:layout_marginStart="70dp"
                                 android:layout_marginTop="16dp"
                                 android:text="Other apps"
                                 android:textColor="@color/colorSecondary"
@@ -987,20 +1026,21 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
+                            android:animateLayoutChanges="true"
                             android:paddingBottom="16dp"
                             android:background="@drawable/all_corner_rounded_4dp"
                             android:elevation="3dp">
 
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
                                 android:layout_marginTop="18dp"
-                                android:src="@drawable/ic_launcher_foreground"
+                                app:srcCompat="@drawable/ic_entertainment"
                                 app:layout_constraintEnd_toStartOf="@+id/t_c_8"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/entertainment_expand_or_contract"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -1012,7 +1052,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/i_entertainment"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
@@ -1028,7 +1068,7 @@
                                 style="@style/subtitle_1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="72dp"
+                                android:layout_marginStart="70dp"
                                 android:layout_marginTop="16dp"
                                 android:text="Entertainment"
                                 android:textColor="@color/colorSecondary"
@@ -1111,15 +1151,47 @@
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:onClick="@{()->Rules2ViewModel.scrimGoneOrNoInternet()}"
+    android:visibility="visible"
+    android:background="@color/rules_scrim"
+    android:id="@+id/intro_scrim">
 
-        <ImageButton
-            android:id="@+id/intro_scrim"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/skrim"
-            android:onClick="@{()->Rules2ViewModel.scrimGoneOrNoInternet()}"
-            android:visibility="visible" />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/scrim_svg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/rule_instructions"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.24" />
 
+    <TextView
+        style="@style/caption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="Tap anywhere to continue"
+        android:textColor="@color/secondary_text"
+        app:layout_constraintBottom_toTopOf="@id/small_text"
+        app:layout_constraintTop_toBottomOf="@id/scrim_svg" />
+    <TextView
+        android:id="@+id/small_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/montserrat_used"
+        android:textColor="@color/secondary_text"
+        android:layout_marginStart="16dp"
+        android:textSize="8dp"
+        android:text="Please bear with me for few seconds. Categorising apps may take some time depending on your internet speed."/>
 
+</androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -5,7 +5,7 @@
     <data>
         <variable
             name="FeatsViewModel"
-            type="com.example.us0.home.feats.FeatsViewModel" />
+            type="com.spandverse.seseva.home.feats.FeatsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,7 +24,7 @@
             android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
             app:layout_constraintTop_toTopOf="parent"
             app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
-            app:title="Feats"
+            app:title="Missions"
             app:titleTextColor="@color/primary_text" />
         <ScrollView
             android:id="@+id/scroll_view"
@@ -40,8 +40,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/summary_constraint_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="122dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_height="126dp"
+                    android:layout_marginTop="8dp"
                     android:elevation="15dp"
                     android:background="@color/black_text"
                     android:layout_marginStart="16dp"
@@ -62,7 +62,8 @@
                         app:layout_constraintHorizontal_bias="0.3"
                         app:layout_constraintHorizontal_chainStyle="packed"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/textView37" />
+                        app:layout_constraintTop_toTopOf="@+id/textView37"
+                        app:layout_constraintVertical_bias="0.74" />
 
                     <TextView
                         android:id="@+id/textView37"
@@ -85,8 +86,7 @@
                         android:id="@+id/active_missions"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/subtitle_2"
-                        android:text="@{FeatsViewModel.activeMissions}"
+                        style="@style/subtitle_1"
                         android:textColor="@color/primary_text"
                         tools:text="40"
                         app:layout_constraintStart_toStartOf="parent"
@@ -98,7 +98,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/caption"
-                        android:text="Available missions"
+                        android:text="@string/available_missions"
                         android:textColor="@color/secondary_text"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/vertical_divider"
@@ -107,8 +107,7 @@
                         android:id="@+id/total_missions"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/subtitle_2"
-                        android:text="@{FeatsViewModel.totalMissions}"
+                        style="@style/subtitle_1"
                         android:textColor="@color/primary_text"
                         app:layout_constraintStart_toEndOf="@id/vertical_divider"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -120,7 +119,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/caption"
-                        android:text="Total missions"
+                        android:text="@string/total_missions_text"
                         android:textColor="@color/secondary_text"
                         app:layout_constraintStart_toEndOf="@id/vertical_divider"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -158,12 +157,12 @@
                     <Button
                         android:id="@+id/missions_button"
                         style="@style/caption"
-                        android:layout_height="32dp"
+                        android:layout_height="36dp"
                         android:layout_width="0dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="4dp"
                         android:background="@drawable/login_resend_active"
-                        android:text="All Hosted Missions"
+                        android:text="@string/all_hosted_missions"
                         android:textAllCaps="false"
                         android:textColor="@color/primary_text"
                         app:layout_constraintEnd_toStartOf="@+id/sponsors_button"
@@ -174,7 +173,7 @@
                     <Button
                         android:id="@+id/sponsors_button"
                         style="@style/caption"
-                        android:layout_height="32dp"
+                        android:layout_height="36dp"
                         android:layout_width="0dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginStart="4dp"
@@ -187,29 +186,18 @@
                         app:layout_constraintStart_toEndOf="@+id/missions_button"
                         app:layout_constraintTop_toTopOf="parent"/>
 
-                    <TextView
-                        android:id="@+id/list_description_text"
-                        style="@style/tertiary_text"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="List of companies that have fulfilled their pledges towards missions hosted on SeSeva"
-                        android:textColor="@color/disabled_text"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="@+id/sponsors_button"
-                        app:layout_constraintStart_toStartOf="@id/missions_button"
-                        app:layout_constraintTop_toBottomOf="@id/missions_button" />
 <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/active_mission_legend_constraint_layout"
-    android:layout_width="wrap_content"
+    android:layout_width="0dp"
     android:layout_height="wrap_content"
     app:layout_constraintTop_toBottomOf="@id/missions_button"
-    app:layout_constraintStart_toStartOf="@id/missions_button"
-    android:layout_marginTop="12dp">
+    app:layout_constraintStart_toStartOf="parent"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="8dp">
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/active_symbol_mini"
-        android:layout_width="6dp"
-        android:layout_height="6dp"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
         app:srcCompat="@drawable/ic_active_mission_symbol"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -219,19 +207,19 @@
         android:id="@+id/mission_available_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="2dp"
+        android:fontFamily="@font/montserrat_used"
+        android:text="Mission Available"
+        android:textColor="@color/disabled_text"
+        android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/active_symbol_mini"
-        android:text="Mission Available"
-        android:layout_marginStart="4dp"
-        android:textColor="@color/disabled_text"
-        android:fontFamily="@font/montserrat_used"
-        android:textSize="10sp"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/report_available_symbol_mini"
-        android:layout_width="6dp"
-        android:layout_height="6dp"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
         app:srcCompat="@drawable/ic_report_available"
         app:layout_constraintStart_toEndOf="@id/mission_available_text"
         app:layout_constraintTop_toTopOf="parent"
@@ -242,18 +230,18 @@
         android:id="@+id/report_available_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="2dp"
+        android:fontFamily="@font/montserrat_used"
+        android:text="Report Available"
+        android:textColor="@color/disabled_text"
+        android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/report_available_symbol_mini"
-        android:text="Report Available"
-        android:layout_marginStart="4dp"
-        android:textColor="@color/disabled_text"
-        android:fontFamily="@font/montserrat_used"
-        android:textSize="10sp"/>
+        app:layout_constraintTop_toTopOf="parent" />
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/report_in_progress_symbol_mini"
-        android:layout_width="6dp"
-        android:layout_height="6dp"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
         app:srcCompat="@drawable/ic_report_in_progress"
         app:layout_constraintStart_toEndOf="@id/report_available_text"
         app:layout_constraintTop_toTopOf="parent"
@@ -264,14 +252,14 @@
         android:id="@+id/report_in_progress_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="2dp"
+        android:fontFamily="@font/montserrat_used"
+        android:text="Report in progress"
+        android:textColor="@color/disabled_text"
+        android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/report_in_progress_symbol_mini"
-        android:text="Report in progress"
-        android:layout_marginStart="4dp"
-        android:textColor="@color/disabled_text"
-        android:fontFamily="@font/montserrat_used"
-        android:textSize="10sp"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -279,26 +267,26 @@
                         android:id="@+id/missions_list"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_marginTop="48dp"
+                        android:layout_marginTop="24dp"
                         android:scrollbars="vertical"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/missions_button"
+                        app:layout_constraintTop_toBottomOf="@id/active_mission_legend_constraint_layout"
                         tools:layout_editor_absoluteX="16dp" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/sponsors_list"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_marginTop="4dp"
                         android:scrollbars="vertical"
                         android:visibility="gone"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
+                        android:layout_marginTop="24dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintTop_toBottomOf="@id/list_description_text"
+                        app:layout_constraintTop_toBottomOf="@id/sponsors_button"
                         app:layout_constraintBottom_toBottomOf="parent"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

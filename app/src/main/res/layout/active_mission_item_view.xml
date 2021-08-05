@@ -7,7 +7,7 @@
 
         <variable
             name="activeMission"
-            type="com.example.us0.data.missions.DomainActiveMission" />
+            type="com.spandverse.seseva.data.missions.DomainActiveMission" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,7 +28,7 @@
             app:srcCompat="@drawable/mission_item_view_background" />
 
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageView"
             android:layout_width="0dp"
             android:layout_height="200dp"
@@ -44,9 +44,9 @@
             android:id="@+id/appCompatImageView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/mission_image_corner_left"
             app:layout_constraintStart_toStartOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="@+id/imageView"
-            app:srcCompat="@drawable/mission_image_corner_left" />
+            app:layout_constraintTop_toTopOf="@+id/imageView" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/appCompatImageView3"
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="@+id/imageView"
-            app:srcCompat="@drawable/mission_image_corner_right" />
+            android:background="@drawable/mission_image_corner_right"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/appCompatImageView2"
@@ -67,22 +67,29 @@
         <TextView
             android:id="@+id/available_till"
             style="@style/text_stroke"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/available_till_date_background"
             android:fontFamily="@font/montserrat_used"
-            android:letterSpacing="0.04"
-            android:lineHeight="15sp"
             android:paddingTop="4dp"
-            android:paddingEnd="40dp"
             android:paddingBottom="4dp"
             android:textColor="#FF57BB"
-            android:textFontWeight="400"
-            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
             app:layout_constraintStart_toStartOf="@+id/imageView"
-            tools:text="Available Till" />
-
+            app:layout_constraintEnd_toEndOf="@id/imageView"
+            android:layout_marginEnd="70dp"
+            tools:text="Available Till 23/08/6746" />
+       <!-- <View
+            android:id="@+id/divider_1"
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="#000000"
+            app:layout_constraintBottom_toTopOf="@id/active_contributors"
+            app:layout_constraintEnd_toEndOf="@id/appCompatImageView2"
+            app:layout_constraintStart_toStartOf="@id/appCompatImageView2"
+            app:layout_constraintTop_toBottomOf="@id/amountRaised" />-->
 
         <TextView
             android:id="@+id/category"
@@ -98,14 +105,14 @@
 
         <TextView
             android:id="@+id/mission_name"
-            style="@style/subtitle_1"
+            style="@style/subtitle_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toTopOf="@+id/textView3"
             app:layout_constraintStart_toStartOf="@+id/textView3"
-            tools:text="Mission Name" />
+            tools:text="Ashraya for children" />
 
         <TextView
             android:id="@+id/textView3"
@@ -113,7 +120,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
-            android:text="@string/sponsor"
+            android:text="@string/mission_sponsor"
             android:textColor="@color/secondary_text"
             app:layout_constraintBottom_toTopOf="@+id/sponsor_name"
             app:layout_constraintStart_toStartOf="@+id/sponsor_name" />
@@ -121,14 +128,14 @@
 
         <TextView
             android:id="@+id/sponsor_name"
-            style="@style/subtitle_1"
+            style="@style/subtitle_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="36dp"
             android:textColor="@color/primary_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/available_till"
-            tools:text="Sponsor name" />
+            tools:text="GR Industrial Stores" />
 
 
         <TextView
@@ -188,6 +195,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            app:layout_constraintVertical_bias="0.54"
             app:layout_constraintBottom_toTopOf="@+id/amountRaised"
             app:layout_constraintStart_toStartOf="@+id/appCompatImageView2"
             app:layout_constraintTop_toTopOf="@+id/money"

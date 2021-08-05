@@ -6,10 +6,10 @@
     <data>
 <variable
     name="installedapp"
-    type="com.example.us0.data.apps.AppAndCategory"/>
+    type="com.spandverse.seseva.data.apps.AppAndCategory"/>
         <variable
             name="stat"
-            type="com.example.us0.data.stats.Stat" />
+            type="com.spandverse.seseva.data.stats.Stat" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +18,7 @@
         android:layout_marginBottom="4dp"
         android:layout_marginTop="4dp">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/app_icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
@@ -26,7 +26,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_sponsor_logo" />
+            tools:src="@drawable/seseva_icon_foreground" />
 
         <TextView
             android:id="@+id/app_name"
@@ -39,6 +39,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_icon"
+            android:layout_marginTop="4dp"
             tools:text="ghfhgvkhkjhkhjkkl" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

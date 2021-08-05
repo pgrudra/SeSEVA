@@ -6,7 +6,7 @@
     <data>
         <variable
             name="ProfileViewModel"
-            type="com.example.us0.home.profile.ProfileViewModel" />
+            type="com.spandverse.seseva.home.profile.ProfileViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -53,11 +53,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:layout_marginTop="24dp"
                     android:text="@{ProfileViewModel.levelName}"
                     android:textColor="@color/yellow"
+                    android:textSize="26sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/appCompatImageView"
                     app:layout_constraintStart_toEndOf="@+id/appCompatImageView"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/appCompatImageView"
+                    app:layout_constraintVertical_bias="0.37"
                     tools:text="Super Sevak" />
 
                 <TextView
@@ -74,6 +76,7 @@
                     android:id="@+id/rupee_symbol_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:layout_constraintVertical_bias="0.55"
                     app:layout_constraintBottom_toBottomOf="@id/total_money_raised"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/total_money_raised"
@@ -146,7 +149,7 @@
     android:layout_height="wrap_content"
     android:text="Your current mission"
     android:textColor="@color/disabled_text"
-    style="@style/caption"
+    style="@style/subtitle_1"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/divider"
     android:layout_marginTop="24dp"/>
@@ -162,29 +165,28 @@
                     tools:text="CATEGORY"
                     app:layout_constraintTop_toBottomOf="@id/your_current_mission_text" />
 
-                <TextView
+                <Button
                     android:id="@+id/previous_missions_button"
-                    style="@style/overline"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="23dp"
                     android:enabled="false"
-                    android:onClick="@{()->ProfileViewModel.toYourPreviousMissions()}"
-                    android:paddingStart="8dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:text="PREVIOUS MISSIONS"
                     android:textColor="@color/colorSecondary"
+                    android:fontFamily="@font/montserrat_used"
+                    android:textSize="12sp"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:background="@drawable/know_more_button_bg"
+                    android:onClick="@{()->ProfileViewModel.toYourPreviousMissions()}"
+                    android:text="@string/previous_missions"
                     app:layout_constraintBottom_toBottomOf="@+id/missions_supported"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/missions_supported"
-                    tools:ignore="RtlSymmetry" />
+                    app:layout_constraintTop_toTopOf="@+id/missions_supported" />
 
                 <TextView
                     android:id="@+id/mission_name"
                     style="@style/subtitle_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:text="@{ProfileViewModel.currentMissionName}"
                     android:textColor="@color/primary_text"
                     app:layout_constraintTop_toBottomOf="@id/category"
@@ -195,7 +197,7 @@
                     style="@style/body_2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="17dp"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/ic_motto_bg"
                     android:gravity="center_vertical"
                     android:paddingStart="8dp"
@@ -215,52 +217,58 @@
                     app:cardCornerRadius="4dp"
                     app:layout_constraintTop_toBottomOf="@id/goal">
 
-                    <ImageView
+                    <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/mission_image"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        tools:srcCompat="@drawable/ic_sponsor_logo" />
+                        android:scaleType="centerCrop" />
                 </androidx.cardview.widget.CardView>
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/sponsor_logo"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    app:layout_constraintBottom_toBottomOf="@id/sponsor_name"
+                    android:layout_marginTop="4dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView3"
-                    app:layout_constraintVertical_bias="0.24"
-                    tools:srcCompat="@drawable/ic_sponsor_logo" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView3"
+                    tools:srcCompat="@drawable/ic_sponsor" />
 
                 <TextView
                     android:id="@+id/textView3"
                     style="@style/caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="24dp"
-                    android:text="@string/sponsor"
+                    android:text="@string/mission_sponsor"
                     android:textColor="@color/disabled_text"
-                    app:layout_constraintStart_toEndOf="@+id/sponsor_logo"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/timer" />
 
                 <TextView
                     android:id="@+id/sponsor_name"
                     style="@style/subtitle_1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:text="@{ProfileViewModel.currentMissionSponsorName}"
                     android:textColor="@color/primary_text"
-                    app:layout_constraintStart_toStartOf="@id/textView3"
-                    app:layout_constraintTop_toBottomOf="@id/textView3"
+                    app:layout_constraintBottom_toBottomOf="@+id/sponsor_logo"
+                    app:layout_constraintEnd_toStartOf="@+id/to_sponsor"
+                    app:layout_constraintStart_toEndOf="@+id/sponsor_logo"
+                    app:layout_constraintTop_toTopOf="@+id/sponsor_logo"
                     tools:text="Sponsor name" />
-                <ImageButton
+                <Button
                     android:id="@+id/to_sponsor"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_arrow_right"
-                    android:background="@null"
+                    android:layout_width="wrap_content"
+                    android:layout_height="23dp"
+                    android:text="@string/know_more"
+                    android:textColor="@color/colorSecondary"
+                    android:fontFamily="@font/montserrat_used"
+                    android:textSize="12sp"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:background="@drawable/know_more_button_bg"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/sponsor_name"
                     app:layout_constraintBottom_toBottomOf="@id/sponsor_name"/>
@@ -272,6 +280,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/amount_raised"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/amount_raised"
+                    app:layout_constraintVertical_bias="0.55"
                     app:srcCompat="@drawable/rupee_symbol" />
 
                 <TextView
@@ -280,7 +289,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="16dp"
                     android:text="@{ProfileViewModel.amountRaised}"
                     android:textColor="@color/primary_text"
                     app:layout_constraintStart_toEndOf="@+id/rupee_symbol_2"
@@ -333,10 +342,11 @@
                     android:id="@+id/trigger_holder"
                     android:layout_width="156dp"
                     android:layout_height="81dp"
+                    android:layout_marginTop="24dp"
                     android:background="@drawable/all_corner_rounded_4dp_1e"
                     android:elevation="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/amount_raised" />
+                    app:layout_constraintTop_toBottomOf="@+id/card_view" />
 
                 <TextView
                     android:id="@+id/you_raised_text"
@@ -359,7 +369,6 @@
                     android:fontFamily="@font/montserrat_used"
                     android:text="@{ProfileViewModel.contribution}"
                     android:textColor="@color/colorSecondary"
-                    android:textFontWeight="400"
                     android:textSize="30sp"
                     app:layout_constraintEnd_toEndOf="@id/trigger_holder"
                     app:layout_constraintStart_toStartOf="@id/trigger_holder"
@@ -370,7 +379,7 @@
                     android:id="@+id/timer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="30dp"
                     android:background="@drawable/ic_timer_container__shadowless"
                     android:elevation="4dp"
                     android:fontFamily="@font/share_tech_mono"
@@ -382,7 +391,6 @@
                     android:paddingBottom="12dp"
                     android:text="@{ProfileViewModel.daysLeft}"
                     android:textColor="@color/primary_text"
-                    android:textFontWeight="400"
                     android:textSize="24sp"
                     app:layout_constraintEnd_toStartOf="@+id/days"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -431,7 +439,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/sponsor_name">
 
 
-                    <ImageButton
+                    <androidx.appcompat.widget.AppCompatImageButton
                         android:id="@+id/expand_or_contract"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
@@ -444,7 +452,7 @@
 
                     <TextView
                         android:id="@+id/mission_description"
-                        style="@style/caption"
+                        style="@style/tertiary_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="24dp"
